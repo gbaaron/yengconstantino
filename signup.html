@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Yeng Nation — Yeng Constantino Official</title>
+    <meta name="description" content="Create your Yeng Constantino fan account. Join Yeng Nation and unlock exclusive music content, merch, and community features.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Signup Page Styles ── */
+        .auth-page {
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+
+        .auth-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* Left side — branding panel */
+        .auth-brand {
+            background: linear-gradient(135deg, #D4A547 0%, #8B2252 50%, #5B2D8E 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: var(--space-3xl);
+        }
+
+        .auth-brand::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .auth-brand__content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 420px;
+        }
+
+        .auth-brand__heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            line-height: 1.1;
+            margin-bottom: var(--space-sm);
+        }
+
+        .auth-brand__tagline {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: #E8C36B;
+            margin: var(--space-lg) 0 var(--space-2xl);
+        }
+
+        /* Membership tier preview cards */
+        .tier-preview {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .tier-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all var(--transition-base);
+            text-align: left;
+        }
+
+        .tier-card:hover {
+            background: rgba(255, 255, 255, 0.16);
+            transform: translateX(4px);
+        }
+
+        .tier-card__icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .tier-card__info {
+            flex: 1;
+        }
+
+        .tier-card__name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #FFFFFF;
+        }
+
+        .tier-card__name small {
+            font-family: 'Caveat', cursive;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 6px;
+            font-weight: 400;
+        }
+
+        .tier-card__price {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: #E8C36B;
+            font-weight: 600;
+        }
+
+        .auth-brand__free-note {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+        }
+
+        /* Right side — form panel */
+        .auth-form-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3xl) var(--space-2xl);
+            background: #FFFFFF;
+            overflow-y: auto;
+        }
+
+        .auth-form-wrapper {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .auth-form__header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .auth-form__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #231A12;
+            margin-bottom: var(--space-sm);
+        }
+
+        .auth-form__subtitle {
+            font-family: 'Inter', sans-serif;
+            color: #8E7F70;
+            font-size: 0.95rem;
+        }
+
+        /* Form elements */
+        .auth-form .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .auth-form .form-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #352A20;
+            margin-bottom: var(--space-sm);
+        }
+
+        .auth-form .form-input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid #E8E0F0;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #352A20;
+            background: #FFFFFF;
+            transition: all var(--transition-fast);
+        }
+
+        .auth-form .form-input:focus {
+            outline: none;
+            border-color: #5B2D8E;
+            box-shadow: 0 0 0 4px rgba(91, 45, 142, 0.15);
+        }
+
+        .auth-form .form-input::placeholder {
+            color: #8E7F70;
+        }
+
+        .auth-form .form-input.input--error {
+            border-color: #8B2252;
+            box-shadow: 0 0 0 4px rgba(139, 34, 82, 0.12);
+        }
+
+        .field-hint {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: #8E7F70;
+            margin-top: 4px;
+        }
+
+        .field-error {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: #8B2252;
+            font-weight: 600;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .field-error.visible {
+            display: block;
+        }
+
+        /* Password visibility toggle */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #8E7F70;
+            padding: 4px;
+            transition: color var(--transition-fast);
+        }
+
+        .password-toggle:hover {
+            color: #5B2D8E;
+        }
+
+        /* Submit button */
+        .auth-form__submit {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.05rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-form__submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(91, 45, 142, 0.4);
+        }
+
+        .auth-form__submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-form__submit .spinner {
+            width: 20px;
+            height: 20px;
+            border-width: 3px;
+            border-color: rgba(255,255,255,0.3);
+            border-top-color: #FFFFFF;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Error box */
+        .auth-form__error {
+            background: rgba(139, 34, 82, 0.08);
+            border: 1px solid rgba(139, 34, 82, 0.2);
+            color: #8B2252;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            display: none;
+        }
+
+        .auth-form__error.visible {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* Switch link */
+        .auth-form__switch {
+            text-align: center;
+            margin-top: var(--space-xl);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #6B5D50;
+        }
+
+        .auth-form__switch a {
+            color: #5B2D8E;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .auth-form__switch a:hover {
+            color: #8B2252;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-brand {
+                display: none;
+            }
+
+            .auth-form-panel {
+                min-height: calc(100vh - 72px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-form-panel {
+                padding: var(--space-xl) var(--space-md);
+            }
+
+            .auth-form__title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Auth Layout ── -->
+    <div class="auth-page">
+        <div class="auth-layout">
+            <!-- Left: Branding Panel -->
+            <div class="auth-brand">
+                <div class="auth-brand__content">
+                    <h1 class="auth-brand__heading">Join Yeng Nation</h1>
+                    <div class="auth-brand__tagline">Maging bahagi ng pamilya</div>
+
+                    <div class="tier-preview">
+                        <div class="tier-card">
+                            <div class="tier-card__icon">&#9834;</div>
+                            <div class="tier-card__info">
+                                <div class="tier-card__name">Sariwang Simula <small>"Fresh Start"</small></div>
+                                <div class="tier-card__price">&#8369;149/mo</div>
+                            </div>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-card__icon">&#9829;</div>
+                            <div class="tier-card__info">
+                                <div class="tier-card__name">Laging Nandito <small>"Always Here"</small></div>
+                                <div class="tier-card__price">&#8369;349/mo</div>
+                            </div>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-card__icon">&#9733;</div>
+                            <div class="tier-card__info">
+                                <div class="tier-card__name">Ikaw Lamang <small>"Only You"</small></div>
+                                <div class="tier-card__price">&#8369;799/mo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="auth-brand__free-note">Start with Free, upgrade anytime</p>
+                </div>
+            </div>
+
+            <!-- Right: Signup Form -->
+            <div class="auth-form-panel">
+                <div class="auth-form-wrapper">
+                    <div class="auth-form__header">
+                        <h2 class="auth-form__title">Create Account</h2>
+                        <p class="auth-form__subtitle">Join Yeng Nation and be part of the music community.</p>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="auth-form__error" id="signup-error">
+                        <span>&#9888;</span>
+                        <span id="signup-error-text">Something went wrong</span>
+                    </div>
+
+                    <form class="auth-form" id="signup-form" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="signup-name">Full Name</label>
+                            <input
+                                type="text"
+                                id="signup-name"
+                                class="form-input"
+                                placeholder="Your full name"
+                                required
+                                autocomplete="name"
+                            >
+                            <div class="field-error" id="name-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signup-username">Username</label>
+                            <input
+                                type="text"
+                                id="signup-username"
+                                class="form-input"
+                                placeholder="@your_username"
+                                required
+                                autocomplete="username"
+                            >
+                            <div class="field-hint">Letters, numbers, and underscores only. This is how other fans see you.</div>
+                            <div class="field-error" id="username-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signup-email">Email Address</label>
+                            <input
+                                type="email"
+                                id="signup-email"
+                                class="form-input"
+                                placeholder="you@email.com"
+                                required
+                                autocomplete="email"
+                            >
+                            <div class="field-error" id="email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signup-password">Password</label>
+                            <div class="password-wrapper">
+                                <input
+                                    type="password"
+                                    id="signup-password"
+                                    class="form-input"
+                                    placeholder="Minimum 6 characters"
+                                    required
+                                    autocomplete="new-password"
+                                    minlength="6"
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword('signup-password', this)" aria-label="Toggle password visibility">&#128065;</button>
+                            </div>
+                            <div class="field-hint">Must be at least 6 characters.</div>
+                            <div class="field-error" id="password-error"></div>
+                        </div>
+
+                        <button type="submit" class="auth-form__submit" id="signup-submit">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="auth-form__switch">
+                        Already have an account? <a href="/login.html">Log in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Explore</h4>
+                    <ul class="footer__list">
+                        <li><a href="/music.html">Music Archive</a></li>
+                        <li><a href="/covers.html">Yeng Covers</a></li>
+                        <li><a href="/community.html">Community</a></li>
+                        <li><a href="/merch.html">Merch Store</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Fan Hub</h4>
+                    <ul class="footer__list">
+                        <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/profile.html">My Profile</a></li>
+                        <li><a href="/signup.html">Join Yeng Nation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Connect</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════
+           Signup Page Logic
+           ═══════════════════════════════════════════════════ */
+        (function() {
+            // If already logged in, redirect
+            if (Auth.isLoggedIn()) {
+                window.location.href = '/profile.html';
+                return;
+            }
+
+            var form = document.getElementById('signup-form');
+            var nameInput = document.getElementById('signup-name');
+            var usernameInput = document.getElementById('signup-username');
+            var emailInput = document.getElementById('signup-email');
+            var passwordInput = document.getElementById('signup-password');
+            var submitBtn = document.getElementById('signup-submit');
+            var errorBox = document.getElementById('signup-error');
+            var errorText = document.getElementById('signup-error-text');
+
+            /* ── Field error helpers ── */
+            function showFieldError(id, message) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.textContent = message;
+                    el.classList.add('visible');
+                }
+            }
+
+            function hideFieldError(id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.classList.remove('visible');
+                }
+            }
+
+            function showError(message) {
+                errorText.textContent = message;
+                errorBox.classList.add('visible');
+            }
+
+            function hideError() {
+                errorBox.classList.remove('visible');
+            }
+
+            function setLoading(loading) {
+                submitBtn.disabled = loading;
+                submitBtn.innerHTML = loading
+                    ? '<div class="spinner"></div> Creating account...'
+                    : 'Create Account';
+            }
+
+            /* ── Username formatting ── */
+            usernameInput.addEventListener('input', function() {
+                this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '');
+                hideFieldError('username-error');
+            });
+
+            /* ── Clear errors on input ── */
+            nameInput.addEventListener('input', function() { hideFieldError('name-error'); });
+            emailInput.addEventListener('input', function() { hideFieldError('email-error'); });
+            passwordInput.addEventListener('input', function() { hideFieldError('password-error'); });
+
+            /* ── Client-side validation ── */
+            function validateForm() {
+                var valid = true;
+
+                // Name
+                var name = nameInput.value.trim();
+                if (!name) {
+                    showFieldError('name-error', 'Please enter your name.');
+                    nameInput.classList.add('input--error');
+                    valid = false;
+                } else if (name.length < 2) {
+                    showFieldError('name-error', 'Name must be at least 2 characters.');
+                    nameInput.classList.add('input--error');
+                    valid = false;
+                } else {
+                    nameInput.classList.remove('input--error');
+                }
+
+                // Username
+                var username = usernameInput.value.trim();
+                if (!username) {
+                    showFieldError('username-error', 'Please choose a username.');
+                    usernameInput.classList.add('input--error');
+                    valid = false;
+                } else if (username.length < 3) {
+                    showFieldError('username-error', 'Username must be at least 3 characters.');
+                    usernameInput.classList.add('input--error');
+                    valid = false;
+                } else if (username.length > 20) {
+                    showFieldError('username-error', 'Username must be 20 characters or fewer.');
+                    usernameInput.classList.add('input--error');
+                    valid = false;
+                } else {
+                    usernameInput.classList.remove('input--error');
+                }
+
+                // Email
+                var email = emailInput.value.trim();
+                if (!email) {
+                    showFieldError('email-error', 'Please enter your email address.');
+                    emailInput.classList.add('input--error');
+                    valid = false;
+                } else if (!email.includes('@') || !email.includes('.')) {
+                    showFieldError('email-error', 'Please enter a valid email address.');
+                    emailInput.classList.add('input--error');
+                    valid = false;
+                } else {
+                    emailInput.classList.remove('input--error');
+                }
+
+                // Password
+                var password = passwordInput.value;
+                if (!password) {
+                    showFieldError('password-error', 'Please create a password.');
+                    passwordInput.classList.add('input--error');
+                    valid = false;
+                } else if (password.length < 6) {
+                    showFieldError('password-error', 'Password must be at least 6 characters.');
+                    passwordInput.classList.add('input--error');
+                    valid = false;
+                } else {
+                    passwordInput.classList.remove('input--error');
+                }
+
+                return valid;
+            }
+
+            /* ── Form submission ── */
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideError();
+
+                if (!validateForm()) {
+                    return;
+                }
+
+                setLoading(true);
+
+                var payload = {
+                    name: nameInput.value.trim(),
+                    username: usernameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    password: passwordInput.value
+                };
+
+                try {
+                    // Create account
+                    var signupData = await api('signup', {
+                        method: 'POST',
+                        body: payload
+                    });
+
+                    // Auto-login after signup
+                    var loginData = await api('login', {
+                        method: 'POST',
+                        body: {
+                            email: payload.email,
+                            password: payload.password
+                        }
+                    });
+
+                    Auth.setSession(loginData.token, loginData.user);
+                    showToast('Welcome to Yeng Nation! Salamat for joining.', 'success');
+
+                    setTimeout(function() {
+                        var params = new URLSearchParams(window.location.search);
+                        var redirect = params.get('redirect') || '/profile.html';
+                        window.location.href = redirect;
+                    }, 800);
+
+                } catch (err) {
+                    showError(err.message || 'Something went wrong. Please try again.');
+                    setLoading(false);
+                }
+            });
+        })();
+
+        /* ── Password Toggle ── */
+        function togglePassword(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '\u{1F576}';
+            } else {
+                input.type = 'password';
+                btn.textContent = '\u{1F441}';
+            }
+        }
+
+        // Initialize Lucide icons
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

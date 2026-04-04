@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In — Yeng Constantino Official</title>
+    <meta name="description" content="Log in to your Yeng Constantino fan account. Access exclusive music content, merch, and the Yeng Nation community.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Login Page Styles ── */
+        .auth-page {
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+
+        .auth-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* Left side — branding panel */
+        .auth-brand {
+            background: linear-gradient(135deg, #D4A547 0%, #8B2252 50%, #5B2D8E 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: var(--space-3xl);
+        }
+
+        .auth-brand::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .auth-brand__content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .auth-brand__heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            line-height: 1.1;
+            margin-bottom: var(--space-sm);
+        }
+
+        .auth-brand__tagline {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: #E8C36B;
+            margin: var(--space-lg) 0 var(--space-2xl);
+        }
+
+        .auth-brand__notes {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            font-size: 2rem;
+            margin-bottom: var(--space-2xl);
+            opacity: 0.5;
+        }
+
+        .auth-brand__notes span {
+            animation: noteFloat 3s ease-in-out infinite;
+        }
+
+        .auth-brand__notes span:nth-child(2) { animation-delay: 0.5s; }
+        .auth-brand__notes span:nth-child(3) { animation-delay: 1s; }
+        .auth-brand__notes span:nth-child(4) { animation-delay: 1.5s; }
+        .auth-brand__notes span:nth-child(5) { animation-delay: 2s; }
+
+        @keyframes noteFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .auth-brand__badges {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .tier-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all var(--transition-base);
+        }
+
+        .tier-badge:hover {
+            background: rgba(255, 255, 255, 0.16);
+            transform: translateX(4px);
+        }
+
+        .tier-badge__icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .tier-badge__name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #FFFFFF;
+        }
+
+        .tier-badge__desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Right side — form panel */
+        .auth-form-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3xl) var(--space-2xl);
+            background: #FFFFFF;
+        }
+
+        .auth-form-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .auth-form__header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .auth-form__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #231A12;
+            margin-bottom: var(--space-sm);
+        }
+
+        .auth-form__subtitle {
+            font-family: 'Inter', sans-serif;
+            color: #8E7F70;
+            font-size: 0.95rem;
+        }
+
+        /* Form elements */
+        .auth-form .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .auth-form .form-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #352A20;
+            margin-bottom: var(--space-sm);
+        }
+
+        .auth-form .form-input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid #E8E0F0;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #352A20;
+            background: #FFFFFF;
+            transition: all var(--transition-fast);
+        }
+
+        .auth-form .form-input:focus {
+            outline: none;
+            border-color: #5B2D8E;
+            box-shadow: 0 0 0 4px rgba(91, 45, 142, 0.15);
+        }
+
+        .auth-form .form-input::placeholder {
+            color: #8E7F70;
+        }
+
+        /* Password visibility toggle */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #8E7F70;
+            padding: 4px;
+            transition: color var(--transition-fast);
+        }
+
+        .password-toggle:hover {
+            color: #5B2D8E;
+        }
+
+        /* Submit button */
+        .auth-form__submit {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.05rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: #FFFFFF;
+            background: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-form__submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(91, 45, 142, 0.4);
+        }
+
+        .auth-form__submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-form__submit .spinner {
+            width: 20px;
+            height: 20px;
+            border-width: 3px;
+            border-color: rgba(255,255,255,0.3);
+            border-top-color: #FFFFFF;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Error box */
+        .auth-form__error {
+            background: rgba(139, 34, 82, 0.08);
+            border: 1px solid rgba(139, 34, 82, 0.2);
+            color: #8B2252;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            display: none;
+        }
+
+        .auth-form__error.visible {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* Switch link */
+        .auth-form__switch {
+            text-align: center;
+            margin-top: var(--space-xl);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #6B5D50;
+        }
+
+        .auth-form__switch a {
+            color: #5B2D8E;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .auth-form__switch a:hover {
+            color: #8B2252;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-brand {
+                display: none;
+            }
+
+            .auth-form-panel {
+                min-height: calc(100vh - 72px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-form-panel {
+                padding: var(--space-xl) var(--space-md);
+            }
+
+            .auth-form__title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Auth Layout ── -->
+    <div class="auth-page">
+        <div class="auth-layout">
+            <!-- Left: Branding Panel -->
+            <div class="auth-brand">
+                <div class="auth-brand__content">
+                    <h1 class="auth-brand__heading">Welcome Back</h1>
+                    <div class="auth-brand__tagline">Yeng Nation awaits</div>
+
+                    <div class="auth-brand__notes">
+                        <span>&#9835;</span>
+                        <span>&#9833;</span>
+                        <span>&#9834;</span>
+                        <span>&#9835;</span>
+                        <span>&#9833;</span>
+                    </div>
+
+                    <div class="auth-brand__badges">
+                        <div class="tier-badge">
+                            <div class="tier-badge__icon">&#9834;</div>
+                            <div>
+                                <div class="tier-badge__name">Sariwang Simula</div>
+                                <div class="tier-badge__desc">Community access &amp; music archive</div>
+                            </div>
+                        </div>
+                        <div class="tier-badge">
+                            <div class="tier-badge__icon">&#9829;</div>
+                            <div>
+                                <div class="tier-badge__name">Laging Nandito</div>
+                                <div class="tier-badge__desc">Exclusive content &amp; early access</div>
+                            </div>
+                        </div>
+                        <div class="tier-badge">
+                            <div class="tier-badge__icon">&#9733;</div>
+                            <div>
+                                <div class="tier-badge__name">Ikaw Lamang</div>
+                                <div class="tier-badge__desc">Personal messages &amp; VIP perks</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Login Form -->
+            <div class="auth-form-panel">
+                <div class="auth-form-wrapper">
+                    <div class="auth-form__header">
+                        <h2 class="auth-form__title">Log In</h2>
+                        <p class="auth-form__subtitle">Enter your credentials to access your Yeng Nation account.</p>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="auth-form__error" id="login-error">
+                        <span>&#9888;</span>
+                        <span id="login-error-text">Something went wrong</span>
+                    </div>
+
+                    <form class="auth-form" id="login-form" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="login-email">Email Address</label>
+                            <input
+                                type="email"
+                                id="login-email"
+                                class="form-input"
+                                placeholder="you@email.com"
+                                required
+                                autocomplete="email"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="login-password">Password</label>
+                            <div class="password-wrapper">
+                                <input
+                                    type="password"
+                                    id="login-password"
+                                    class="form-input"
+                                    placeholder="Enter your password"
+                                    required
+                                    autocomplete="current-password"
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)" aria-label="Toggle password visibility">&#128065;</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="auth-form__submit" id="login-submit">
+                            Log In
+                        </button>
+                    </form>
+
+                    <div class="auth-form__switch">
+                        Don't have an account? <a href="/signup.html">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Explore</h4>
+                    <ul class="footer__list">
+                        <li><a href="/music.html">Music Archive</a></li>
+                        <li><a href="/covers.html">Yeng Covers</a></li>
+                        <li><a href="/community.html">Community</a></li>
+                        <li><a href="/merch.html">Merch Store</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Fan Hub</h4>
+                    <ul class="footer__list">
+                        <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/profile.html">My Profile</a></li>
+                        <li><a href="/signup.html">Join Yeng Nation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Connect</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════
+           Login Page Logic
+           ═══════════════════════════════════════════════════ */
+        (function() {
+            // If already logged in, redirect away
+            if (Auth.isLoggedIn()) {
+                var params = new URLSearchParams(window.location.search);
+                window.location.href = params.get('redirect') || '/profile.html';
+                return;
+            }
+
+            var form = document.getElementById('login-form');
+            var emailInput = document.getElementById('login-email');
+            var passwordInput = document.getElementById('login-password');
+            var submitBtn = document.getElementById('login-submit');
+            var errorBox = document.getElementById('login-error');
+            var errorText = document.getElementById('login-error-text');
+
+            function showError(message) {
+                errorText.textContent = message;
+                errorBox.classList.add('visible');
+            }
+
+            function hideError() {
+                errorBox.classList.remove('visible');
+            }
+
+            function setLoading(loading) {
+                submitBtn.disabled = loading;
+                submitBtn.innerHTML = loading
+                    ? '<div class="spinner"></div> Logging in...'
+                    : 'Log In';
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideError();
+
+                var email = emailInput.value.trim();
+                var password = passwordInput.value;
+
+                // Validation
+                if (!email) {
+                    showError('Please enter your email address.');
+                    emailInput.focus();
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    showError('Please enter a valid email address.');
+                    emailInput.focus();
+                    return;
+                }
+
+                if (!password) {
+                    showError('Please enter your password.');
+                    passwordInput.focus();
+                    return;
+                }
+
+                setLoading(true);
+
+                try {
+                    var data = await api('login', {
+                        method: 'POST',
+                        body: { email: email, password: password }
+                    });
+
+                    Auth.setSession(data.token, data.user);
+                    showToast('Welcome back to Yeng Nation!', 'success');
+
+                    // Redirect to intended page or profile
+                    var params = new URLSearchParams(window.location.search);
+                    var redirect = params.get('redirect') || '/profile.html';
+
+                    setTimeout(function() {
+                        window.location.href = redirect;
+                    }, 500);
+
+                } catch (err) {
+                    showError(err.message || 'Login failed. Please check your credentials.');
+                    setLoading(false);
+                }
+            });
+
+            // Clear error on input
+            emailInput.addEventListener('input', hideError);
+            passwordInput.addEventListener('input', hideError);
+        })();
+
+        /* ── Password Toggle ── */
+        function togglePassword(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '\u{1F576}';
+            } else {
+                input.type = 'password';
+                btn.textContent = '\u{1F441}';
+            }
+        }
+
+        // Initialize Lucide icons
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

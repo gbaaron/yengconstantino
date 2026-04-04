@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership — Yeng Constantino Official</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .membership-hero {
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .membership-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .membership-hero__content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+        .membership-hero__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #D4A547 0%, #E8C36B 50%, #FFFFFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-md);
+        }
+        .membership-hero__subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: var(--space-xl);
+        }
+        .membership-hero__quote {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            color: #D4A547;
+            line-height: 1.5;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .pricing-section {
+            padding: var(--space-4xl) 0;
+            background: #FBF7F2;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-xl);
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+            align-items: start;
+        }
+        .pricing-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            text-align: center;
+            transition: all var(--transition-base);
+            position: relative;
+            border: 2px solid transparent;
+        }
+        .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(212,165,71,0.16); }
+        .pricing-card--popular {
+            transform: scale(1.05);
+            border-color: #8B2252;
+            box-shadow: 0 8px 40px rgba(139,34,82,0.2);
+            z-index: 2;
+        }
+        .pricing-card--popular:hover { transform: scale(1.05) translateY(-4px); }
+        .pricing-card__popular-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #8B2252, #A83B6B);
+            color: #FFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 6px 20px;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+        .pricing-card__tier-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .pricing-card__tier-name--purple { color: #5B2D8E; }
+        .pricing-card__tier-name--burgundy { color: #8B2252; }
+        .pricing-card__tier-name--gold { color: #C68B1E; }
+        .pricing-card__english {
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            color: #8E7F70;
+            margin-bottom: var(--space-lg);
+        }
+        .pricing-card__price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #231A12;
+            margin-bottom: 4px;
+        }
+        .pricing-card__price span {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #8E7F70;
+        }
+        .pricing-card__divider {
+            width: 60px;
+            height: 3px;
+            border-radius: 2px;
+            margin: var(--space-lg) auto;
+        }
+        .pricing-card__divider--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); }
+        .pricing-card__divider--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); }
+        .pricing-card__divider--gold { background: linear-gradient(135deg, #D4A547, #C68B1E); }
+        .pricing-card__features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 var(--space-xl);
+            text-align: left;
+        }
+        .pricing-card__feature {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: 8px 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #4A3D32;
+            line-height: 1.5;
+        }
+        .pricing-card__feature::before {
+            content: '\2713';
+            font-weight: 700;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.7rem;
+        }
+        .pricing-card--purple .pricing-card__feature::before { background: rgba(91,45,142,0.12); color: #5B2D8E; }
+        .pricing-card--burgundy .pricing-card__feature::before { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .pricing-card--gold .pricing-card__feature::before { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .pricing-card__cta {
+            width: 100%;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            color: #FFF;
+        }
+        .pricing-card__cta--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); box-shadow: 0 4px 15px rgba(91,45,142,0.3); }
+        .pricing-card__cta--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); box-shadow: 0 4px 15px rgba(139,34,82,0.3); }
+        .pricing-card__cta--gold { background: linear-gradient(135deg, #D4A547, #C68B1E); color: #231A12; box-shadow: 0 4px 15px rgba(212,165,71,0.3); }
+        .pricing-card__cta:hover { transform: translateY(-2px); }
+        .pricing-card__current { background: #EDE7DF; color: #6B5D50; cursor: default; box-shadow: none; }
+        .pricing-card__current:hover { transform: none; }
+        .free-tier { text-align: center; padding: var(--space-2xl) var(--space-xl); max-width: 600px; margin: 0 auto; }
+        .free-tier__title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #352A20; margin-bottom: var(--space-sm); }
+        .free-tier__text { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #6B5D50; line-height: 1.7; }
+        .membership-modal__tier { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-md); }
+        .membership-modal__price { text-align: center; font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
+        .faq-section { padding: var(--space-4xl) 0; background: #FFF8F0; }
+        .faq-list { max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
+        .faq-item { background: #FFF; border-radius: var(--radius-md); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(212,165,71,0.06); overflow: hidden; }
+        .faq-question { width: 100%; padding: 18px 24px; background: none; border: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; color: #352A20; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question:hover { color: #5B2D8E; }
+        .faq-question__icon { font-size: 1.2rem; transition: transform var(--transition-base); color: #8E7F70; }
+        .faq-item--open .faq-question__icon { transform: rotate(45deg); color: #5B2D8E; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height var(--transition-slow); }
+        .faq-item--open .faq-answer { max-height: 300px; }
+        .faq-answer__inner { padding: 0 24px 20px; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #6B5D50; line-height: 1.7; }
+        @media (max-width: 1024px) {
+            .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+            .pricing-card--popular { transform: none; }
+            .pricing-card--popular:hover { transform: translateY(-4px); }
+        }
+        @media (max-width: 768px) {
+            .membership-hero { padding: 120px 0 60px; }
+            .membership-hero__title { font-size: 2.2rem; }
+            .membership-hero__quote { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link nav__link--active">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="membership-hero">
+        <div class="membership-hero__content">
+            <h1 class="membership-hero__title" data-config="membership_title">Join Yeng Nation</h1>
+            <p class="membership-hero__subtitle" data-config="membership_subtitle">Get closer to the music, the stories, and the community</p>
+            <p class="membership-hero__quote" data-config="membership_quote">"Salamat sa lahat ng sumusuporta. Kayo ang dahilan kung bakit patuloy akong kumakanta."</p>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="section-header" style="margin-bottom:var(--space-3xl);">
+            <span class="section-header__eyebrow">Pumili ng Tier</span>
+            <h2 class="section-header__title">Choose Your Membership</h2>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card pricing-card--purple" data-tier="Sariwang Simula">
+                <h3 class="pricing-card__tier-name pricing-card__tier-name--purple">Sariwang Simula</h3>
+                <p class="pricing-card__english">Fresh Start</p>
+                <div class="pricing-card__price">&#8369;149 <span>/month</span></div>
+                <div class="pricing-card__divider pricing-card__divider--purple"></div>
+                <ul class="pricing-card__features">
+                    <li class="pricing-card__feature">Community access</li>
+                    <li class="pricing-card__feature">Music archive access</li>
+                    <li class="pricing-card__feature">Yeng Covers submissions</li>
+                    <li class="pricing-card__feature">Behind the scenes content</li>
+                    <li class="pricing-card__feature">Exclusive posts</li>
+                    <li class="pricing-card__feature">Member badge</li>
+                </ul>
+                <button class="pricing-card__cta pricing-card__cta--purple" onclick="selectTier('Sariwang Simula',149)">Sumali Na!</button>
+            </div>
+            <div class="pricing-card pricing-card--burgundy pricing-card--popular" data-tier="Laging Nandito">
+                <div class="pricing-card__popular-badge">Most Popular</div>
+                <h3 class="pricing-card__tier-name pricing-card__tier-name--burgundy">Laging Nandito</h3>
+                <p class="pricing-card__english">Always Here</p>
+                <div class="pricing-card__price">&#8369;349 <span>/month</span></div>
+                <div class="pricing-card__divider pricing-card__divider--burgundy"></div>
+                <ul class="pricing-card__features">
+                    <li class="pricing-card__feature">Everything in Sariwang Simula</li>
+                    <li class="pricing-card__feature">Uncut rehearsal footage</li>
+                    <li class="pricing-card__feature">Early content access</li>
+                    <li class="pricing-card__feature">Priority cover feature</li>
+                    <li class="pricing-card__feature">Live Q&amp;A replays</li>
+                </ul>
+                <button class="pricing-card__cta pricing-card__cta--burgundy" onclick="selectTier('Laging Nandito',349)">Sumali Na!</button>
+            </div>
+            <div class="pricing-card pricing-card--gold" data-tier="Ikaw Lamang">
+                <h3 class="pricing-card__tier-name pricing-card__tier-name--gold">Ikaw Lamang</h3>
+                <p class="pricing-card__english">Only You</p>
+                <div class="pricing-card__price">&#8369;799 <span>/month</span></div>
+                <div class="pricing-card__divider pricing-card__divider--gold"></div>
+                <ul class="pricing-card__features">
+                    <li class="pricing-card__feature">Everything in Laging Nandito</li>
+                    <li class="pricing-card__feature">Personal voice messages from Yeng</li>
+                    <li class="pricing-card__feature">Exclusive acoustic recordings</li>
+                    <li class="pricing-card__feature">Merch discounts (15%)</li>
+                    <li class="pricing-card__feature">Exclusive limited drops access</li>
+                    <li class="pricing-card__feature">Birthday shoutouts</li>
+                </ul>
+                <button class="pricing-card__cta pricing-card__cta--gold" onclick="selectTier('Ikaw Lamang',799)">Sumali Na!</button>
+            </div>
+        </div>
+        <div class="free-tier">
+            <h3 class="free-tier__title">Mag-start for Free</h3>
+            <p class="free-tier__text">Create a free account and enjoy community access, the full music archive, and Yeng Covers submissions. Upgrade anytime to unlock exclusive content and perks!</p>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="membership-modal">
+        <div class="modal">
+            <button class="modal__close" onclick="closeModal()">&times;</button>
+            <h3 class="membership-modal__tier" id="modal-tier-name"></h3>
+            <p class="membership-modal__price" id="modal-tier-price"></p>
+            <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <select class="form-select" id="modal-payment-method">
+                    <option value="">Select payment method...</option>
+                    <option value="GCash">GCash</option>
+                    <option value="Maya">Maya</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Reference Number</label>
+                <input type="text" class="form-input" id="modal-payment-ref" placeholder="Enter your payment reference...">
+            </div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya to the official Yeng Constantino account, then enter your reference number above.</p>
+            <button class="btn btn--primary btn--block" id="modal-confirm-btn" onclick="confirmMembership()">Confirm Membership</button>
+        </div>
+    </div>
+
+    <section class="faq-section">
+        <div class="section-header" style="margin-bottom:var(--space-2xl);">
+            <span class="section-header__eyebrow">Mga Tanong</span>
+            <h2 class="section-header__title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Paano mag-subscribe? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Choose your preferred tier, click "Sumali Na!", select your payment method (GCash or Maya), complete the payment, and enter your reference number. Your membership will be activated within 24 hours of verification.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Pwede bang mag-cancel anytime? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Yes! You can cancel your membership at any time. Your access will continue until the end of your current billing period. No long-term commitments required.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Ano ang kasama sa Free tier? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">The Free tier includes full access to the community feed, the complete music archive with search and filtering, and the ability to submit your own covers to Yeng Covers. You can also rate content and participate in discussions.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Paano ko makikita ang exclusive content? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Once your membership is activated, visit your Profile page and click on the "Exclusive Content" tab. Content is unlocked based on your tier level.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">May discount ba for annual subscription? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Annual subscription plans are coming soon! When launched, annual members will receive 2 months free. Stay tuned for announcements on our social media channels.</div></div></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+        let selectedTier = '';
+        let selectedPrice = 0;
+        document.addEventListener('DOMContentLoaded', function() { checkCurrentTier(); });
+        function selectTier(tier, price) {
+            if (!Auth.isLoggedIn()) { Auth.requireAuth('/membership.html'); return; }
+            selectedTier = tier;
+            selectedPrice = price;
+            document.getElementById('modal-tier-name').textContent = tier;
+            document.getElementById('modal-tier-price').textContent = formatPrice(price) + ' / month';
+            document.getElementById('modal-payment-ref').value = '';
+            document.getElementById('modal-payment-method').value = '';
+            document.getElementById('membership-modal').classList.add('modal-overlay--active');
+        }
+        function closeModal() { document.getElementById('membership-modal').classList.remove('modal-overlay--active'); }
+        async function confirmMembership() {
+            var pm = document.getElementById('modal-payment-method').value;
+            var pr = document.getElementById('modal-payment-ref').value.trim();
+            if (!pm) { showToast('Please select a payment method', 'error'); return; }
+            if (!pr) { showToast('Please enter your payment reference number', 'error'); return; }
+            var btn = document.getElementById('modal-confirm-btn');
+            btn.disabled = true; btn.textContent = 'Processing...';
+            try {
+                await api('create-membership', { method: 'POST', body: { tier: selectedTier, paymentReference: pr } });
+                var user = Auth.getUser(); user.membershipTier = selectedTier;
+                Auth.setSession(Auth.getToken(), user);
+                showToast('Welcome to ' + selectedTier + '! Salamat!', 'success');
+                closeModal();
+                setTimeout(function() { window.location.reload(); }, 1500);
+            } catch (err) {
+                showToast(err.message || 'Failed to process membership', 'error');
+                btn.disabled = false; btn.textContent = 'Confirm Membership';
+            }
+        }
+        function checkCurrentTier() {
+            var ct = Auth.getUserTier();
+            if (ct === 'Free') return;
+            document.querySelectorAll('.pricing-card').forEach(function(card) {
+                if (card.getAttribute('data-tier') === ct) {
+                    var btn = card.querySelector('.pricing-card__cta');
+                    btn.textContent = 'Current Plan'; btn.classList.add('pricing-card__current');
+                    btn.disabled = true; btn.onclick = null;
+                }
+            });
+        }
+        function toggleFAQ(btn) {
+            var item = btn.closest('.faq-item');
+            var isOpen = item.classList.contains('faq-item--open');
+            document.querySelectorAll('.faq-item--open').forEach(function(el) { el.classList.remove('faq-item--open'); });
+            if (!isOpen) item.classList.add('faq-item--open');
+        }
+        document.getElementById('membership-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+    </script>
+</body>
+</html>

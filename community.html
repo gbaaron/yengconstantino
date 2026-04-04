@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeng Nation Community — Yeng Constantino Official</title>
+    <meta name="description" content="Join the Yeng Nation! Connect with fellow Yeng Constantino fans, share fan art, cover videos, stories, and be part of the most passionate OPM fandom.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Community Page — Color System Overrides ── */
+        :root {
+            --primary: #5B2D8E;
+            --primary-light: #7E4FB5;
+            --primary-glow: rgba(91, 45, 142, 0.15);
+            --gold: #D4A547;
+            --gold-light: #E8C36B;
+            --burgundy: #8B2252;
+            --burgundy-light: #A83B6B;
+            --bg-off-white: #FBF7F2;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --font-accent: 'Caveat', cursive;
+            --gradient-primary: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
+            --gradient-cta: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            --shadow-warm-sm: 0 2px 8px rgba(212, 165, 71, 0.10);
+            --shadow-warm-md: 0 4px 20px rgba(212, 165, 71, 0.14);
+            --shadow-warm-lg: 0 8px 40px rgba(212, 165, 71, 0.18);
+        }
+
+        /* ── Community Hero ── */
+        .community-hero {
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1245 40%, #3d1a3d 70%, #2a1535 100%);
+            padding: 140px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(100px);
+        }
+
+        .community-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.06;
+            filter: blur(80px);
+        }
+
+        .community-hero__content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .community-hero__eyebrow {
+            font-family: var(--font-accent);
+            font-size: 1.4rem;
+            color: var(--gold);
+            display: block;
+            margin-bottom: var(--space-xs);
+        }
+
+        .community-hero__title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-sm);
+        }
+
+        .community-hero__subtitle {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 550px;
+            margin: 0 auto var(--space-xl);
+        }
+
+        .community-hero__stats {
+            display: flex;
+            gap: var(--space-2xl);
+            justify-content: center;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat__number {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.6rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-stat__label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 600;
+        }
+
+        /* ── Filter Tabs ── */
+        .community-filters {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-100);
+            padding: var(--space-md) 0;
+            position: sticky;
+            top: 72px;
+            z-index: 100;
+        }
+
+        .community-filters__inner {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .community-filters__inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-tab {
+            padding: 8px 20px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            background: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            color: var(--primary);
+            background: var(--primary-glow);
+        }
+
+        .filter-tab--active {
+            color: var(--white);
+            background: var(--gradient-cta);
+            border-color: transparent;
+        }
+
+        .filter-tab--active:hover {
+            color: var(--white);
+            background: var(--gradient-cta);
+        }
+
+        /* ── Main Layout ── */
+        .community-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-2xl);
+            padding: var(--space-2xl) 0 var(--space-4xl);
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* ── My Yeng Story Highlight ── */
+        .memory-highlight {
+            background: linear-gradient(135deg, rgba(212, 165, 71, 0.08) 0%, rgba(91, 45, 142, 0.06) 100%);
+            border: 1px solid rgba(212, 165, 71, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .memory-highlight__label {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-accent);
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: var(--space-lg);
+        }
+
+        .memory-highlight__label span {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+
+        /* ── Post Creator ── */
+        .post-creator {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-card);
+            margin-bottom: var(--space-xl);
+        }
+
+        .post-creator__header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .post-creator__avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .post-creator__prompt {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-full);
+            font-size: 0.95rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .post-creator__prompt:hover {
+            border-color: var(--primary);
+        }
+
+        .post-creator__form {
+            display: none;
+        }
+
+        .post-creator__form--open {
+            display: block;
+        }
+
+        .post-creator__textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 14px 18px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            color: var(--gray-700);
+            background: var(--white);
+            resize: vertical;
+            font-family: var(--font-body);
+            transition: border-color var(--transition-fast);
+        }
+
+        .post-creator__textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .post-creator__image-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px dashed var(--gray-200);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            background: var(--gray-50);
+            font-family: var(--font-body);
+            margin-top: var(--space-sm);
+            transition: border-color var(--transition-fast);
+        }
+
+        .post-creator__image-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .post-creator__image-input::placeholder {
+            color: var(--gray-300);
+        }
+
+        .post-creator__actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: var(--space-md);
+            gap: var(--space-md);
+        }
+
+        .post-creator__type-select {
+            padding: 8px 32px 8px 14px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B5B7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            transition: all var(--transition-fast);
+        }
+
+        .post-creator__type-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .post-creator__submit {
+            padding: 10px 28px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: var(--radius-full);
+            border: none;
+            background: var(--gradient-cta);
+            color: var(--white);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .post-creator__submit:hover {
+            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .post-creator__submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Guest CTA */
+        .post-creator__guest-cta {
+            text-align: center;
+            padding: var(--space-lg);
+        }
+
+        .post-creator__guest-cta p {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin-bottom: var(--space-md);
+        }
+
+        .post-creator__guest-cta .btn {
+            padding: 12px 32px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: var(--radius-full);
+            border: none;
+            background: var(--gradient-cta);
+            color: var(--white);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: inline-block;
+        }
+
+        .post-creator__guest-cta .btn:hover {
+            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ── Post Card ── */
+        .post-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-card);
+            margin-bottom: var(--space-lg);
+            transition: all var(--transition-base);
+        }
+
+        .post-card:hover {
+            box-shadow: var(--shadow-warm-md);
+        }
+
+        .post-card--featured {
+            border: 2px solid rgba(212, 165, 71, 0.3);
+        }
+
+        .post-card__header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .post-card__avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .post-card__user-info {
+            flex: 1;
+        }
+
+        .post-card__username {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--gray-700);
+        }
+
+        .post-card__meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-top: 2px;
+            flex-wrap: wrap;
+        }
+
+        .post-card__type-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .post-card__type-badge--post { background: var(--primary-glow); color: var(--primary); }
+        .post-card__type-badge--fanart { background: rgba(139, 34, 82, 0.12); color: var(--burgundy); }
+        .post-card__type-badge--cover { background: rgba(212, 165, 71, 0.15); color: #8B6914; }
+        .post-card__type-badge--memory { background: rgba(34, 197, 94, 0.12); color: #16a34a; }
+        .post-card__type-badge--question { background: rgba(212, 165, 71, 0.15); color: #8B6914; }
+        .post-card__type-badge--edit { background: rgba(91, 45, 142, 0.12); color: var(--primary); }
+
+        .post-card__time {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+        }
+
+        .post-card__featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: #2d1245;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .post-card__content {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: var(--space-md);
+        }
+
+        .post-card__image {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+
+        .post-card__image img {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius-md);
+        }
+
+        .post-card__image-placeholder {
+            width: 100%;
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: var(--space-sm);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: var(--radius-md);
+        }
+
+        .post-card__image-placeholder span:first-child {
+            font-size: 3rem;
+        }
+
+        .post-card__actions {
+            display: flex;
+            gap: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .post-card__like {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+            padding: 4px 0;
+        }
+
+        .post-card__like:hover {
+            color: var(--burgundy);
+        }
+
+        .post-card__like--liked {
+            color: var(--burgundy);
+        }
+
+        .post-card__like .heart-icon {
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .post-card__like:hover .heart-icon {
+            transform: scale(1.2);
+        }
+
+        .post-card__action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+            padding: 4px 0;
+        }
+
+        .post-card__action-btn:hover {
+            color: var(--primary);
+        }
+
+        /* ── No Posts ── */
+        .empty-feed {
+            text-align: center;
+            padding: var(--space-4xl) var(--space-xl);
+            color: var(--gray-400);
+        }
+
+        .empty-feed__icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-lg);
+        }
+
+        .empty-feed__title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gray-500);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* ── Load More ── */
+        .load-more {
+            text-align: center;
+            padding: var(--space-xl) 0;
+        }
+
+        .load-more .btn {
+            padding: 14px 40px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .load-more .btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-warm-md);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .community-hero {
+                padding: 120px 0 40px;
+            }
+            .community-hero__title {
+                font-size: 2rem;
+            }
+            .community-hero__stats {
+                gap: var(--space-xl);
+            }
+            .hero-stat__number {
+                font-size: 1.3rem;
+            }
+            .community-layout {
+                padding: var(--space-xl) var(--space-md);
+            }
+            .filter-tab {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .post-creator__actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .community-hero__title {
+                font-size: 1.6rem;
+            }
+            .community-hero__stats {
+                flex-wrap: wrap;
+                gap: var(--space-lg);
+            }
+            .post-card {
+                padding: var(--space-lg);
+            }
+            .memory-highlight {
+                padding: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link nav__link--active">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="community-hero">
+        <div class="container community-hero__content">
+            <span class="community-hero__eyebrow">welcome to the family</span>
+            <h1 class="community-hero__title">Yeng Nation Community</h1>
+            <p class="community-hero__subtitle" data-config="community_subtitle">The gathering place for Yeng Constantino fans worldwide. Share your stories, art, covers, and connect with fellow Yeng Nation members.</p>
+            <div class="community-hero__stats">
+                <div class="hero-stat">
+                    <div class="hero-stat__number" id="statMembers">12.4K</div>
+                    <div class="hero-stat__label">Members</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat__number" id="statPosts">1.8K</div>
+                    <div class="hero-stat__label">Posts Today</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat__number" id="statOnline">340</div>
+                    <div class="hero-stat__label">Online Now</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Filter Tabs ── -->
+    <div class="community-filters">
+        <div class="container">
+            <div class="community-filters__inner">
+                <button class="filter-tab filter-tab--active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="post">Post</button>
+                <button class="filter-tab" data-filter="fanart">Fan Art</button>
+                <button class="filter-tab" data-filter="cover">Cover Video</button>
+                <button class="filter-tab" data-filter="memory">Memory</button>
+                <button class="filter-tab" data-filter="question">Question</button>
+                <button class="filter-tab" data-filter="edit">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Main Content ── -->
+    <div class="container">
+        <div class="community-layout">
+
+            <!-- ── My Yeng Story Highlight ── -->
+            <div class="memory-highlight" id="memoryHighlight">
+                <div class="memory-highlight__label">&#9825; My Yeng Story <span>Featured Memories</span></div>
+                <div id="memoryHighlightPosts">
+                    <!-- Filled by JS with featured Memory posts -->
+                </div>
+            </div>
+
+            <!-- ── Post Creator (logged-in) ── -->
+            <div class="post-creator" id="postCreator" data-auth style="display:none">
+                <div class="post-creator__header">
+                    <div class="post-creator__avatar" id="creatorAvatar">?</div>
+                    <div class="post-creator__prompt" id="postCreatorTrigger">Share something with Yeng Nation...</div>
+                </div>
+                <div class="post-creator__form" id="postForm">
+                    <textarea class="post-creator__textarea" placeholder="What's on your mind, kapamilya?" id="postContent"></textarea>
+                    <input type="text" class="post-creator__image-input" id="postImageUrl" placeholder="Image URL (optional) — paste a link to an image">
+                    <div class="post-creator__actions">
+                        <select class="post-creator__type-select" id="postTypeSelect">
+                            <option value="post">Post</option>
+                            <option value="fanart">Fan Art</option>
+                            <option value="cover">Cover Video</option>
+                            <option value="memory">Memory</option>
+                            <option value="question">Question</option>
+                            <option value="edit">Edit</option>
+                        </select>
+                        <button class="post-creator__submit" id="postSubmitBtn">Share Post</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Post Creator (guest) ── -->
+            <div class="post-creator" data-guest>
+                <div class="post-creator__guest-cta">
+                    <p>Want to share your thoughts with the Yeng Nation? Join the community!</p>
+                    <a href="/signup.html" class="btn">Log in to Post</a>
+                </div>
+            </div>
+
+            <!-- ── Posts Feed ── -->
+            <div id="posts-feed">
+                <!-- Filled by JS -->
+            </div>
+
+            <!-- ── Load More ── -->
+            <div class="load-more" id="loadMore" style="display:none">
+                <button class="btn" id="loadMoreBtn">Load More Posts</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Inline Fallback Posts (shown until JS loads real data) ── -->
+    <template id="fallback-posts">
+        <!-- These are rendered by the JS below as initial demo content -->
+    </template>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Explore</h4>
+                    <ul class="footer__list">
+                        <li><a href="/music.html">Music Archive</a></li>
+                        <li><a href="/covers.html">Yeng Covers</a></li>
+                        <li><a href="/community.html">Community</a></li>
+                        <li><a href="/merch.html">Merch Store</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Fan Hub</h4>
+                    <ul class="footer__list">
+                        <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/profile.html">My Profile</a></li>
+                        <li><a href="/signup.html">Join Yeng Nation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Connect</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:var(--gold);">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           YENG NATION COMMUNITY — Social Feed
+           Post creation, filtering, likes, fallback content
+           ═══════════════════════════════════════════════════════ */
+        (function () {
+            'use strict';
+
+            // ── State ──
+            let currentFilter = '';
+            let currentPage = 1;
+            let communityPosts = [];
+            let userLikes = {};
+
+            // ── Badge config ──
+            var badgeLookup = {
+                post:     { label: 'Post',        cssClass: 'post-card__type-badge--post' },
+                fanart:   { label: 'Fan Art',     cssClass: 'post-card__type-badge--fanart' },
+                cover:    { label: 'Cover Video', cssClass: 'post-card__type-badge--cover' },
+                memory:   { label: 'Memory',      cssClass: 'post-card__type-badge--memory' },
+                question: { label: 'Question',    cssClass: 'post-card__type-badge--question' },
+                edit:     { label: 'Edit',        cssClass: 'post-card__type-badge--edit' }
+            };
+
+            var avatarBgOptions = [
+                'var(--gradient-primary)',
+                'linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%)',
+                'linear-gradient(135deg, #8B2252 0%, #A83B6B 100%)',
+                'linear-gradient(135deg, #D4A547 0%, #E8C36B 100%)',
+                'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                'linear-gradient(135deg, #5B2D8E 0%, #D4A547 100%)',
+                'linear-gradient(135deg, #8B2252 0%, #D4A547 100%)'
+            ];
+
+            // ── Fallback demo posts ──
+            var demoPosts = [
+                {
+                    id: 'demo-1',
+                    username: 'Maria from Manila',
+                    avatarInitial: 'M',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'memory',
+                    time: 'March 28, 2026',
+                    content: 'I will never forget the first time I heard "Hawak Kamay" on the radio. I was going through one of the hardest chapters of my life — I had just lost my lola, and everything felt so heavy. Then Yeng\'s voice came through the speakers, and something in me just broke open in the best way. I cried, but it was a healing cry. That song carried me through months of grief. Years later, I got to see Yeng live at a mall show, and I cried again. She looked right at me and smiled. Salamat, Yeng. Your music is truly medicine for the soul.',
+                    imageUrl: null,
+                    likes: 847,
+                    liked: false,
+                    featured: true
+                },
+                {
+                    id: 'demo-2',
+                    username: 'Carlos from Cebu',
+                    avatarInitial: 'C',
+                    avatarBg: avatarBgOptions[1],
+                    type: 'fanart',
+                    time: '6 hours ago',
+                    content: 'Spent two weeks on this sketch of Yeng during her concert tour! Pencil and charcoal on paper. Tried to capture the energy she brings on stage — that moment when she closes her eyes and just FEELS the music. Hope she sees this someday!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E8D5FF 0%, #FFD5E5 100%)', icon: '&#x1F3A8;', label: 'Pencil & Charcoal Fan Art', color: 'var(--primary)' },
+                    likes: 523,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-3',
+                    username: 'Grace, OFW in Dubai',
+                    avatarInitial: 'G',
+                    avatarBg: avatarBgOptions[2],
+                    type: 'post',
+                    time: '8 hours ago',
+                    content: 'Mga kapamilya, grabe ang homesick ko today. But every time I feel this way, I put on Yeng\'s playlist and suddenly it feels like I\'m back home in the Philippines. Her voice carries the warmth of home no matter where you are in the world. Any other OFWs here who find comfort in her music? We should start a Yeng Nation Middle East chapter!',
+                    imageUrl: null,
+                    likes: 312,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-4',
+                    username: 'Jake from Davao',
+                    avatarInitial: 'J',
+                    avatarBg: avatarBgOptions[3],
+                    type: 'cover',
+                    time: '10 hours ago',
+                    content: 'Finally got the courage to share my acoustic cover of "Salamat"! I\'ve been practicing for months. Yeng\'s vocal runs are SO difficult to nail but I gave it my best shot. Feedback welcome, Yeng Nation! Be gentle with me haha. If you guys like it I\'ll do "Chinito" next.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FFF3E0 0%, #F3E5F5 100%)', icon: '&#x1F3B5;', label: 'Acoustic Cover Video', color: '#8B6914' },
+                    likes: 289,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-5',
+                    username: 'Rina from QC',
+                    avatarInitial: 'R',
+                    avatarBg: avatarBgOptions[4],
+                    type: 'question',
+                    time: '12 hours ago',
+                    content: 'What\'s everyone\'s favorite Yeng album? I\'m trying to decide between "Metamorphosis" and "All About Love" for my road trip playlist. Both are absolute masterpieces but I can only fit one on my USB. Help me decide, Yeng Nation! Also, which album has the best deep cuts that casual fans might not know about?',
+                    imageUrl: null,
+                    likes: 176,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-6',
+                    username: 'Sarah, Fil-Am in LA',
+                    avatarInitial: 'S',
+                    avatarBg: avatarBgOptions[5],
+                    type: 'memory',
+                    time: 'Yesterday',
+                    content: 'Sharing my concert story! Last year when Yeng performed in Los Angeles, I flew all the way from New York just to see her. My whole family thought I was crazy. But standing in that crowd, singing every word with hundreds of other Filipinos so far from home... it was transcendent. I made friends I still talk to daily. Yeng didn\'t just perform — she made us feel like we were all together in someone\'s living room in Manila. That night changed my life. I finally felt connected to my Filipino roots in a way I\'d been missing for years.',
+                    imageUrl: null,
+                    likes: 1204,
+                    liked: true,
+                    featured: true
+                }
+            ];
+
+            // ── Map API record to post object ──
+            function mapAirtablePost(rec) {
+                var f = rec.fields || rec;
+                var postType = (f.type || f.Type || 'post').toLowerCase();
+                var bInfo = badgeLookup[postType] || badgeLookup.post;
+                var uname = f.username || f.Username || 'Fan';
+                var initial = uname.charAt(0).toUpperCase();
+                var bgIndex = Math.abs(uname.split('').reduce(function(a, c) { return a + c.charCodeAt(0); }, 0)) % avatarBgOptions.length;
+
+                var imgUrl = f.imageUrl || f.ImageUrl || f.image || null;
+                if (Array.isArray(imgUrl) && imgUrl.length > 0) {
+                    imgUrl = imgUrl[0].url || imgUrl[0];
+                }
+
+                return {
+                    id: rec.id || f.id || ('at-' + Date.now() + '-' + Math.random()),
+                    username: uname,
+                    avatarInitial: initial,
+                    avatarBg: avatarBgOptions[bgIndex],
+                    type: postType,
+                    time: f.time || f.Time || f.createdAt || 'Recently',
+                    content: f.content || f.Content || '',
+                    imageUrl: typeof imgUrl === 'string' ? imgUrl : null,
+                    imagePlaceholder: null,
+                    likes: parseInt(f.likes || f.Likes || 0, 10),
+                    liked: !!(f.liked || f.Liked),
+                    featured: !!(f.featured || f.Featured)
+                };
+            }
+
+            // ── Render a single post card ──
+            function renderPostCard(post) {
+                var bInfo = badgeLookup[post.type] || badgeLookup.post;
+                var featuredClass = post.featured ? ' post-card--featured' : '';
+                var likedClass = post.liked ? ' post-card__like--liked' : '';
+                var heartSymbol = post.liked ? '&#9829;' : '&#9825;';
+
+                var imageHtml = '';
+                if (post.imageUrl) {
+                    imageHtml = '<div class="post-card__image"><img src="' + post.imageUrl + '" alt="Post image" loading="lazy"></div>';
+                } else if (post.imagePlaceholder) {
+                    var ph = post.imagePlaceholder;
+                    imageHtml = '<div class="post-card__image">' +
+                        '<div class="post-card__image-placeholder" style="background:' + ph.bg + ';">' +
+                            '<span>' + ph.icon + '</span>' +
+                            '<span style="color:' + ph.color + ';">' + ph.label + '</span>' +
+                        '</div>' +
+                    '</div>';
+                }
+
+                var featuredBadge = post.featured
+                    ? '<span class="post-card__featured-badge">&#9733; Featured</span>'
+                    : '';
+
+                return '<div class="post-card' + featuredClass + '" data-type="' + post.type + '" data-post-id="' + post.id + '">' +
+                    '<div class="post-card__header">' +
+                        '<div class="post-card__avatar" style="background:' + (post.avatarBg || avatarBgOptions[0]) + ';">' + post.avatarInitial + '</div>' +
+                        '<div class="post-card__user-info">' +
+                            '<div class="post-card__username">' + post.username + '</div>' +
+                            '<div class="post-card__meta">' +
+                                '<span class="post-card__type-badge ' + bInfo.cssClass + '">' + bInfo.label + '</span>' +
+                                '<span class="post-card__time">' + post.time + '</span>' +
+                                featuredBadge +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="post-card__content">' + post.content + '</div>' +
+                    imageHtml +
+                    '<div class="post-card__actions">' +
+                        '<button class="post-card__like' + likedClass + '" data-like-btn data-post-id="' + post.id + '">' +
+                            '<span class="heart-icon">' + heartSymbol + '</span>' +
+                            '<span class="like-count">' + post.likes.toLocaleString() + '</span>' +
+                        '</button>' +
+                        '<button class="post-card__action-btn">&#x1F4AC; Comment</button>' +
+                        '<button class="post-card__action-btn">&#x2197; Share</button>' +
+                    '</div>' +
+                '</div>';
+            }
+
+            // ── Render all posts ──
+            function renderPosts(posts) {
+                var feedContainer = document.getElementById('posts-feed');
+                if (!feedContainer) return;
+
+                if (!posts.length) {
+                    feedContainer.innerHTML = '<div class="empty-feed">' +
+                        '<div class="empty-feed__icon">&#x1F3B6;</div>' +
+                        '<h3 class="empty-feed__title">No posts yet</h3>' +
+                        '<p>Be the first to share something with the Yeng Nation!</p>' +
+                    '</div>';
+                    return;
+                }
+
+                // Filter posts based on current filter
+                var filtered = posts;
+                if (currentFilter) {
+                    filtered = posts.filter(function(p) { return p.type === currentFilter; });
+                }
+
+                if (!filtered.length) {
+                    feedContainer.innerHTML = '<div class="empty-feed">' +
+                        '<div class="empty-feed__icon">&#x1F50D;</div>' +
+                        '<h3 class="empty-feed__title">No posts in this category</h3>' +
+                        '<p>Try a different filter or share something new!</p>' +
+                    '</div>';
+                    return;
+                }
+
+                feedContainer.innerHTML = filtered.map(renderPostCard).join('');
+
+                // Attach like listeners
+                attachLikeListeners();
+            }
+
+            // ── Render memory highlight section ──
+            function renderMemoryHighlight(posts) {
+                var container = document.getElementById('memoryHighlightPosts');
+                var section = document.getElementById('memoryHighlight');
+                if (!container || !section) return;
+
+                var memories = posts.filter(function(p) {
+                    return p.type === 'memory' && p.featured;
+                }).slice(0, 2);
+
+                if (!memories.length) {
+                    section.style.display = 'none';
+                    return;
+                }
+
+                section.style.display = '';
+                container.innerHTML = memories.map(function(post) {
+                    return '<div class="post-card" style="margin-bottom:var(--space-md);box-shadow:none;background:transparent;">' +
+                        '<div class="post-card__header">' +
+                            '<div class="post-card__avatar" style="background:' + (post.avatarBg || avatarBgOptions[0]) + ';">' + post.avatarInitial + '</div>' +
+                            '<div class="post-card__user-info">' +
+                                '<div class="post-card__username">' + post.username + '</div>' +
+                                '<div class="post-card__meta">' +
+                                    '<span class="post-card__type-badge post-card__type-badge--memory">Memory</span>' +
+                                    '<span class="post-card__time">' + post.time + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="post-card__content">' + truncate(post.content, 200) + '</div>' +
+                    '</div>';
+                }).join('');
+            }
+
+            // ── Load posts from API ──
+            async function loadPosts() {
+                try {
+                    var params = new URLSearchParams();
+                    if (currentFilter) params.set('type', currentFilter);
+                    params.set('page', currentPage);
+                    params.set('limit', 20);
+
+                    var data = await api('get-community-posts?' + params);
+                    if (data.posts && data.posts.length > 0) {
+                        communityPosts = data.posts.map(mapAirtablePost);
+                    } else {
+                        // Use demo data as fallback
+                        communityPosts = demoPosts.slice();
+                    }
+
+                    renderMemoryHighlight(communityPosts);
+                    renderPosts(communityPosts);
+
+                    // Show load more if there are more pages
+                    var loadMore = document.getElementById('loadMore');
+                    if (loadMore && data.pagination && data.pagination.page < data.pagination.totalPages) {
+                        loadMore.style.display = '';
+                    }
+                } catch (err) {
+                    // Fallback to demo posts on API failure
+                    communityPosts = demoPosts.slice();
+                    renderMemoryHighlight(communityPosts);
+                    renderPosts(communityPosts);
+                    console.warn('[Community] API unavailable, using demo content:', err.message);
+                }
+            }
+
+            // ── Setup filter tabs ──
+            function setupFilters() {
+                var tabs = document.querySelectorAll('.community-filters .filter-tab');
+                tabs.forEach(function(tab) {
+                    tab.addEventListener('click', function() {
+                        tabs.forEach(function(t) { t.classList.remove('filter-tab--active'); });
+                        tab.classList.add('filter-tab--active');
+
+                        var filter = tab.dataset.filter;
+                        currentFilter = filter === 'all' ? '' : filter;
+                        renderPosts(communityPosts);
+                    });
+                });
+            }
+
+            // ── Like button handling ──
+            function attachLikeListeners() {
+                var likeBtns = document.querySelectorAll('[data-like-btn]');
+                likeBtns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        handleLike(btn);
+                    });
+                });
+            }
+
+            function handleLike(btn) {
+                if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
+                    showToast('Log in to like posts', 'error');
+                    return;
+                }
+
+                var postId = btn.getAttribute('data-post-id');
+                var countEl = btn.querySelector('.like-count');
+                var heartEl = btn.querySelector('.heart-icon');
+                var isLiked = btn.classList.contains('post-card__like--liked');
+
+                if (isLiked) {
+                    btn.classList.remove('post-card__like--liked');
+                    heartEl.innerHTML = '&#9825;';
+                    if (countEl) {
+                        var val = parseInt(countEl.textContent.replace(/,/g, ''), 10);
+                        countEl.textContent = Math.max(0, val - 1).toLocaleString();
+                    }
+                } else {
+                    btn.classList.add('post-card__like--liked');
+                    heartEl.innerHTML = '&#9829;';
+                    if (countEl) {
+                        var val = parseInt(countEl.textContent.replace(/,/g, ''), 10);
+                        countEl.textContent = (val + 1).toLocaleString();
+                    }
+                }
+
+                // Update local post data
+                var post = communityPosts.find(function(p) { return p.id === postId; });
+                if (post) {
+                    post.liked = !isLiked;
+                    post.likes += isLiked ? -1 : 1;
+                }
+
+                // Fire-and-forget API call
+                api('like-post', {
+                    method: 'POST',
+                    body: { postId: postId, liked: !isLiked }
+                }).catch(function() { /* silent fail */ });
+            }
+
+            // ── Post creation ──
+            function setupPostCreation() {
+                var trigger = document.getElementById('postCreatorTrigger');
+                var form = document.getElementById('postForm');
+                var content = document.getElementById('postContent');
+                var imageInput = document.getElementById('postImageUrl');
+                var typeSelect = document.getElementById('postTypeSelect');
+                var submitBtn = document.getElementById('postSubmitBtn');
+
+                if (!trigger || !form) return;
+
+                // Set avatar initial
+                if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
+                    var user = Auth.getUser();
+                    var avatar = document.getElementById('creatorAvatar');
+                    if (avatar && user && user.name) {
+                        avatar.textContent = user.name.charAt(0).toUpperCase();
+                    }
+                }
+
+                // Toggle form
+                trigger.addEventListener('click', function() {
+                    form.classList.toggle('post-creator__form--open');
+                    if (form.classList.contains('post-creator__form--open') && content) {
+                        content.focus();
+                    }
+                });
+
+                // Submit post
+                if (submitBtn) {
+                    submitBtn.addEventListener('click', async function() {
+                        var text = content ? content.value.trim() : '';
+                        if (!text) {
+                            showToast('Please write something first!', 'error');
+                            return;
+                        }
+
+                        var selectedType = typeSelect ? typeSelect.value : 'post';
+                        var imageUrl = imageInput ? imageInput.value.trim() : '';
+
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Posting...';
+
+                        try {
+                            var data = await api('create-community-post', {
+                                method: 'POST',
+                                body: {
+                                    content: text,
+                                    type: selectedType,
+                                    imageUrl: imageUrl || undefined
+                                }
+                            });
+
+                            if (data && data.id) {
+                                communityPosts.unshift(mapAirtablePost(data));
+                            } else {
+                                // Fallback: add locally
+                                addLocalPost(text, selectedType, imageUrl);
+                            }
+
+                            showToast('Post shared with Yeng Nation!', 'success');
+                        } catch (err) {
+                            // Add locally on failure
+                            addLocalPost(text, selectedType, imageUrl);
+                            showToast('Post shared with Yeng Nation!', 'success');
+                        } finally {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Share Post';
+                            if (content) content.value = '';
+                            if (imageInput) imageInput.value = '';
+                            if (form) form.classList.remove('post-creator__form--open');
+                            renderPosts(communityPosts);
+                        }
+                    });
+                }
+            }
+
+            // ── Add post locally (fallback when API fails) ──
+            function addLocalPost(text, type, imageUrl) {
+                var user = (typeof Auth !== 'undefined' && Auth.getUser) ? Auth.getUser() : null;
+                var username = user ? (user.name || 'Fan') : 'Fan';
+
+                communityPosts.unshift({
+                    id: 'local-' + Date.now(),
+                    username: username,
+                    avatarInitial: username.charAt(0).toUpperCase(),
+                    avatarBg: avatarBgOptions[0],
+                    type: type,
+                    time: 'Just now',
+                    content: text,
+                    imageUrl: imageUrl || null,
+                    imagePlaceholder: null,
+                    likes: 0,
+                    liked: false,
+                    featured: false
+                });
+            }
+
+            // ── Load More ──
+            var loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function() {
+                    currentPage++;
+                    loadPosts();
+                });
+            }
+
+            // ── Init ──
+            document.addEventListener('DOMContentLoaded', function() {
+                setupFilters();
+                setupPostCreation();
+                loadPosts();
+            });
+
+        })();
+    </script>
+</body>
+</html>

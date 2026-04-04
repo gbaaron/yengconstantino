@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile — Yeng Constantino Official</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .profile-page { padding-top: 92px; min-height: 100vh; background: #FBF7F2; }
+        .profile-header {
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            padding: var(--space-3xl) 0;
+            position: relative;
+        }
+        .profile-header__inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5B2D8E, #D4A547);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFF;
+            flex-shrink: 0;
+            border: 3px solid rgba(212,165,71,0.4);
+            overflow: hidden;
+        }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-header__info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #FFF;
+            margin-bottom: 4px;
+        }
+        .profile-header__email { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-bottom: var(--space-sm); }
+        .profile-header__meta { display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap; }
+        .profile-tier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .profile-tier-badge--free { background: rgba(255,255,255,0.15); color: #FFF; }
+        .profile-tier-badge--sariwang { background: rgba(91,45,142,0.3); color: #E8C36B; }
+        .profile-tier-badge--laging { background: rgba(139,34,82,0.3); color: #E8C36B; }
+        .profile-tier-badge--ikaw { background: rgba(212,165,71,0.3); color: #FFF; }
+        .profile-header__joined { font-family: 'Caveat', cursive; font-size: 1rem; color: rgba(212,165,71,0.7); }
+
+        .profile-tabs {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-lg) var(--space-xl) 0;
+            display: flex;
+            gap: var(--space-xs);
+            border-bottom: 2px solid #EDE7DF;
+            overflow-x: auto;
+        }
+        .profile-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #8E7F70;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+        .profile-tab:hover { color: #5B2D8E; }
+        .profile-tab--active { color: #5B2D8E; border-bottom-color: #5B2D8E; }
+
+        .profile-panels { max-width: 900px; margin: 0 auto; padding: var(--space-xl); }
+        .profile-panel { display: none; }
+        .profile-panel--active { display: block; }
+
+        .profile-form { max-width: 500px; }
+        .profile-form .form-group { margin-bottom: var(--space-lg); }
+
+        .order-card {
+            background: #FFF;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+        }
+        .order-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: var(--space-sm); }
+        .order-card__number { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: #352A20; }
+        .order-card__status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .order-card__status--pending { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .order-card__status--confirmed { background: rgba(91,45,142,0.12); color: #5B2D8E; }
+        .order-card__status--shipped { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .order-card__status--delivered { background: rgba(45,142,126,0.2); color: #1a6b5e; }
+        .order-card__status--cancelled { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .order-card__details { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #6B5D50; line-height: 1.7; }
+
+        .rating-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md); }
+        .rating-card {
+            background: #FFF;
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+        }
+        .rating-card__title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #352A20; margin-bottom: var(--space-xs); }
+        .rating-card__score { font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 800; color: #D4A547; }
+
+        .exclusive-card {
+            background: #FFF;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+            display: flex;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+        .exclusive-card__thumb {
+            width: 120px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(91,45,142,0.1), rgba(212,165,71,0.1));
+        }
+        .exclusive-card__info { flex: 1; }
+        .exclusive-card__title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: #352A20; margin-bottom: 4px; }
+        .exclusive-card__desc { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #6B5D50; line-height: 1.5; }
+        .exclusive-card--locked { opacity: 0.6; position: relative; }
+        .exclusive-card__lock {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(139,34,82,0.12);
+            color: #8B2252;
+            margin-top: var(--space-xs);
+        }
+
+        .cover-list-card {
+            background: #FFF;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+        }
+        .cover-list-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: var(--space-sm); }
+        .cover-list-card__title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #352A20; }
+        .cover-list-card__meta { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #8E7F70; }
+
+        @media (max-width: 768px) {
+            .profile-header__inner { flex-direction: column; text-align: center; }
+            .profile-header__meta { justify-content: center; }
+            .profile-tabs { justify-content: flex-start; }
+            .exclusive-card { flex-direction: column; }
+            .exclusive-card__thumb { width: 100%; height: 160px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link nav__link--active"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="profile-page">
+        <section class="profile-header">
+            <div class="profile-header__inner">
+                <div class="profile-avatar" id="profile-avatar">Y</div>
+                <div class="profile-header__info">
+                    <h1 id="profile-name">Loading...</h1>
+                    <p class="profile-header__email" id="profile-email"></p>
+                    <div class="profile-header__meta">
+                        <span class="profile-tier-badge profile-tier-badge--free" id="profile-tier">Free</span>
+                        <span class="profile-header__joined" id="profile-joined"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="profile-tabs" id="profile-tabs">
+            <button class="profile-tab profile-tab--active" data-tab="profile" onclick="switchTab('profile')">Profile</button>
+            <button class="profile-tab" data-tab="orders" onclick="switchTab('orders')">My Orders</button>
+            <button class="profile-tab" data-tab="ratings" onclick="switchTab('ratings')">My Ratings</button>
+            <button class="profile-tab" data-tab="exclusive" onclick="switchTab('exclusive')">Exclusive Content</button>
+            <button class="profile-tab" data-tab="covers" onclick="switchTab('covers')">My Covers</button>
+        </div>
+
+        <div class="profile-panels">
+            <!-- Profile Tab -->
+            <div class="profile-panel profile-panel--active" id="panel-profile">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">Edit Profile</h2>
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="edit-name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-input" id="edit-bio" placeholder="Tell us about yourself..." rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Avatar URL</label>
+                        <input type="url" class="form-input" id="edit-avatar" placeholder="https://example.com/photo.jpg">
+                    </div>
+                    <button class="btn btn--primary" onclick="updateProfile()">Save Changes</button>
+                </div>
+                <div style="margin-top:var(--space-3xl);padding-top:var(--space-xl);border-top:2px solid #EDE7DF;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#352A20;margin-bottom:var(--space-md);">Membership</h3>
+                    <p style="font-family:'Inter',sans-serif;font-size:0.95rem;color:#6B5D50;" id="membership-info">You are on the Free tier.</p>
+                    <a href="/membership.html" class="btn btn--gold btn--sm" style="margin-top:var(--space-md);">Upgrade Membership</a>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div class="profile-panel" id="panel-orders">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Orders</h2>
+                <div id="orders-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading orders...</span></div></div>
+            </div>
+
+            <!-- Ratings Tab -->
+            <div class="profile-panel" id="panel-ratings">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Ratings</h2>
+                <div id="ratings-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading ratings...</span></div></div>
+            </div>
+
+            <!-- Exclusive Content Tab -->
+            <div class="profile-panel" id="panel-exclusive">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">Exclusive Content</h2>
+                <div id="exclusive-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading exclusive content...</span></div></div>
+            </div>
+
+            <!-- My Covers Tab -->
+            <div class="profile-panel" id="panel-covers">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Covers</h2>
+                <div id="covers-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading your covers...</span></div></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+        let profileData = null;
+        let tabsLoaded = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Auth.requireAuth('/profile.html')) return;
+            loadProfile();
+        });
+
+        async function loadProfile() {
+            try {
+                var data = await api('get-user');
+                profileData = data.user;
+                renderProfileHeader(profileData);
+                populateEditForm(profileData);
+            } catch (err) {
+                showToast('Failed to load profile', 'error');
+            }
+        }
+
+        function renderProfileHeader(user) {
+            document.getElementById('profile-name').textContent = user.name || 'Fan';
+            document.getElementById('profile-email').textContent = user.email || '';
+            var tier = user.membershipTier || 'Free';
+            var tierEl = document.getElementById('profile-tier');
+            tierEl.textContent = tier;
+            tierEl.className = 'profile-tier-badge';
+            if (tier === 'Sariwang Simula') tierEl.classList.add('profile-tier-badge--sariwang');
+            else if (tier === 'Laging Nandito') tierEl.classList.add('profile-tier-badge--laging');
+            else if (tier === 'Ikaw Lamang') tierEl.classList.add('profile-tier-badge--ikaw');
+            else tierEl.classList.add('profile-tier-badge--free');
+
+            if (user.joinDate) document.getElementById('profile-joined').textContent = 'Member since ' + formatDate(user.joinDate);
+
+            var avatarEl = document.getElementById('profile-avatar');
+            if (user.avatar) {
+                avatarEl.innerHTML = '<img src="' + user.avatar + '" alt="Avatar">';
+            } else {
+                avatarEl.textContent = (user.name || 'Y').charAt(0).toUpperCase();
+            }
+
+            var memberInfo = document.getElementById('membership-info');
+            if (tier !== 'Free') {
+                memberInfo.textContent = 'You are a ' + tier + ' member' + (user.membershipExpiry ? ' (expires ' + formatDate(user.membershipExpiry) + ')' : '') + '.';
+            }
+        }
+
+        function populateEditForm(user) {
+            document.getElementById('edit-name').value = user.name || '';
+            document.getElementById('edit-bio').value = user.bio || '';
+            document.getElementById('edit-avatar').value = user.avatar || '';
+        }
+
+        async function updateProfile() {
+            var name = document.getElementById('edit-name').value.trim();
+            var bio = document.getElementById('edit-bio').value.trim();
+            var avatar = document.getElementById('edit-avatar').value.trim();
+            try {
+                var data = await api('update-user', { method: 'PUT', body: { name: name, bio: bio, avatar: avatar } });
+                var user = Auth.getUser();
+                user.name = data.user.name;
+                user.bio = data.user.bio;
+                user.avatar = data.user.avatar;
+                Auth.setSession(Auth.getToken(), user);
+                updateNavAuth();
+                renderProfileHeader(data.user);
+                showToast('Profile updated!', 'success');
+            } catch (err) {
+                showToast(err.message || 'Failed to update profile', 'error');
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.profile-tab').forEach(function(t) { t.classList.remove('profile-tab--active'); });
+            document.querySelectorAll('.profile-panel').forEach(function(p) { p.classList.remove('profile-panel--active'); });
+            document.querySelector('[data-tab="' + tab + '"]').classList.add('profile-tab--active');
+            document.getElementById('panel-' + tab).classList.add('profile-panel--active');
+            if (!tabsLoaded[tab]) {
+                tabsLoaded[tab] = true;
+                if (tab === 'orders') loadOrders();
+                else if (tab === 'ratings') loadRatings();
+                else if (tab === 'exclusive') loadExclusiveContent();
+                else if (tab === 'covers') loadMyCovers();
+            }
+        }
+
+        async function loadOrders() {
+            var container = document.getElementById('orders-list');
+            try {
+                var data = await api('get-orders');
+                var orders = data.orders || [];
+                if (!orders.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#128230;</div><h3 class="empty-state__title">No orders yet</h3><p class="empty-state__text">Visit the <a href="/merch.html">Merch Store</a> to get official Yeng merch!</p></div>'; return; }
+                container.innerHTML = orders.map(function(o) {
+                    var statusClass = 'order-card__status--' + (o.status || 'pending').toLowerCase();
+                    var items = Array.isArray(o.items) ? o.items : [];
+                    return '<div class="order-card"><div class="order-card__header"><span class="order-card__number">' + (o.orderNumber || 'N/A') + '</span><span class="order-card__status ' + statusClass + '">' + (o.status || 'Pending') + '</span></div><div class="order-card__details"><p>' + formatDate(o.orderDate) + ' &middot; ' + items.length + ' item(s) &middot; ' + formatPrice(o.totalAmount) + '</p>' + (o.trackingNumber ? '<p>Tracking: ' + o.trackingNumber + '</p>' : '') + '</div></div>';
+                }).join('');
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load orders.</p>'; }
+        }
+
+        async function loadRatings() {
+            var container = document.getElementById('ratings-list');
+            try {
+                var data = await api('get-user-ratings');
+                var ratings = data.ratings || [];
+                if (!ratings.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#9733;</div><h3 class="empty-state__title">No ratings yet</h3><p class="empty-state__text">Rate music content in the <a href="/music.html">Music Archive</a>!</p></div>'; return; }
+                container.innerHTML = '<div class="rating-grid">' + ratings.map(function(r) {
+                    return '<div class="rating-card"><div class="rating-card__title">Content</div><div class="rating-card__score">' + r.rating + '/10</div><p style="font-size:0.8rem;color:#8E7F70;margin-top:4px;">' + (r.ratedAt ? formatDate(r.ratedAt) : '') + '</p></div>';
+                }).join('') + '</div>';
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load ratings.</p>'; }
+        }
+
+        async function loadExclusiveContent() {
+            var container = document.getElementById('exclusive-list');
+            try {
+                var data = await api('get-exclusive-content');
+                var content = data.content || [];
+                if (!content.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#128274;</div><h3 class="empty-state__title">No exclusive content yet</h3><p class="empty-state__text">Exclusive content will appear here as it is published.</p></div>'; return; }
+                container.innerHTML = content.map(function(item) {
+                    var locked = item.locked;
+                    return '<div class="exclusive-card ' + (locked ? 'exclusive-card--locked' : '') + '">' +
+                        (item.thumbnail ? '<img class="exclusive-card__thumb" src="' + item.thumbnail + '" alt="' + item.title + '">' : '<div class="exclusive-card__thumb"></div>') +
+                        '<div class="exclusive-card__info"><h3 class="exclusive-card__title">' + item.title + '</h3><p class="exclusive-card__desc">' + (item.description || '') + '</p>' +
+                        (locked ? '<span class="exclusive-card__lock">&#128274; Upgrade to ' + item.unlockTier + '</span>' : '<a href="' + (item.contentUrl || '#') + '" target="_blank" class="btn btn--sm btn--primary" style="margin-top:var(--space-sm);">Panoorin</a>') +
+                        '</div></div>';
+                }).join('');
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load exclusive content.</p>'; }
+        }
+
+        async function loadMyCovers() {
+            var container = document.getElementById('covers-list');
+            try {
+                var data = await api('get-covers');
+                var allCovers = data.submissions || [];
+                var userId = Auth.getUser()?.id;
+                var myCovers = allCovers.filter(function(c) { return c.user && c.user.id === userId; });
+                if (!myCovers.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#127908;</div><h3 class="empty-state__title">No covers submitted</h3><p class="empty-state__text">Submit your first cover on the <a href="/covers.html">Yeng Covers</a> page!</p></div>'; return; }
+                var statusColors = { 'Submitted': '#8E7F70', 'Under Review': '#5B2D8E', 'Featured on Site': '#8B2252', 'Shared by Yeng': '#D4A547', 'Hall of Fame': '#C68B1E' };
+                container.innerHTML = myCovers.map(function(c) {
+                    var sc = statusColors[c.status] || '#8E7F70';
+                    return '<div class="cover-list-card"><div class="cover-list-card__header"><span class="cover-list-card__title">' + c.title + '</span><span class="badge" style="background:' + sc + '20;color:' + sc + ';">' + c.status + '</span></div><div class="cover-list-card__meta">' + (c.songTitle || '') + ' &middot; ' + (c.arrangementStyle || '') + ' &middot; ' + (c.submittedAt ? formatDate(c.submittedAt) : '') + ' &middot; ' + (c.upvotes || 0) + ' upvotes</div></div>';
+                }).join('');
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load covers.</p>'; }
+        }
+    </script>
+</body>
+</html>

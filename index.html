@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeng Constantino Official — OPM Icon</title>
+    <meta name="description" content="The official fan hub of Yeng Constantino. Music, exclusive content, merch, community, and everything Yeng — all in one place.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Index-specific styles ── */
+
+        /* Hero */
+        .hero--home {
+            background: #FBF7F2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 72px;
+        }
+
+        .hero__bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero__blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.35;
+            animation: blobFloat 10s ease-in-out infinite;
+        }
+
+        .hero__blob--1 {
+            width: 520px;
+            height: 520px;
+            background: #5B2D8E;
+            top: -120px;
+            right: -80px;
+            animation-delay: 0s;
+        }
+
+        .hero__blob--2 {
+            width: 420px;
+            height: 420px;
+            background: #D4A547;
+            bottom: -80px;
+            left: -60px;
+            animation-delay: -3.5s;
+        }
+
+        .hero__blob--3 {
+            width: 340px;
+            height: 340px;
+            background: #8B2252;
+            top: 45%;
+            left: 35%;
+            animation-delay: -6s;
+        }
+
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -25px) scale(1.06); }
+            66% { transform: translate(-20px, 20px) scale(0.94); }
+        }
+
+        .hero__content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+
+        .hero__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero__subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: #4A3D32;
+            line-height: 1.7;
+            max-width: 560px;
+            margin: 0 auto var(--space-md);
+        }
+
+        .hero__tagline {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: #D4A547;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .hero__actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            color: #FFFFFF;
+            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(91, 45, 142, 0.45);
+            color: #FFFFFF;
+        }
+
+        .btn--secondary {
+            background: #FFFFFF;
+            color: #5B2D8E;
+            border: 2px solid #5B2D8E;
+        }
+
+        .btn--secondary:hover {
+            background: #5B2D8E;
+            color: #FFFFFF;
+            transform: translateY(-3px);
+        }
+
+        /* Ticker */
+        .ticker--warm {
+            background: linear-gradient(135deg, #D4A547 0%, #8B2252 50%, #5B2D8E 100%);
+        }
+
+        /* Stats */
+        .stats {
+            padding: var(--space-4xl) 0;
+            background: #FFF8F0;
+        }
+
+        .stats__grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-2xl);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+            text-align: center;
+        }
+
+        .stat__number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .stat__label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #6B5D50;
+            margin-top: var(--space-xs);
+            font-weight: 500;
+        }
+
+        /* Featured Music */
+        .featured-music {
+            padding: var(--space-4xl) 0;
+            background: #FBF7F2;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .section-header__eyebrow {
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            color: #D4A547;
+            display: block;
+            margin-bottom: var(--space-xs);
+        }
+
+        .section-header__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header__subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            color: #6B5D50;
+            margin-top: var(--space-sm);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .music-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(212, 165, 71, 0.08);
+            transition: all var(--transition-base);
+        }
+
+        .music-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(212, 165, 71, 0.18);
+        }
+
+        .music-card__image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: linear-gradient(135deg, rgba(91,45,142,0.1), rgba(139,34,82,0.1));
+        }
+
+        .music-card__body {
+            padding: var(--space-lg);
+        }
+
+        .music-card__tag {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-radius: var(--radius-full);
+            background: rgba(91, 45, 142, 0.1);
+            color: #5B2D8E;
+        }
+
+        .music-card__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #231A12;
+            margin-top: var(--space-sm);
+        }
+
+        .music-card__desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            color: #6B5D50;
+            margin-top: var(--space-sm);
+            line-height: 1.6;
+        }
+
+        .music-card__stars {
+            margin-top: var(--space-sm);
+            color: #D4A547;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* About */
+        .about {
+            padding: var(--space-4xl) 0;
+            background: #FFF8F0;
+        }
+
+        .about__grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+
+        .about__text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #231A12;
+            margin-bottom: var(--space-lg);
+        }
+
+        .about__text p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #4A3D32;
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .about__accent {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            color: #8B2252;
+            margin-top: var(--space-xl);
+            line-height: 1.4;
+        }
+
+        .about__image-placeholder {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, rgba(91,45,142,0.08), rgba(212,165,71,0.12));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: #8E7F70;
+        }
+
+        /* Stories */
+        .stories {
+            padding: var(--space-4xl) 0;
+            background: #FBF7F2;
+        }
+
+        .stories__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-xl);
+        }
+
+        .story-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            box-shadow: 0 4px 24px rgba(212, 165, 71, 0.08);
+            position: relative;
+            transition: all var(--transition-base);
+        }
+
+        .story-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(212, 165, 71, 0.16);
+        }
+
+        .story-card::before {
+            content: '\201C';
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: rgba(91, 45, 142, 0.1);
+            position: absolute;
+            top: 12px;
+            left: 20px;
+        }
+
+        .story-card__text {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #4A3D32;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+        }
+
+        .story-card__author {
+            margin-top: var(--space-lg);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #5B2D8E;
+        }
+
+        .story-card__location {
+            font-family: 'Caveat', cursive;
+            font-size: 1rem;
+            color: #D4A547;
+            margin-top: 2px;
+        }
+
+        /* Membership CTA */
+        .cta-membership {
+            padding: var(--space-4xl) 0;
+            background: linear-gradient(135deg, #231A12 0%, #352A20 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-membership::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .cta-membership__content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+
+        .cta-membership__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: var(--space-lg);
+        }
+
+        .cta-membership__quote {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: #D4A547;
+            margin-bottom: var(--space-2xl);
+            line-height: 1.4;
+        }
+
+        .cta-membership .btn--primary {
+            background: linear-gradient(135deg, #D4A547 0%, #C68B1E 100%);
+            color: #231A12;
+            box-shadow: 0 4px 20px rgba(212, 165, 71, 0.4);
+            font-weight: 800;
+        }
+
+        .cta-membership .btn--primary:hover {
+            box-shadow: 0 8px 30px rgba(212, 165, 71, 0.55);
+        }
+
+        /* Skeleton cards */
+        .skeleton {
+            background: linear-gradient(90deg, #f0ebe4 25%, #f8f4ed 50%, #f0ebe4 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+            border-radius: var(--radius-sm);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats__grid { grid-template-columns: repeat(2, 1fr); }
+            .stories__grid { grid-template-columns: 1fr; }
+            .about__grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .hero__title { font-size: 3rem; }
+            .hero__tagline { font-size: 1.5rem; }
+            .hero--home { min-height: auto; padding: 120px 0 60px; }
+            .stats__grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); }
+            .stat__number { font-size: 2.2rem; }
+            .section-header__title { font-size: 2rem; }
+            .about__text h2 { font-size: 2rem; }
+            .cta-membership__title { font-size: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero__title { font-size: 2.4rem; }
+            .hero__actions { flex-direction: column; }
+            .stats__grid { grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+            .stat__number { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero--home">
+        <div class="hero__bg">
+            <div class="hero__blob hero__blob--1"></div>
+            <div class="hero__blob hero__blob--2"></div>
+            <div class="hero__blob hero__blob--3"></div>
+        </div>
+        <div class="hero__content">
+            <h1 class="hero__title">Yeng Constantino</h1>
+            <p class="hero__subtitle" data-config="hero_subtitle">The Philippines' OPM Icon. Music, community, and everything Yeng — welcome to the official fan hub.</p>
+            <div class="hero__tagline" data-config="hero_tagline">Musika mula sa puso</div>
+            <div class="hero__actions">
+                <a href="/membership.html" class="btn btn--primary btn--lg">Become a Member</a>
+                <a href="/music.html" class="btn btn--secondary btn--lg">Explore Music</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Ticker Marquee ── -->
+    <div class="ticker ticker--warm">
+        <div class="ticker__inner">
+            <span class="ticker__item">Salamat</span>
+            <span class="ticker__item">Ikaw</span>
+            <span class="ticker__item">Nosi Balasi</span>
+            <span class="ticker__item">Forever</span>
+            <span class="ticker__item">Your Love</span>
+            <span class="ticker__item">OPM Queen</span>
+            <span class="ticker__item">Since Day One</span>
+            <span class="ticker__item">Yeng Nation</span>
+            <span class="ticker__item">Hawak Kamay</span>
+            <span class="ticker__item">Chinito</span>
+            <span class="ticker__item">Pag-ibig</span>
+            <span class="ticker__item">Himala</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="ticker__item">Salamat</span>
+            <span class="ticker__item">Ikaw</span>
+            <span class="ticker__item">Nosi Balasi</span>
+            <span class="ticker__item">Forever</span>
+            <span class="ticker__item">Your Love</span>
+            <span class="ticker__item">OPM Queen</span>
+            <span class="ticker__item">Since Day One</span>
+            <span class="ticker__item">Yeng Nation</span>
+            <span class="ticker__item">Hawak Kamay</span>
+            <span class="ticker__item">Chinito</span>
+            <span class="ticker__item">Pag-ibig</span>
+            <span class="ticker__item">Himala</span>
+        </div>
+    </div>
+
+    <!-- ── Stats ── -->
+    <section class="stats">
+        <div class="stats__grid">
+            <div class="stat">
+                <div class="stat__number" data-config="stats_albums">10+</div>
+                <div class="stat__label">Studio Albums</div>
+            </div>
+            <div class="stat">
+                <div class="stat__number" data-config="stats_hits">50+</div>
+                <div class="stat__label">Hit Singles</div>
+            </div>
+            <div class="stat">
+                <div class="stat__number" data-config="stats_concerts">500+</div>
+                <div class="stat__label">Live Concerts</div>
+            </div>
+            <div class="stat">
+                <div class="stat__number" data-config="stats_fans">2M+</div>
+                <div class="stat__label">Yeng Nation Fans</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Featured Music ── -->
+    <section class="featured-music">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-header__eyebrow">Pakinggan Mo</span>
+                <h2 class="section-header__title">Featured Music</h2>
+            </div>
+            <div class="music-grid" id="featured-music-grid">
+                <!-- Skeleton cards while loading -->
+                <div class="music-card">
+                    <div class="skeleton" style="height:180px;"></div>
+                    <div class="music-card__body">
+                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="skeleton" style="height:180px;"></div>
+                    <div class="music-card__body">
+                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="skeleton" style="height:180px;"></div>
+                    <div class="music-card__body">
+                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="skeleton" style="height:180px;"></div>
+                    <div class="music-card__body">
+                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── About ── -->
+    <section class="about">
+        <div class="container">
+            <div class="about__grid">
+                <div class="about__text">
+                    <h2 data-config="about_title">The Voice of a Generation</h2>
+                    <p data-config="about_text">From Star Power champion to one of the most iconic voices in OPM history, Yeng Constantino has captured the hearts of millions with her powerful vocals, authentic songwriting, and unwavering passion for Filipino music. Her journey is a testament to talent, perseverance, and the deep connection between an artist and her fans.</p>
+                    <p>Yeng Nation is more than a fan base. It is a family united by the universal language of music, celebrating every milestone and moment together.</p>
+                    <div class="about__accent">"Ang musika ang nagbubuklod sa ating lahat."</div>
+                </div>
+                <div class="about__image-placeholder" data-config-bg="about_photo">
+                    Yeng Photo
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── My Yeng Story ── -->
+    <section class="stories">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-header__eyebrow">Kwento ng Puso</span>
+                <h2 class="section-header__title">My Yeng Story</h2>
+                <p class="section-header__subtitle">Personal stories from fans about how Yeng's music changed their lives</p>
+            </div>
+            <div class="stories__grid" id="stories-grid">
+                <!-- Skeleton cards while loading -->
+                <div class="story-card">
+                    <div class="skeleton" style="height:14px;width:100%;margin-bottom:8px;"></div>
+                    <div class="skeleton" style="height:14px;width:90%;margin-bottom:8px;"></div>
+                    <div class="skeleton" style="height:14px;width:60%;margin-bottom:24px;"></div>
+                    <div class="skeleton" style="height:16px;width:40%;"></div>
+                </div>
+                <div class="story-card">
+                    <div class="skeleton" style="height:14px;width:100%;margin-bottom:8px;"></div>
+                    <div class="skeleton" style="height:14px;width:85%;margin-bottom:8px;"></div>
+                    <div class="skeleton" style="height:14px;width:70%;margin-bottom:24px;"></div>
+                    <div class="skeleton" style="height:16px;width:35%;"></div>
+                </div>
+                <div class="story-card">
+                    <div class="skeleton" style="height:14px;width:95%;margin-bottom:8px;"></div>
+                    <div class="skeleton" style="height:14px;width:80%;margin-bottom:8px;"></div>
+                    <div class="skeleton" style="height:14px;width:55%;margin-bottom:24px;"></div>
+                    <div class="skeleton" style="height:16px;width:45%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Membership CTA ── -->
+    <section class="cta-membership">
+        <div class="cta-membership__content">
+            <h2 class="cta-membership__title" data-config="cta_title">Join Yeng Nation Today</h2>
+            <div class="cta-membership__quote" data-config="cta_quote">"Sama-sama tayong kakanta, sama-sama tayong lalaban."</div>
+            <a href="/membership.html" class="btn btn--primary btn--lg">Become a Member</a>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Explore</h4>
+                    <ul class="footer__list">
+                        <li><a href="/music.html">Music Archive</a></li>
+                        <li><a href="/covers.html">Yeng Covers</a></li>
+                        <li><a href="/community.html">Community</a></li>
+                        <li><a href="/merch.html">Merch Store</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Fan Hub</h4>
+                    <ul class="footer__list">
+                        <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/profile.html">My Profile</a></li>
+                        <li><a href="/signup.html">Join Yeng Nation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Connect</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════
+           Homepage — Featured Music & Stories
+           ═══════════════════════════════════════════════════ */
+
+        (function () {
+            /* ── Fetch Featured Music ── */
+            async function loadFeaturedMusic() {
+                const grid = document.getElementById('featured-music-grid');
+                if (!grid) return;
+
+                try {
+                    const data = await api('get-music-content?featured=true&limit=4');
+                    const items = data.content || data.items || [];
+
+                    if (items.length === 0) {
+                        grid.innerHTML = '<p style="text-align:center;color:#8E7F70;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Featured music coming soon.</p>';
+                        return;
+                    }
+
+                    grid.innerHTML = items.map(function (item) {
+                        var thumb = item.thumbnail || item.Thumbnail || '';
+                        var category = item.category || item.type || item.Type || 'Music';
+                        var title = item.title || item.Title || 'Untitled';
+                        var desc = truncate(item.description || item.Description || '', 90);
+                        var rating = item.rating || item.Rating || 0;
+
+                        var starsHtml = '';
+                        if (rating > 0) {
+                            for (var s = 0; s < 5; s++) {
+                                starsHtml += s < Math.round(rating) ? '&#9733;' : '&#9734;';
+                            }
+                        }
+
+                        return '<div class="music-card">'
+                            + (thumb
+                                ? '<img class="music-card__image" src="' + thumb + '" alt="' + title + '" loading="lazy">'
+                                : '<div class="music-card__image"></div>')
+                            + '<div class="music-card__body">'
+                            + '<span class="music-card__tag">' + category + '</span>'
+                            + '<h3 class="music-card__title">' + title + '</h3>'
+                            + (desc ? '<p class="music-card__desc">' + desc + '</p>' : '')
+                            + (starsHtml ? '<div class="music-card__stars">' + starsHtml + '</div>' : '')
+                            + '</div>'
+                            + '</div>';
+                    }).join('');
+
+                } catch (err) {
+                    console.warn('Featured music load failed:', err.message);
+                    grid.innerHTML = '<p style="text-align:center;color:#8E7F70;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Could not load featured music right now.</p>';
+                }
+            }
+
+            /* ── Fetch Featured Stories ── */
+            async function loadFeaturedStories() {
+                var grid = document.getElementById('stories-grid');
+                if (!grid) return;
+
+                try {
+                    var data = await api('get-community-posts?type=Memory&featured=true&limit=3');
+                    var posts = data.posts || [];
+
+                    if (posts.length === 0) {
+                        grid.innerHTML = '<p style="text-align:center;color:#8E7F70;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Fan stories coming soon. Share yours!</p>';
+                        return;
+                    }
+
+                    grid.innerHTML = posts.map(function (post) {
+                        var content = truncate(post.content || '', 200);
+                        var name = (post.user && post.user.name) ? post.user.name : 'A Yeng Nation Fan';
+                        var createdAt = post.createdAt ? formatDate(post.createdAt) : '';
+
+                        return '<div class="story-card">'
+                            + '<p class="story-card__text">' + content + '</p>'
+                            + '<div class="story-card__author">' + name + '</div>'
+                            + (createdAt ? '<div class="story-card__location">' + createdAt + '</div>' : '')
+                            + '</div>';
+                    }).join('');
+
+                } catch (err) {
+                    console.warn('Featured stories load failed:', err.message);
+                    grid.innerHTML = '<p style="text-align:center;color:#8E7F70;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Could not load fan stories right now.</p>';
+                }
+            }
+
+            /* ── Initialize ── */
+            loadFeaturedMusic();
+            loadFeaturedStories();
+        })();
+
+        // Initialize Lucide icons
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music & Content Archive — Yeng Constantino Official</title>
+    <meta name="description" content="Browse Yeng Constantino's complete discography and content archive. Studio recordings, live performances, music videos, interviews, and behind the scenes — all in one place.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Music Page — Color System Overrides ── */
+        :root {
+            --primary: #5B2D8E;
+            --primary-light: #7E4FB5;
+            --primary-glow: rgba(91, 45, 142, 0.15);
+            --gold: #D4A547;
+            --gold-light: #E8C36B;
+            --burgundy: #8B2252;
+            --burgundy-light: #A83B6B;
+            --bg-off-white: #FBF7F2;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --font-accent: 'Caveat', cursive;
+            --gradient-primary: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
+            --gradient-cta: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            --shadow-warm-sm: 0 2px 8px rgba(212, 165, 71, 0.10);
+            --shadow-warm-md: 0 4px 20px rgba(212, 165, 71, 0.14);
+            --shadow-warm-lg: 0 8px 40px rgba(212, 165, 71, 0.18);
+            --shadow-warm-glow: 0 0 30px rgba(212, 165, 71, 0.25);
+        }
+
+        /* ── Music Hero ── */
+        .music-hero {
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1245 40%, #3d1a3d 70%, #2a1535 100%);
+            padding: 140px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(100px);
+        }
+
+        .music-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.06;
+            filter: blur(80px);
+        }
+
+        .music-hero__content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-hero__eyebrow {
+            font-family: var(--font-accent);
+            font-size: 1.4rem;
+            color: var(--gold);
+            display: block;
+            margin-bottom: var(--space-xs);
+        }
+
+        .music-hero__title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-sm);
+        }
+
+        .music-hero__subtitle {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 550px;
+            margin: 0 auto var(--space-2xl);
+        }
+
+        /* ── Search Bar ── */
+        .music-search {
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .music-search__input {
+            width: 100%;
+            padding: 18px 60px 18px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-full);
+            font-size: 1.05rem;
+            font-family: var(--font-body);
+            color: var(--gray-700);
+            background: var(--white);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-warm-sm);
+        }
+
+        .music-search__input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 6px var(--primary-glow), var(--shadow-warm-md);
+        }
+
+        .music-search__input::placeholder {
+            color: var(--gray-300);
+            font-style: italic;
+        }
+
+        .music-search__btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-cta);
+            border: none;
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+        }
+
+        .music-search__btn:hover {
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
+        }
+
+        /* ── Filter Section ── */
+        .filter-section {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-100);
+            padding: var(--space-lg) 0;
+            position: sticky;
+            top: 72px;
+            z-index: 100;
+        }
+
+        .filter-section__inner {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .filter-group__label {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            min-width: 70px;
+            flex-shrink: 0;
+        }
+
+        .filter-group__pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .filter-group__pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-tab {
+            padding: 8px 18px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--gray-500);
+            background: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            color: var(--primary);
+            background: var(--primary-glow);
+        }
+
+        .filter-tab--active {
+            color: var(--white);
+            background: var(--gradient-cta);
+            border-color: transparent;
+        }
+
+        .filter-tab--active:hover {
+            color: var(--white);
+            background: var(--gradient-cta);
+        }
+
+        .filter-group--sort {
+            margin-left: auto;
+        }
+
+        .form-select {
+            padding: 8px 32px 8px 14px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B5B7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            transition: all var(--transition-fast);
+        }
+
+        .form-select:hover {
+            border-color: var(--primary);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        /* ── Results Bar ── */
+        .results-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+            padding-top: var(--space-lg);
+        }
+
+        .results-bar__count {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+        }
+
+        .results-bar__count strong {
+            color: var(--gray-700);
+        }
+
+        .clear-filters {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color var(--transition-fast);
+            display: none;
+        }
+
+        .clear-filters:hover {
+            color: var(--primary);
+        }
+
+        .clear-filters--visible {
+            display: inline-block;
+        }
+
+        /* ── Music Content Section ── */
+        .music-content {
+            background: var(--bg-off-white);
+            padding: var(--space-2xl) 0 var(--space-4xl);
+            min-height: 60vh;
+        }
+
+        /* ── Music Card ── */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .music-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .music-card:hover {
+            box-shadow: var(--shadow-warm-md);
+            transform: translateY(-4px);
+        }
+
+        .music-card__thumb {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #2d1245 0%, #5B2D8E 50%, #8B2252 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .music-card__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .music-card__thumb-icon {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .music-card__badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 4px 12px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-radius: var(--radius-full);
+            color: var(--white);
+        }
+
+        .music-card__badge--purple { background: var(--primary); }
+        .music-card__badge--gold { background: var(--gold); color: #2d1245; }
+        .music-card__badge--burgundy { background: var(--burgundy); }
+        .music-card__badge--green { background: #22c55e; }
+
+        .music-card__era {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 10px;
+            font-family: var(--font-accent);
+            font-size: 0.85rem;
+            border-radius: var(--radius-full);
+            background: rgba(212, 165, 71, 0.9);
+            color: #2d1245;
+            font-weight: 700;
+        }
+
+        .music-card__body {
+            padding: var(--space-lg);
+        }
+
+        .music-card__title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: var(--space-xs);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .music-card__desc {
+            font-size: 0.85rem;
+            color: var(--gray-400);
+            margin-bottom: var(--space-sm);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .music-card__moods {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-sm);
+        }
+
+        .music-card__mood-tag {
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            background: var(--primary-glow);
+            color: var(--primary);
+        }
+
+        .music-card__meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            flex-wrap: wrap;
+        }
+
+        .music-card__meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .music-card__rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-fast);
+            margin-left: auto;
+        }
+
+        .music-card__rating:hover {
+            background: rgba(212, 165, 71, 0.12);
+        }
+
+        .music-card__rating-star {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .music-card__rating-num {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 0.85rem;
+        }
+
+        .music-card__rating-count {
+            color: var(--gray-400);
+            font-size: 0.7rem;
+        }
+
+        .music-card__rating small {
+            font-size: 0.65rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        /* ── No Results ── */
+        .no-results {
+            text-align: center;
+            padding: var(--space-4xl) var(--space-xl);
+            display: none;
+        }
+
+        .no-results__icon {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: var(--space-lg);
+        }
+
+        .no-results__title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            margin-bottom: var(--space-sm);
+        }
+
+        .no-results__text {
+            font-size: 0.95rem;
+            color: var(--gray-400);
+        }
+
+        /* ── Load More ── */
+        .load-more {
+            text-align: center;
+            padding: var(--space-2xl) 0;
+            display: none;
+        }
+
+        .load-more .btn {
+            padding: 14px 40px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .load-more .btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-warm-md);
+        }
+
+        /* ── Rating Modal ── */
+        .rating-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: var(--space-xl);
+        }
+
+        .rating-modal-overlay--active {
+            display: flex;
+        }
+
+        .rating-modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            max-width: 460px;
+            width: 100%;
+            padding: var(--space-2xl);
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            animation: ratingModalIn 0.3s ease;
+            text-align: center;
+        }
+
+        @keyframes ratingModalIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .rating-modal__close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gray-100);
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            transition: all var(--transition-fast);
+        }
+
+        .rating-modal__close:hover {
+            background: var(--gray-200);
+        }
+
+        .rating-modal__eyebrow {
+            font-family: var(--font-accent);
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: var(--space-xs);
+        }
+
+        .rating-modal__title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: var(--space-sm);
+            line-height: 1.3;
+        }
+
+        .rating-modal__hint {
+            font-size: 0.82rem;
+            color: var(--gray-400);
+            margin-bottom: var(--space-xl);
+            font-style: italic;
+        }
+
+        .rating-modal__grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .rating-btn {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rating-btn:hover {
+            transform: scale(1.12);
+            border-color: var(--gray-300);
+            color: var(--gray-600);
+        }
+
+        .rating-btn--selected {
+            transform: scale(1.12);
+            border-color: transparent;
+            color: var(--white);
+        }
+
+        .rating-btn--selected[data-value="1"],
+        .rating-btn--selected[data-value="2"],
+        .rating-btn--selected[data-value="3"] { background: var(--burgundy); }
+        .rating-btn--selected[data-value="4"],
+        .rating-btn--selected[data-value="5"],
+        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2d1245; }
+        .rating-btn--selected[data-value="7"],
+        .rating-btn--selected[data-value="8"] { background: #22c55e; }
+        .rating-btn--selected[data-value="9"],
+        .rating-btn--selected[data-value="10"] { background: var(--primary); }
+
+        .rating-modal__feedback {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            min-height: 1.4em;
+            margin-bottom: var(--space-md);
+        }
+
+        .rating-modal__avg {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            margin-bottom: var(--space-xl);
+        }
+
+        .rating-modal__submit {
+            padding: 12px 36px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: var(--radius-full);
+            border: none;
+            background: var(--gradient-cta);
+            color: var(--white);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .rating-modal__submit:hover {
+            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .rating-modal__submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .rating-modal__login {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        .rating-modal__login a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .rating-modal__login a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Pagination ── */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: var(--space-2xl) 0;
+        }
+
+        .pagination__btn {
+            min-width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+
+        .pagination__btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .pagination__btn--active {
+            background: var(--gradient-cta);
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .pagination__btn--active:hover {
+            color: var(--white);
+        }
+
+        .pagination__btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .music-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .music-hero {
+                padding: 120px 0 40px;
+            }
+            .music-hero__title {
+                font-size: 2rem;
+            }
+            .music-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-group__pills {
+                width: 100%;
+            }
+            .filter-section__inner {
+                gap: var(--space-sm);
+            }
+            .results-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+            .filter-group--sort {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .music-hero__title {
+                font-size: 1.6rem;
+            }
+            .music-search__input {
+                padding: 14px 52px 14px 18px;
+                font-size: 0.95rem;
+            }
+            .music-search__btn {
+                width: 40px;
+                height: 40px;
+            }
+            .filter-tab {
+                padding: 6px 14px;
+                font-size: 0.78rem;
+            }
+            .rating-modal {
+                padding: var(--space-xl);
+            }
+            .rating-modal__grid {
+                gap: 6px;
+            }
+            .rating-btn {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link nav__link--active">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero / Search ── -->
+    <section class="music-hero">
+        <div class="container music-hero__content">
+            <span class="music-hero__eyebrow">the complete collection</span>
+            <h1 class="music-hero__title">Music & Content Archive</h1>
+            <p class="music-hero__subtitle" data-config="music_subtitle">Explore Yeng's full discography, live performances, music videos, and exclusive content spanning over two decades of OPM excellence.</p>
+            <div class="music-search">
+                <input type="text" class="music-search__input" id="musicSearch" placeholder="Search songs, albums, performances..." aria-label="Search music content">
+                <button class="music-search__btn" aria-label="Search" id="searchBtn">&#x1F50D;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Filter Section ── -->
+    <div class="filter-section">
+        <div class="container">
+            <div class="filter-section__inner">
+                <!-- Era Filters -->
+                <div class="filter-group">
+                    <span class="filter-group__label">Era</span>
+                    <div class="filter-group__pills" id="eraFilters">
+                        <button class="filter-tab filter-tab--active" data-era="all">All</button>
+                        <button class="filter-tab" data-era="Philippine Idol Era">Philippine Idol Era</button>
+                        <button class="filter-tab" data-era="Early Career">Early Career</button>
+                        <button class="filter-tab" data-era="Mature Sound">Mature Sound</button>
+                        <button class="filter-tab" data-era="Recent Releases">Recent Releases</button>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="filter-group">
+                    <span class="filter-group__label">Category</span>
+                    <div class="filter-group__pills" id="categoryFilters">
+                        <button class="filter-tab filter-tab--active" data-category="all">All</button>
+                        <button class="filter-tab" data-category="Studio Recording">Studio Recording</button>
+                        <button class="filter-tab" data-category="Live Performance">Live Performance</button>
+                        <button class="filter-tab" data-category="Music Video">Music Video</button>
+                        <button class="filter-tab" data-category="Interview">Interview</button>
+                        <button class="filter-tab" data-category="Behind the Scenes">Behind the Scenes</button>
+                    </div>
+                </div>
+
+                <!-- Mood Filters -->
+                <div class="filter-group">
+                    <span class="filter-group__label">Mood</span>
+                    <div class="filter-group__pills" id="moodFilters">
+                        <button class="filter-tab" data-mood="Hugot">Hugot</button>
+                        <button class="filter-tab" data-mood="Sentimental">Sentimental</button>
+                        <button class="filter-tab" data-mood="Upbeat">Upbeat</button>
+                        <button class="filter-tab" data-mood="Romantic">Romantic</button>
+                        <button class="filter-tab" data-mood="Inspirational">Inspirational</button>
+                    </div>
+                </div>
+
+                <!-- Sort -->
+                <div class="filter-group filter-group--sort">
+                    <span class="filter-group__label">Sort</span>
+                    <select class="form-select" id="sortSelect">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="highest_rated">Highest Rated</option>
+                        <option value="foryou" id="forYouOption" disabled>For You (log in)</option>
+                    </select>
+                    <button class="clear-filters" id="clearFilters">Clear All Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Music Content Grid ── -->
+    <section class="music-content">
+        <div class="container">
+            <div class="results-bar">
+                <span class="results-bar__count" id="resultsCount">Loading content...</span>
+            </div>
+
+            <div class="music-grid" id="music-grid">
+                <!-- Cards rendered by JS -->
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults">
+                <div class="no-results__icon">&#x1F3B5;</div>
+                <h3 class="no-results__title">No content found</h3>
+                <p class="no-results__text">Try a different search term or clear your filters to browse the full archive.</p>
+            </div>
+
+            <!-- Load More -->
+            <div class="load-more" id="loadMore">
+                <button class="btn" id="loadMoreBtn">Load More Content</button>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </section>
+
+    <!-- ── Rating Modal ── -->
+    <div class="rating-modal-overlay" id="ratingModal">
+        <div class="rating-modal">
+            <button class="rating-modal__close" id="ratingModalClose">&times;</button>
+            <div class="rating-modal__eyebrow">Rate this content</div>
+            <h3 class="rating-modal__title" id="ratingModalTitle"></h3>
+            <p class="rating-modal__hint">This is about ranking your favorites, not judging quality!</p>
+            <div class="rating-modal__grid" id="ratingModalGrid"></div>
+            <div class="rating-modal__feedback" id="ratingModalFeedback">Tap a number to rate</div>
+            <div class="rating-modal__avg" id="ratingModalAvg"></div>
+            <button class="rating-modal__submit" id="ratingModalSubmit" disabled>Submit Rating</button>
+        </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Explore</h4>
+                    <ul class="footer__list">
+                        <li><a href="/music.html">Music Archive</a></li>
+                        <li><a href="/covers.html">Yeng Covers</a></li>
+                        <li><a href="/community.html">Community</a></li>
+                        <li><a href="/merch.html">Merch Store</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Fan Hub</h4>
+                    <ul class="footer__list">
+                        <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/profile.html">My Profile</a></li>
+                        <li><a href="/signup.html">Join Yeng Nation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer__heading">Connect</h4>
+                    <ul class="footer__list">
+                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:var(--gold);">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           MUSIC & CONTENT ARCHIVE — Yeng Constantino
+           Full discography, filtering, search, rating system
+           ═══════════════════════════════════════════════════════ */
+        (function () {
+            'use strict';
+
+            // ── State ──
+            let allContent = [];
+            let userRatings = {};
+            let currentFilters = { era: 'all', category: 'all', mood: '', search: '', sort: 'newest' };
+            let currentPage = 1;
+            let visibleCount = 12;
+            let totalResults = 0;
+
+            // ── Rating state ──
+            let ratingModalContentId = null;
+            let ratingModalSelected = 0;
+
+            // ── Category badge color map ──
+            const categoryBadgeMap = {
+                'Studio Recording': 'purple',
+                'Live Performance': 'burgundy',
+                'Music Video': 'gold',
+                'Interview': 'green',
+                'Behind the Scenes': 'purple'
+            };
+
+            // ── Rating feedback messages ──
+            function getRatingFeedback(val) {
+                if (val <= 2) return "Not your vibe? That's okay, there's so much more to explore!";
+                if (val <= 4) return "A decent pick. Every track has its moment.";
+                if (val <= 6) return "Solid! This one definitely has that Yeng magic.";
+                if (val <= 8) return "Great taste! A true Yeng Nation favorite.";
+                return "MASTERPIECE! Peak Yeng Constantino!";
+            }
+
+            // ── Map Airtable record ──
+            function mapContent(record) {
+                var f = record.fields || record;
+
+                var rawCat = f.category || f.Category || 'Studio Recording';
+                var rawEra = f.era || f.Era || '';
+                var rawMood = f.mood || f.Mood || [];
+                if (Array.isArray(rawCat)) rawCat = rawCat[0] || 'Studio Recording';
+                if (Array.isArray(rawEra)) rawEra = rawEra[0] || '';
+                if (!Array.isArray(rawMood)) rawMood = rawMood ? [rawMood] : [];
+
+                var thumbnailArr = f.thumbnail || f.Thumbnail || [];
+                var thumbnailUrl = '';
+                if (Array.isArray(thumbnailArr) && thumbnailArr.length > 0) {
+                    thumbnailUrl = thumbnailArr[0].url || thumbnailArr[0];
+                } else if (typeof thumbnailArr === 'string' && thumbnailArr) {
+                    thumbnailUrl = thumbnailArr;
+                }
+
+                return {
+                    id: record.id || f.id || Math.random().toString(36).substr(2, 9),
+                    title: f.title || f.Title || 'Untitled',
+                    description: f.description || f.Description || '',
+                    category: String(rawCat),
+                    era: String(rawEra),
+                    mood: rawMood.map(function(m) { return String(m); }),
+                    year: f.year || f.Year || '',
+                    duration: f.duration || f.Duration || '',
+                    thumbnail: thumbnailUrl,
+                    avgRating: f.avgRating || f.AvgRating || 0,
+                    ratingCount: f.ratingCount || f.RatingCount || 0,
+                    views: f.views || f.Views || 0,
+                    youtubeUrl: f.youtubeUrl || f.YoutubeUrl || f.YoutubeURL || '',
+                    spotifyUrl: f.spotifyUrl || f.SpotifyUrl || ''
+                };
+            }
+
+            // ── Build card HTML ──
+            function buildCard(item) {
+                var badgeColor = categoryBadgeMap[item.category] || 'purple';
+                var userRating = userRatings[item.id];
+                var thumbContent = item.thumbnail
+                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    : '<div class="music-card__thumb-icon">&#9835;</div>';
+
+                var moodHtml = item.mood.filter(Boolean).map(function(m) {
+                    return '<span class="music-card__mood-tag">' + m + '</span>';
+                }).join('');
+
+                var ratingDisplay = item.ratingCount > 0
+                    ? '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-num">' + item.avgRating.toFixed(1) + '</span> <span class="music-card__rating-count">(' + item.ratingCount + ')</span>'
+                    : '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-count">Rate</span>';
+
+                var userRatingHtml = userRating
+                    ? '<small>You: ' + userRating + '</small>'
+                    : '';
+
+                return '<div class="music-card" data-id="' + item.id + '">' +
+                    '<div class="music-card__thumb">' +
+                        thumbContent +
+                        '<span class="music-card__badge music-card__badge--' + badgeColor + '">' + item.category + '</span>' +
+                        (item.era ? '<span class="music-card__era">' + item.era + '</span>' : '') +
+                    '</div>' +
+                    '<div class="music-card__body">' +
+                        '<h3 class="music-card__title">' + item.title + '</h3>' +
+                        (item.description ? '<p class="music-card__desc">' + truncate(item.description, 80) + '</p>' : '') +
+                        (moodHtml ? '<div class="music-card__moods">' + moodHtml + '</div>' : '') +
+                        '<div class="music-card__meta">' +
+                            (item.year ? '<span>' + item.year + '</span>' : '') +
+                            (item.duration ? '<span>' + item.duration + '</span>' : '') +
+                            '<span class="music-card__rating" onclick="openRatingModal(\'' + item.id + '\', \'' + item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">' +
+                                ratingDisplay + userRatingHtml +
+                            '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }
+
+            // ── Load content from API ──
+            async function loadContent() {
+                createSkeletonCards(8, '#music-grid');
+                try {
+                    var params = new URLSearchParams();
+                    if (currentFilters.category && currentFilters.category !== 'all') params.set('category', currentFilters.category);
+                    if (currentFilters.era && currentFilters.era !== 'all') params.set('era', currentFilters.era);
+                    if (currentFilters.mood) params.set('mood', currentFilters.mood);
+                    if (currentFilters.search) params.set('search', currentFilters.search);
+                    params.set('sort', currentFilters.sort);
+                    params.set('page', currentPage);
+                    params.set('limit', 12);
+
+                    var data = await api('get-music-content?' + params);
+                    allContent = (data.content || data.vlogs || []).map(mapContent);
+                    totalResults = data.pagination ? data.pagination.total : allContent.length;
+                    renderContent(allContent);
+                    renderPagination(data.pagination);
+                } catch (err) {
+                    // If API fails, show empty state
+                    var grid = document.getElementById('music-grid');
+                    if (grid) grid.innerHTML = '';
+                    document.getElementById('noResults').style.display = 'block';
+                    document.getElementById('resultsCount').innerHTML = 'Showing <strong>0</strong> results';
+                    console.warn('[Music] Failed to load content:', err);
+                }
+            }
+
+            // ── Load user ratings ──
+            async function loadUserRatings() {
+                try {
+                    var data = await api('get-user-ratings');
+                    if (data.ratings) {
+                        data.ratings.forEach(function(r) {
+                            userRatings[r.contentId || r.vlogId] = r.rating;
+                        });
+                    }
+                    // Enable "For You" sort
+                    var forYouOpt = document.getElementById('forYouOption');
+                    if (forYouOpt && Object.keys(userRatings).length >= 3) {
+                        forYouOpt.disabled = false;
+                        forYouOpt.textContent = 'For You';
+                    }
+                } catch (err) {
+                    console.warn('[Music] Failed to load ratings:', err);
+                }
+            }
+
+            // ── Render content cards ──
+            function renderContent(items) {
+                var grid = document.getElementById('music-grid');
+                var noResults = document.getElementById('noResults');
+                var resultsCount = document.getElementById('resultsCount');
+
+                if (!items.length) {
+                    grid.innerHTML = '';
+                    noResults.style.display = 'block';
+                    resultsCount.innerHTML = 'Showing <strong>0</strong> results';
+                    return;
+                }
+
+                noResults.style.display = 'none';
+                grid.innerHTML = items.map(buildCard).join('');
+                resultsCount.innerHTML = 'Showing <strong>' + items.length + '</strong>' +
+                    (totalResults > items.length ? ' of <strong>' + totalResults + '</strong>' : '') + ' results';
+
+                // Show/hide load more
+                var loadMore = document.getElementById('loadMore');
+                if (loadMore) {
+                    loadMore.style.display = items.length < totalResults ? 'block' : 'none';
+                }
+
+                // Update clear filters visibility
+                updateClearFiltersVisibility();
+            }
+
+            // ── For You sort (recommendation based on user ratings) ──
+            function sortForYou(items) {
+                if (Object.keys(userRatings).length === 0) return items;
+
+                var categoryPrefs = {};
+                var moodPrefs = {};
+
+                // Build preference profiles from ratings
+                Object.keys(userRatings).forEach(function(contentId) {
+                    var content = allContent.find(function(c) { return c.id === contentId; });
+                    if (!content) return;
+                    var norm = (userRatings[contentId] - 5.5) / 4.5;
+
+                    if (!categoryPrefs[content.category]) categoryPrefs[content.category] = 0;
+                    categoryPrefs[content.category] += norm;
+
+                    content.mood.forEach(function(m) {
+                        if (!moodPrefs[m]) moodPrefs[m] = 0;
+                        moodPrefs[m] += norm;
+                    });
+                });
+
+                // Score each item
+                items.forEach(function(item) {
+                    var score = 0;
+                    score += (categoryPrefs[item.category] || 0) * 3;
+                    item.mood.forEach(function(m) {
+                        score += (moodPrefs[m] || 0) * 2;
+                    });
+                    score += ((item.avgRating || 0) / 10) * 1.5;
+                    // Deprioritize already-rated items
+                    if (userRatings[item.id]) score -= 5;
+                    // Recency bonus
+                    if (item.year) {
+                        var yearsAgo = new Date().getFullYear() - parseInt(item.year);
+                        score += Math.max(0, 1 - yearsAgo / 20);
+                    }
+                    item._forYouScore = score;
+                });
+
+                return items.slice().sort(function(a, b) {
+                    return (b._forYouScore || 0) - (a._forYouScore || 0);
+                });
+            }
+
+            // ── Setup filter event listeners ──
+            function setupFilters() {
+                // Era filter tabs
+                document.getElementById('eraFilters').addEventListener('click', function(e) {
+                    var tab = e.target.closest('.filter-tab');
+                    if (!tab) return;
+                    currentFilters.era = tab.dataset.era;
+                    currentPage = 1;
+                    this.querySelectorAll('.filter-tab').forEach(function(t) {
+                        t.classList.toggle('filter-tab--active', t.dataset.era === currentFilters.era);
+                    });
+                    loadContent();
+                });
+
+                // Category filter tabs
+                document.getElementById('categoryFilters').addEventListener('click', function(e) {
+                    var tab = e.target.closest('.filter-tab');
+                    if (!tab) return;
+                    currentFilters.category = tab.dataset.category;
+                    currentPage = 1;
+                    this.querySelectorAll('.filter-tab').forEach(function(t) {
+                        t.classList.toggle('filter-tab--active', t.dataset.category === currentFilters.category);
+                    });
+                    loadContent();
+                });
+
+                // Mood filter tabs (toggle, single-select)
+                document.getElementById('moodFilters').addEventListener('click', function(e) {
+                    var tab = e.target.closest('.filter-tab');
+                    if (!tab) return;
+                    var mood = tab.dataset.mood;
+
+                    if (currentFilters.mood === mood) {
+                        // Deselect
+                        currentFilters.mood = '';
+                        tab.classList.remove('filter-tab--active');
+                    } else {
+                        // Select this mood, deselect others
+                        currentFilters.mood = mood;
+                        this.querySelectorAll('.filter-tab').forEach(function(t) {
+                            t.classList.toggle('filter-tab--active', t.dataset.mood === mood);
+                        });
+                    }
+                    currentPage = 1;
+                    loadContent();
+                });
+
+                // Sort dropdown
+                document.getElementById('sortSelect').addEventListener('change', function() {
+                    currentFilters.sort = this.value;
+                    currentPage = 1;
+                    if (this.value === 'foryou') {
+                        // Client-side sort
+                        var sorted = sortForYou(allContent);
+                        renderContent(sorted);
+                    } else {
+                        loadContent();
+                    }
+                });
+
+                // Clear all filters
+                document.getElementById('clearFilters').addEventListener('click', function() {
+                    currentFilters = { era: 'all', category: 'all', mood: '', search: '', sort: 'newest' };
+                    currentPage = 1;
+
+                    document.getElementById('musicSearch').value = '';
+                    document.getElementById('sortSelect').value = 'newest';
+
+                    document.querySelectorAll('#eraFilters .filter-tab').forEach(function(t) {
+                        t.classList.toggle('filter-tab--active', t.dataset.era === 'all');
+                    });
+                    document.querySelectorAll('#categoryFilters .filter-tab').forEach(function(t) {
+                        t.classList.toggle('filter-tab--active', t.dataset.category === 'all');
+                    });
+                    document.querySelectorAll('#moodFilters .filter-tab').forEach(function(t) {
+                        t.classList.remove('filter-tab--active');
+                    });
+
+                    loadContent();
+                });
+            }
+
+            // ── Setup search ──
+            function setupSearch() {
+                var searchInput = document.getElementById('musicSearch');
+                var searchBtn = document.getElementById('searchBtn');
+
+                function doSearch() {
+                    currentFilters.search = searchInput.value.trim();
+                    currentPage = 1;
+                    loadContent();
+                }
+
+                searchInput.addEventListener('input', debounce(doSearch, 400));
+                searchBtn.addEventListener('click', doSearch);
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        doSearch();
+                    }
+                });
+            }
+
+            // ── Update clear filters button visibility ──
+            function updateClearFiltersVisibility() {
+                var hasFilters = currentFilters.era !== 'all' ||
+                    currentFilters.category !== 'all' ||
+                    currentFilters.mood !== '' ||
+                    currentFilters.search !== '' ||
+                    currentFilters.sort !== 'newest';
+                var clearBtn = document.getElementById('clearFilters');
+                if (clearBtn) {
+                    clearBtn.classList.toggle('clear-filters--visible', hasFilters);
+                }
+            }
+
+            // ── Rating Modal ──
+            window.openRatingModal = function(contentId, title) {
+                var isLoggedIn = typeof Auth !== 'undefined' && Auth.isLoggedIn();
+                var modal = document.getElementById('ratingModal');
+                var titleEl = document.getElementById('ratingModalTitle');
+                var gridEl = document.getElementById('ratingModalGrid');
+                var feedbackEl = document.getElementById('ratingModalFeedback');
+                var avgEl = document.getElementById('ratingModalAvg');
+                var submitBtn = document.getElementById('ratingModalSubmit');
+
+                ratingModalContentId = contentId;
+                ratingModalSelected = userRatings[contentId] || 0;
+                titleEl.textContent = title;
+
+                if (!isLoggedIn) {
+                    gridEl.innerHTML = '';
+                    feedbackEl.innerHTML = '';
+                    avgEl.innerHTML = '<a href="/login.html" style="color:var(--primary);font-weight:600;">Log in</a> to rate content and get personalized recommendations!';
+                    submitBtn.style.display = 'none';
+                } else {
+                    var buttons = '';
+                    for (var i = 1; i <= 10; i++) {
+                        var selectedClass = (ratingModalSelected === i) ? ' rating-btn--selected' : '';
+                        buttons += '<button class="rating-btn' + selectedClass + '" data-value="' + i + '">' + i + '</button>';
+                    }
+                    gridEl.innerHTML = buttons;
+                    feedbackEl.textContent = ratingModalSelected ? getRatingFeedback(ratingModalSelected) : 'Tap a number to rate';
+                    submitBtn.style.display = '';
+                    submitBtn.disabled = !ratingModalSelected;
+
+                    // Find the content item to show avg
+                    var item = allContent.find(function(c) { return c.id === contentId; });
+                    if (item && item.ratingCount > 0) {
+                        avgEl.textContent = item.avgRating.toFixed(1) + '/10 from ' + item.ratingCount + ' fans';
+                    } else {
+                        avgEl.textContent = 'Be the first to rate this!';
+                    }
+
+                    // Attach click listeners to rating buttons
+                    gridEl.querySelectorAll('.rating-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            ratingModalSelected = parseInt(this.dataset.value);
+                            gridEl.querySelectorAll('.rating-btn').forEach(function(b) {
+                                b.classList.toggle('rating-btn--selected', parseInt(b.dataset.value) === ratingModalSelected);
+                            });
+                            feedbackEl.textContent = getRatingFeedback(ratingModalSelected);
+                            submitBtn.disabled = false;
+                        });
+                    });
+                }
+
+                modal.classList.add('rating-modal-overlay--active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            function closeRatingModal() {
+                var modal = document.getElementById('ratingModal');
+                modal.classList.remove('rating-modal-overlay--active');
+                document.body.style.overflow = '';
+                ratingModalContentId = null;
+                ratingModalSelected = 0;
+            }
+
+            // ── Submit rating ──
+            async function submitRating() {
+                if (!ratingModalContentId || !ratingModalSelected) return;
+                if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) return;
+
+                var submitBtn = document.getElementById('ratingModalSubmit');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Saving...';
+
+                // Update local state immediately
+                userRatings[ratingModalContentId] = ratingModalSelected;
+
+                try {
+                    var data = await api('rate-vlog', {
+                        method: 'POST',
+                        body: {
+                            vlogId: ratingModalContentId,
+                            rating: ratingModalSelected
+                        }
+                    });
+
+                    // Update content data with new average
+                    var item = allContent.find(function(c) { return c.id === ratingModalContentId; });
+                    if (item && data.avgRating !== undefined) {
+                        item.avgRating = data.avgRating;
+                        item.ratingCount = data.ratingCount;
+                    }
+
+                    showToast('Rating saved! Salamat!', 'success');
+                    closeRatingModal();
+                    renderContent(allContent);
+
+                    // Check if For You can now be enabled
+                    var forYouOpt = document.getElementById('forYouOption');
+                    if (forYouOpt && Object.keys(userRatings).length >= 3) {
+                        forYouOpt.disabled = false;
+                        forYouOpt.textContent = 'For You';
+                    }
+                } catch (err) {
+                    showToast('Failed to save rating', 'error');
+                    console.warn('[Music] Rating save failed:', err);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Rating';
+                }
+            }
+
+            // ── Render pagination ──
+            function renderPagination(pagination) {
+                var container = document.getElementById('pagination');
+                if (!container || !pagination || !pagination.totalPages || pagination.totalPages <= 1) {
+                    if (container) container.innerHTML = '';
+                    return;
+                }
+
+                var html = '';
+                var current = pagination.page || currentPage;
+                var total = pagination.totalPages;
+
+                // Previous button
+                html += '<button class="pagination__btn" data-page="' + (current - 1) + '"' +
+                    (current <= 1 ? ' disabled' : '') + '>&laquo;</button>';
+
+                // Page numbers
+                var startPage = Math.max(1, current - 2);
+                var endPage = Math.min(total, current + 2);
+
+                if (startPage > 1) {
+                    html += '<button class="pagination__btn" data-page="1">1</button>';
+                    if (startPage > 2) html += '<span style="color:var(--gray-400);padding:0 4px;">...</span>';
+                }
+
+                for (var i = startPage; i <= endPage; i++) {
+                    var activeClass = i === current ? ' pagination__btn--active' : '';
+                    html += '<button class="pagination__btn' + activeClass + '" data-page="' + i + '">' + i + '</button>';
+                }
+
+                if (endPage < total) {
+                    if (endPage < total - 1) html += '<span style="color:var(--gray-400);padding:0 4px;">...</span>';
+                    html += '<button class="pagination__btn" data-page="' + total + '">' + total + '</button>';
+                }
+
+                // Next button
+                html += '<button class="pagination__btn" data-page="' + (current + 1) + '"' +
+                    (current >= total ? ' disabled' : '') + '>&raquo;</button>';
+
+                container.innerHTML = html;
+
+                // Attach click listeners
+                container.querySelectorAll('.pagination__btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        if (this.disabled) return;
+                        currentPage = parseInt(this.dataset.page);
+                        loadContent();
+                        window.scrollTo({ top: document.querySelector('.music-content').offsetTop - 100, behavior: 'smooth' });
+                    });
+                });
+            }
+
+            // ── Event listeners for modal ──
+            document.getElementById('ratingModalClose').addEventListener('click', closeRatingModal);
+            document.getElementById('ratingModal').addEventListener('click', function(e) {
+                if (e.target === this) closeRatingModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeRatingModal();
+            });
+            document.getElementById('ratingModalSubmit').addEventListener('click', submitRating);
+
+            // ── Load More button ──
+            document.getElementById('loadMoreBtn').addEventListener('click', function() {
+                currentPage++;
+                loadContent();
+            });
+
+            // ── Init ──
+            document.addEventListener('DOMContentLoaded', function() {
+                setupFilters();
+                setupSearch();
+                loadContent();
+
+                if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
+                    loadUserRatings();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>

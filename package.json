@@ -1,0 +1,10 @@
+{
+  "name": "yengconstantino-official",
+  "version": "1.0.0",
+  "description": "Yeng Constantino Official Fan Hub & Music Platform",
+  "dependencies": {
+    "airtable": "^0.12.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

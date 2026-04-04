@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeng Covers — Yeng Constantino Official</title>
+    <meta name="description" content="Share your cover of a Yeng Constantino song with the world. Submit your version, get upvotes, and earn a spot in the Hall of Fame.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Yeng Covers Page — Custom Properties ── */
+        :root {
+            --yeng-purple: #5B2D8E;
+            --yeng-gold: #D4A547;
+            --yeng-burgundy: #8B2252;
+            --yeng-offwhite: #FBF7F2;
+            --yeng-font-display: 'Playfair Display', serif;
+            --yeng-font-body: 'Inter', sans-serif;
+            --yeng-font-accent: 'Caveat', cursive;
+            --yeng-gradient-primary: linear-gradient(135deg, #5B2D8E, #8B2252, #D4A547);
+            --yeng-gradient-cta: linear-gradient(135deg, #5B2D8E, #7E4FB5);
+            --yeng-gradient-warm: linear-gradient(135deg, #D4A547, #8B2252, #5B2D8E);
+            --yeng-gradient-dark: linear-gradient(135deg, #231A12, #352A20);
+        }
+
+        /* ── Hero ── */
+        .covers-hero {
+            background: var(--yeng-gradient-dark);
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .covers-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .covers-hero::after {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: var(--yeng-purple);
+            border-radius: 50%;
+            opacity: 0.12;
+            filter: blur(100px);
+        }
+
+        .covers-hero__content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .covers-hero__title {
+            font-family: var(--yeng-font-display);
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--yeng-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-sm);
+        }
+
+        .covers-hero__subtitle {
+            font-family: var(--yeng-font-body);
+            font-size: 1.15rem;
+            color: #A89B8C;
+            max-width: 550px;
+            margin: 0 auto var(--space-lg);
+        }
+
+        .covers-hero__tagline {
+            font-family: var(--yeng-font-accent);
+            font-size: 1.5rem;
+            color: var(--yeng-gold);
+        }
+
+        /* ── Hall of Fame Section ── */
+        .hall-of-fame {
+            background: var(--yeng-offwhite);
+            padding: var(--space-4xl) 0;
+            position: relative;
+        }
+
+        .hall-of-fame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--yeng-gradient-primary);
+        }
+
+        .hall-of-fame__header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .hall-of-fame__icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-sm);
+            display: block;
+        }
+
+        .hall-of-fame__title {
+            font-family: var(--yeng-font-display);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #352A20;
+            margin-bottom: var(--space-sm);
+        }
+
+        .hall-of-fame__subtitle {
+            font-family: var(--yeng-font-body);
+            font-size: 1rem;
+            color: #8E7F70;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .hall-of-fame__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .hall-of-fame__card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px solid rgba(212, 165, 71, 0.3);
+            box-shadow: 0 4px 24px rgba(212, 165, 71, 0.1);
+            transition: all var(--transition-base);
+            position: relative;
+        }
+
+        .hall-of-fame__card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(212, 165, 71, 0.2);
+            border-color: var(--yeng-gold);
+        }
+
+        .hall-of-fame__card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #D4A547, #C68B1E);
+            color: #FFFFFF;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-family: var(--yeng-font-display);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 2;
+        }
+
+        .hall-of-fame__card-video {
+            position: relative;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+        }
+
+        .hall-of-fame__card-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hall-of-fame__card-play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(35, 26, 18, 0.4);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            font-size: 2.5rem;
+            color: var(--yeng-gold);
+            text-decoration: none;
+        }
+
+        .hall-of-fame__card:hover .hall-of-fame__card-play {
+            opacity: 1;
+        }
+
+        .hall-of-fame__card-body {
+            padding: var(--space-lg);
+        }
+
+        .hall-of-fame__card-song {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(91, 45, 142, 0.1);
+            color: var(--yeng-purple);
+            border-radius: var(--radius-full);
+            font-family: var(--yeng-font-display);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .hall-of-fame__card-title {
+            font-family: var(--yeng-font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #352A20;
+            margin-bottom: 4px;
+        }
+
+        .hall-of-fame__card-performer {
+            font-family: var(--yeng-font-body);
+            font-size: 0.85rem;
+            color: #8E7F70;
+            margin-bottom: var(--space-sm);
+        }
+
+        .hall-of-fame__card-votes {
+            font-family: var(--yeng-font-body);
+            font-size: 0.85rem;
+            color: var(--yeng-gold);
+            font-weight: 600;
+        }
+
+        .hall-of-fame__empty {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: #8E7F70;
+            font-family: var(--yeng-font-body);
+        }
+
+        /* ── Submit Panel ── */
+        .submit-section {
+            background: #FFFFFF;
+            padding: var(--space-3xl) 0;
+            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+        }
+
+        .submit-panel {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--yeng-offwhite);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 2px solid rgba(91, 45, 142, 0.1);
+        }
+
+        .submit-panel__trigger {
+            width: 100%;
+            padding: var(--space-xl);
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-family: var(--yeng-font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--yeng-purple);
+            transition: background var(--transition-fast);
+        }
+
+        .submit-panel__trigger:hover {
+            background: rgba(91, 45, 142, 0.05);
+        }
+
+        .submit-panel__trigger-icon {
+            font-size: 1.5rem;
+            transition: transform var(--transition-base);
+        }
+
+        .submit-panel--open .submit-panel__trigger-icon {
+            transform: rotate(45deg);
+        }
+
+        .submit-panel__form {
+            display: none;
+            padding: 0 var(--space-xl) var(--space-xl);
+        }
+
+        .submit-panel--open .submit-panel__form {
+            display: block;
+            animation: tabFadeIn 300ms ease;
+        }
+
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .submit-panel__note {
+            font-family: var(--yeng-font-body);
+            font-size: 0.8rem;
+            color: #8E7F70;
+            margin-top: var(--space-md);
+            text-align: center;
+        }
+
+        .submit-panel__guest {
+            padding: var(--space-2xl);
+            text-align: center;
+        }
+
+        .submit-panel__guest p {
+            font-family: var(--yeng-font-body);
+            color: #8E7F70;
+            margin-bottom: var(--space-md);
+        }
+
+        /* Form override colors for Yeng theme */
+        .covers-form .form-label {
+            font-family: var(--yeng-font-display);
+            color: #352A20;
+        }
+
+        .covers-form .form-input:focus,
+        .covers-form .form-select:focus {
+            border-color: var(--yeng-purple);
+            box-shadow: 0 0 0 4px rgba(91, 45, 142, 0.12);
+        }
+
+        .covers-form .btn--submit {
+            background: var(--yeng-gradient-cta);
+            color: #FFFFFF;
+            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+        }
+
+        .covers-form .btn--submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(91, 45, 142, 0.4);
+        }
+
+        /* ── Status Pipeline ── */
+        .status-pipeline {
+            background: var(--yeng-offwhite);
+            padding: var(--space-lg) 0;
+            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+        }
+
+        .status-pipeline__inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .status-pipeline__step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--yeng-font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8E7F70;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-dot--submitted { background: #8E7F70; }
+        .status-dot--review { background: var(--yeng-purple); }
+        .status-dot--featured { background: var(--yeng-burgundy); }
+        .status-dot--shared { background: var(--yeng-gold); }
+        .status-dot--hof { background: linear-gradient(135deg, #D4A547, #C68B1E); }
+
+        .status-pipeline__arrow {
+            color: #C4B8AA;
+            font-size: 0.7rem;
+        }
+
+        /* ── Filter & Sort Row ── */
+        .covers-filters {
+            background: #FFFFFF;
+            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+            padding: var(--space-md) 0;
+            position: sticky;
+            top: 72px;
+            z-index: 100;
+        }
+
+        .covers-filters__inner {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .covers-filters__group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .covers-filters__group::-webkit-scrollbar {
+            display: none;
+        }
+
+        .covers-filters__label {
+            font-family: var(--yeng-font-display);
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #8E7F70;
+            white-space: nowrap;
+        }
+
+        .covers-filters__select {
+            padding: 8px 32px 8px 12px;
+            border: 2px solid rgba(91, 45, 142, 0.15);
+            border-radius: var(--radius-full);
+            font-family: var(--yeng-font-body);
+            font-size: 0.85rem;
+            color: #352A20;
+            background: #FFFFFF;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235B2D8E' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        .covers-filters__select:focus {
+            outline: none;
+            border-color: var(--yeng-purple);
+        }
+
+        .style-tab {
+            padding: 6px 16px;
+            font-family: var(--yeng-font-body);
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #8E7F70;
+            background: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .style-tab:hover {
+            color: var(--yeng-purple);
+            background: rgba(91, 45, 142, 0.06);
+        }
+
+        .style-tab--active {
+            color: #FFFFFF;
+            background: var(--yeng-gradient-cta);
+            border-color: transparent;
+        }
+
+        .style-tab--active:hover {
+            color: #FFFFFF;
+            background: var(--yeng-gradient-cta);
+        }
+
+        .covers-filters__sort {
+            margin-left: auto;
+        }
+
+        /* ── Covers Grid ── */
+        .covers-section {
+            background: var(--yeng-offwhite);
+            padding: var(--space-3xl) 0 var(--space-4xl);
+        }
+
+        .covers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .cover-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            transition: all var(--transition-base);
+            position: relative;
+        }
+
+        .cover-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(91, 45, 142, 0.12);
+        }
+
+        .cover-card__video {
+            position: relative;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            background: #231A12;
+        }
+
+        .cover-card__video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cover-card__play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(35, 26, 18, 0.4);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            font-size: 2.5rem;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .cover-card:hover .cover-card__play {
+            opacity: 1;
+        }
+
+        .cover-card__body {
+            padding: var(--space-lg);
+        }
+
+        .cover-card__badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-sm);
+        }
+
+        .cover-card__song {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(91, 45, 142, 0.1);
+            color: var(--yeng-purple);
+            border-radius: var(--radius-full);
+            font-family: var(--yeng-font-display);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .cover-card__status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            font-family: var(--yeng-font-body);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .cover-card__title {
+            font-family: var(--yeng-font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #352A20;
+            margin-bottom: 4px;
+        }
+
+        .cover-card__meta-text {
+            font-family: var(--yeng-font-body);
+            font-size: 0.85rem;
+            color: #8E7F70;
+            margin-bottom: var(--space-sm);
+        }
+
+        .cover-card__note {
+            font-family: var(--yeng-font-accent);
+            font-size: 1rem;
+            color: #5A4D3E;
+            line-height: 1.4;
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(212, 165, 71, 0.06);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--yeng-gold);
+        }
+
+        .cover-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid rgba(91, 45, 142, 0.06);
+            font-size: 0.8rem;
+            color: #A89B8C;
+        }
+
+        .cover-card__upvote {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 14px;
+            border: 2px solid rgba(91, 45, 142, 0.15);
+            border-radius: var(--radius-full);
+            background: none;
+            color: #8E7F70;
+            font-family: var(--yeng-font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .cover-card__upvote:hover {
+            border-color: var(--yeng-burgundy);
+            color: var(--yeng-burgundy);
+            background: rgba(139, 34, 82, 0.06);
+        }
+
+        .cover-card__upvote--voted {
+            border-color: var(--yeng-burgundy);
+            background: rgba(139, 34, 82, 0.1);
+            color: var(--yeng-burgundy);
+        }
+
+        /* ── Empty State ── */
+        .covers-empty {
+            text-align: center;
+            padding: var(--space-4xl) var(--space-xl);
+            grid-column: 1 / -1;
+        }
+
+        .covers-empty__icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .covers-empty__title {
+            font-family: var(--yeng-font-display);
+            font-size: 1.3rem;
+            color: #5A4D3E;
+            margin-bottom: var(--space-sm);
+        }
+
+        .covers-empty__text {
+            font-family: var(--yeng-font-body);
+            color: #8E7F70;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* ── Yeng Nav/Footer Overrides ── */
+        .nav {
+            background: rgba(251, 247, 242, 0.97);
+            border-bottom: 2px solid rgba(91, 45, 142, 0.08);
+        }
+
+        .nav__logo {
+            font-family: var(--yeng-font-display);
+            background: var(--yeng-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav__logo span {
+            font-family: var(--yeng-font-accent);
+            -webkit-text-fill-color: #A89B8C;
+        }
+
+        .nav__link {
+            font-family: var(--yeng-font-body);
+            color: #5A4D3E;
+        }
+
+        .nav__link:hover {
+            color: var(--yeng-purple);
+            background: rgba(91, 45, 142, 0.06);
+        }
+
+        .nav__cta {
+            background: var(--yeng-gradient-cta) !important;
+            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.3) !important;
+        }
+
+        .nav__cta:hover {
+            box-shadow: 0 6px 25px rgba(91, 45, 142, 0.4) !important;
+        }
+
+        .footer {
+            background: var(--yeng-gradient-dark);
+        }
+
+        .footer__brand {
+            font-family: var(--yeng-font-display);
+        }
+
+        .footer__brand-sub {
+            font-family: var(--yeng-font-accent);
+        }
+
+        .footer__heading {
+            font-family: var(--yeng-font-display);
+        }
+
+        .footer__social:hover {
+            background: var(--yeng-purple);
+        }
+
+        .footer__list a:hover {
+            color: var(--yeng-gold);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .covers-hero {
+                padding: 120px 0 60px;
+            }
+
+            .covers-hero__title {
+                font-size: 2.4rem;
+            }
+
+            .hall-of-fame__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .covers-filters__inner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .covers-filters__sort {
+                margin-left: 0;
+            }
+
+            .covers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-pipeline__inner {
+                gap: 4px;
+            }
+
+            .status-pipeline__step {
+                font-size: 0.65rem;
+            }
+
+            .submit-panel__trigger {
+                font-size: 1rem;
+                padding: var(--space-lg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .covers-hero__title {
+                font-size: 2rem;
+            }
+
+            .covers-hero__tagline {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link nav__link--active">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="covers-hero">
+        <div class="container covers-hero__content">
+            <h1 class="covers-hero__title">Yeng Covers</h1>
+            <p class="covers-hero__subtitle">Share your cover of a Yeng song with the world</p>
+            <p class="covers-hero__tagline">Every voice matters. Ipakita ang talent mo!</p>
+        </div>
+    </section>
+
+    <!-- ── Hall of Fame ── -->
+    <section class="hall-of-fame">
+        <div class="container">
+            <div class="hall-of-fame__header">
+                <span class="hall-of-fame__icon">&#127942;</span>
+                <h2 class="hall-of-fame__title">Hall of Fame</h2>
+                <p class="hall-of-fame__subtitle">The most celebrated fan covers &mdash; permanently recognized</p>
+            </div>
+            <div class="hall-of-fame__grid" id="hall-of-fame-grid">
+                <div class="hall-of-fame__empty">Loading Hall of Fame...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Submit Cover ── -->
+    <section class="submit-section">
+        <div class="container">
+            <div class="submit-panel" id="submit-panel">
+                <!-- Guest View -->
+                <div id="submit-guest" style="display:none;">
+                    <div class="submit-panel__guest">
+                        <p>&#127908; Want to share your cover with Yeng Nation?</p>
+                        <a href="/login.html?redirect=/covers.html" class="btn btn--sm" style="background:var(--yeng-gradient-cta);color:#fff;">Log in to submit your cover</a>
+                    </div>
+                </div>
+                <!-- Auth View -->
+                <div id="submit-auth" style="display:none;">
+                    <button class="submit-panel__trigger" onclick="toggleSubmitPanel()" aria-expanded="false">
+                        <span>&#127908; Submit Your Cover</span>
+                        <span class="submit-panel__trigger-icon">+</span>
+                    </button>
+                    <div class="submit-panel__form">
+                        <form class="covers-form" id="cover-form" onsubmit="submitCover(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="cover-url">Video URL (YouTube or TikTok) *</label>
+                                <input type="url" id="cover-url" class="form-input" placeholder="https://youtube.com/watch?v=... or https://tiktok.com/..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cover-song">Song Title *</label>
+                                <input type="text" id="cover-song" class="form-input" placeholder="e.g., Hawak Kamay, Ikaw, Chinito" list="song-suggestions" required>
+                                <datalist id="song-suggestions">
+                                    <option value="Hawak Kamay">
+                                    <option value="Ikaw">
+                                    <option value="Chinito">
+                                    <option value="Salamat">
+                                    <option value="Pag-ibig">
+                                    <option value="Himig ng Pag-ibig">
+                                    <option value="Alaala">
+                                    <option value="Kahit Na">
+                                    <option value="Sana Maulit Muli">
+                                    <option value="Paasa T.A.N.G.A.">
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cover-title">Cover Title *</label>
+                                <input type="text" id="cover-title" class="form-input" placeholder="What do you call your version?" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cover-style">Arrangement Style</label>
+                                <select id="cover-style" class="form-select">
+                                    <option value="">Select a style...</option>
+                                    <option value="Acoustic">Acoustic</option>
+                                    <option value="Full Band">Full Band</option>
+                                    <option value="Acapella">Acapella</option>
+                                    <option value="OPM Medley">OPM Medley</option>
+                                    <option value="Piano">Piano</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cover-note">Personal Note</label>
+                                <textarea id="cover-note" class="form-input" rows="3" placeholder="What does this song mean to you?"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn--submit btn--block" id="submit-btn">Submit Cover</button>
+                            <p class="submit-panel__note">Covers are reviewed before being featured. We celebrate every submission!</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Status Pipeline Legend ── -->
+    <div class="status-pipeline">
+        <div class="container">
+            <div class="status-pipeline__inner">
+                <div class="status-pipeline__step">
+                    <span class="status-dot status-dot--submitted"></span> Submitted
+                </div>
+                <span class="status-pipeline__arrow">&#9654;</span>
+                <div class="status-pipeline__step">
+                    <span class="status-dot status-dot--review"></span> Under Review
+                </div>
+                <span class="status-pipeline__arrow">&#9654;</span>
+                <div class="status-pipeline__step">
+                    <span class="status-dot status-dot--featured"></span> Featured on Site
+                </div>
+                <span class="status-pipeline__arrow">&#9654;</span>
+                <div class="status-pipeline__step">
+                    <span class="status-dot status-dot--shared"></span> Shared by Yeng
+                </div>
+                <span class="status-pipeline__arrow">&#9654;</span>
+                <div class="status-pipeline__step">
+                    <span class="status-dot status-dot--hof"></span> Hall of Fame
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Filter & Sort ── -->
+    <div class="covers-filters">
+        <div class="container">
+            <div class="covers-filters__inner">
+                <div class="covers-filters__group">
+                    <span class="covers-filters__label">Song:</span>
+                    <select class="covers-filters__select" id="filter-song" onchange="filterBySong(this.value)">
+                        <option value="">All Songs</option>
+                    </select>
+                </div>
+                <div class="covers-filters__group">
+                    <span class="covers-filters__label">Style:</span>
+                    <button class="style-tab style-tab--active" data-style="" onclick="filterByStyle('')">All</button>
+                    <button class="style-tab" data-style="Acoustic" onclick="filterByStyle('Acoustic')">Acoustic</button>
+                    <button class="style-tab" data-style="Full Band" onclick="filterByStyle('Full Band')">Full Band</button>
+                    <button class="style-tab" data-style="Acapella" onclick="filterByStyle('Acapella')">Acapella</button>
+                    <button class="style-tab" data-style="OPM Medley" onclick="filterByStyle('OPM Medley')">OPM Medley</button>
+                    <button class="style-tab" data-style="Piano" onclick="filterByStyle('Piano')">Piano</button>
+                </div>
+                <div class="covers-filters__sort">
+                    <select class="covers-filters__select" id="filter-sort" onchange="changeSort(this.value)">
+                        <option value="newest">Newest</option>
+                        <option value="most_upvoted">Most Upvoted</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Covers Grid ── -->
+    <section class="covers-section">
+        <div class="container">
+            <div class="covers-grid" id="covers-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9835;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           YENG COVERS — Page Logic
+           ═══════════════════════════════════════════════════════ */
+
+        let covers = [];
+        let hallOfFame = [];
+        let currentSong = '';
+        let currentStyle = '';
+        let currentSort = 'newest';
+        let allSongTitles = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initAuthState();
+            loadCovers();
+            loadHallOfFame();
+        });
+
+        /* ── Auth state for submit panel ── */
+        function initAuthState() {
+            const guestEl = document.getElementById('submit-guest');
+            const authEl = document.getElementById('submit-auth');
+            if (Auth.isLoggedIn()) {
+                guestEl.style.display = 'none';
+                authEl.style.display = 'block';
+            } else {
+                guestEl.style.display = 'block';
+                authEl.style.display = 'none';
+            }
+        }
+
+        /* ── Submit Panel Toggle ── */
+        function toggleSubmitPanel() {
+            const panel = document.getElementById('submit-panel');
+            const trigger = panel.querySelector('.submit-panel__trigger');
+            const isOpen = panel.classList.toggle('submit-panel--open');
+            trigger.setAttribute('aria-expanded', isOpen);
+        }
+
+        /* ── Load Covers ── */
+        async function loadCovers() {
+            createSkeletonCards(6, '#covers-grid');
+            try {
+                const params = new URLSearchParams();
+                if (currentSong) params.set('song', currentSong);
+                if (currentStyle) params.set('style', currentStyle);
+                params.set('sort', currentSort);
+                const data = await api('get-covers?' + params.toString());
+                covers = data.submissions || [];
+                renderCovers(covers);
+                populateSongFilter(covers);
+            } catch (err) {
+                covers = [];
+                renderCovers([]);
+                console.error('Failed to load covers:', err);
+            }
+        }
+
+        /* ── Load Hall of Fame ── */
+        async function loadHallOfFame() {
+            try {
+                const data = await api('get-covers?status=Hall of Fame');
+                hallOfFame = data.submissions || [];
+                renderHallOfFame(hallOfFame);
+            } catch (err) {
+                hallOfFame = [];
+                renderHallOfFame([]);
+                console.error('Failed to load Hall of Fame:', err);
+            }
+        }
+
+        /* ── Render Covers Grid ── */
+        function renderCovers(items) {
+            const grid = document.getElementById('covers-grid');
+
+            if (!items.length) {
+                grid.innerHTML = '<div class="covers-empty">' +
+                    '<div class="covers-empty__icon">&#127908;</div>' +
+                    '<h3 class="covers-empty__title">No covers yet</h3>' +
+                    '<p class="covers-empty__text">Be the first to submit your cover!</p>' +
+                    '</div>';
+                return;
+            }
+
+            const statusColors = {
+                'Submitted': '#8E7F70',
+                'Under Review': '#5B2D8E',
+                'Featured on Site': '#8B2252',
+                'Shared by Yeng': '#D4A547',
+                'Hall of Fame': '#C68B1E'
+            };
+
+            const userId = Auth.isLoggedIn() ? (Auth.getUser() || {}).id : null;
+
+            grid.innerHTML = items.map(function(cover) {
+                const ytId = extractYouTubeId(cover.contentURL);
+                const thumbnail = ytId
+                    ? 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg'
+                    : 'https://placehold.co/640x360/5B2D8E/D4A547?text=%E2%99%AA+Cover';
+                const upvotedBy = Array.isArray(cover.upvotedBy) ? cover.upvotedBy : [];
+                const hasVoted = userId && upvotedBy.indexOf(userId) !== -1;
+                const statusColor = statusColors[cover.status] || '#8E7F70';
+                const performer = (cover.user && cover.user.name) ? cover.user.name : 'Anonymous';
+                const songTitle = cover.songTitle || 'Yeng Song';
+                const styleText = cover.arrangementStyle || '';
+                const noteText = cover.personalNote ? truncate(cover.personalNote, 120) : '';
+                const dateText = cover.submittedAt ? formatDate(cover.submittedAt) : '';
+                const upvoteCount = cover.upvotes || 0;
+
+                var html = '<div class="cover-card">';
+                html += '<div class="cover-card__video">';
+                html += '<img src="' + thumbnail + '" alt="' + escapeHtml(cover.title || '') + '" loading="lazy">';
+                if (cover.contentURL) {
+                    html += '<a href="' + escapeHtml(cover.contentURL) + '" target="_blank" rel="noopener" class="cover-card__play">&#9654;</a>';
+                }
+                html += '</div>';
+                html += '<div class="cover-card__body">';
+                html += '<div class="cover-card__badges">';
+                html += '<span class="cover-card__song">' + escapeHtml(songTitle) + '</span>';
+                html += '<span class="cover-card__status" style="background:' + statusColor + '20;color:' + statusColor + '">' + escapeHtml(cover.status || 'Submitted') + '</span>';
+                html += '</div>';
+                html += '<h3 class="cover-card__title">' + escapeHtml(cover.title || 'Untitled') + '</h3>';
+                html += '<p class="cover-card__meta-text">by ' + escapeHtml(performer);
+                if (styleText) {
+                    html += ' &middot; ' + escapeHtml(styleText);
+                }
+                html += '</p>';
+                if (noteText) {
+                    html += '<p class="cover-card__note">&ldquo;' + escapeHtml(noteText) + '&rdquo;</p>';
+                }
+                html += '<div class="cover-card__footer">';
+                html += '<span>' + escapeHtml(dateText) + '</span>';
+                html += '<button class="cover-card__upvote' + (hasVoted ? ' cover-card__upvote--voted' : '') + '" onclick="toggleUpvote(\'' + cover.id + '\')">';
+                html += '&#9829; ' + upvoteCount;
+                html += '</button>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                return html;
+            }).join('');
+        }
+
+        /* ── Render Hall of Fame ── */
+        function renderHallOfFame(items) {
+            const grid = document.getElementById('hall-of-fame-grid');
+
+            if (!items.length) {
+                grid.innerHTML = '<div class="hall-of-fame__empty">' +
+                    '<p>The Hall of Fame awaits its first inductees. Will it be you?</p>' +
+                    '</div>';
+                return;
+            }
+
+            grid.innerHTML = items.map(function(cover) {
+                const ytId = extractYouTubeId(cover.contentURL);
+                const thumbnail = ytId
+                    ? 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg'
+                    : 'https://placehold.co/640x360/D4A547/FFFFFF?text=%E2%99%AA+Hall+of+Fame';
+                const performer = (cover.user && cover.user.name) ? cover.user.name : 'Anonymous';
+                const songTitle = cover.songTitle || 'Yeng Song';
+                const upvoteCount = cover.upvotes || 0;
+
+                var html = '<div class="hall-of-fame__card">';
+                html += '<span class="hall-of-fame__card-badge">&#127942; Hall of Fame</span>';
+                html += '<div class="hall-of-fame__card-video">';
+                html += '<img src="' + thumbnail + '" alt="' + escapeHtml(cover.title || '') + '" loading="lazy">';
+                if (cover.contentURL) {
+                    html += '<a href="' + escapeHtml(cover.contentURL) + '" target="_blank" rel="noopener" class="hall-of-fame__card-play">&#9654;</a>';
+                }
+                html += '</div>';
+                html += '<div class="hall-of-fame__card-body">';
+                html += '<span class="hall-of-fame__card-song">' + escapeHtml(songTitle) + '</span>';
+                html += '<h3 class="hall-of-fame__card-title">' + escapeHtml(cover.title || 'Untitled') + '</h3>';
+                html += '<p class="hall-of-fame__card-performer">by ' + escapeHtml(performer) + '</p>';
+                html += '<p class="hall-of-fame__card-votes">&#9829; ' + upvoteCount + ' votes</p>';
+                html += '</div>';
+                html += '</div>';
+                return html;
+            }).join('');
+        }
+
+        /* ── Extract YouTube ID ── */
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            var match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+            return match ? match[1] : null;
+        }
+
+        /* ── Submit Cover ── */
+        function submitCover(e) {
+            e.preventDefault();
+            if (!Auth.isLoggedIn()) {
+                Auth.requireAuth('/covers.html');
+                return;
+            }
+
+            var title = document.getElementById('cover-title').value.trim();
+            var contentURL = document.getElementById('cover-url').value.trim();
+            var songTitle = document.getElementById('cover-song').value.trim();
+            var arrangementStyle = document.getElementById('cover-style').value;
+            var personalNote = document.getElementById('cover-note').value.trim();
+
+            if (!title || !contentURL || !songTitle) {
+                showToast('Title, video URL, and song title are required', 'error');
+                return;
+            }
+
+            // Validate URL format
+            if (!isValidVideoUrl(contentURL)) {
+                showToast('Please enter a valid YouTube or TikTok URL', 'error');
+                return;
+            }
+
+            var btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            api('submit-cover', {
+                method: 'POST',
+                body: {
+                    title: title,
+                    contentURL: contentURL,
+                    songTitle: songTitle,
+                    arrangementStyle: arrangementStyle,
+                    personalNote: personalNote
+                }
+            })
+            .then(function() {
+                showToast('Cover submitted! It will be reviewed soon.', 'success');
+                document.getElementById('cover-form').reset();
+                document.getElementById('submit-panel').classList.remove('submit-panel--open');
+                loadCovers();
+            })
+            .catch(function(err) {
+                showToast(err.message || 'Could not submit cover. Try again!', 'error');
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btn.textContent = 'Submit Cover';
+            });
+        }
+
+        /* ── Validate Video URL ── */
+        function isValidVideoUrl(url) {
+            var ytPattern = /(?:youtube\.com|youtu\.be)/i;
+            var tkPattern = /tiktok\.com/i;
+            return ytPattern.test(url) || tkPattern.test(url);
+        }
+
+        /* ── Toggle Upvote ── */
+        function toggleUpvote(coverId) {
+            if (!Auth.isLoggedIn()) {
+                showToast('Log in to vote for covers', 'info');
+                return;
+            }
+
+            api('upvote-cover', {
+                method: 'POST',
+                body: { coverId: coverId }
+            })
+            .then(function() {
+                loadCovers();
+            })
+            .catch(function(err) {
+                showToast(err.message || 'Could not vote. Try again!', 'error');
+            });
+        }
+
+        /* ── Populate Song Filter ── */
+        function populateSongFilter(coversData) {
+            var songs = {};
+            coversData.forEach(function(c) {
+                if (c.songTitle) {
+                    songs[c.songTitle] = true;
+                }
+            });
+
+            allSongTitles = Object.keys(songs).sort();
+
+            var select = document.getElementById('filter-song');
+            var currentValue = select.value;
+            select.innerHTML = '<option value="">All Songs</option>';
+            allSongTitles.forEach(function(song) {
+                var opt = document.createElement('option');
+                opt.value = song;
+                opt.textContent = song;
+                if (song === currentValue) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        /* ── Filter by Song ── */
+        function filterBySong(song) {
+            currentSong = song;
+            loadCovers();
+        }
+
+        /* ── Filter by Style ── */
+        function filterByStyle(style) {
+            currentStyle = style;
+
+            // Update active tab
+            var tabs = document.querySelectorAll('.style-tab');
+            tabs.forEach(function(tab) {
+                if (tab.getAttribute('data-style') === style) {
+                    tab.classList.add('style-tab--active');
+                } else {
+                    tab.classList.remove('style-tab--active');
+                }
+            });
+
+            loadCovers();
+        }
+
+        /* ── Change Sort ── */
+        function changeSort(sort) {
+            currentSort = sort;
+            loadCovers();
+        }
+
+        /* ── Escape HTML ── */
+        function escapeHtml(str) {
+            if (!str) return '';
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
