@@ -381,8 +381,49 @@
                 <div class="goals-section">
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg);">
                         <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;">Goals &amp; Progress</h3>
+                        <button class="goal-card__edit" onclick="openAddGoalModal()" style="padding:6px 16px;font-size:0.8rem;">+ Add Goal</button>
                     </div>
                     <div class="goals-grid" id="goals-grid"></div>
+                </div>
+
+                <!-- Goal Edit Modal -->
+                <div class="modal-overlay" id="goal-modal">
+                    <div class="modal" style="max-width:420px;">
+                        <button class="modal__close" onclick="closeGoalModal()">&times;</button>
+                        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin-bottom:var(--space-xl);color:#352A20;" id="goal-modal-title">Edit Goal</h3>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">Goal Name</label>
+                            <input class="form-input" id="goal-name" placeholder="e.g. Total Members">
+                        </div>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">Target Value</label>
+                            <input class="form-input" id="goal-target" type="number" placeholder="e.g. 500">
+                        </div>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">Deadline</label>
+                            <input class="form-input" id="goal-deadline" placeholder="e.g. Dec 2026">
+                        </div>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">What to Track (data source)</label>
+                            <select class="form-select" id="goal-metric">
+                                <option value="members">Active Members</option>
+                                <option value="revenue">Total Revenue</option>
+                                <option value="users">Total Users</option>
+                                <option value="mensahe">Mensahe Requests</option>
+                                <option value="orders">Total Orders</option>
+                                <option value="events">Active Events</option>
+                                <option value="custom">Custom (enter current value manually)</option>
+                            </select>
+                        </div>
+                        <div class="goal-modal__field" id="custom-value-field" style="display:none;">
+                            <label class="goal-modal__label">Current Value</label>
+                            <input class="form-input" id="goal-custom-value" type="number" placeholder="e.g. 85">
+                        </div>
+                        <div style="display:flex;gap:var(--space-md);margin-top:var(--space-xl);">
+                            <button class="btn btn--primary" onclick="saveGoal()" style="flex:1;">Save Goal</button>
+                            <button class="btn btn--ghost" id="goal-delete-btn" onclick="deleteGoal()" style="display:none;">Delete</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- AI Insights -->
@@ -951,67 +992,155 @@
     }
 
     /* ── Goals & Progress ── */
-    function renderGoals(stats) {
-        var goals = [
-            {
-                title: 'Total Members',
-                current: stats ? ((stats.membershipBreakdown['Sariwang Simula'] || 0) + (stats.membershipBreakdown['Laging Nandito'] || 0) + (stats.membershipBreakdown['Ikaw Lamang'] || 0)) : 85,
-                target: 500,
-                deadline: 'Dec 2026',
-                color: 'purple',
-                unit: 'members'
-            },
-            {
-                title: 'Annual Revenue',
-                current: stats ? stats.totalRevenue : 108400,
-                target: 500000,
-                deadline: 'Dec 2026',
-                color: 'gold',
-                unit: '',
-                isCurrency: true
-            },
-            {
-                title: 'Community Engagement',
-                current: stats ? (stats.totalUsers || 0) : 365,
-                target: 1000,
-                deadline: 'Dec 2026',
-                color: 'burgundy',
-                unit: 'users'
-            },
-            {
-                title: 'Mensahe Orders',
-                current: stats ? (stats.pendingMessages || 0) + 12 : 14,
-                target: 100,
-                deadline: 'Dec 2026',
-                color: 'teal',
-                unit: 'requests'
-            }
-        ];
+    var GOAL_COLORS = ['purple', 'gold', 'burgundy', 'teal'];
+    var lastStats = null;
 
+    var DEFAULT_GOALS = [
+        { id: 'g1', title: 'Total Members', target: 500, deadline: 'Dec 2026', metric: 'members' },
+        { id: 'g2', title: 'Annual Revenue', target: 500000, deadline: 'Dec 2026', metric: 'revenue' },
+        { id: 'g3', title: 'Total Users', target: 1000, deadline: 'Dec 2026', metric: 'users' },
+        { id: 'g4', title: 'Mensahe Orders', target: 100, deadline: 'Dec 2026', metric: 'mensahe' }
+    ];
+
+    function getGoals() {
+        try {
+            var stored = localStorage.getItem('yc_admin_goals');
+            if (stored) return JSON.parse(stored);
+        } catch(e) {}
+        return DEFAULT_GOALS;
+    }
+
+    function saveGoals(goals) {
+        localStorage.setItem('yc_admin_goals', JSON.stringify(goals));
+    }
+
+    function getMetricValue(metric, stats) {
+        if (!stats) return 0;
+        switch(metric) {
+            case 'members': return (stats.membershipBreakdown['Sariwang Simula'] || 0) + (stats.membershipBreakdown['Laging Nandito'] || 0) + (stats.membershipBreakdown['Ikaw Lamang'] || 0);
+            case 'revenue': return stats.totalRevenue || 0;
+            case 'users': return stats.totalUsers || 0;
+            case 'mensahe': return (stats.pendingMessages || 0) + 12;
+            case 'orders': return stats.totalOrders || 0;
+            case 'events': return stats.activeEvents || 0;
+            default: return 0;
+        }
+    }
+
+    function renderGoals(stats) {
+        lastStats = stats;
+        var goals = getGoals();
         var grid = document.getElementById('goals-grid');
         if (!grid) return;
 
-        grid.innerHTML = goals.map(function(g) {
-            var pct = Math.min(100, Math.round((g.current / g.target) * 100));
-            var monthsLeft = 8;
-            var needed = g.target - g.current;
-            var perMonth = Math.ceil(needed / monthsLeft);
-            var pace = pct >= (100 - monthsLeft * 4) ? 'on-track' : pct >= (100 - monthsLeft * 8) ? 'behind' : 'behind';
-            if (pct >= 60) pace = 'ahead';
-            else if (pct >= 30) pace = 'on-track';
+        if (goals.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl);color:#8E7F70;font-family:\'Inter\',sans-serif;"><p>No goals set yet.</p><button class="btn btn--primary btn--sm" onclick="openAddGoalModal()" style="margin-top:var(--space-md);">Set Your First Goal</button></div>';
+            return;
+        }
 
-            var currentDisplay = g.isCurrency ? formatPrice(g.current) : g.current.toLocaleString();
-            var targetDisplay = g.isCurrency ? formatPrice(g.target) : g.target.toLocaleString() + ' ' + g.unit;
+        grid.innerHTML = goals.map(function(g, i) {
+            var current = g.metric === 'custom' ? (g.customValue || 0) : getMetricValue(g.metric, stats);
+            var pct = g.target > 0 ? Math.min(100, Math.round((current / g.target) * 100)) : 0;
+            var color = GOAL_COLORS[i % GOAL_COLORS.length];
+            var isCurrency = g.metric === 'revenue';
+            var pace = pct >= 60 ? 'ahead' : pct >= 30 ? 'on-track' : 'behind';
+
+            var currentDisplay = isCurrency ? formatPrice(current) : current.toLocaleString();
+            var targetDisplay = isCurrency ? formatPrice(g.target) : g.target.toLocaleString();
 
             return '<div class="goal-card">'
-                + '<div class="goal-card__header"><span class="goal-card__title">' + g.title + '</span></div>'
+                + '<div class="goal-card__header"><span class="goal-card__title">' + g.title + '</span><button class="goal-card__edit" onclick="openEditGoalModal(' + i + ')">Edit</button></div>'
                 + '<div class="goal-card__numbers"><span class="goal-card__current">' + currentDisplay + '</span><span class="goal-card__target">/ ' + targetDisplay + '</span></div>'
-                + '<div class="goal-card__bar"><div class="goal-card__fill goal-card__fill--' + g.color + '" style="width:' + pct + '%;"></div></div>'
+                + '<div class="goal-card__bar"><div class="goal-card__fill goal-card__fill--' + color + '" style="width:' + pct + '%;"></div></div>'
                 + '<div class="goal-card__meta">' + pct + '% complete &mdash; Target: ' + g.deadline
                 + '<span class="goal-card__pace goal-card__pace--' + pace + '">' + (pace === 'ahead' ? '&#9650; Ahead' : pace === 'on-track' ? '&#9654; On Track' : '&#9660; Behind') + '</span></div>'
                 + '</div>';
         }).join('');
     }
+
+    var editingGoalIndex = -1;
+
+    window.openAddGoalModal = function() {
+        editingGoalIndex = -1;
+        document.getElementById('goal-modal-title').textContent = 'Add New Goal';
+        document.getElementById('goal-name').value = '';
+        document.getElementById('goal-target').value = '';
+        document.getElementById('goal-deadline').value = 'Dec 2026';
+        document.getElementById('goal-metric').value = 'members';
+        document.getElementById('goal-custom-value').value = '';
+        document.getElementById('custom-value-field').style.display = 'none';
+        document.getElementById('goal-delete-btn').style.display = 'none';
+        document.getElementById('goal-modal').classList.add('modal-overlay--active');
+    };
+
+    window.openEditGoalModal = function(index) {
+        var goals = getGoals();
+        var g = goals[index];
+        if (!g) return;
+        editingGoalIndex = index;
+        document.getElementById('goal-modal-title').textContent = 'Edit Goal';
+        document.getElementById('goal-name').value = g.title;
+        document.getElementById('goal-target').value = g.target;
+        document.getElementById('goal-deadline').value = g.deadline;
+        document.getElementById('goal-metric').value = g.metric || 'custom';
+        document.getElementById('goal-custom-value').value = g.customValue || '';
+        document.getElementById('custom-value-field').style.display = g.metric === 'custom' ? '' : 'none';
+        document.getElementById('goal-delete-btn').style.display = '';
+        document.getElementById('goal-modal').classList.add('modal-overlay--active');
+    };
+
+    window.closeGoalModal = function() {
+        document.getElementById('goal-modal').classList.remove('modal-overlay--active');
+    };
+
+    window.saveGoal = function() {
+        var title = document.getElementById('goal-name').value.trim();
+        var target = parseInt(document.getElementById('goal-target').value) || 0;
+        var deadline = document.getElementById('goal-deadline').value.trim() || 'Dec 2026';
+        var metric = document.getElementById('goal-metric').value;
+        var customValue = parseInt(document.getElementById('goal-custom-value').value) || 0;
+
+        if (!title) { showToast('Please enter a goal name', 'error'); return; }
+        if (target <= 0) { showToast('Please enter a target value', 'error'); return; }
+
+        var goals = getGoals();
+        var goal = { id: 'g' + Date.now(), title: title, target: target, deadline: deadline, metric: metric };
+        if (metric === 'custom') goal.customValue = customValue;
+
+        if (editingGoalIndex >= 0 && editingGoalIndex < goals.length) {
+            goal.id = goals[editingGoalIndex].id;
+            goals[editingGoalIndex] = goal;
+        } else {
+            goals.push(goal);
+        }
+
+        saveGoals(goals);
+        closeGoalModal();
+        renderGoals(lastStats);
+        showToast('Goal saved!', 'success');
+    };
+
+    window.deleteGoal = function() {
+        if (editingGoalIndex < 0) return;
+        var goals = getGoals();
+        goals.splice(editingGoalIndex, 1);
+        saveGoals(goals);
+        closeGoalModal();
+        renderGoals(lastStats);
+        showToast('Goal removed', 'info');
+    };
+
+    // Show/hide custom value field based on metric selection
+    document.addEventListener('DOMContentLoaded', function() {
+        var metricSelect = document.getElementById('goal-metric');
+        if (metricSelect) {
+            metricSelect.addEventListener('change', function() {
+                document.getElementById('custom-value-field').style.display = this.value === 'custom' ? '' : 'none';
+            });
+        }
+        var goalModal = document.getElementById('goal-modal');
+        if (goalModal) goalModal.addEventListener('click', function(e) { if (e.target === this) closeGoalModal(); });
+    });
 
     /* ── Strategic Insights ── */
     function renderInsights(stats) {
