@@ -1022,6 +1022,19 @@ textarea.form-input {
     transform: scale(1.05);
 }
 
+.ig-feed__item--embed {
+    cursor: default;
+}
+
+.ig-feed__item--embed iframe {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    border: none;
+}
+
 .ig-feed__item::after {
     content: '';
     position: absolute;
@@ -1029,6 +1042,7 @@ textarea.form-input {
     background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
     opacity: 0;
     transition: opacity var(--transition-base);
+    pointer-events: none;
 }
 
 .ig-feed__item:hover::after {

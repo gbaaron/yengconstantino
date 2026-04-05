@@ -590,39 +590,46 @@ function applyGoogleTranslate(langCode) {
 }
 
 /* ── Instagram Feed ── */
+// Normalize any IG URL to a full https permalink
+function normalizeIgUrl(url) {
+    if (!url) return '';
+    url = url.trim();
+    if (!url.startsWith('http')) url = 'https://' + url;
+    // Ensure trailing slash
+    if (!url.endsWith('/')) url += '/';
+    return url;
+}
+
 function initInstagramFeed() {
     const grid = document.getElementById('ig-feed-grid');
     if (!grid) return;
 
-    // Load IG posts from Airtable SiteConfig
-    // In Airtable: create rows with keys "ig_post_1" through "ig_post_9"
-    // Set the "value" field to the Instagram post URL
-    // Attach the photo in the "image" attachment field
+    // Load IG post URLs from Airtable SiteConfig (ig_post_1 through ig_post_9)
+    // Just paste the Instagram post URL — no image URL needed
     SiteConfig.load().then(() => {
         const posts = [];
         for (let i = 1; i <= 9; i++) {
-            const img = SiteConfig.getImage('ig_post_' + i);
             const url = SiteConfig.get('ig_post_' + i);
-            if (img) {
-                posts.push({ img: img, url: url || 'https://www.instagram.com/yeng/' });
+            if (url && url.trim()) {
+                posts.push(normalizeIgUrl(url));
             }
         }
         if (posts.length > 0) {
-            renderIgGrid(grid, posts);
+            renderIgEmbeds(grid, posts);
         } else {
             renderIgPlaceholder(grid);
         }
     });
 }
 
-function renderIgGrid(grid, posts) {
-    grid.innerHTML = posts.map(p => {
-        const img = p.img || p.imageUrl || p.thumbnail || '';
-        const url = p.url || p.permalink || 'https://www.instagram.com/yeng/';
-        return '<a href="' + url + '" target="_blank" rel="noopener" class="ig-feed__item">' +
-            '<img src="' + img + '" alt="Yeng Constantino Instagram post" loading="lazy">' +
-            '</a>';
-    }).join('');
+function renderIgEmbeds(grid, postUrls) {
+    grid.innerHTML = postUrls.map(url =>
+        '<div class="ig-feed__item ig-feed__item--embed">' +
+            '<iframe src="' + url + 'embed/" ' +
+                'frameborder="0" scrolling="no" allowtransparency="true" ' +
+                'loading="lazy" style="width:100%;height:100%;border:none;overflow:hidden;"></iframe>' +
+        '</div>'
+    ).join('');
 }
 
 function renderIgPlaceholder(grid) {
