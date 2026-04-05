@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         .membership-hero {
-            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #27273A 60%, #6C2BD9 100%);
             padding: 140px 0 80px;
             text-align: center;
             position: relative;
@@ -20,7 +20,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(229,160,13,0.04)'/%3E%3C/svg%3E");
             pointer-events: none;
         }
         .membership-hero__content {
@@ -34,7 +34,7 @@
             font-family: 'Playfair Display', serif;
             font-size: 3rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #D4A547 0%, #E8C36B 50%, #FFFFFF 100%);
+            background: linear-gradient(135deg, #E5A00D 0%, #FBBF24 50%, #FFFFFF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -49,14 +49,14 @@
         .membership-hero__quote {
             font-family: 'Caveat', cursive;
             font-size: 1.6rem;
-            color: #D4A547;
+            color: #E5A00D;
             line-height: 1.5;
             max-width: 550px;
             margin: 0 auto;
         }
         .pricing-section {
             padding: var(--space-4xl) 0;
-            background: #FBF7F2;
+            background: #FAFAFC;
         }
         .pricing-grid {
             display: grid;
@@ -77,11 +77,11 @@
             position: relative;
             border: 2px solid transparent;
         }
-        .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(212,165,71,0.16); }
+        .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(229,160,13,0.16); }
         .pricing-card--popular {
             transform: scale(1.05);
-            border-color: #8B2252;
-            box-shadow: 0 8px 40px rgba(139,34,82,0.2);
+            border-color: #BE185D;
+            box-shadow: 0 8px 40px rgba(190,24,93,0.2);
             z-index: 2;
         }
         .pricing-card--popular:hover { transform: scale(1.05) translateY(-4px); }
@@ -90,7 +90,7 @@
             top: -14px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #8B2252, #A83B6B);
+            background: linear-gradient(135deg, #BE185D, #DB2777);
             color: #FFF;
             font-family: 'Inter', sans-serif;
             font-weight: 700;
@@ -107,27 +107,27 @@
             font-weight: 800;
             margin-bottom: 4px;
         }
-        .pricing-card__tier-name--purple { color: #5B2D8E; }
-        .pricing-card__tier-name--burgundy { color: #8B2252; }
-        .pricing-card__tier-name--gold { color: #C68B1E; }
+        .pricing-card__tier-name--purple { color: #6C2BD9; }
+        .pricing-card__tier-name--burgundy { color: #BE185D; }
+        .pricing-card__tier-name--gold { color: #D97706; }
         .pricing-card__english {
             font-family: 'Caveat', cursive;
             font-size: 1.1rem;
-            color: #8E7F70;
+            color: #71718A;
             margin-bottom: var(--space-lg);
         }
         .pricing-card__price {
             font-family: 'Playfair Display', serif;
             font-size: 2.8rem;
             font-weight: 800;
-            color: #231A12;
+            color: #1A1A2E;
             margin-bottom: 4px;
         }
         .pricing-card__price span {
             font-family: 'Inter', sans-serif;
             font-size: 1rem;
             font-weight: 500;
-            color: #8E7F70;
+            color: #71718A;
         }
         .pricing-card__divider {
             width: 60px;
@@ -135,9 +135,9 @@
             border-radius: 2px;
             margin: var(--space-lg) auto;
         }
-        .pricing-card__divider--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); }
-        .pricing-card__divider--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); }
-        .pricing-card__divider--gold { background: linear-gradient(135deg, #D4A547, #C68B1E); }
+        .pricing-card__divider--purple { background: linear-gradient(135deg, #6C2BD9, #8B5CF6); }
+        .pricing-card__divider--burgundy { background: linear-gradient(135deg, #BE185D, #DB2777); }
+        .pricing-card__divider--gold { background: linear-gradient(135deg, #E5A00D, #D97706); }
         .pricing-card__features {
             list-style: none;
             padding: 0;
@@ -166,9 +166,9 @@
             border-radius: 50%;
             font-size: 0.7rem;
         }
-        .pricing-card--purple .pricing-card__feature::before { background: rgba(91,45,142,0.12); color: #5B2D8E; }
-        .pricing-card--burgundy .pricing-card__feature::before { background: rgba(139,34,82,0.12); color: #8B2252; }
-        .pricing-card--gold .pricing-card__feature::before { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .pricing-card--purple .pricing-card__feature::before { background: rgba(108,43,217,0.12); color: #6C2BD9; }
+        .pricing-card--burgundy .pricing-card__feature::before { background: rgba(190,24,93,0.12); color: #BE185D; }
+        .pricing-card--gold .pricing-card__feature::before { background: rgba(229,160,13,0.15); color: #D97706; }
         .pricing-card__cta {
             width: 100%;
             padding: 14px 28px;
@@ -181,24 +181,24 @@
             transition: all var(--transition-base);
             color: #FFF;
         }
-        .pricing-card__cta--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); box-shadow: 0 4px 15px rgba(91,45,142,0.3); }
-        .pricing-card__cta--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); box-shadow: 0 4px 15px rgba(139,34,82,0.3); }
-        .pricing-card__cta--gold { background: linear-gradient(135deg, #D4A547, #C68B1E); color: #231A12; box-shadow: 0 4px 15px rgba(212,165,71,0.3); }
+        .pricing-card__cta--purple { background: linear-gradient(135deg, #6C2BD9, #8B5CF6); box-shadow: 0 4px 15px rgba(108,43,217,0.3); }
+        .pricing-card__cta--burgundy { background: linear-gradient(135deg, #BE185D, #DB2777); box-shadow: 0 4px 15px rgba(190,24,93,0.3); }
+        .pricing-card__cta--gold { background: linear-gradient(135deg, #E5A00D, #D97706); color: #1A1A2E; box-shadow: 0 4px 15px rgba(229,160,13,0.3); }
         .pricing-card__cta:hover { transform: translateY(-2px); }
         .pricing-card__current { background: #EDE7DF; color: #6B5D50; cursor: default; box-shadow: none; }
         .pricing-card__current:hover { transform: none; }
         .free-tier { text-align: center; padding: var(--space-2xl) var(--space-xl); max-width: 600px; margin: 0 auto; }
-        .free-tier__title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #352A20; margin-bottom: var(--space-sm); }
+        .free-tier__title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #27273A; margin-bottom: var(--space-sm); }
         .free-tier__text { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #6B5D50; line-height: 1.7; }
         .membership-modal__tier { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-md); }
         .membership-modal__price { text-align: center; font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
-        .faq-section { padding: var(--space-4xl) 0; background: #FFF8F0; }
+        .faq-section { padding: var(--space-4xl) 0; background: #F8F7FF; }
         .faq-list { max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
-        .faq-item { background: #FFF; border-radius: var(--radius-md); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(212,165,71,0.06); overflow: hidden; }
-        .faq-question { width: 100%; padding: 18px 24px; background: none; border: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; color: #352A20; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .faq-question:hover { color: #5B2D8E; }
-        .faq-question__icon { font-size: 1.2rem; transition: transform var(--transition-base); color: #8E7F70; }
-        .faq-item--open .faq-question__icon { transform: rotate(45deg); color: #5B2D8E; }
+        .faq-item { background: #FFF; border-radius: var(--radius-md); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(229,160,13,0.06); overflow: hidden; }
+        .faq-question { width: 100%; padding: 18px 24px; background: none; border: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; color: #27273A; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question:hover { color: #6C2BD9; }
+        .faq-question__icon { font-size: 1.2rem; transition: transform var(--transition-base); color: #71718A; }
+        .faq-item--open .faq-question__icon { transform: rotate(45deg); color: #6C2BD9; }
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height var(--transition-slow); }
         .faq-item--open .faq-answer { max-height: 300px; }
         .faq-answer__inner { padding: 0 24px 20px; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #6B5D50; line-height: 1.7; }
@@ -318,7 +318,7 @@
                 <label class="form-label">Payment Reference Number</label>
                 <input type="text" class="form-input" id="modal-payment-ref" placeholder="Enter your payment reference...">
             </div>
-            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya to the official Yeng Constantino account, then enter your reference number above.</p>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#71718A;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya to the official Yeng Constantino account, then enter your reference number above.</p>
             <button class="btn btn--primary btn--block" id="modal-confirm-btn" onclick="confirmMembership()">Confirm Membership</button>
         </div>
     </div>
@@ -344,20 +344,20 @@
                     <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
                     <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
                     <div class="footer__socials">
-                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
-                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
-                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
-                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
-                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify">SP</a>
                     </div>
                 </div>
                 <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
                 <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
-                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#E5A00D;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
     </footer>

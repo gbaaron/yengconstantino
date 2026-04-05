@@ -12,19 +12,19 @@
     <style>
         /* ── Music Page — Color System Overrides ── */
         :root {
-            --primary: #5B2D8E;
-            --primary-light: #7E4FB5;
+            --primary: #6C2BD9;
+            --primary-light: #8B5CF6;
             --primary-glow: rgba(91, 45, 142, 0.15);
-            --gold: #D4A547;
-            --gold-light: #E8C36B;
-            --burgundy: #8B2252;
-            --burgundy-light: #A83B6B;
-            --bg-off-white: #FBF7F2;
+            --gold: #E5A00D;
+            --gold-light: #FBBF24;
+            --burgundy: #BE185D;
+            --burgundy-light: #DB2777;
+            --bg-off-white: #FAFAFC;
             --font-display: 'Playfair Display', serif;
             --font-body: 'Inter', sans-serif;
             --font-accent: 'Caveat', cursive;
-            --gradient-primary: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
-            --gradient-cta: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            --gradient-primary: linear-gradient(135deg, #6C2BD9 0%, #BE185D 50%, #E5A00D 100%);
+            --gradient-cta: linear-gradient(135deg, #6C2BD9 0%, #8B5CF6 100%);
             --shadow-warm-sm: 0 2px 8px rgba(212, 165, 71, 0.10);
             --shadow-warm-md: 0 4px 20px rgba(212, 165, 71, 0.14);
             --shadow-warm-lg: 0 8px 40px rgba(212, 165, 71, 0.18);
@@ -33,7 +33,7 @@
 
         /* ── Music Hero ── */
         .music-hero {
-            background: linear-gradient(135deg, #1a0a2e 0%, #2d1245 40%, #3d1a3d 70%, #2a1535 100%);
+            background: linear-gradient(135deg, #1a0a2e 0%, #2D1B69 40%, #3d1a3d 70%, #2a1535 100%);
             padding: 140px 0 60px;
             text-align: center;
             position: relative;
@@ -153,11 +153,11 @@
             box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
         }
 
-        /* ── Filter Section ── */
+        /* ── Filter Bar ── */
         .filter-section {
             background: var(--white);
             border-bottom: 1px solid var(--gray-100);
-            padding: var(--space-lg) 0;
+            padding: var(--space-sm) 0;
             position: sticky;
             top: 72px;
             z-index: 100;
@@ -165,33 +165,44 @@
 
         .filter-section__inner {
             display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .filter-section__inner::-webkit-scrollbar {
+            display: none;
         }
 
         .filter-group {
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
-            flex-wrap: wrap;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .filter-group + .filter-group {
+            margin-left: var(--space-xs);
+            padding-left: var(--space-sm);
+            border-left: 1px solid var(--gray-100);
         }
 
         .filter-group__label {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--gray-400);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--gray-300);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            min-width: 70px;
+            letter-spacing: 0.06em;
+            margin-right: 4px;
             flex-shrink: 0;
         }
 
         .filter-group__pills {
             display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            overflow-x: auto;
+            gap: 2px;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
@@ -201,13 +212,13 @@
         }
 
         .filter-tab {
-            padding: 8px 18px;
+            padding: 6px 14px;
             font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.82rem;
-            color: var(--gray-500);
+            font-weight: 500;
+            font-size: 0.78rem;
+            color: var(--gray-400);
             background: none;
-            border: 2px solid transparent;
+            border: none;
             border-radius: var(--radius-full);
             cursor: pointer;
             transition: all var(--transition-fast);
@@ -220,35 +231,41 @@
         }
 
         .filter-tab--active {
-            color: var(--white);
-            background: var(--gradient-cta);
-            border-color: transparent;
+            color: var(--primary);
+            background: var(--primary-glow);
+            font-weight: 700;
         }
 
         .filter-tab--active:hover {
-            color: var(--white);
-            background: var(--gradient-cta);
+            color: var(--primary);
+            background: var(--primary-glow);
         }
 
         .filter-group--sort {
             margin-left: auto;
+            padding-left: var(--space-sm);
+            border-left: 1px solid var(--gray-100);
+        }
+
+        .filter-group--sort .filter-group__label {
+            display: none;
         }
 
         .form-select {
-            padding: 8px 32px 8px 14px;
+            padding: 6px 28px 6px 12px;
             font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.82rem;
-            color: var(--gray-600);
+            font-weight: 500;
+            font-size: 0.78rem;
+            color: var(--gray-500);
             background: var(--white);
-            border: 2px solid var(--gray-200);
+            border: 1px solid var(--gray-200);
             border-radius: var(--radius-full);
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B5B7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2371718A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 10px center;
             transition: all var(--transition-fast);
         }
 
@@ -259,7 +276,7 @@
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
         /* ── Results Bar ── */
@@ -308,7 +325,7 @@
             min-height: 60vh;
         }
 
-        /* ── Music Card ── */
+        /* ── Music Card (shared) ── */
         .music-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -329,25 +346,167 @@
             transform: translateY(-4px);
         }
 
-        .music-card__thumb {
+        /* ── Video Card ── */
+        .music-card--video .music-card__thumb {
             position: relative;
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #2d1245 0%, #5B2D8E 50%, #8B2252 100%);
+            background: linear-gradient(135deg, #2D1B69 0%, #6C2BD9 50%, #BE185D 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        .music-card__thumb img {
+        .music-card--video .music-card__thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
+        .music-card--video .music-card__play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .music-card--video:hover .music-card__play-overlay {
+            opacity: 1;
+        }
+
+        .music-card__play-btn {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform var(--transition-fast);
+        }
+
+        .music-card--video:hover .music-card__play-btn {
+            transform: scale(1.1);
+        }
+
+        .music-card__play-btn::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent var(--primary);
+            margin-left: 3px;
+        }
+
         .music-card__thumb-icon {
             font-size: 3rem;
             color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ── Audio Card ── */
+        .music-card--audio {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .music-card--audio:hover {
+            transform: translateY(-2px);
+        }
+
+        .music-card--audio .music-card__art {
+            width: 100px;
+            min-height: 100px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #2D1B69 0%, #6C2BD9 50%, #BE185D 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-card--audio .music-card__art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .music-card--audio .music-card__art-icon {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .music-card--audio .music-card__body {
+            flex: 1;
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .music-card--audio .music-card__title {
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .music-card--audio .music-card__desc {
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            -webkit-line-clamp: 1;
+        }
+
+        .music-card--audio .music-card__meta {
+            margin-top: 4px;
+            font-size: 0.75rem;
+        }
+
+        .music-card--audio .music-card__links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .music-card__link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: var(--font-body);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .music-card__link-btn--spotify {
+            background: rgba(30, 215, 96, 0.12);
+            color: #1DB954;
+        }
+
+        .music-card__link-btn--spotify:hover {
+            background: #1DB954;
+            color: var(--white);
+        }
+
+        .music-card__link-btn--youtube {
+            background: rgba(255, 0, 0, 0.1);
+            color: #FF0000;
+        }
+
+        .music-card__link-btn--youtube:hover {
+            background: #FF0000;
+            color: var(--white);
         }
 
         .music-card__badge {
@@ -365,7 +524,7 @@
         }
 
         .music-card__badge--purple { background: var(--primary); }
-        .music-card__badge--gold { background: var(--gold); color: #2d1245; }
+        .music-card__badge--gold { background: var(--gold); color: #2D1B69; }
         .music-card__badge--burgundy { background: var(--burgundy); }
         .music-card__badge--green { background: #22c55e; }
 
@@ -378,7 +537,7 @@
             font-size: 0.85rem;
             border-radius: var(--radius-full);
             background: rgba(212, 165, 71, 0.9);
-            color: #2d1245;
+            color: #2D1B69;
             font-weight: 700;
         }
 
@@ -649,7 +808,7 @@
         .rating-btn--selected[data-value="3"] { background: var(--burgundy); }
         .rating-btn--selected[data-value="4"],
         .rating-btn--selected[data-value="5"],
-        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2d1245; }
+        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2D1B69; }
         .rating-btn--selected[data-value="7"],
         .rating-btn--selected[data-value="8"] { background: #22c55e; }
         .rating-btn--selected[data-value="9"],
@@ -771,23 +930,25 @@
             .music-grid {
                 grid-template-columns: 1fr;
             }
-            .filter-group {
-                flex-direction: column;
-                align-items: flex-start;
+            .music-card--audio .music-card__art {
+                width: 80px;
+                min-height: 80px;
             }
-            .filter-group__pills {
-                width: 100%;
+            .filter-group__label {
+                display: none;
             }
-            .filter-section__inner {
-                gap: var(--space-sm);
+            .filter-group + .filter-group {
+                border-left: none;
+                margin-left: 0;
+                padding-left: 0;
+            }
+            .filter-group--sort {
+                border-left: none;
             }
             .results-bar {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: var(--space-sm);
-            }
-            .filter-group--sort {
-                margin-left: 0;
             }
         }
 
@@ -876,9 +1037,9 @@
                     <span class="filter-group__label">Category</span>
                     <div class="filter-group__pills" id="categoryFilters">
                         <button class="filter-tab filter-tab--active" data-category="all">All</button>
-                        <button class="filter-tab" data-category="Studio Recording">Studio Recording</button>
+                        <button class="filter-tab" data-category="Studio Recording">Audio Tracks</button>
+                        <button class="filter-tab" data-category="Music Video">Music Videos</button>
                         <button class="filter-tab" data-category="Live Performance">Live Performance</button>
-                        <button class="filter-tab" data-category="Music Video">Music Video</button>
                         <button class="filter-tab" data-category="Interview">Interview</button>
                         <button class="filter-tab" data-category="Behind the Scenes">Behind the Scenes</button>
                     </div>
@@ -962,11 +1123,11 @@
                     <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
                     <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
                     <div class="footer__socials">
-                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
-                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
-                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
-                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
-                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
                     </div>
                 </div>
                 <div>
@@ -989,10 +1150,10 @@
                 <div>
                     <h4 class="footer__heading">Connect</h4>
                     <ul class="footer__list">
-                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
-                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
-                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
-                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                        <li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li>
                     </ul>
                 </div>
             </div>
@@ -1080,10 +1241,26 @@
                 };
             }
 
-            // ── Build card HTML ──
-            function buildCard(item) {
-                var badgeColor = categoryBadgeMap[item.category] || 'purple';
+            // ── Determine if item is audio vs video ──
+            var audioCategories = ['Studio Recording'];
+            function isAudioItem(item) {
+                return audioCategories.indexOf(item.category) !== -1;
+            }
+
+            // ── Shared rating HTML ──
+            function buildRatingHtml(item) {
                 var userRating = userRatings[item.id];
+                var ratingDisplay = item.ratingCount > 0
+                    ? '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-num">' + item.avgRating.toFixed(1) + '</span> <span class="music-card__rating-count">(' + item.ratingCount + ')</span>'
+                    : '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-count">Rate</span>';
+                var userRatingHtml = userRating ? '<small>You: ' + userRating + '</small>' : '';
+                return '<span class="music-card__rating" onclick="openRatingModal(\'' + item.id + '\', \'' + item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">' +
+                    ratingDisplay + userRatingHtml + '</span>';
+            }
+
+            // ── Build video card ──
+            function buildVideoCard(item) {
+                var badgeColor = categoryBadgeMap[item.category] || 'purple';
                 var thumbContent = item.thumbnail
                     ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
                     : '<div class="music-card__thumb-icon">&#9835;</div>';
@@ -1092,17 +1269,12 @@
                     return '<span class="music-card__mood-tag">' + m + '</span>';
                 }).join('');
 
-                var ratingDisplay = item.ratingCount > 0
-                    ? '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-num">' + item.avgRating.toFixed(1) + '</span> <span class="music-card__rating-count">(' + item.ratingCount + ')</span>'
-                    : '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-count">Rate</span>';
+                var clickUrl = item.youtubeUrl ? ' onclick="window.open(\'' + item.youtubeUrl.replace(/'/g, "\\'") + '\', \'_blank\')"' : '';
 
-                var userRatingHtml = userRating
-                    ? '<small>You: ' + userRating + '</small>'
-                    : '';
-
-                return '<div class="music-card" data-id="' + item.id + '">' +
+                return '<div class="music-card music-card--video" data-id="' + item.id + '"' + clickUrl + '>' +
                     '<div class="music-card__thumb">' +
                         thumbContent +
+                        '<div class="music-card__play-overlay"><div class="music-card__play-btn"></div></div>' +
                         '<span class="music-card__badge music-card__badge--' + badgeColor + '">' + item.category + '</span>' +
                         (item.era ? '<span class="music-card__era">' + item.era + '</span>' : '') +
                     '</div>' +
@@ -1113,12 +1285,55 @@
                         '<div class="music-card__meta">' +
                             (item.year ? '<span>' + item.year + '</span>' : '') +
                             (item.duration ? '<span>' + item.duration + '</span>' : '') +
-                            '<span class="music-card__rating" onclick="openRatingModal(\'' + item.id + '\', \'' + item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">' +
-                                ratingDisplay + userRatingHtml +
-                            '</span>' +
+                            buildRatingHtml(item) +
                         '</div>' +
                     '</div>' +
                 '</div>';
+            }
+
+            // ── Build audio card ──
+            function buildAudioCard(item) {
+                var artContent = item.thumbnail
+                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    : '<div class="music-card__art-icon">&#9835;</div>';
+
+                var moodHtml = item.mood.filter(Boolean).map(function(m) {
+                    return '<span class="music-card__mood-tag">' + m + '</span>';
+                }).join('');
+
+                var linksHtml = '';
+                if (item.spotifyUrl || item.youtubeUrl) {
+                    linksHtml = '<div class="music-card__links">';
+                    if (item.spotifyUrl) {
+                        linksHtml += '<a href="' + item.spotifyUrl + '" target="_blank" rel="noopener" class="music-card__link-btn music-card__link-btn--spotify" onclick="event.stopPropagation()">&#9654; Spotify</a>';
+                    }
+                    if (item.youtubeUrl) {
+                        linksHtml += '<a href="' + item.youtubeUrl + '" target="_blank" rel="noopener" class="music-card__link-btn music-card__link-btn--youtube" onclick="event.stopPropagation()">&#9654; YouTube</a>';
+                    }
+                    linksHtml += '</div>';
+                }
+
+                return '<div class="music-card music-card--audio" data-id="' + item.id + '">' +
+                    '<div class="music-card__art">' +
+                        artContent +
+                    '</div>' +
+                    '<div class="music-card__body">' +
+                        '<h3 class="music-card__title">' + item.title + '</h3>' +
+                        (item.description ? '<p class="music-card__desc">' + truncate(item.description, 60) + '</p>' : '') +
+                        '<div class="music-card__meta">' +
+                            (item.era ? '<span>' + item.era + '</span>' : '') +
+                            (item.year ? '<span>' + item.year + '</span>' : '') +
+                            (item.duration ? '<span>' + item.duration + '</span>' : '') +
+                            buildRatingHtml(item) +
+                        '</div>' +
+                        linksHtml +
+                    '</div>' +
+                '</div>';
+            }
+
+            // ── Build card HTML (dispatches to video or audio) ──
+            function buildCard(item) {
+                return isAudioItem(item) ? buildAudioCard(item) : buildVideoCard(item);
             }
 
             // ── Load content from API ──
@@ -1244,11 +1459,17 @@
 
             // ── Setup filter event listeners ──
             function setupFilters() {
-                // Era filter tabs
+                // Era filter tabs (toggle: click again to deselect back to All)
                 document.getElementById('eraFilters').addEventListener('click', function(e) {
                     var tab = e.target.closest('.filter-tab');
                     if (!tab) return;
-                    currentFilters.era = tab.dataset.era;
+                    var era = tab.dataset.era;
+                    // Toggle: if already active and not "All", go back to All
+                    if (era !== 'all' && currentFilters.era === era) {
+                        currentFilters.era = 'all';
+                    } else {
+                        currentFilters.era = era;
+                    }
                     currentPage = 1;
                     this.querySelectorAll('.filter-tab').forEach(function(t) {
                         t.classList.toggle('filter-tab--active', t.dataset.era === currentFilters.era);
@@ -1256,11 +1477,17 @@
                     loadContent();
                 });
 
-                // Category filter tabs
+                // Category filter tabs (toggle: click again to deselect back to All)
                 document.getElementById('categoryFilters').addEventListener('click', function(e) {
                     var tab = e.target.closest('.filter-tab');
                     if (!tab) return;
-                    currentFilters.category = tab.dataset.category;
+                    var cat = tab.dataset.category;
+                    // Toggle: if already active and not "All", go back to All
+                    if (cat !== 'all' && currentFilters.category === cat) {
+                        currentFilters.category = 'all';
+                    } else {
+                        currentFilters.category = cat;
+                    }
                     currentPage = 1;
                     this.querySelectorAll('.filter-tab').forEach(function(t) {
                         t.classList.toggle('filter-tab--active', t.dataset.category === currentFilters.category);

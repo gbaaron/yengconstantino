@@ -9,9 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
-        .profile-page { padding-top: 92px; min-height: 100vh; background: #FBF7F2; }
+        .profile-page { padding-top: 92px; min-height: 100vh; background: #FAFAFC; }
         .profile-header {
-            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #27273A 60%, #6C2BD9 100%);
             padding: var(--space-3xl) 0;
             position: relative;
         }
@@ -27,7 +27,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #5B2D8E, #D4A547);
+            background: linear-gradient(135deg, #6C2BD9, #E5A00D);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -36,7 +36,7 @@
             font-weight: 800;
             color: #FFF;
             flex-shrink: 0;
-            border: 3px solid rgba(212,165,71,0.4);
+            border: 3px solid rgba(229,160,13,0.4);
             overflow: hidden;
         }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -62,10 +62,10 @@
             letter-spacing: 0.05em;
         }
         .profile-tier-badge--free { background: rgba(255,255,255,0.15); color: #FFF; }
-        .profile-tier-badge--sariwang { background: rgba(91,45,142,0.3); color: #E8C36B; }
-        .profile-tier-badge--laging { background: rgba(139,34,82,0.3); color: #E8C36B; }
-        .profile-tier-badge--ikaw { background: rgba(212,165,71,0.3); color: #FFF; }
-        .profile-header__joined { font-family: 'Caveat', cursive; font-size: 1rem; color: rgba(212,165,71,0.7); }
+        .profile-tier-badge--sariwang { background: rgba(108,43,217,0.3); color: #FBBF24; }
+        .profile-tier-badge--laging { background: rgba(190,24,93,0.3); color: #FBBF24; }
+        .profile-tier-badge--ikaw { background: rgba(229,160,13,0.3); color: #FFF; }
+        .profile-header__joined { font-family: 'Caveat', cursive; font-size: 1rem; color: rgba(229,160,13,0.7); }
 
         .profile-tabs {
             max-width: 900px;
@@ -83,15 +83,15 @@
             font-family: 'Inter', sans-serif;
             font-weight: 600;
             font-size: 0.9rem;
-            color: #8E7F70;
+            color: #71718A;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             margin-bottom: -2px;
             transition: all var(--transition-fast);
             white-space: nowrap;
         }
-        .profile-tab:hover { color: #5B2D8E; }
-        .profile-tab--active { color: #5B2D8E; border-bottom-color: #5B2D8E; }
+        .profile-tab:hover { color: #6C2BD9; }
+        .profile-tab--active { color: #6C2BD9; border-bottom-color: #6C2BD9; }
 
         .profile-panels { max-width: 900px; margin: 0 auto; padding: var(--space-xl); }
         .profile-panel { display: none; }
@@ -105,10 +105,10 @@
             border-radius: var(--radius-md);
             padding: var(--space-lg);
             margin-bottom: var(--space-md);
-            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+            box-shadow: 0 2px 8px rgba(229,160,13,0.06);
         }
         .order-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: var(--space-sm); }
-        .order-card__number { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: #352A20; }
+        .order-card__number { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: #27273A; }
         .order-card__status {
             display: inline-block;
             padding: 4px 12px;
@@ -118,11 +118,11 @@
             font-size: 0.75rem;
             text-transform: uppercase;
         }
-        .order-card__status--pending { background: rgba(212,165,71,0.15); color: #C68B1E; }
-        .order-card__status--confirmed { background: rgba(91,45,142,0.12); color: #5B2D8E; }
+        .order-card__status--pending { background: rgba(229,160,13,0.15); color: #D97706; }
+        .order-card__status--confirmed { background: rgba(108,43,217,0.12); color: #6C2BD9; }
         .order-card__status--shipped { background: rgba(45,142,126,0.12); color: #2D8E7E; }
         .order-card__status--delivered { background: rgba(45,142,126,0.2); color: #1a6b5e; }
-        .order-card__status--cancelled { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .order-card__status--cancelled { background: rgba(190,24,93,0.12); color: #BE185D; }
         .order-card__details { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #6B5D50; line-height: 1.7; }
 
         .rating-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md); }
@@ -131,17 +131,17 @@
             border-radius: var(--radius-md);
             padding: var(--space-md);
             text-align: center;
-            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+            box-shadow: 0 2px 8px rgba(229,160,13,0.06);
         }
-        .rating-card__title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #352A20; margin-bottom: var(--space-xs); }
-        .rating-card__score { font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 800; color: #D4A547; }
+        .rating-card__title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #27273A; margin-bottom: var(--space-xs); }
+        .rating-card__score { font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 800; color: #E5A00D; }
 
         .exclusive-card {
             background: #FFF;
             border-radius: var(--radius-md);
             padding: var(--space-lg);
             margin-bottom: var(--space-md);
-            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+            box-shadow: 0 2px 8px rgba(229,160,13,0.06);
             display: flex;
             gap: var(--space-lg);
             align-items: center;
@@ -152,10 +152,10 @@
             border-radius: var(--radius-sm);
             object-fit: cover;
             flex-shrink: 0;
-            background: linear-gradient(135deg, rgba(91,45,142,0.1), rgba(212,165,71,0.1));
+            background: linear-gradient(135deg, rgba(108,43,217,0.1), rgba(229,160,13,0.1));
         }
         .exclusive-card__info { flex: 1; }
-        .exclusive-card__title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: #352A20; margin-bottom: 4px; }
+        .exclusive-card__title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: #27273A; margin-bottom: 4px; }
         .exclusive-card__desc { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #6B5D50; line-height: 1.5; }
         .exclusive-card--locked { opacity: 0.6; position: relative; }
         .exclusive-card__lock {
@@ -166,8 +166,8 @@
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 700;
-            background: rgba(139,34,82,0.12);
-            color: #8B2252;
+            background: rgba(190,24,93,0.12);
+            color: #BE185D;
             margin-top: var(--space-xs);
         }
 
@@ -176,11 +176,11 @@
             border-radius: var(--radius-md);
             padding: var(--space-lg);
             margin-bottom: var(--space-md);
-            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+            box-shadow: 0 2px 8px rgba(229,160,13,0.06);
         }
         .cover-list-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: var(--space-sm); }
-        .cover-list-card__title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #352A20; }
-        .cover-list-card__meta { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #8E7F70; }
+        .cover-list-card__title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #27273A; }
+        .cover-list-card__meta { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #71718A; }
 
         @media (max-width: 768px) {
             .profile-header__inner { flex-direction: column; text-align: center; }
@@ -237,7 +237,7 @@
         <div class="profile-panels">
             <!-- Profile Tab -->
             <div class="profile-panel profile-panel--active" id="panel-profile">
-                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">Edit Profile</h2>
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-xl);">Edit Profile</h2>
                 <div class="profile-form">
                     <div class="form-group">
                         <label class="form-label">Full Name</label>
@@ -254,7 +254,7 @@
                     <button class="btn btn--primary" onclick="updateProfile()">Save Changes</button>
                 </div>
                 <div style="margin-top:var(--space-3xl);padding-top:var(--space-xl);border-top:2px solid #EDE7DF;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#352A20;margin-bottom:var(--space-md);">Membership</h3>
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#27273A;margin-bottom:var(--space-md);">Membership</h3>
                     <p style="font-family:'Inter',sans-serif;font-size:0.95rem;color:#6B5D50;" id="membership-info">You are on the Free tier.</p>
                     <a href="/membership.html" class="btn btn--gold btn--sm" style="margin-top:var(--space-md);">Upgrade Membership</a>
                 </div>
@@ -262,25 +262,25 @@
 
             <!-- Orders Tab -->
             <div class="profile-panel" id="panel-orders">
-                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Orders</h2>
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-xl);">My Orders</h2>
                 <div id="orders-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading orders...</span></div></div>
             </div>
 
             <!-- Ratings Tab -->
             <div class="profile-panel" id="panel-ratings">
-                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Ratings</h2>
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-xl);">My Ratings</h2>
                 <div id="ratings-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading ratings...</span></div></div>
             </div>
 
             <!-- Exclusive Content Tab -->
             <div class="profile-panel" id="panel-exclusive">
-                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">Exclusive Content</h2>
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-xl);">Exclusive Content</h2>
                 <div id="exclusive-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading exclusive content...</span></div></div>
             </div>
 
             <!-- My Covers Tab -->
             <div class="profile-panel" id="panel-covers">
-                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Covers</h2>
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-xl);">My Covers</h2>
                 <div id="covers-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading your covers...</span></div></div>
             </div>
         </div>
@@ -293,20 +293,20 @@
                     <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
                     <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
                     <div class="footer__socials">
-                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
-                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
-                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
-                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
-                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify">SP</a>
                     </div>
                 </div>
                 <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
                 <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
-                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#E5A00D;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
     </footer>
@@ -409,7 +409,7 @@
                     var items = Array.isArray(o.items) ? o.items : [];
                     return '<div class="order-card"><div class="order-card__header"><span class="order-card__number">' + (o.orderNumber || 'N/A') + '</span><span class="order-card__status ' + statusClass + '">' + (o.status || 'Pending') + '</span></div><div class="order-card__details"><p>' + formatDate(o.orderDate) + ' &middot; ' + items.length + ' item(s) &middot; ' + formatPrice(o.totalAmount) + '</p>' + (o.trackingNumber ? '<p>Tracking: ' + o.trackingNumber + '</p>' : '') + '</div></div>';
                 }).join('');
-            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load orders.</p>'; }
+            } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load orders.</p>'; }
         }
 
         async function loadRatings() {
@@ -419,9 +419,9 @@
                 var ratings = data.ratings || [];
                 if (!ratings.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#9733;</div><h3 class="empty-state__title">No ratings yet</h3><p class="empty-state__text">Rate music content in the <a href="/music.html">Music Archive</a>!</p></div>'; return; }
                 container.innerHTML = '<div class="rating-grid">' + ratings.map(function(r) {
-                    return '<div class="rating-card"><div class="rating-card__title">Content</div><div class="rating-card__score">' + r.rating + '/10</div><p style="font-size:0.8rem;color:#8E7F70;margin-top:4px;">' + (r.ratedAt ? formatDate(r.ratedAt) : '') + '</p></div>';
+                    return '<div class="rating-card"><div class="rating-card__title">Content</div><div class="rating-card__score">' + r.rating + '/10</div><p style="font-size:0.8rem;color:#71718A;margin-top:4px;">' + (r.ratedAt ? formatDate(r.ratedAt) : '') + '</p></div>';
                 }).join('') + '</div>';
-            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load ratings.</p>'; }
+            } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load ratings.</p>'; }
         }
 
         async function loadExclusiveContent() {
@@ -438,7 +438,7 @@
                         (locked ? '<span class="exclusive-card__lock">&#128274; Upgrade to ' + item.unlockTier + '</span>' : '<a href="' + (item.contentUrl || '#') + '" target="_blank" class="btn btn--sm btn--primary" style="margin-top:var(--space-sm);">Panoorin</a>') +
                         '</div></div>';
                 }).join('');
-            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load exclusive content.</p>'; }
+            } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load exclusive content.</p>'; }
         }
 
         async function loadMyCovers() {
@@ -449,12 +449,12 @@
                 var userId = Auth.getUser()?.id;
                 var myCovers = allCovers.filter(function(c) { return c.user && c.user.id === userId; });
                 if (!myCovers.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#127908;</div><h3 class="empty-state__title">No covers submitted</h3><p class="empty-state__text">Submit your first cover on the <a href="/covers.html">Yeng Covers</a> page!</p></div>'; return; }
-                var statusColors = { 'Submitted': '#8E7F70', 'Under Review': '#5B2D8E', 'Featured on Site': '#8B2252', 'Shared by Yeng': '#D4A547', 'Hall of Fame': '#C68B1E' };
+                var statusColors = { 'Submitted': '#71718A', 'Under Review': '#6C2BD9', 'Featured on Site': '#BE185D', 'Shared by Yeng': '#E5A00D', 'Hall of Fame': '#D97706' };
                 container.innerHTML = myCovers.map(function(c) {
-                    var sc = statusColors[c.status] || '#8E7F70';
+                    var sc = statusColors[c.status] || '#71718A';
                     return '<div class="cover-list-card"><div class="cover-list-card__header"><span class="cover-list-card__title">' + c.title + '</span><span class="badge" style="background:' + sc + '20;color:' + sc + ';">' + c.status + '</span></div><div class="cover-list-card__meta">' + (c.songTitle || '') + ' &middot; ' + (c.arrangementStyle || '') + ' &middot; ' + (c.submittedAt ? formatDate(c.submittedAt) : '') + ' &middot; ' + (c.upvotes || 0) + ' upvotes</div></div>';
                 }).join('');
-            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load covers.</p>'; }
+            } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load covers.</p>'; }
         }
     </script>
 </body>
