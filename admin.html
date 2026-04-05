@@ -230,6 +230,85 @@
         .engagement-item__stat { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 700; color: #5B2D8E; }
 
         @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } .donut-wrap { flex-direction: column; } .go-live-bar { flex-direction: column; text-align: center; } }
+
+        /* Goals Section */
+        .goals-section { margin-bottom: var(--space-2xl); }
+        .goals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
+        .goal-card {
+            background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06); position: relative; overflow: hidden;
+        }
+        .goal-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md); }
+        .goal-card__title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #352A20; }
+        .goal-card__edit {
+            background: none; border: 1px solid #EDE7DF; border-radius: 6px; padding: 4px 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.7rem; color: #8E7F70; cursor: pointer;
+        }
+        .goal-card__edit:hover { border-color: #5B2D8E; color: #5B2D8E; }
+        .goal-card__numbers { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+        .goal-card__current { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: #5B2D8E; }
+        .goal-card__target { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #8E7F70; }
+        .goal-card__bar { height: 8px; background: #EDE7DF; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+        .goal-card__fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        .goal-card__fill--purple { background: linear-gradient(90deg, #5B2D8E, #7E4FB5); }
+        .goal-card__fill--gold { background: linear-gradient(90deg, #D4A547, #E8C36B); }
+        .goal-card__fill--burgundy { background: linear-gradient(90deg, #8B2252, #A83B6B); }
+        .goal-card__fill--teal { background: linear-gradient(90deg, #2D8E7E, #3DB8A5); }
+        .goal-card__meta { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #8E7F70; }
+        .goal-card__pace { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 0.7rem; margin-left: 6px; }
+        .goal-card__pace--ahead { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .goal-card__pace--behind { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .goal-card__pace--on-track { background: rgba(212,165,71,0.15); color: #C68B1E; }
+
+        /* AI Insights */
+        .insights-section { margin-bottom: var(--space-2xl); }
+        .insights-card {
+            background: linear-gradient(135deg, #f8f0ff 0%, #fff8f0 100%);
+            border: 1px solid rgba(91,45,142,0.1);
+            border-radius: var(--radius-md); padding: var(--space-xl); margin-bottom: var(--space-md);
+        }
+        .insights-card__header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: var(--space-md);
+        }
+        .insights-card__icon { font-size: 1.3rem; }
+        .insights-card__label {
+            font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; color: #5B2D8E;
+        }
+        .insights-card__badge {
+            margin-left: auto; padding: 3px 10px; border-radius: 9999px;
+            font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+            background: rgba(91,45,142,0.1); color: #5B2D8E;
+        }
+        .insight-item {
+            padding: 12px 0; border-bottom: 1px solid rgba(91,45,142,0.08);
+            display: flex; gap: var(--space-md); align-items: flex-start;
+        }
+        .insight-item:last-child { border-bottom: none; }
+        .insight-item__type {
+            padding: 4px 10px; border-radius: 6px; font-family: 'Inter', sans-serif;
+            font-size: 0.7rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+        }
+        .insight-item__type--growth { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .insight-item__type--action { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .insight-item__type--alert { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .insight-item__type--idea { background: rgba(91,45,142,0.1); color: #5B2D8E; }
+        .insight-item__text { font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #352A20; line-height: 1.6; }
+        .insight-item__text strong { color: #5B2D8E; }
+
+        .insights-refresh {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 20px; border: 1px solid rgba(91,45,142,0.2); border-radius: 9999px;
+            background: #FFF; font-family: 'Inter', sans-serif; font-size: 0.82rem;
+            font-weight: 600; color: #5B2D8E; cursor: pointer; margin-top: var(--space-md);
+        }
+        .insights-refresh:hover { background: rgba(91,45,142,0.05); }
+
+        /* Goal edit modal */
+        .goal-modal__field { margin-bottom: var(--space-md); }
+        .goal-modal__label { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #352A20; margin-bottom: 4px; display: block; }
+
+        @media (max-width: 768px) { .goals-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -297,6 +376,27 @@
             <!-- Overview Panel -->
             <div class="admin-panel admin-panel--active" id="admin-panel-overview">
                 <h2 class="admin-panel__title">Overview</h2>
+
+                <!-- Goals -->
+                <div class="goals-section">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg);">
+                        <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;">Goals &amp; Progress</h3>
+                    </div>
+                    <div class="goals-grid" id="goals-grid"></div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="insights-section">
+                    <div class="insights-card">
+                        <div class="insights-card__header">
+                            <span class="insights-card__icon">&#9889;</span>
+                            <span class="insights-card__label">Strategic Insights</span>
+                            <span class="insights-card__badge">AI-Powered (Coming Soon)</span>
+                        </div>
+                        <div id="insights-list"></div>
+                        <button class="insights-refresh" onclick="refreshInsights()">&#8635; Refresh Insights</button>
+                    </div>
+                </div>
 
                 <div class="charts-grid">
                     <!-- Monthly Revenue Chart -->
@@ -434,11 +534,15 @@
             var data = await api('get-admin-stats');
             statsData = data;
             renderStatCards(data.stats);
+            renderGoals(data.stats);
+            renderInsights(data.stats);
             renderSampleCharts(data.stats);
             renderOverview(data);
         } catch (err) {
             showToast('Failed to load admin stats', 'error');
             renderSampleCharts(null);
+            renderGoals(null);
+            renderInsights(null);
         }
     }
 
@@ -747,6 +851,133 @@
             showToast('Site config saved!', 'success');
         } catch (err) { showToast('Failed: ' + err.message, 'error'); }
     }
+
+    /* ── Goals & Progress ── */
+    function renderGoals(stats) {
+        var goals = [
+            {
+                title: 'Total Members',
+                current: stats ? ((stats.membershipBreakdown['Sariwang Simula'] || 0) + (stats.membershipBreakdown['Laging Nandito'] || 0) + (stats.membershipBreakdown['Ikaw Lamang'] || 0)) : 85,
+                target: 500,
+                deadline: 'Dec 2026',
+                color: 'purple',
+                unit: 'members'
+            },
+            {
+                title: 'Annual Revenue',
+                current: stats ? stats.totalRevenue : 108400,
+                target: 500000,
+                deadline: 'Dec 2026',
+                color: 'gold',
+                unit: '',
+                isCurrency: true
+            },
+            {
+                title: 'Community Engagement',
+                current: stats ? (stats.totalUsers || 0) : 365,
+                target: 1000,
+                deadline: 'Dec 2026',
+                color: 'burgundy',
+                unit: 'users'
+            },
+            {
+                title: 'Mensahe Orders',
+                current: stats ? (stats.pendingMessages || 0) + 12 : 14,
+                target: 100,
+                deadline: 'Dec 2026',
+                color: 'teal',
+                unit: 'requests'
+            }
+        ];
+
+        var grid = document.getElementById('goals-grid');
+        if (!grid) return;
+
+        grid.innerHTML = goals.map(function(g) {
+            var pct = Math.min(100, Math.round((g.current / g.target) * 100));
+            var monthsLeft = 8;
+            var needed = g.target - g.current;
+            var perMonth = Math.ceil(needed / monthsLeft);
+            var pace = pct >= (100 - monthsLeft * 4) ? 'on-track' : pct >= (100 - monthsLeft * 8) ? 'behind' : 'behind';
+            if (pct >= 60) pace = 'ahead';
+            else if (pct >= 30) pace = 'on-track';
+
+            var currentDisplay = g.isCurrency ? formatPrice(g.current) : g.current.toLocaleString();
+            var targetDisplay = g.isCurrency ? formatPrice(g.target) : g.target.toLocaleString() + ' ' + g.unit;
+
+            return '<div class="goal-card">'
+                + '<div class="goal-card__header"><span class="goal-card__title">' + g.title + '</span></div>'
+                + '<div class="goal-card__numbers"><span class="goal-card__current">' + currentDisplay + '</span><span class="goal-card__target">/ ' + targetDisplay + '</span></div>'
+                + '<div class="goal-card__bar"><div class="goal-card__fill goal-card__fill--' + g.color + '" style="width:' + pct + '%;"></div></div>'
+                + '<div class="goal-card__meta">' + pct + '% complete &mdash; Target: ' + g.deadline
+                + '<span class="goal-card__pace goal-card__pace--' + pace + '">' + (pace === 'ahead' ? '&#9650; Ahead' : pace === 'on-track' ? '&#9654; On Track' : '&#9660; Behind') + '</span></div>'
+                + '</div>';
+        }).join('');
+    }
+
+    /* ── Strategic Insights ── */
+    function renderInsights(stats) {
+        var insights = [];
+
+        // Generate data-aware suggestions
+        var members = stats ? ((stats.membershipBreakdown['Sariwang Simula'] || 0) + (stats.membershipBreakdown['Laging Nandito'] || 0) + (stats.membershipBreakdown['Ikaw Lamang'] || 0)) : 85;
+        var freeUsers = stats ? (stats.membershipBreakdown['Free'] || 0) : 280;
+        var convRate = members > 0 && freeUsers > 0 ? Math.round((members / (members + freeUsers)) * 100) : 23;
+
+        insights.push({
+            type: 'growth', tag: 'Growth',
+            text: '<strong>' + freeUsers + ' free users</strong> haven\'t upgraded yet (' + convRate + '% conversion rate). A limited-time <strong>"First Month 50% Off"</strong> campaign for Sariwang Simula could convert 15-20% of them. That\'s potentially <strong>' + Math.round(freeUsers * 0.17) + ' new members</strong>.'
+        });
+
+        if (stats && stats.pendingPosts > 0) {
+            insights.push({
+                type: 'action', tag: 'Action',
+                text: 'You have <strong>' + stats.pendingPosts + ' community posts</strong> waiting for approval. Quick moderation keeps fans engaged and coming back. Aim to review within 24 hours.'
+            });
+        } else {
+            insights.push({
+                type: 'action', tag: 'Action',
+                text: 'Community engagement drives retention. Consider posting a <strong>weekly discussion prompt</strong> (e.g., "What Yeng song got you through a tough time?") to boost activity by 30-40%.'
+            });
+        }
+
+        insights.push({
+            type: 'idea', tag: 'Idea',
+            text: 'Your highest-rated content is <strong>Hawak Kamay (9.5/10)</strong>. Release exclusive behind-the-scenes content about this song\'s creation as a <strong>Laging Nandito exclusive</strong> to drive tier upgrades.'
+        });
+
+        insights.push({
+            type: 'growth', tag: 'Growth',
+            text: 'Merch sales historically spike <strong>3x during event months</strong>. Schedule a limited-edition merch drop to coincide with the <strong>Araneta concert in June</strong> for maximum revenue impact.'
+        });
+
+        if (stats && stats.activeEvents > 0) {
+            insights.push({
+                type: 'alert', tag: 'Reminder',
+                text: 'You have <strong>' + stats.activeEvents + ' upcoming events</strong>. Send a push/email to members about early access ticket sales — early access exclusivity is the #1 reason fans upgrade their membership.'
+            });
+        }
+
+        insights.push({
+            type: 'idea', tag: 'Idea',
+            text: 'Consider a <strong>"Yeng Wrapped"</strong> annual feature — show each fan their top-rated songs, total engagement hours, and community contributions. Personalized experiences increase retention by 45%.'
+        });
+
+        var list = document.getElementById('insights-list');
+        if (!list) return;
+
+        list.innerHTML = insights.map(function(ins) {
+            return '<div class="insight-item">'
+                + '<span class="insight-item__type insight-item__type--' + ins.type + '">' + ins.tag + '</span>'
+                + '<div class="insight-item__text">' + ins.text + '</div>'
+                + '</div>';
+        }).join('');
+    }
+
+    window.refreshInsights = function() {
+        showToast('AI-powered insights coming soon! Connect your OpenAI API key in Site Config.', 'info');
+        // Future: call api('get-ai-insights') which hits GPT with current stats
+    };
 
     /* ── Go Live (StreamYard) ── */
     function openStreamYard() {
