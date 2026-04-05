@@ -12,17 +12,17 @@
     <style>
         /* ── Yeng Covers Page — Custom Properties ── */
         :root {
-            --yeng-purple: #5B2D8E;
-            --yeng-gold: #D4A547;
-            --yeng-burgundy: #8B2252;
-            --yeng-offwhite: #FBF7F2;
+            --yeng-purple: #6C2BD9;
+            --yeng-gold: #E5A00D;
+            --yeng-burgundy: #BE185D;
+            --yeng-offwhite: #FAFAFC;
             --yeng-font-display: 'Playfair Display', serif;
             --yeng-font-body: 'Inter', sans-serif;
             --yeng-font-accent: 'Caveat', cursive;
-            --yeng-gradient-primary: linear-gradient(135deg, #5B2D8E, #8B2252, #D4A547);
-            --yeng-gradient-cta: linear-gradient(135deg, #5B2D8E, #7E4FB5);
-            --yeng-gradient-warm: linear-gradient(135deg, #D4A547, #8B2252, #5B2D8E);
-            --yeng-gradient-dark: linear-gradient(135deg, #231A12, #352A20);
+            --yeng-gradient-primary: linear-gradient(135deg, #6C2BD9, #BE185D, #E5A00D);
+            --yeng-gradient-cta: linear-gradient(135deg, #6C2BD9, #8B5CF6);
+            --yeng-gradient-warm: linear-gradient(135deg, #E5A00D, #BE185D, #6C2BD9);
+            --yeng-gradient-dark: linear-gradient(135deg, #1A1A2E, #27273A);
         }
 
         /* ── Hero ── */
@@ -38,7 +38,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(229,160,13,0.04)'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -117,14 +117,14 @@
             font-family: var(--yeng-font-display);
             font-size: 2.2rem;
             font-weight: 800;
-            color: #352A20;
+            color: #27273A;
             margin-bottom: var(--space-sm);
         }
 
         .hall-of-fame__subtitle {
             font-family: var(--yeng-font-body);
             font-size: 1rem;
-            color: #8E7F70;
+            color: #71718A;
             max-width: 500px;
             margin: 0 auto;
         }
@@ -155,7 +155,7 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: linear-gradient(135deg, #D4A547, #C68B1E);
+            background: linear-gradient(135deg, #E5A00D, #D97706);
             color: #FFFFFF;
             padding: 4px 12px;
             border-radius: var(--radius-full);
@@ -219,14 +219,14 @@
             font-family: var(--yeng-font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: #352A20;
+            color: #27273A;
             margin-bottom: 4px;
         }
 
         .hall-of-fame__card-performer {
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
-            color: #8E7F70;
+            color: #71718A;
             margin-bottom: var(--space-sm);
         }
 
@@ -240,7 +240,7 @@
         .hall-of-fame__empty {
             text-align: center;
             padding: var(--space-3xl);
-            color: #8E7F70;
+            color: #71718A;
             font-family: var(--yeng-font-body);
         }
 
@@ -307,7 +307,7 @@
         .submit-panel__note {
             font-family: var(--yeng-font-body);
             font-size: 0.8rem;
-            color: #8E7F70;
+            color: #71718A;
             margin-top: var(--space-md);
             text-align: center;
         }
@@ -319,14 +319,14 @@
 
         .submit-panel__guest p {
             font-family: var(--yeng-font-body);
-            color: #8E7F70;
+            color: #71718A;
             margin-bottom: var(--space-md);
         }
 
         /* Form override colors for Yeng theme */
         .covers-form .form-label {
             font-family: var(--yeng-font-display);
-            color: #352A20;
+            color: #27273A;
         }
 
         .covers-form .form-input:focus,
@@ -368,7 +368,7 @@
             font-family: var(--yeng-font-body);
             font-size: 0.75rem;
             font-weight: 600;
-            color: #8E7F70;
+            color: #71718A;
             white-space: nowrap;
         }
 
@@ -379,11 +379,11 @@
             flex-shrink: 0;
         }
 
-        .status-dot--submitted { background: #8E7F70; }
+        .status-dot--submitted { background: #71718A; }
         .status-dot--review { background: var(--yeng-purple); }
         .status-dot--featured { background: var(--yeng-burgundy); }
         .status-dot--shared { background: var(--yeng-gold); }
-        .status-dot--hof { background: linear-gradient(135deg, #D4A547, #C68B1E); }
+        .status-dot--hof { background: linear-gradient(135deg, #E5A00D, #D97706); }
 
         .status-pipeline__arrow {
             color: #C4B8AA;
@@ -425,7 +425,7 @@
             font-family: var(--yeng-font-display);
             font-weight: 700;
             font-size: 0.8rem;
-            color: #8E7F70;
+            color: #71718A;
             white-space: nowrap;
         }
 
@@ -435,7 +435,7 @@
             border-radius: var(--radius-full);
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
-            color: #352A20;
+            color: #27273A;
             background: #FFFFFF;
             cursor: pointer;
             appearance: none;
@@ -454,7 +454,7 @@
             font-family: var(--yeng-font-body);
             font-weight: 600;
             font-size: 0.8rem;
-            color: #8E7F70;
+            color: #71718A;
             background: none;
             border: 2px solid transparent;
             border-radius: var(--radius-full);
@@ -513,7 +513,7 @@
             position: relative;
             aspect-ratio: 16/9;
             overflow: hidden;
-            background: #231A12;
+            background: #1A1A2E;
         }
 
         .cover-card__video img {
@@ -579,14 +579,14 @@
             font-family: var(--yeng-font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: #352A20;
+            color: #27273A;
             margin-bottom: 4px;
         }
 
         .cover-card__meta-text {
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
-            color: #8E7F70;
+            color: #71718A;
             margin-bottom: var(--space-sm);
         }
 
@@ -621,7 +621,7 @@
             border: 2px solid rgba(91, 45, 142, 0.15);
             border-radius: var(--radius-full);
             background: none;
-            color: #8E7F70;
+            color: #71718A;
             font-family: var(--yeng-font-body);
             font-weight: 600;
             font-size: 0.85rem;
@@ -662,7 +662,7 @@
 
         .covers-empty__text {
             font-family: var(--yeng-font-body);
-            color: #8E7F70;
+            color: #71718A;
             max-width: 400px;
             margin: 0 auto;
         }
@@ -791,16 +791,12 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
-                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link nav__link--active">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
-                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
-                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
-                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -847,15 +843,6 @@
                         <span class="submit-panel__trigger-icon">+</span>
                     </button>
                     <div class="submit-panel__form">
-                        <div style="background: rgba(91,45,142,0.06); border: 1px solid rgba(91,45,142,0.15); border-radius: var(--radius-md, 12px); padding: 1.5rem; margin-bottom: 1.5rem;">
-                            <h4 style="font-family: var(--yeng-font-display); font-size: 1rem; font-weight: 700; color: var(--yeng-purple); margin-bottom: 0.5rem;">Community Guidelines</h4>
-                            <ul style="font-family: var(--yeng-font-body); font-size: 0.85rem; color: #6B5D50; line-height: 1.8; list-style: none; padding: 0; margin: 0;">
-                                <li style="padding: 4px 0;">&#10003; Covers must be hosted on YouTube, TikTok, or SoundCloud</li>
-                                <li style="padding: 4px 0;">&#10003; Content must be appropriate and music-related</li>
-                                <li style="padding: 4px 0;">&#10003; All submissions are reviewed by admin before going live</li>
-                                <li style="padding: 4px 0;">&#10003; Inappropriate content will be removed and account may be restricted</li>
-                            </ul>
-                        </div>
                         <form class="covers-form" id="cover-form" onsubmit="submitCover(event)">
                             <div class="form-group">
                                 <label class="form-label" for="cover-url">Video URL (YouTube or TikTok) *</label>
@@ -978,20 +965,20 @@
                     <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
                     <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
                     <div class="footer__socials">
-                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
-                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
-                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
-                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
-                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify">SP</a>
                     </div>
                 </div>
-                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
-                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
-                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9835;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#E5A00D;">Salamat sa suporta! &#9835;</span>
             </div>
         </div>
     </footer>
@@ -1082,11 +1069,11 @@
             }
 
             const statusColors = {
-                'Submitted': '#8E7F70',
-                'Under Review': '#5B2D8E',
-                'Featured on Site': '#8B2252',
-                'Shared by Yeng': '#D4A547',
-                'Hall of Fame': '#C68B1E'
+                'Submitted': '#71718A',
+                'Under Review': '#6C2BD9',
+                'Featured on Site': '#BE185D',
+                'Shared by Yeng': '#E5A00D',
+                'Hall of Fame': '#D97706'
             };
 
             const userId = Auth.isLoggedIn() ? (Auth.getUser() || {}).id : null;
@@ -1098,7 +1085,7 @@
                     : 'https://placehold.co/640x360/5B2D8E/D4A547?text=%E2%99%AA+Cover';
                 const upvotedBy = Array.isArray(cover.upvotedBy) ? cover.upvotedBy : [];
                 const hasVoted = userId && upvotedBy.indexOf(userId) !== -1;
-                const statusColor = statusColors[cover.status] || '#8E7F70';
+                const statusColor = statusColors[cover.status] || '#71718A';
                 const performer = (cover.user && cover.user.name) ? cover.user.name : 'Anonymous';
                 const songTitle = cover.songTitle || 'Yeng Song';
                 const styleText = cover.arrangementStyle || '';

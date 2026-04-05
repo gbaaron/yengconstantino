@@ -12,21 +12,21 @@
     <style>
         /* ── Yeng Merch Page — Custom Properties ── */
         :root {
-            --yc-purple: #5B2D8E;
-            --yc-purple-light: #7E4FB5;
+            --yc-purple: #6C2BD9;
+            --yc-purple-light: #8B5CF6;
             --yc-purple-glow: rgba(91, 45, 142, 0.15);
-            --yc-gold: #D4A547;
-            --yc-gold-light: #E8C36B;
-            --yc-burgundy: #8B2252;
-            --yc-bg: #FBF7F2;
+            --yc-gold: #E5A00D;
+            --yc-gold-light: #FBBF24;
+            --yc-burgundy: #BE185D;
+            --yc-bg: #FAFAFC;
             --yc-font-display: 'Playfair Display', serif;
             --yc-font-body: 'Inter', sans-serif;
             --yc-font-accent: 'Caveat', cursive;
-            --yc-gradient-primary: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
-            --yc-gradient-cta: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
-            --yc-gradient-gold: linear-gradient(135deg, #D4A547 0%, #C68B1E 100%);
-            --yc-gradient-warm: linear-gradient(135deg, #D4A547 0%, #8B2252 50%, #5B2D8E 100%);
-            --yc-gradient-dark: linear-gradient(135deg, #231A12 0%, #352A20 100%);
+            --yc-gradient-primary: linear-gradient(135deg, #6C2BD9 0%, #BE185D 50%, #E5A00D 100%);
+            --yc-gradient-cta: linear-gradient(135deg, #6C2BD9 0%, #8B5CF6 100%);
+            --yc-gradient-gold: linear-gradient(135deg, #E5A00D 0%, #D97706 100%);
+            --yc-gradient-warm: linear-gradient(135deg, #E5A00D 0%, #BE185D 50%, #6C2BD9 100%);
+            --yc-gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #27273A 100%);
         }
 
         body {
@@ -153,7 +153,7 @@
             top: -4px;
             right: -4px;
             background: var(--yc-gold);
-            color: #231A12;
+            color: #1A1A2E;
             font-family: var(--yc-font-body);
             font-weight: 700;
             font-size: 0.75rem;
@@ -451,7 +451,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: #231A12;
+            color: #1A1A2E;
             margin-bottom: var(--space-sm);
             line-height: 1.3;
         }
@@ -573,7 +573,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.4rem;
             font-weight: 700;
-            color: #231A12;
+            color: #1A1A2E;
         }
 
         .cart-sidebar__close {
@@ -633,7 +633,7 @@
             font-family: var(--yc-font-display);
             font-size: 0.9rem;
             font-weight: 600;
-            color: #231A12;
+            color: #1A1A2E;
             margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
@@ -686,7 +686,7 @@
             font-family: var(--yc-font-body);
             font-weight: 600;
             font-size: 0.85rem;
-            color: #231A12;
+            color: #1A1A2E;
         }
 
         .cart-item__price {
@@ -810,7 +810,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.5rem;
             font-weight: 700;
-            color: #231A12;
+            color: #1A1A2E;
         }
 
         .checkout-modal__close {
@@ -861,7 +861,7 @@
             font-family: var(--yc-font-display);
             font-size: 1rem;
             font-weight: 700;
-            color: #231A12;
+            color: #1A1A2E;
             margin-bottom: var(--space-md);
         }
 
@@ -889,7 +889,7 @@
             width: 100%;
             padding: 16px 24px;
             background: var(--yc-gradient-gold);
-            color: #231A12;
+            color: #1A1A2E;
             font-family: var(--yc-font-body);
             font-weight: 700;
             font-size: 1rem;
@@ -928,7 +928,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.5rem;
             font-weight: 700;
-            color: #231A12;
+            color: #1A1A2E;
             margin-bottom: var(--space-sm);
         }
 
@@ -985,16 +985,12 @@
             <li><a href="/" class="nav__link">Home</a></li>
             <li><a href="/music.html" class="nav__link">Music</a></li>
             <li><a href="/community.html" class="nav__link">Community</a></li>
-            <li><a href="/events.html" class="nav__link">Events</a></li>
             <li><a href="/merch.html" class="nav__link nav__link--active">Merch</a></li>
             <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
             <li><a href="/membership.html" class="nav__link">Membership</a></li>
-            <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
             <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
             <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
             <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
-            <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
-            <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
             <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
         </ul>
     </div>
@@ -1144,16 +1140,16 @@
                 <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
                 <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
                 <div class="footer__socials">
-                    <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
-                    <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
-                    <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
-                    <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
-                    <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube">YT</a>
+                    <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram">IG</a>
+                    <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook">FB</a>
+                    <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok">TK</a>
+                    <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify">SP</a>
                 </div>
             </div>
-            <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
-            <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
-            <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+            <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+            <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
         </div>
         <div class="footer__bottom">
             <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>

@@ -12,19 +12,19 @@
     <style>
         /* ── Music Page — Color System Overrides ── */
         :root {
-            --primary: #5B2D8E;
-            --primary-light: #7E4FB5;
+            --primary: #6C2BD9;
+            --primary-light: #8B5CF6;
             --primary-glow: rgba(91, 45, 142, 0.15);
-            --gold: #D4A547;
-            --gold-light: #E8C36B;
-            --burgundy: #8B2252;
-            --burgundy-light: #A83B6B;
-            --bg-off-white: #FBF7F2;
+            --gold: #E5A00D;
+            --gold-light: #FBBF24;
+            --burgundy: #BE185D;
+            --burgundy-light: #DB2777;
+            --bg-off-white: #FAFAFC;
             --font-display: 'Playfair Display', serif;
             --font-body: 'Inter', sans-serif;
             --font-accent: 'Caveat', cursive;
-            --gradient-primary: linear-gradient(135deg, #5B2D8E 0%, #8B2252 50%, #D4A547 100%);
-            --gradient-cta: linear-gradient(135deg, #5B2D8E 0%, #7E4FB5 100%);
+            --gradient-primary: linear-gradient(135deg, #6C2BD9 0%, #BE185D 50%, #E5A00D 100%);
+            --gradient-cta: linear-gradient(135deg, #6C2BD9 0%, #8B5CF6 100%);
             --shadow-warm-sm: 0 2px 8px rgba(212, 165, 71, 0.10);
             --shadow-warm-md: 0 4px 20px rgba(212, 165, 71, 0.14);
             --shadow-warm-lg: 0 8px 40px rgba(212, 165, 71, 0.18);
@@ -33,7 +33,7 @@
 
         /* ── Music Hero ── */
         .music-hero {
-            background: linear-gradient(135deg, #1a0a2e 0%, #2d1245 40%, #3d1a3d 70%, #2a1535 100%);
+            background: linear-gradient(135deg, #1a0a2e 0%, #2D1B69 40%, #3d1a3d 70%, #2a1535 100%);
             padding: 140px 0 60px;
             text-align: center;
             position: relative;
@@ -153,11 +153,11 @@
             box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
         }
 
-        /* ── Filter Section ── */
+        /* ── Filter Bar ── */
         .filter-section {
             background: var(--white);
             border-bottom: 1px solid var(--gray-100);
-            padding: var(--space-lg) 0;
+            padding: var(--space-sm) 0;
             position: sticky;
             top: 72px;
             z-index: 100;
@@ -165,33 +165,44 @@
 
         .filter-section__inner {
             display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .filter-section__inner::-webkit-scrollbar {
+            display: none;
         }
 
         .filter-group {
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
-            flex-wrap: wrap;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .filter-group + .filter-group {
+            margin-left: var(--space-xs);
+            padding-left: var(--space-sm);
+            border-left: 1px solid var(--gray-100);
         }
 
         .filter-group__label {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--gray-400);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--gray-300);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            min-width: 70px;
+            letter-spacing: 0.06em;
+            margin-right: 4px;
             flex-shrink: 0;
         }
 
         .filter-group__pills {
             display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            overflow-x: auto;
+            gap: 2px;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
@@ -201,13 +212,13 @@
         }
 
         .filter-tab {
-            padding: 8px 18px;
+            padding: 6px 14px;
             font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.82rem;
-            color: var(--gray-500);
+            font-weight: 500;
+            font-size: 0.78rem;
+            color: var(--gray-400);
             background: none;
-            border: 2px solid transparent;
+            border: none;
             border-radius: var(--radius-full);
             cursor: pointer;
             transition: all var(--transition-fast);
@@ -220,35 +231,41 @@
         }
 
         .filter-tab--active {
-            color: var(--white);
-            background: var(--gradient-cta);
-            border-color: transparent;
+            color: var(--primary);
+            background: var(--primary-glow);
+            font-weight: 700;
         }
 
         .filter-tab--active:hover {
-            color: var(--white);
-            background: var(--gradient-cta);
+            color: var(--primary);
+            background: var(--primary-glow);
         }
 
         .filter-group--sort {
             margin-left: auto;
+            padding-left: var(--space-sm);
+            border-left: 1px solid var(--gray-100);
+        }
+
+        .filter-group--sort .filter-group__label {
+            display: none;
         }
 
         .form-select {
-            padding: 8px 32px 8px 14px;
+            padding: 6px 28px 6px 12px;
             font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.82rem;
-            color: var(--gray-600);
+            font-weight: 500;
+            font-size: 0.78rem;
+            color: var(--gray-500);
             background: var(--white);
-            border: 2px solid var(--gray-200);
+            border: 1px solid var(--gray-200);
             border-radius: var(--radius-full);
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B5B7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2371718A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 10px center;
             transition: all var(--transition-fast);
         }
 
@@ -259,7 +276,7 @@
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
         /* ── Results Bar ── */
@@ -308,7 +325,7 @@
             min-height: 60vh;
         }
 
-        /* ── Music Card ── */
+        /* ── Music Card (shared) ── */
         .music-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -329,25 +346,167 @@
             transform: translateY(-4px);
         }
 
-        .music-card__thumb {
+        /* ── Video Card ── */
+        .music-card--video .music-card__thumb {
             position: relative;
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #2d1245 0%, #5B2D8E 50%, #8B2252 100%);
+            background: linear-gradient(135deg, #2D1B69 0%, #6C2BD9 50%, #BE185D 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        .music-card__thumb img {
+        .music-card--video .music-card__thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
+        .music-card--video .music-card__play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .music-card--video:hover .music-card__play-overlay {
+            opacity: 1;
+        }
+
+        .music-card__play-btn {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform var(--transition-fast);
+        }
+
+        .music-card--video:hover .music-card__play-btn {
+            transform: scale(1.1);
+        }
+
+        .music-card__play-btn::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent var(--primary);
+            margin-left: 3px;
+        }
+
         .music-card__thumb-icon {
             font-size: 3rem;
             color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ── Audio Card ── */
+        .music-card--audio {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .music-card--audio:hover {
+            transform: translateY(-2px);
+        }
+
+        .music-card--audio .music-card__art {
+            width: 100px;
+            min-height: 100px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #2D1B69 0%, #6C2BD9 50%, #BE185D 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-card--audio .music-card__art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .music-card--audio .music-card__art-icon {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .music-card--audio .music-card__body {
+            flex: 1;
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .music-card--audio .music-card__title {
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .music-card--audio .music-card__desc {
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            -webkit-line-clamp: 1;
+        }
+
+        .music-card--audio .music-card__meta {
+            margin-top: 4px;
+            font-size: 0.75rem;
+        }
+
+        .music-card--audio .music-card__links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .music-card__link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: var(--font-body);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .music-card__link-btn--spotify {
+            background: rgba(30, 215, 96, 0.12);
+            color: #1DB954;
+        }
+
+        .music-card__link-btn--spotify:hover {
+            background: #1DB954;
+            color: var(--white);
+        }
+
+        .music-card__link-btn--youtube {
+            background: rgba(255, 0, 0, 0.1);
+            color: #FF0000;
+        }
+
+        .music-card__link-btn--youtube:hover {
+            background: #FF0000;
+            color: var(--white);
         }
 
         .music-card__badge {
@@ -365,7 +524,7 @@
         }
 
         .music-card__badge--purple { background: var(--primary); }
-        .music-card__badge--gold { background: var(--gold); color: #2d1245; }
+        .music-card__badge--gold { background: var(--gold); color: #2D1B69; }
         .music-card__badge--burgundy { background: var(--burgundy); }
         .music-card__badge--green { background: #22c55e; }
 
@@ -378,7 +537,7 @@
             font-size: 0.85rem;
             border-radius: var(--radius-full);
             background: rgba(212, 165, 71, 0.9);
-            color: #2d1245;
+            color: #2D1B69;
             font-weight: 700;
         }
 
@@ -649,7 +808,7 @@
         .rating-btn--selected[data-value="3"] { background: var(--burgundy); }
         .rating-btn--selected[data-value="4"],
         .rating-btn--selected[data-value="5"],
-        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2d1245; }
+        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2D1B69; }
         .rating-btn--selected[data-value="7"],
         .rating-btn--selected[data-value="8"] { background: #22c55e; }
         .rating-btn--selected[data-value="9"],
@@ -771,23 +930,25 @@
             .music-grid {
                 grid-template-columns: 1fr;
             }
-            .filter-group {
-                flex-direction: column;
-                align-items: flex-start;
+            .music-card--audio .music-card__art {
+                width: 80px;
+                min-height: 80px;
             }
-            .filter-group__pills {
-                width: 100%;
+            .filter-group__label {
+                display: none;
             }
-            .filter-section__inner {
-                gap: var(--space-sm);
+            .filter-group + .filter-group {
+                border-left: none;
+                margin-left: 0;
+                padding-left: 0;
+            }
+            .filter-group--sort {
+                border-left: none;
             }
             .results-bar {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: var(--space-sm);
-            }
-            .filter-group--sort {
-                margin-left: 0;
             }
         }
 
@@ -817,179 +978,6 @@
                 font-size: 0.85rem;
             }
         }
-
-        /* ── Music Detail Modal ── */
-        .music-detail-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(19, 14, 8, 0.7);
-            backdrop-filter: blur(8px);
-            z-index: 9998;
-            justify-content: center;
-            align-items: flex-start;
-            padding: var(--space-xl);
-            overflow-y: auto;
-        }
-        .music-detail-overlay--active { display: flex; }
-        .music-detail {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            max-width: 800px;
-            width: 100%;
-            margin: 80px auto;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
-            animation: ratingModalIn 0.3s ease;
-            overflow: hidden;
-        }
-        .music-detail__player {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #1a0a2e;
-        }
-        .music-detail__player iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .music-detail__player-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: rgba(255,255,255,0.15);
-        }
-        .music-detail__player-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .music-detail__body { padding: var(--space-2xl); }
-        .music-detail__close {
-            position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0,0,0,0.5);
-            color: #fff;
-            font-size: 1.3rem;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .music-detail__close:hover { background: rgba(0,0,0,0.7); }
-        .music-detail__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--space-md); }
-        .music-detail__title {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--gray-800);
-            margin-bottom: var(--space-sm);
-        }
-        .music-detail__desc {
-            font-family: var(--font-body);
-            font-size: 0.95rem;
-            color: var(--gray-500);
-            line-height: 1.7;
-            margin-bottom: var(--space-xl);
-        }
-        .music-detail__links { display: flex; gap: var(--space-md); margin-bottom: var(--space-xl); }
-        .music-detail__link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border-radius: 9999px;
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.82rem;
-            transition: all 150ms ease;
-        }
-        .music-detail__link--spotify { background: rgba(30,215,96,0.12); color: #1DB954; }
-        .music-detail__link--spotify:hover { background: rgba(30,215,96,0.2); }
-        .music-detail__link--youtube { background: rgba(255,0,0,0.08); color: #FF0000; }
-        .music-detail__link--youtube:hover { background: rgba(255,0,0,0.15); }
-
-        /* Dual Rating Section */
-        .music-detail__ratings { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl); }
-        .rating-section { background: var(--gray-50); border-radius: var(--radius-md); padding: var(--space-lg); }
-        .rating-section__title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--gray-700); margin-bottom: var(--space-sm); }
-        .rating-section__avg { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--gold); }
-        .rating-section__count { font-size: 0.75rem; color: var(--gray-400); }
-        .rating-section__grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: var(--space-md); }
-        .rating-section__btn {
-            aspect-ratio: 1;
-            border-radius: 50%;
-            border: 2px solid var(--gray-200);
-            background: var(--white);
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: var(--gray-400);
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-        .rating-section__btn:hover { transform: scale(1.1); border-color: var(--gray-300); }
-        .rating-section__btn--selected { border-color: transparent; color: var(--white); transform: scale(1.1); }
-        .rating-section__btn--selected.rs-low { background: var(--burgundy); }
-        .rating-section__btn--selected.rs-mid { background: var(--gold); color: #2d1245; }
-        .rating-section__btn--selected.rs-high { background: var(--primary); }
-
-        /* Review Form */
-        .review-form { margin-bottom: var(--space-xl); }
-        .review-form__textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius-md);
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            min-height: 80px;
-            resize: vertical;
-            color: var(--gray-700);
-        }
-        .review-form__textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-        .review-form__actions { display: flex; gap: var(--space-md); align-items: center; margin-top: var(--space-sm); }
-
-        /* Reviews List */
-        .reviews-list { margin-top: var(--space-xl); }
-        .reviews-list__title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--gray-700); margin-bottom: var(--space-md); }
-        .review-item { padding: var(--space-md) 0; border-bottom: 1px solid var(--gray-100); }
-        .review-item__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .review-item__user { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--gray-700); }
-        .review-item__rating { color: var(--gold); font-weight: 700; font-size: 0.85rem; }
-        .review-item__text { font-family: var(--font-body); font-size: 0.88rem; color: var(--gray-500); line-height: 1.6; }
-        .review-item__date { font-size: 0.75rem; color: var(--gray-400); margin-top: 4px; }
-
-        /* Favorite button */
-        .fav-btn {
-            background: none;
-            border: 2px solid var(--gray-200);
-            border-radius: 9999px;
-            padding: 8px 20px;
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--gray-500);
-            cursor: pointer;
-            transition: all 150ms ease;
-        }
-        .fav-btn:hover { border-color: var(--burgundy); color: var(--burgundy); }
-        .fav-btn--active { background: rgba(139,34,82,0.1); border-color: var(--burgundy); color: var(--burgundy); }
-
-        @media (max-width: 768px) {
-            .music-detail { margin: 20px auto; }
-            .music-detail__ratings { grid-template-columns: 1fr; }
-            .music-detail__title { font-size: 1.4rem; }
-            .rating-section__grid { grid-template-columns: repeat(5, 1fr); }
-        }
     </style>
 </head>
 <body>
@@ -1004,16 +992,12 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link nav__link--active">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
-                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
-                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
-                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
-                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -1053,9 +1037,9 @@
                     <span class="filter-group__label">Category</span>
                     <div class="filter-group__pills" id="categoryFilters">
                         <button class="filter-tab filter-tab--active" data-category="all">All</button>
-                        <button class="filter-tab" data-category="Studio Recording">Studio Recording</button>
+                        <button class="filter-tab" data-category="Studio Recording">Audio Tracks</button>
+                        <button class="filter-tab" data-category="Music Video">Music Videos</button>
                         <button class="filter-tab" data-category="Live Performance">Live Performance</button>
-                        <button class="filter-tab" data-category="Music Video">Music Video</button>
                         <button class="filter-tab" data-category="Interview">Interview</button>
                         <button class="filter-tab" data-category="Behind the Scenes">Behind the Scenes</button>
                     </div>
@@ -1117,35 +1101,6 @@
         </div>
     </section>
 
-    <!-- ── Music Detail Modal ── -->
-    <div class="music-detail-overlay" id="detailModal">
-        <div class="music-detail" style="position:relative;">
-            <button class="music-detail__close" onclick="closeDetailModal()">&times;</button>
-            <div class="music-detail__player" id="detail-player"></div>
-            <div class="music-detail__body">
-                <div class="music-detail__badges" id="detail-badges"></div>
-                <h2 class="music-detail__title" id="detail-title"></h2>
-                <p class="music-detail__desc" id="detail-desc"></p>
-                <div class="music-detail__links" id="detail-links"></div>
-
-                <div class="music-detail__ratings" id="detail-ratings"></div>
-
-                <div class="review-form" id="review-form-section" style="display:none;">
-                    <textarea class="review-form__textarea" id="review-textarea" placeholder="Write your review... (optional)"></textarea>
-                    <div class="review-form__actions">
-                        <button class="btn btn--primary btn--sm" id="submit-rating-btn" onclick="submitDetailRating()">Submit Rating</button>
-                        <button class="fav-btn" id="fav-btn" onclick="toggleFavorite()">&#9825; Add to Favorites</button>
-                    </div>
-                </div>
-
-                <div class="reviews-list" id="detail-reviews">
-                    <h3 class="reviews-list__title">Fan Reviews</h3>
-                    <div id="reviews-container"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ── Rating Modal ── -->
     <div class="rating-modal-overlay" id="ratingModal">
         <div class="rating-modal">
@@ -1168,11 +1123,11 @@
                     <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
                     <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
                     <div class="footer__socials">
-                        <a href="#" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
-                        <a href="#" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
-                        <a href="#" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
-                        <a href="#" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
-                        <a href="#" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube" title="YouTube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram" title="Instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook" title="Facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok" title="TikTok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify" title="Spotify">SP</a>
                     </div>
                 </div>
                 <div>
@@ -1181,7 +1136,6 @@
                         <li><a href="/music.html">Music Archive</a></li>
                         <li><a href="/covers.html">Yeng Covers</a></li>
                         <li><a href="/community.html">Community</a></li>
-                        <li><a href="/events.html">Events</a></li>
                         <li><a href="/merch.html">Merch Store</a></li>
                     </ul>
                 </div>
@@ -1189,7 +1143,6 @@
                     <h4 class="footer__heading">Fan Hub</h4>
                     <ul class="footer__list">
                         <li><a href="/membership.html">Membership</a></li>
-                        <li><a href="/mensahe.html">Mensahe ni Yeng</a></li>
                         <li><a href="/profile.html">My Profile</a></li>
                         <li><a href="/signup.html">Join Yeng Nation</a></li>
                     </ul>
@@ -1197,10 +1150,10 @@
                 <div>
                     <h4 class="footer__heading">Connect</h4>
                     <ul class="footer__list">
-                        <li><a href="#" data-config-href="social_youtube">YouTube</a></li>
-                        <li><a href="#" data-config-href="social_instagram">Instagram</a></li>
-                        <li><a href="#" data-config-href="social_facebook">Facebook</a></li>
-                        <li><a href="#" data-config-href="social_spotify">Spotify</a></li>
+                        <li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li>
+                        <li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li>
+                        <li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li>
                     </ul>
                 </div>
             </div>
@@ -1288,10 +1241,26 @@
                 };
             }
 
-            // ── Build card HTML ──
-            function buildCard(item) {
-                var badgeColor = categoryBadgeMap[item.category] || 'purple';
+            // ── Determine if item is audio vs video ──
+            var audioCategories = ['Studio Recording'];
+            function isAudioItem(item) {
+                return audioCategories.indexOf(item.category) !== -1;
+            }
+
+            // ── Shared rating HTML ──
+            function buildRatingHtml(item) {
                 var userRating = userRatings[item.id];
+                var ratingDisplay = item.ratingCount > 0
+                    ? '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-num">' + item.avgRating.toFixed(1) + '</span> <span class="music-card__rating-count">(' + item.ratingCount + ')</span>'
+                    : '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-count">Rate</span>';
+                var userRatingHtml = userRating ? '<small>You: ' + userRating + '</small>' : '';
+                return '<span class="music-card__rating" onclick="openRatingModal(\'' + item.id + '\', \'' + item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">' +
+                    ratingDisplay + userRatingHtml + '</span>';
+            }
+
+            // ── Build video card ──
+            function buildVideoCard(item) {
+                var badgeColor = categoryBadgeMap[item.category] || 'purple';
                 var thumbContent = item.thumbnail
                     ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
                     : '<div class="music-card__thumb-icon">&#9835;</div>';
@@ -1300,17 +1269,12 @@
                     return '<span class="music-card__mood-tag">' + m + '</span>';
                 }).join('');
 
-                var ratingDisplay = item.ratingCount > 0
-                    ? '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-num">' + item.avgRating.toFixed(1) + '</span> <span class="music-card__rating-count">(' + item.ratingCount + ')</span>'
-                    : '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-count">Rate</span>';
+                var clickUrl = item.youtubeUrl ? ' onclick="window.open(\'' + item.youtubeUrl.replace(/'/g, "\\'") + '\', \'_blank\')"' : '';
 
-                var userRatingHtml = userRating
-                    ? '<small>You: ' + userRating + '</small>'
-                    : '';
-
-                return '<div class="music-card" data-id="' + item.id + '" onclick="openDetailModal(\'' + item.id + '\')" style="cursor:pointer;">' +
+                return '<div class="music-card music-card--video" data-id="' + item.id + '"' + clickUrl + '>' +
                     '<div class="music-card__thumb">' +
                         thumbContent +
+                        '<div class="music-card__play-overlay"><div class="music-card__play-btn"></div></div>' +
                         '<span class="music-card__badge music-card__badge--' + badgeColor + '">' + item.category + '</span>' +
                         (item.era ? '<span class="music-card__era">' + item.era + '</span>' : '') +
                     '</div>' +
@@ -1321,12 +1285,55 @@
                         '<div class="music-card__meta">' +
                             (item.year ? '<span>' + item.year + '</span>' : '') +
                             (item.duration ? '<span>' + item.duration + '</span>' : '') +
-                            '<span class="music-card__rating">' +
-                                ratingDisplay + userRatingHtml +
-                            '</span>' +
+                            buildRatingHtml(item) +
                         '</div>' +
                     '</div>' +
                 '</div>';
+            }
+
+            // ── Build audio card ──
+            function buildAudioCard(item) {
+                var artContent = item.thumbnail
+                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    : '<div class="music-card__art-icon">&#9835;</div>';
+
+                var moodHtml = item.mood.filter(Boolean).map(function(m) {
+                    return '<span class="music-card__mood-tag">' + m + '</span>';
+                }).join('');
+
+                var linksHtml = '';
+                if (item.spotifyUrl || item.youtubeUrl) {
+                    linksHtml = '<div class="music-card__links">';
+                    if (item.spotifyUrl) {
+                        linksHtml += '<a href="' + item.spotifyUrl + '" target="_blank" rel="noopener" class="music-card__link-btn music-card__link-btn--spotify" onclick="event.stopPropagation()">&#9654; Spotify</a>';
+                    }
+                    if (item.youtubeUrl) {
+                        linksHtml += '<a href="' + item.youtubeUrl + '" target="_blank" rel="noopener" class="music-card__link-btn music-card__link-btn--youtube" onclick="event.stopPropagation()">&#9654; YouTube</a>';
+                    }
+                    linksHtml += '</div>';
+                }
+
+                return '<div class="music-card music-card--audio" data-id="' + item.id + '">' +
+                    '<div class="music-card__art">' +
+                        artContent +
+                    '</div>' +
+                    '<div class="music-card__body">' +
+                        '<h3 class="music-card__title">' + item.title + '</h3>' +
+                        (item.description ? '<p class="music-card__desc">' + truncate(item.description, 60) + '</p>' : '') +
+                        '<div class="music-card__meta">' +
+                            (item.era ? '<span>' + item.era + '</span>' : '') +
+                            (item.year ? '<span>' + item.year + '</span>' : '') +
+                            (item.duration ? '<span>' + item.duration + '</span>' : '') +
+                            buildRatingHtml(item) +
+                        '</div>' +
+                        linksHtml +
+                    '</div>' +
+                '</div>';
+            }
+
+            // ── Build card HTML (dispatches to video or audio) ──
+            function buildCard(item) {
+                return isAudioItem(item) ? buildAudioCard(item) : buildVideoCard(item);
             }
 
             // ── Load content from API ──
@@ -1452,11 +1459,17 @@
 
             // ── Setup filter event listeners ──
             function setupFilters() {
-                // Era filter tabs
+                // Era filter tabs (toggle: click again to deselect back to All)
                 document.getElementById('eraFilters').addEventListener('click', function(e) {
                     var tab = e.target.closest('.filter-tab');
                     if (!tab) return;
-                    currentFilters.era = tab.dataset.era;
+                    var era = tab.dataset.era;
+                    // Toggle: if already active and not "All", go back to All
+                    if (era !== 'all' && currentFilters.era === era) {
+                        currentFilters.era = 'all';
+                    } else {
+                        currentFilters.era = era;
+                    }
                     currentPage = 1;
                     this.querySelectorAll('.filter-tab').forEach(function(t) {
                         t.classList.toggle('filter-tab--active', t.dataset.era === currentFilters.era);
@@ -1464,11 +1477,17 @@
                     loadContent();
                 });
 
-                // Category filter tabs
+                // Category filter tabs (toggle: click again to deselect back to All)
                 document.getElementById('categoryFilters').addEventListener('click', function(e) {
                     var tab = e.target.closest('.filter-tab');
                     if (!tab) return;
-                    currentFilters.category = tab.dataset.category;
+                    var cat = tab.dataset.category;
+                    // Toggle: if already active and not "All", go back to All
+                    if (cat !== 'all' && currentFilters.category === cat) {
+                        currentFilters.category = 'all';
+                    } else {
+                        currentFilters.category = cat;
+                    }
                     currentPage = 1;
                     this.querySelectorAll('.filter-tab').forEach(function(t) {
                         t.classList.toggle('filter-tab--active', t.dataset.category === currentFilters.category);
@@ -1642,10 +1661,10 @@
                 userRatings[ratingModalContentId] = ratingModalSelected;
 
                 try {
-                    var data = await api('rate-content', {
+                    var data = await api('rate-vlog', {
                         method: 'POST',
                         body: {
-                            contentId: ratingModalContentId,
+                            vlogId: ratingModalContentId,
                             rating: ratingModalSelected
                         }
                     });
@@ -1753,201 +1772,6 @@
                 if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
                     loadUserRatings();
                 }
-            });
-
-            // ── Detail Modal ──
-            var detailContentId = null;
-            var detailSongRating = 0;
-            var detailVideoRating = 0;
-
-            window.openDetailModal = function(contentId) {
-                var item = allContent.find(function(c) { return c.id === contentId; });
-                if (!item) return;
-                detailContentId = contentId;
-                detailSongRating = 0;
-                detailVideoRating = 0;
-
-                // Player
-                var playerEl = document.getElementById('detail-player');
-                var videoId = extractYouTubeId(item.youtubeUrl);
-                if (videoId) {
-                    playerEl.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?rel=0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
-                } else if (item.thumbnail) {
-                    playerEl.innerHTML = '<div class="music-detail__player-placeholder"><img src="' + item.thumbnail + '" alt="' + item.title + '"></div>';
-                } else {
-                    playerEl.innerHTML = '<div class="music-detail__player-placeholder">&#9835;</div>';
-                }
-
-                // Info
-                document.getElementById('detail-title').textContent = item.title;
-                document.getElementById('detail-desc').textContent = item.description || '';
-
-                // Badges
-                var badgesHtml = '<span class="music-card__badge music-card__badge--' + (categoryBadgeMap[item.category] || 'purple') + '" style="position:static;">' + item.category + '</span>';
-                if (item.era) badgesHtml += '<span class="music-card__era" style="position:static;">' + item.era + '</span>';
-                item.mood.forEach(function(m) { if (m) badgesHtml += '<span class="music-card__mood-tag">' + m + '</span>'; });
-                if (item.year) badgesHtml += '<span style="font-size:0.8rem;color:var(--gray-400);">' + item.year + '</span>';
-                if (item.duration) badgesHtml += '<span style="font-size:0.8rem;color:var(--gray-400);">' + item.duration + '</span>';
-                document.getElementById('detail-badges').innerHTML = badgesHtml;
-
-                // Links
-                var linksHtml = '';
-                if (item.youtubeUrl) linksHtml += '<a href="' + item.youtubeUrl + '" target="_blank" rel="noopener" class="music-detail__link music-detail__link--youtube">&#9654; YouTube</a>';
-                if (item.spotifyUrl) linksHtml += '<a href="' + item.spotifyUrl + '" target="_blank" rel="noopener" class="music-detail__link music-detail__link--spotify">&#9835; Spotify</a>';
-                document.getElementById('detail-links').innerHTML = linksHtml;
-
-                // Dual ratings
-                var ratingsHtml = buildRatingSection('Song', item.avgSongRating || item.avgRating || 0, item.songRatingCount || item.ratingCount || 0, 'song');
-                if (videoId) {
-                    ratingsHtml += buildRatingSection('Video', item.avgVideoRating || 0, item.videoRatingCount || 0, 'video');
-                }
-                document.getElementById('detail-ratings').innerHTML = ratingsHtml;
-
-                // Show review form if logged in
-                var formSection = document.getElementById('review-form-section');
-                if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
-                    formSection.style.display = '';
-                    document.getElementById('review-textarea').value = '';
-                    document.getElementById('submit-rating-btn').disabled = true;
-                    document.getElementById('submit-rating-btn').textContent = 'Select a rating first';
-                } else {
-                    formSection.style.display = 'none';
-                }
-
-                // Load reviews
-                loadContentReviews(contentId);
-
-                // Show modal
-                document.getElementById('detailModal').classList.add('music-detail-overlay--active');
-                document.body.style.overflow = 'hidden';
-            };
-
-            function extractYouTubeId(url) {
-                if (!url) return null;
-                var match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/);
-                return match ? match[1] : null;
-            }
-
-            function buildRatingSection(label, avg, count, type) {
-                var userRating = 0; // will be set by click
-                var html = '<div class="rating-section"><div class="rating-section__title">Rate the ' + label + '</div>';
-                html += '<div><span class="rating-section__avg">' + (avg > 0 ? avg.toFixed(1) : '--') + '</span><span class="rating-section__count"> / 10' + (count > 0 ? ' (' + count + ' ratings)' : '') + '</span></div>';
-                html += '<div class="rating-section__grid">';
-                for (var i = 1; i <= 10; i++) {
-                    var cls = i <= 3 ? 'rs-low' : i <= 6 ? 'rs-mid' : 'rs-high';
-                    html += '<button class="rating-section__btn" data-type="' + type + '" data-value="' + i + '" onclick="selectDetailRating(\'' + type + '\',' + i + ')">' + i + '</button>';
-                }
-                html += '</div></div>';
-                return html;
-            }
-
-            window.selectDetailRating = function(type, value) {
-                if (type === 'song') detailSongRating = value;
-                else detailVideoRating = value;
-
-                // Update button states
-                document.querySelectorAll('.rating-section__btn[data-type="' + type + '"]').forEach(function(btn) {
-                    var v = parseInt(btn.dataset.value);
-                    var cls = v <= 3 ? 'rs-low' : v <= 6 ? 'rs-mid' : 'rs-high';
-                    btn.className = 'rating-section__btn' + (v === value ? ' rating-section__btn--selected ' + cls : '');
-                });
-
-                // Enable submit
-                var submitBtn = document.getElementById('submit-rating-btn');
-                if (detailSongRating > 0 || detailVideoRating > 0) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Submit Rating';
-                }
-            };
-
-            window.submitDetailRating = async function() {
-                if (!detailContentId) return;
-                var reviewText = document.getElementById('review-textarea').value.trim();
-                var btn = document.getElementById('submit-rating-btn');
-                btn.disabled = true;
-                btn.textContent = 'Saving...';
-
-                try {
-                    if (detailSongRating > 0) {
-                        await api('rate-content', {
-                            method: 'POST',
-                            body: { contentId: detailContentId, rating: detailSongRating, ratingType: 'Song', review: reviewText }
-                        });
-                        userRatings[detailContentId] = detailSongRating;
-                    }
-                    if (detailVideoRating > 0) {
-                        await api('rate-content', {
-                            method: 'POST',
-                            body: { contentId: detailContentId, rating: detailVideoRating, ratingType: 'Video', review: '' }
-                        });
-                    }
-                    showToast('Rating saved! Salamat!' + (reviewText ? ' Review submitted for approval.' : ''), 'success');
-                    closeDetailModal();
-                    loadContent();
-                } catch (err) {
-                    showToast('Failed to save rating', 'error');
-                }
-                btn.disabled = false;
-                btn.textContent = 'Submit Rating';
-            };
-
-            async function loadContentReviews(contentId) {
-                var container = document.getElementById('reviews-container');
-                try {
-                    var data = await api('get-content-reviews?contentId=' + contentId);
-                    var reviews = data.reviews || [];
-                    if (reviews.length === 0) {
-                        container.innerHTML = '<p style="color:var(--gray-400);font-size:0.85rem;font-style:italic;">No reviews yet. Be the first!</p>';
-                        return;
-                    }
-                    container.innerHTML = reviews.map(function(r) {
-                        var stars = '';
-                        for (var s = 0; s < 10; s++) stars += s < r.rating ? '&#9733;' : '&#9734;';
-                        return '<div class="review-item"><div class="review-item__header"><span class="review-item__user">' + r.userName + '</span><span class="review-item__rating">' + stars + ' ' + r.rating + '/10 (' + r.ratingType + ')</span></div><div class="review-item__text">' + r.review + '</div><div class="review-item__date">' + (r.ratedAt ? formatDate(r.ratedAt) : '') + '</div></div>';
-                    }).join('');
-                } catch (err) {
-                    container.innerHTML = '<p style="color:var(--gray-400);font-size:0.85rem;">Could not load reviews.</p>';
-                }
-            }
-
-            window.closeDetailModal = function() {
-                document.getElementById('detailModal').classList.remove('music-detail-overlay--active');
-                document.body.style.overflow = '';
-                // Stop YouTube video
-                var player = document.getElementById('detail-player');
-                if (player) player.innerHTML = '';
-                detailContentId = null;
-            };
-
-            window.toggleFavorite = function() {
-                if (!detailContentId || !Auth.isLoggedIn()) { Auth.requireAuth('/music.html'); return; }
-                var item = allContent.find(function(c) { return c.id === detailContentId; });
-                if (!item) return;
-                var btn = document.getElementById('fav-btn');
-                // Simple add — full management on profile/top-songs page
-                api('update-user-favorites', {
-                    method: 'POST',
-                    body: { favorites: [{ contentId: detailContentId, contentTitle: item.title }] }
-                }).then(function() {
-                    btn.innerHTML = '&#9829; Added!';
-                    btn.classList.add('fav-btn--active');
-                    showToast(item.title + ' added to favorites!', 'success');
-                }).catch(function() {
-                    showToast('Could not add to favorites', 'error');
-                });
-            };
-
-            // Close detail modal on Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    var detailOverlay = document.getElementById('detailModal');
-                    if (detailOverlay && detailOverlay.classList.contains('music-detail-overlay--active')) {
-                        closeDetailModal();
-                    }
-                }
-            });
-            document.getElementById('detailModal').addEventListener('click', function(e) {
-                if (e.target === this) closeDetailModal();
             });
 
         })();
