@@ -473,10 +473,127 @@ function initPageLoader() {
     }, 2800);
 }
 
+/* ── Language Selector (Google Translate) ── */
+var LANGUAGES = [
+    { code: 'en', label: 'English', flag: 'EN' },
+    { code: 'tl', label: 'Filipino', flag: 'TL' },
+    { code: 'ceb', label: 'Cebuano', flag: 'CEB' },
+    { code: 'ilo', label: 'Ilocano', flag: 'ILO' }
+];
+
+function initLanguageSelector() {
+    // Inject Google Translate script (hidden — we control the UI)
+    var gtScript = document.createElement('script');
+    gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+    document.head.appendChild(gtScript);
+
+    // Create our custom selector and inject into nav
+    var navLinks = document.querySelector('.nav__links');
+    if (!navLinks) return;
+
+    var currentLang = localStorage.getItem('yc_lang') || 'en';
+    var currentLabel = LANGUAGES.find(function(l) { return l.code === currentLang; });
+
+    var li = document.createElement('li');
+    li.className = 'lang-selector';
+    li.innerHTML = '<button class="lang-selector__btn" onclick="toggleLangDropdown(event)">'
+        + '<span id="lang-current-flag">' + (currentLabel ? currentLabel.flag : 'EN') + '</span>'
+        + ' &#9662;</button>'
+        + '<div class="lang-selector__dropdown" id="lang-dropdown">'
+        + LANGUAGES.map(function(lang) {
+            var active = lang.code === currentLang ? ' lang-selector__option--active' : '';
+            return '<button class="lang-selector__option' + active + '" onclick="switchLanguage(\'' + lang.code + '\')">' + lang.flag + ' &nbsp; ' + lang.label + '</button>';
+        }).join('')
+        + '</div>';
+
+    // Insert before the first li in nav
+    navLinks.insertBefore(li, navLinks.firstChild);
+
+    // Hide Google Translate's default widget
+    var style = document.createElement('style');
+    style.textContent = '.goog-te-banner-frame, .skiptranslate, #google_translate_element { display: none !important; } body { top: 0 !important; }';
+    document.head.appendChild(style);
+
+    // Create hidden Google Translate element
+    var gtDiv = document.createElement('div');
+    gtDiv.id = 'google_translate_element';
+    gtDiv.style.display = 'none';
+    document.body.appendChild(gtDiv);
+
+    // Restore language on load
+    if (currentLang && currentLang !== 'en') {
+        setTimeout(function() { applyGoogleTranslate(currentLang); }, 1500);
+    }
+}
+
+window.googleTranslateInit = function() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,tl,ceb,ilo',
+        autoDisplay: false
+    }, 'google_translate_element');
+};
+
+window.toggleLangDropdown = function(e) {
+    e.stopPropagation();
+    var dd = document.getElementById('lang-dropdown');
+    dd.classList.toggle('lang-selector__dropdown--open');
+    // Close on outside click
+    setTimeout(function() {
+        document.addEventListener('click', function handler() {
+            dd.classList.remove('lang-selector__dropdown--open');
+            document.removeEventListener('click', handler);
+        });
+    }, 10);
+};
+
+window.switchLanguage = function(langCode) {
+    localStorage.setItem('yc_lang', langCode);
+    document.getElementById('lang-current-flag').textContent = LANGUAGES.find(function(l) { return l.code === langCode; }).flag;
+
+    // Update active state
+    document.querySelectorAll('.lang-selector__option').forEach(function(btn) {
+        btn.classList.remove('lang-selector__option--active');
+    });
+    event.target.classList.add('lang-selector__option--active');
+
+    // Close dropdown
+    document.getElementById('lang-dropdown').classList.remove('lang-selector__dropdown--open');
+
+    if (langCode === 'en') {
+        // Reset to English — remove Google Translate
+        var frame = document.querySelector('.goog-te-banner-frame');
+        if (frame) frame.remove();
+        // Clear the Google Translate cookie
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + location.hostname;
+        window.location.reload();
+    } else {
+        applyGoogleTranslate(langCode);
+    }
+};
+
+function applyGoogleTranslate(langCode) {
+    // Set the Google Translate cookie
+    document.cookie = 'googtrans=/en/' + langCode + '; path=/';
+    document.cookie = 'googtrans=/en/' + langCode + '; path=/; domain=.' + location.hostname;
+
+    // Trigger Google Translate
+    var select = document.querySelector('.goog-te-combo');
+    if (select) {
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+    } else {
+        // GT not loaded yet, retry
+        setTimeout(function() { applyGoogleTranslate(langCode); }, 500);
+    }
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
     initPageLoader();
     initNav();
+    initLanguageSelector();
     initScrollAnimations();
 
     // Load site config from Airtable and apply to page
