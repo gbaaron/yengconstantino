@@ -432,7 +432,7 @@
                         <div class="insights-card__header">
                             <span class="insights-card__icon">&#9889;</span>
                             <span class="insights-card__label">Strategic Insights</span>
-                            <span class="insights-card__badge">AI-Powered (Coming Soon)</span>
+                            <span class="insights-card__badge">AI-Powered</span>
                         </div>
                         <div id="insights-list"></div>
                         <button class="insights-refresh" onclick="refreshInsights()">&#8635; Refresh Insights</button>
@@ -1201,9 +1201,39 @@
         }).join('');
     }
 
-    window.refreshInsights = function() {
-        showToast('AI-powered insights coming soon! Connect your OpenAI API key in Site Config.', 'info');
-        // Future: call api('get-ai-insights') which hits GPT with current stats
+    window.refreshInsights = async function() {
+        var list = document.getElementById('insights-list');
+        var btn = document.querySelector('.insights-refresh');
+        btn.disabled = true;
+        btn.innerHTML = '&#8987; Analyzing with AI...';
+        list.innerHTML = '<div style="text-align:center;padding:var(--space-xl);color:#8E7F70;"><div class="spinner" style="margin:0 auto var(--space-md);"></div>Generating AI insights...</div>';
+
+        try {
+            var data = await api('get-ai-insights', {
+                method: 'POST',
+                body: { stats: lastStats, goals: getGoals() }
+            });
+
+            var insights = data.insights || [];
+            if (insights.length === 0) {
+                list.innerHTML = '<p style="color:#8E7F70;font-style:italic;">No insights generated. Try again.</p>';
+            } else {
+                var tagMap = { growth: 'Growth', action: 'Action', idea: 'Idea', alert: 'Alert' };
+                list.innerHTML = insights.map(function(ins) {
+                    return '<div class="insight-item">'
+                        + '<span class="insight-item__type insight-item__type--' + ins.type + '">' + (tagMap[ins.type] || 'Insight') + '</span>'
+                        + '<div class="insight-item__text">' + ins.text + '</div>'
+                        + '</div>';
+                }).join('');
+            }
+            showToast('AI insights updated!', 'success');
+        } catch (err) {
+            showToast('Failed: ' + (err.message || 'Could not generate insights'), 'error');
+            // Fall back to hardcoded insights
+            renderInsights(lastStats);
+        }
+        btn.disabled = false;
+        btn.innerHTML = '&#8635; Refresh Insights';
     };
 
     /* ── Go Live (StreamYard) ── */
