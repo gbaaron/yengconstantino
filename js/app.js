@@ -336,10 +336,58 @@ function initScrollAnimations() {
     });
 }
 
+/* ── Instagram Feed ── */
+function initInstagramFeed() {
+    const grid = document.getElementById('ig-feed-grid');
+    if (!grid) return;
+
+    // Try loading from API first, fall back to config
+    fetch(`${APP.API_BASE}/get-instagram-feed`)
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
+            const posts = (data.posts || []).slice(0, 9);
+            if (posts.length) renderIgGrid(grid, posts);
+            else renderIgPlaceholder(grid);
+        })
+        .catch(() => renderIgPlaceholder(grid));
+}
+
+function renderIgGrid(grid, posts) {
+    grid.innerHTML = posts.map(p => {
+        const img = p.imageUrl || p.thumbnail || '';
+        const url = p.permalink || p.url || 'https://www.instagram.com/yeng/';
+        const alt = p.caption ? p.caption.substring(0, 80) : 'Yeng Constantino Instagram post';
+        return '<a href="' + url + '" target="_blank" rel="noopener" class="ig-feed__item">' +
+            '<img src="' + img + '" alt="' + alt.replace(/"/g, '&quot;') + '" loading="lazy">' +
+            '</a>';
+    }).join('');
+}
+
+function renderIgPlaceholder(grid) {
+    // Show gradient placeholders that link to IG profile
+    const colors = [
+        'linear-gradient(135deg, #833AB4, #FD1D1D)',
+        'linear-gradient(135deg, #FD1D1D, #F77737)',
+        'linear-gradient(135deg, #F77737, #FCAF45)',
+        'linear-gradient(135deg, #FCAF45, #833AB4)',
+        'linear-gradient(135deg, #833AB4, #C13584)',
+        'linear-gradient(135deg, #C13584, #FD1D1D)',
+        'linear-gradient(135deg, #E1306C, #833AB4)',
+        'linear-gradient(135deg, #F77737, #833AB4)',
+        'linear-gradient(135deg, #FCAF45, #E1306C)'
+    ];
+    grid.innerHTML = colors.map((bg, i) =>
+        '<a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="ig-feed__item" style="background:' + bg + '">' +
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.3);font-size:2rem;">&#9835;</div>' +
+        '</a>'
+    ).join('');
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initScrollAnimations();
+    initInstagramFeed();
 
     // Load site config from Airtable and apply to page
     SiteConfig.load().then(() => {
