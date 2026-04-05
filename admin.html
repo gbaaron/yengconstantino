@@ -526,7 +526,17 @@
             <!-- Config Panel -->
             <div class="admin-panel" id="admin-panel-config">
                 <h2 class="admin-panel__title">Site Configuration</h2>
-                <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#6B5D50;margin-bottom:var(--space-xl);line-height:1.6;">Edit the text, images, and links that appear across the site. Changes take effect immediately after saving. <strong>Value</strong> = text content shown on the page. <strong>Image URL</strong> = photo/image URL (for hero images, about photo, etc.).</p>
+                <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:var(--gray-500);margin-bottom:var(--space-xl);line-height:1.6;">Edit the text, images, and links that appear across the site. Changes take effect immediately after saving.</p>
+
+                <!-- Instagram Feed Editor -->
+                <div style="margin-bottom:var(--space-2xl);">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gray-800);margin-bottom:var(--space-sm);padding-bottom:var(--space-sm);border-bottom:2px solid var(--gray-100);">Instagram Feed</h3>
+                    <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--gray-400);margin-bottom:var(--space-lg);line-height:1.5;">Manage the 9 photos shown in the Instagram grid on the homepage and community page. Paste the image URL and IG post link for each slot.</p>
+                    <div id="ig-grid-editor" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
                 <div id="admin-config-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
                 <div style="margin-top:var(--space-xl);"><button class="btn btn--primary" onclick="saveConfig()">Save All Changes</button></div>
             </div>
@@ -920,11 +930,61 @@
         ]
     };
 
+    // Instagram grid is rendered separately with a visual editor
+    var IG_GRID_COUNT = 9;
+
+    function renderIgGridEditor(config) {
+        var grid = document.getElementById('ig-grid-editor');
+        if (!grid) return;
+        var html = '';
+        for (var i = 1; i <= IG_GRID_COUNT; i++) {
+            var key = 'ig_post_' + i;
+            var entry = config[key] || {};
+            var imgUrl = (entry.imageURL || '').replace(/"/g, '&quot;');
+            var postUrl = (entry.value || '').replace(/"/g, '&quot;');
+            var preview = imgUrl
+                ? 'background-image:url(' + imgUrl + ');background-size:cover;background-position:center;'
+                : 'background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);';
+
+            html += '<div class="ig-editor-card" style="border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--gray-100);background:var(--white);">'
+                + '<div style="aspect-ratio:1;' + preview + 'display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:1.5rem;">'
+                + (imgUrl ? '' : '#' + i)
+                + '</div>'
+                + '<div style="padding:10px 12px;display:flex;flex-direction:column;gap:6px;">'
+                + '<label style="font-size:0.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;">Image URL</label>'
+                + '<input class="config-row__input ig-img" data-ig-key="' + key + '" value="' + imgUrl + '" placeholder="Paste image URL..." style="font-size:0.8rem;padding:8px 10px;" oninput="previewIgImage(this)">'
+                + '<label style="font-size:0.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;">IG Post Link</label>'
+                + '<input class="config-row__input ig-url" data-ig-key="' + key + '" value="' + postUrl + '" placeholder="https://instagram.com/p/..." style="font-size:0.8rem;padding:8px 10px;">'
+                + '</div></div>';
+        }
+        grid.innerHTML = html;
+    }
+
+    function previewIgImage(input) {
+        var card = input.closest('.ig-editor-card');
+        var previewDiv = card.querySelector('div');
+        var url = input.value.trim();
+        if (url) {
+            previewDiv.style.backgroundImage = 'url(' + url + ')';
+            previewDiv.style.background = '';
+            previewDiv.style.backgroundSize = 'cover';
+            previewDiv.style.backgroundPosition = 'center';
+            previewDiv.textContent = '';
+        } else {
+            previewDiv.style.backgroundImage = '';
+            previewDiv.style.background = 'linear-gradient(135deg,#833AB4,#FD1D1D,#F77737)';
+        }
+    }
+
     async function loadSiteConfig() {
         var container = document.getElementById('admin-config-list');
         try {
             var data = await api('get-site-config');
             var config = data.config || {};
+
+            // Render Instagram grid editor
+            renderIgGridEditor(config);
+
             var html = '';
 
             for (var section in CONFIG_MAP) {
@@ -959,7 +1019,7 @@
             var mappedKeys = {};
             for (var s in CONFIG_MAP) CONFIG_MAP[s].forEach(function(i) { mappedKeys[i.key] = true; });
             var unmapped = [];
-            for (var k in config) { if (!mappedKeys[k]) unmapped.push(k); }
+            for (var k in config) { if (!mappedKeys[k] && !k.startsWith('ig_post_')) unmapped.push(k); }
             if (unmapped.length > 0) {
                 html += '<div style="margin-bottom:var(--space-2xl);"><h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#27273A;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">Other Settings</h3>';
                 unmapped.forEach(function(key) {
@@ -989,6 +1049,21 @@
                 imageURL: imgEl ? imgEl.value : undefined
             });
         });
+
+        // Collect Instagram grid entries
+        for (var i = 1; i <= IG_GRID_COUNT; i++) {
+            var key = 'ig_post_' + i;
+            var imgInput = document.querySelector('.ig-img[data-ig-key="' + key + '"]');
+            var urlInput = document.querySelector('.ig-url[data-ig-key="' + key + '"]');
+            if (imgInput || urlInput) {
+                records.push({
+                    key: key,
+                    value: urlInput ? urlInput.value : '',
+                    imageURL: imgInput ? imgInput.value : ''
+                });
+            }
+        }
+
         try {
             await api('update-site-config', { method: 'POST', body: { records: records } });
             showToast('All changes saved! They\'ll appear on the site immediately.', 'success');
