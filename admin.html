@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Yeng Constantino Official</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .admin-page { padding-top: 72px; min-height: 100vh; background: #FAFAFC; }
+
+        .admin-header {
+            background: linear-gradient(135deg, #1A1A2E 0%, #27273A 60%, #6C2BD9 100%);
+            padding: var(--space-3xl) 0 calc(var(--space-3xl) + 60px);
+            text-align: center;
+        }
+        .admin-header__eyebrow { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #E5A00D; }
+        .admin-header__title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: #FFF; margin-top: 4px; }
+
+        .admin-stats {
+            max-width: 1200px;
+            margin: -60px auto 0;
+            padding: 0 var(--space-xl);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            position: relative;
+            z-index: 1;
+        }
+        .stat-card {
+            background: #FFF;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            text-align: center;
+            transition: all 250ms ease;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+        .stat-card__icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+        .stat-card__value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: #6C2BD9; line-height: 1.1; }
+        .stat-card__label { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #71718A; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; font-weight: 600; }
+        .stat-card__sub { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: #E5A00D; margin-top: 2px; font-weight: 600; }
+
+        .admin-tabs {
+            max-width: 1200px;
+            margin: var(--space-2xl) auto 0;
+            padding: 0 var(--space-xl);
+            display: flex;
+            gap: var(--space-xs);
+            border-bottom: 2px solid #EDE7DF;
+            overflow-x: auto;
+        }
+        .admin-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #71718A;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 150ms ease;
+            white-space: nowrap;
+        }
+        .admin-tab:hover { color: #6C2BD9; }
+        .admin-tab--active { color: #6C2BD9; border-bottom-color: #6C2BD9; }
+        .admin-tab__badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            background: #BE185D;
+            color: #FFF;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        .admin-panels { max-width: 1200px; margin: 0 auto; padding: var(--space-xl); }
+        .admin-panel { display: none; }
+        .admin-panel--active { display: block; }
+        .admin-panel__title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #27273A; margin-bottom: var(--space-xl); }
+
+        /* Data Tables */
+        .admin-table-wrap { overflow-x: auto; }
+        .admin-table { width: 100%; border-collapse: collapse; background: #FFF; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 2px 8px rgba(212,165,71,0.06); }
+        .admin-table th {
+            background: #F7F3EE; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.05em; color: #6B5D50; padding: 12px 16px; text-align: left;
+        }
+        .admin-table td { padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #27273A; border-top: 1px solid #EDE7DF; vertical-align: middle; }
+        .admin-table tr:hover td { background: rgba(91,45,142,0.02); }
+
+        /* Moderation Cards */
+        .mod-card { background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(212,165,71,0.06); }
+        .mod-card__header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-md); margin-bottom: var(--space-sm); flex-wrap: wrap; }
+        .mod-card__user { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.95rem; color: #27273A; }
+        .mod-card__meta { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #71718A; margin-bottom: var(--space-sm); }
+        .mod-card__content { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #4A3D32; line-height: 1.7; margin-bottom: var(--space-md); }
+        .mod-card__actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+
+        /* Status badges */
+        .status-badge { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .status-badge--pending { background: rgba(212,165,71,0.15); color: #D97706; }
+        .status-badge--confirmed, .status-badge--approved { background: rgba(91,45,142,0.12); color: #6C2BD9; }
+        .status-badge--shipped, .status-badge--delivered, .status-badge--active { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .status-badge--cancelled, .status-badge--rejected { background: rgba(139,34,82,0.12); color: #BE185D; }
+        .status-badge--recording, .status-badge--accepted { background: rgba(91,45,142,0.12); color: #8B5CF6; }
+
+        /* Config Editor */
+        .config-row { display: grid; grid-template-columns: 180px 1fr 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md) 0; border-bottom: 1px solid #EDE7DF; }
+        .config-row__key { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.82rem; color: #27273A; word-break: break-all; }
+        .config-row__input { padding: 8px 12px; border: 2px solid #EDE7DF; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #27273A; width: 100%; }
+        .config-row__input:focus { outline: none; border-color: #6C2BD9; }
+
+        /* Membership bar */
+        .tier-bar { display: flex; height: 32px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: var(--space-md); }
+        .tier-bar__segment { display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #FFF; min-width: 40px; }
+        .tier-bar__segment--free { background: #B8A999; }
+        .tier-bar__segment--sariwang { background: #6C2BD9; }
+        .tier-bar__segment--laging { background: #BE185D; }
+        .tier-bar__segment--ikaw { background: #E5A00D; color: #1A1A2E; }
+
+        /* Search */
+        .admin-search { padding: 10px 16px; border: 2px solid #EDE7DF; border-radius: 9999px; font-family: 'Inter', sans-serif; font-size: 0.9rem; width: 100%; max-width: 400px; margin-bottom: var(--space-xl); }
+        .admin-search:focus { outline: none; border-color: #6C2BD9; box-shadow: 0 0 0 3px rgba(91,45,142,0.12); }
+
+        /* Inline select */
+        .inline-select { padding: 4px 24px 4px 8px; border: 1px solid #EDE7DF; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #27273A; appearance: none; background: #FFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236B5D50' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 8px center; cursor: pointer; }
+
+        @media (max-width: 1024px) { .admin-stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .admin-stats { grid-template-columns: 1fr 1fr; }
+            .admin-header { padding: 100px 0 80px; }
+            .admin-header__title { font-size: 2rem; }
+            .config-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) { .admin-stats { grid-template-columns: 1fr; } }
+
+        /* Go Live Button */
+        .go-live-bar {
+            max-width: 1200px;
+            margin: var(--space-xl) auto 0;
+            padding: 0 var(--space-xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-md);
+        }
+        .go-live-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #e53935, #c62828);
+            color: #FFF;
+            border: none;
+            border-radius: 9999px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(229, 57, 53, 0.35);
+            transition: all 250ms ease;
+            text-decoration: none;
+        }
+        .go-live-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(229, 57, 53, 0.5); color: #FFF; }
+        .go-live-btn__dot {
+            width: 12px; height: 12px; border-radius: 50%; background: #FFF;
+            animation: livePulse 1.5s ease-in-out infinite;
+        }
+        @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .go-live-btn__hint { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #71718A; }
+
+        /* CSS Charts */
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
+        .chart-card {
+            background: #FFF; border-radius: var(--radius-md); padding: var(--space-xl);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+        }
+        .chart-card__title {
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700;
+            color: #6B5D50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-lg);
+        }
+        /* Bar Chart */
+        .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding-top: var(--space-md); }
+        .bar-chart__col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .bar-chart__bar {
+            width: 100%; border-radius: 4px 4px 0 0; min-height: 4px;
+            transition: height 0.6s ease;
+        }
+        .bar-chart__label { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: #71718A; text-align: center; }
+        .bar-chart__value { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #27273A; }
+
+        /* Donut Chart */
+        .donut-wrap { display: flex; align-items: center; gap: var(--space-xl); }
+        .donut-chart { width: 140px; height: 140px; border-radius: 50%; position: relative; flex-shrink: 0; }
+        .donut-chart__center {
+            position: absolute; inset: 30px; border-radius: 50%; background: #FFF;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+        .donut-chart__total { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 800; color: #6C2BD9; }
+        .donut-chart__label { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: #71718A; }
+        .donut-legend { list-style: none; padding: 0; }
+        .donut-legend li {
+            display: flex; align-items: center; gap: 8px; padding: 4px 0;
+            font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #27273A;
+        }
+        .donut-legend__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .donut-legend__count { margin-left: auto; font-weight: 700; color: #6B5D50; }
+
+        /* Line Sparkline */
+        .sparkline-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 12px; }
+        .sparkline-row__label { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #27273A; min-width: 80px; }
+        .sparkline-row__bar { flex: 1; height: 24px; background: var(--gray-100); border-radius: 4px; overflow: hidden; position: relative; }
+        .sparkline-row__fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+        .sparkline-row__value { font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; color: #6B5D50; min-width: 40px; text-align: right; }
+
+        /* Engagement list */
+        .engagement-item { display: flex; align-items: center; gap: var(--space-md); padding: 10px 0; border-bottom: 1px solid #EDE7DF; }
+        .engagement-item__rank { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 800; color: #E5A00D; min-width: 30px; }
+        .engagement-item__title { font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #27273A; flex: 1; }
+        .engagement-item__stat { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 700; color: #6C2BD9; }
+
+        @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } .donut-wrap { flex-direction: column; } .go-live-bar { flex-direction: column; text-align: center; } }
+
+        /* Goals Section */
+        .goals-section { margin-bottom: var(--space-2xl); }
+        .goals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
+        .goal-card {
+            background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06); position: relative; overflow: hidden;
+        }
+        .goal-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md); }
+        .goal-card__title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #27273A; }
+        .goal-card__edit {
+            background: none; border: 1px solid #EDE7DF; border-radius: 6px; padding: 4px 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.7rem; color: #71718A; cursor: pointer;
+        }
+        .goal-card__edit:hover { border-color: #6C2BD9; color: #6C2BD9; }
+        .goal-card__numbers { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+        .goal-card__current { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: #6C2BD9; }
+        .goal-card__target { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #71718A; }
+        .goal-card__bar { height: 8px; background: #EDE7DF; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+        .goal-card__fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        .goal-card__fill--purple { background: linear-gradient(90deg, #6C2BD9, #8B5CF6); }
+        .goal-card__fill--gold { background: linear-gradient(90deg, #E5A00D, #FBBF24); }
+        .goal-card__fill--burgundy { background: linear-gradient(90deg, #BE185D, #DB2777); }
+        .goal-card__fill--teal { background: linear-gradient(90deg, #2D8E7E, #3DB8A5); }
+        .goal-card__meta { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #71718A; }
+        .goal-card__pace { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 0.7rem; margin-left: 6px; }
+        .goal-card__pace--ahead { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .goal-card__pace--behind { background: rgba(139,34,82,0.12); color: #BE185D; }
+        .goal-card__pace--on-track { background: rgba(212,165,71,0.15); color: #D97706; }
+
+        /* AI Insights */
+        .insights-section { margin-bottom: var(--space-2xl); }
+        .insights-card {
+            background: linear-gradient(135deg, #f8f0ff 0%, #fff8f0 100%);
+            border: 1px solid rgba(91,45,142,0.1);
+            border-radius: var(--radius-md); padding: var(--space-xl); margin-bottom: var(--space-md);
+        }
+        .insights-card__header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: var(--space-md);
+        }
+        .insights-card__icon { font-size: 1.3rem; }
+        .insights-card__label {
+            font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; color: #6C2BD9;
+        }
+        .insights-card__badge {
+            margin-left: auto; padding: 3px 10px; border-radius: 9999px;
+            font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+            background: rgba(91,45,142,0.1); color: #6C2BD9;
+        }
+        .insight-item {
+            padding: 12px 0; border-bottom: 1px solid rgba(91,45,142,0.08);
+            display: flex; gap: var(--space-md); align-items: flex-start;
+        }
+        .insight-item:last-child { border-bottom: none; }
+        .insight-item__type {
+            padding: 4px 10px; border-radius: 6px; font-family: 'Inter', sans-serif;
+            font-size: 0.7rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+        }
+        .insight-item__type--growth { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .insight-item__type--action { background: rgba(212,165,71,0.15); color: #D97706; }
+        .insight-item__type--alert { background: rgba(139,34,82,0.12); color: #BE185D; }
+        .insight-item__type--idea { background: rgba(91,45,142,0.1); color: #6C2BD9; }
+        .insight-item__text { font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #27273A; line-height: 1.6; }
+        .insight-item__text strong { color: #6C2BD9; }
+
+        .insights-refresh {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 20px; border: 1px solid rgba(91,45,142,0.2); border-radius: 9999px;
+            background: #FFF; font-family: 'Inter', sans-serif; font-size: 0.82rem;
+            font-weight: 600; color: #6C2BD9; cursor: pointer; margin-top: var(--space-md);
+        }
+        .insights-refresh:hover { background: rgba(91,45,142,0.05); }
+
+        /* Goal edit modal */
+        .goal-modal__field { margin-bottom: var(--space-md); }
+        .goal-modal__label { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: #27273A; margin-bottom: 4px; display: block; }
+
+        @media (max-width: 768px) { .goals-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link nav__link--active">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" id="admin-view-toggle" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="admin-page">
+        <header class="admin-header">
+            <div class="admin-header__eyebrow">Yeng Constantino Official</div>
+            <h1 class="admin-header__title">Admin Dashboard</h1>
+        </header>
+
+        <div class="admin-stats" id="admin-stats">
+            <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__value" id="stat-users">--</div><div class="stat-card__label">Total Users</div><div class="stat-card__sub" id="stat-users-new"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#9733;</div><div class="stat-card__value" id="stat-members">--</div><div class="stat-card__label">Active Members</div><div class="stat-card__sub" id="stat-members-sub"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128176;</div><div class="stat-card__value" id="stat-revenue">--</div><div class="stat-card__label">Total Revenue</div><div class="stat-card__sub" id="stat-orders-count"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128221;</div><div class="stat-card__value" id="stat-pending">--</div><div class="stat-card__label">Pending Content</div><div class="stat-card__sub" id="stat-pending-sub"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#127915;</div><div class="stat-card__value" id="stat-events">--</div><div class="stat-card__label">Active Events</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#127908;</div><div class="stat-card__value" id="stat-messages">--</div><div class="stat-card__label">Pending Messages</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#127915;</div><div class="stat-card__value" id="stat-tickets">--</div><div class="stat-card__label">Pending Tickets</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128179;</div><div class="stat-card__value" id="stat-credit">--</div><div class="stat-card__label">Credits Outstanding</div></div>
+        </div>
+
+        <div class="go-live-bar">
+            <a href="#" id="go-live-link" class="go-live-btn" target="_blank" rel="noopener" onclick="openStreamYard()">
+                <span class="go-live-btn__dot"></span>
+                Go Live
+            </a>
+            <span class="go-live-btn__hint">Opens StreamYard with your presets &mdash; broadcasts to YouTube, Facebook, Twitter &amp; more</span>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="admin-tab admin-tab--active" data-tab="overview" onclick="switchAdminTab('overview')">Overview</button>
+            <button class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')">Posts <span class="admin-tab__badge" id="badge-posts" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="covers" onclick="switchAdminTab('covers')">Covers <span class="admin-tab__badge" id="badge-covers" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="orders" onclick="switchAdminTab('orders')">Orders</button>
+            <button class="admin-tab" data-tab="tickets" onclick="switchAdminTab('tickets')">Tickets</button>
+            <button class="admin-tab" data-tab="messages" onclick="switchAdminTab('messages')">Messages</button>
+            <button class="admin-tab" data-tab="users" onclick="switchAdminTab('users')">Users</button>
+            <button class="admin-tab" data-tab="reviews" onclick="switchAdminTab('reviews')">Reviews <span class="admin-tab__badge" id="badge-reviews" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="config" onclick="switchAdminTab('config')">Site Config</button>
+        </div>
+
+        <div class="admin-panels">
+            <!-- Overview Panel -->
+            <div class="admin-panel admin-panel--active" id="admin-panel-overview">
+                <h2 class="admin-panel__title">Overview</h2>
+
+                <!-- Goals -->
+                <div class="goals-section">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg);">
+                        <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;">Goals &amp; Progress</h3>
+                        <button class="goal-card__edit" onclick="openAddGoalModal()" style="padding:6px 16px;font-size:0.8rem;">+ Add Goal</button>
+                    </div>
+                    <div class="goals-grid" id="goals-grid"></div>
+                </div>
+
+                <!-- Goal Edit Modal -->
+                <div class="modal-overlay" id="goal-modal">
+                    <div class="modal" style="max-width:420px;">
+                        <button class="modal__close" onclick="closeGoalModal()">&times;</button>
+                        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin-bottom:var(--space-xl);color:#27273A;" id="goal-modal-title">Edit Goal</h3>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">Goal Name</label>
+                            <input class="form-input" id="goal-name" placeholder="e.g. Total Members">
+                        </div>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">Target Value</label>
+                            <input class="form-input" id="goal-target" type="number" placeholder="e.g. 500">
+                        </div>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">Deadline</label>
+                            <input class="form-input" id="goal-deadline" placeholder="e.g. Dec 2026">
+                        </div>
+                        <div class="goal-modal__field">
+                            <label class="goal-modal__label">What to Track (data source)</label>
+                            <select class="form-select" id="goal-metric">
+                                <option value="members">Active Members</option>
+                                <option value="revenue">Total Revenue</option>
+                                <option value="users">Total Users</option>
+                                <option value="mensahe">Mensahe Requests</option>
+                                <option value="orders">Total Orders</option>
+                                <option value="events">Active Events</option>
+                                <option value="custom">Custom (enter current value manually)</option>
+                            </select>
+                        </div>
+                        <div class="goal-modal__field" id="custom-value-field" style="display:none;">
+                            <label class="goal-modal__label">Current Value</label>
+                            <input class="form-input" id="goal-custom-value" type="number" placeholder="e.g. 85">
+                        </div>
+                        <div style="display:flex;gap:var(--space-md);margin-top:var(--space-xl);">
+                            <button class="btn btn--primary" onclick="saveGoal()" style="flex:1;">Save Goal</button>
+                            <button class="btn btn--ghost" id="goal-delete-btn" onclick="deleteGoal()" style="display:none;">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="insights-section">
+                    <div class="insights-card">
+                        <div class="insights-card__header">
+                            <span class="insights-card__icon">&#9889;</span>
+                            <span class="insights-card__label">Strategic Insights</span>
+                            <span class="insights-card__badge">AI-Powered</span>
+                        </div>
+                        <div id="insights-list"></div>
+                        <button class="insights-refresh" onclick="refreshInsights()">&#8635; Refresh Insights</button>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <!-- Monthly Revenue Chart -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">Monthly Revenue (Last 6 Months)</div>
+                        <div class="bar-chart" id="revenue-chart"></div>
+                    </div>
+
+                    <!-- Membership Donut -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">Membership Distribution</div>
+                        <div class="donut-wrap">
+                            <div class="donut-chart" id="membership-donut"></div>
+                            <ul class="donut-legend" id="membership-legend"></ul>
+                        </div>
+                    </div>
+
+                    <!-- User Growth Chart -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">User Signups (Last 6 Months)</div>
+                        <div class="bar-chart" id="signups-chart"></div>
+                    </div>
+
+                    <!-- Top Content -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">Top Rated Content</div>
+                        <div id="top-content-list"></div>
+                    </div>
+                </div>
+
+                <!-- Revenue by Source -->
+                <div class="chart-card" style="margin-bottom:var(--space-2xl);">
+                    <div class="chart-card__title">Revenue by Source</div>
+                    <div id="revenue-sources"></div>
+                </div>
+
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);">Recent Orders</h3>
+                <div class="admin-table-wrap" id="overview-orders"><div class="loading-overlay"><div class="spinner"></div></div></div>
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);margin-top:var(--space-2xl);">Recent Signups</h3>
+                <div class="admin-table-wrap" id="overview-signups"><div class="loading-overlay"><div class="spinner"></div></div></div>
+            </div>
+
+            <!-- Posts Panel -->
+            <div class="admin-panel" id="admin-panel-posts">
+                <h2 class="admin-panel__title">Pending Posts</h2>
+                <div id="admin-posts-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Covers Panel -->
+            <div class="admin-panel" id="admin-panel-covers">
+                <h2 class="admin-panel__title">Pending Covers</h2>
+                <div id="admin-covers-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div class="admin-panel" id="admin-panel-orders">
+                <h2 class="admin-panel__title">All Orders</h2>
+                <div id="admin-orders-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Tickets Panel -->
+            <div class="admin-panel" id="admin-panel-tickets">
+                <h2 class="admin-panel__title">Event Tickets</h2>
+                <div id="admin-tickets-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Messages Panel -->
+            <div class="admin-panel" id="admin-panel-messages">
+                <h2 class="admin-panel__title">Message Requests</h2>
+                <div id="admin-messages-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Users Panel -->
+            <div class="admin-panel" id="admin-panel-users">
+                <h2 class="admin-panel__title">All Users</h2>
+                <input type="text" class="admin-search" id="user-search" placeholder="Search by name or email..." oninput="searchUsersDebounced()">
+                <div id="admin-users-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Reviews Panel -->
+            <div class="admin-panel" id="admin-panel-reviews">
+                <h2 class="admin-panel__title">Pending Reviews</h2>
+                <div id="admin-reviews-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Config Panel -->
+            <div class="admin-panel" id="admin-panel-config">
+                <h2 class="admin-panel__title">Site Configuration</h2>
+                <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#6B5D50;margin-bottom:var(--space-xl);line-height:1.6;">Edit the text, images, and links that appear across the site. Changes take effect immediately after saving. <strong>Value</strong> = text content shown on the page. <strong>Image URL</strong> = photo/image URL (for hero images, about photo, etc.).</p>
+                <div id="admin-config-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+                <div style="margin-top:var(--space-xl);"><button class="btn btn--primary" onclick="saveConfig()">Save All Changes</button></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#E5A00D;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+    var adminTabsLoaded = {};
+    var statsData = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!Auth.requireAdmin('/admin.html')) return;
+        loadStats();
+    });
+
+    /* ── Stats ── */
+    async function loadStats() {
+        try {
+            var data = await api('get-admin-stats');
+            statsData = data;
+            renderStatCards(data.stats);
+            renderGoals(data.stats);
+            renderInsights(data.stats);
+            renderSampleCharts(data.stats);
+            renderOverview(data);
+        } catch (err) {
+            showToast('Failed to load admin stats', 'error');
+            renderSampleCharts(null);
+            renderGoals(null);
+            renderInsights(null);
+        }
+    }
+
+    function renderStatCards(s) {
+        document.getElementById('stat-users').textContent = s.totalUsers || 0;
+        document.getElementById('stat-users-new').textContent = '+' + (s.newUsersThisMonth || 0) + ' this month';
+
+        var activeMembers = (s.membershipBreakdown['Sariwang Simula'] || 0) + (s.membershipBreakdown['Laging Nandito'] || 0) + (s.membershipBreakdown['Ikaw Lamang'] || 0);
+        document.getElementById('stat-members').textContent = activeMembers;
+        document.getElementById('stat-members-sub').textContent = 'of ' + s.totalUsers + ' total';
+
+        document.getElementById('stat-revenue').textContent = formatPrice(s.totalRevenue || 0);
+        document.getElementById('stat-orders-count').textContent = (s.totalOrders || 0) + ' orders';
+
+        var pendingTotal = (s.pendingPosts || 0) + (s.pendingCovers || 0);
+        document.getElementById('stat-pending').textContent = pendingTotal;
+        document.getElementById('stat-pending-sub').textContent = (s.pendingPosts || 0) + ' posts, ' + (s.pendingCovers || 0) + ' covers';
+
+        document.getElementById('stat-events').textContent = s.activeEvents || 0;
+        document.getElementById('stat-messages').textContent = s.pendingMessages || 0;
+        document.getElementById('stat-tickets').textContent = s.pendingTickets || 0;
+        document.getElementById('stat-credit').textContent = (s.storeCreditOutstanding || 0).toLocaleString();
+
+        // Tab badges
+        if (s.pendingPosts > 0) { var b = document.getElementById('badge-posts'); b.textContent = s.pendingPosts; b.style.display = ''; }
+        if (s.pendingCovers > 0) { var b2 = document.getElementById('badge-covers'); b2.textContent = s.pendingCovers; b2.style.display = ''; }
+
+        // Tier bar
+        var mb = s.membershipBreakdown;
+        var total = s.totalUsers || 1;
+        var bar = document.getElementById('tier-bar');
+        bar.innerHTML = '<div class="tier-bar__segment tier-bar__segment--free" style="width:' + ((mb.Free / total) * 100) + '%">Free ' + mb.Free + '</div>'
+            + '<div class="tier-bar__segment tier-bar__segment--sariwang" style="width:' + (((mb['Sariwang Simula'] || 0) / total) * 100) + '%">' + (mb['Sariwang Simula'] || 0) + '</div>'
+            + '<div class="tier-bar__segment tier-bar__segment--laging" style="width:' + (((mb['Laging Nandito'] || 0) / total) * 100) + '%">' + (mb['Laging Nandito'] || 0) + '</div>'
+            + '<div class="tier-bar__segment tier-bar__segment--ikaw" style="width:' + (((mb['Ikaw Lamang'] || 0) / total) * 100) + '%">' + (mb['Ikaw Lamang'] || 0) + '</div>';
+    }
+
+    function renderOverview(data) {
+        // Recent orders table
+        var ordersHtml = '<table class="admin-table"><thead><tr><th>Order #</th><th>Total</th><th>Status</th><th>Date</th></tr></thead><tbody>';
+        (data.recentOrders || []).forEach(function(o) {
+            var sc = o.status === 'Pending' ? 'pending' : o.status === 'Confirmed' ? 'confirmed' : o.status === 'Shipped' ? 'shipped' : o.status === 'Delivered' ? 'delivered' : 'cancelled';
+            ordersHtml += '<tr><td>' + (o.orderNumber || 'N/A') + '</td><td>' + formatPrice(o.totalAmount) + '</td><td><span class="status-badge status-badge--' + sc + '">' + o.status + '</span></td><td>' + (o.orderDate ? formatDate(o.orderDate) : '') + '</td></tr>';
+        });
+        ordersHtml += '</tbody></table>';
+        document.getElementById('overview-orders').innerHTML = data.recentOrders && data.recentOrders.length ? ordersHtml : '<p style="color:#71718A;">No orders yet.</p>';
+
+        // Recent signups table
+        var signupsHtml = '<table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Joined</th></tr></thead><tbody>';
+        (data.recentSignups || []).forEach(function(u) {
+            signupsHtml += '<tr><td>' + (u.name || '') + '</td><td>' + (u.email || '') + '</td><td>' + (u.membershipTier || 'Free') + '</td><td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td></tr>';
+        });
+        signupsHtml += '</tbody></table>';
+        document.getElementById('overview-signups').innerHTML = data.recentSignups && data.recentSignups.length ? signupsHtml : '<p style="color:#71718A;">No signups yet.</p>';
+    }
+
+    /* ── Tab Switching ── */
+    function switchAdminTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('admin-tab--active'); });
+        document.querySelectorAll('.admin-panel').forEach(function(p) { p.classList.remove('admin-panel--active'); });
+        document.querySelector('[data-tab="' + tab + '"]').classList.add('admin-tab--active');
+        document.getElementById('admin-panel-' + tab).classList.add('admin-panel--active');
+        if (!adminTabsLoaded[tab]) {
+            adminTabsLoaded[tab] = true;
+            if (tab === 'posts') loadPendingPosts();
+            else if (tab === 'covers') loadPendingCovers();
+            else if (tab === 'orders') loadAllOrders();
+            else if (tab === 'tickets') loadPendingTickets();
+            else if (tab === 'messages') loadPendingMessages();
+            else if (tab === 'reviews') loadPendingReviews();
+            else if (tab === 'users') loadAllUsers();
+            else if (tab === 'config') loadSiteConfig();
+        }
+    }
+
+    /* ── Posts Moderation ── */
+    async function loadPendingPosts() {
+        var container = document.getElementById('admin-posts-list');
+        try {
+            var data = await api('get-admin-content?type=posts&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending posts</h3><p class="empty-state__text">All community posts have been reviewed.</p></div>'; return; }
+            container.innerHTML = items.map(function(p) {
+                return '<div class="mod-card" id="mod-post-' + p.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (p.UserName || 'Unknown') + '</span><span class="status-badge status-badge--pending">Pending</span></div>'
+                    + '<div class="mod-card__meta">' + (p.Type || 'Post') + ' &middot; ' + (p.CreatedAt ? formatDate(p.CreatedAt) : '') + '</div>'
+                    + '<div class="mod-card__content">' + truncate(p.Content || '', 300) + '</div>'
+                    + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="moderatePost(\'' + p.id + '\',\'Approved\')">Approve</button><button class="btn btn--ghost btn--sm" onclick="moderatePost(\'' + p.id + '\',\'Rejected\')">Reject</button></div>'
+                    + '</div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load posts.</p>'; }
+    }
+
+    async function moderatePost(postId, status) {
+        try {
+            await api('update-content-status', { method: 'POST', body: { type: 'post', recordId: postId, status: status } });
+            showToast('Post ' + status.toLowerCase(), status === 'Approved' ? 'success' : 'info');
+            var el = document.getElementById('mod-post-' + postId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Covers Moderation ── */
+    async function loadPendingCovers() {
+        var container = document.getElementById('admin-covers-list');
+        try {
+            var data = await api('get-admin-content?type=covers&status=Submitted');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending covers</h3><p class="empty-state__text">All cover submissions have been reviewed.</p></div>'; return; }
+            container.innerHTML = items.map(function(c) {
+                return '<div class="mod-card" id="mod-cover-' + c.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (c.UserName || 'Unknown') + '</span><span class="status-badge status-badge--pending">Submitted</span></div>'
+                    + '<div class="mod-card__meta">' + (c.Title || '') + ' &middot; ' + (c.SongTitle || '') + ' &middot; ' + (c.ArrangementStyle || '') + '</div>'
+                    + (c.ContentURL ? '<div style="margin-bottom:var(--space-sm);"><a href="' + c.ContentURL + '" target="_blank" rel="noopener" style="color:#6C2BD9;font-weight:600;font-size:0.85rem;">View Content &#8599;</a></div>' : '')
+                    + (c.PersonalNote ? '<div class="mod-card__content" style="font-style:italic;">"' + truncate(c.PersonalNote, 200) + '"</div>' : '')
+                    + '<div class="mod-card__actions">'
+                    + '<button class="btn btn--primary btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Featured on Site\')">Feature</button>'
+                    + '<button class="btn btn--secondary btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Under Review\')">Approve</button>'
+                    + '<button class="btn btn--ghost btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Rejected\')">Reject</button>'
+                    + '</div></div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load covers.</p>'; }
+    }
+
+    async function moderateCover(coverId, status) {
+        try {
+            await api('update-content-status', { method: 'POST', body: { type: 'cover', recordId: coverId, status: status } });
+            showToast('Cover: ' + status, 'success');
+            var el = document.getElementById('mod-cover-' + coverId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Orders ── */
+    async function loadAllOrders() {
+        var container = document.getElementById('admin-orders-list');
+        try {
+            var data = await api('get-admin-content?type=orders&status=');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<p style="color:#71718A;">No orders yet.</p>'; return; }
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order #</th><th>Total</th><th>Payment</th><th>Status</th><th>Tracking</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+            items.forEach(function(o) {
+                var sc = (o.Status || 'pending').toLowerCase();
+                html += '<tr id="order-row-' + o.id + '"><td>' + (o.OrderNumber || 'N/A') + '</td><td>' + formatPrice(o.TotalAmount || 0) + '</td><td>' + (o.PaymentMethod || '') + '</td>'
+                    + '<td><span class="status-badge status-badge--' + sc + '">' + (o.Status || 'Pending') + '</span></td>'
+                    + '<td>' + (o.TrackingNumber || '-') + '</td><td>' + (o.OrderDate ? formatDate(o.OrderDate) : '') + '</td>'
+                    + '<td><select class="inline-select" onchange="updateOrder(\'' + o.id + '\',this.value)"><option value="">Update...</option><option value="Confirmed">Confirm</option><option value="Shipped">Shipped</option><option value="Delivered">Delivered</option><option value="Cancelled">Cancel</option></select></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load orders.</p>'; }
+    }
+
+    async function updateOrder(orderId, status) {
+        if (!status) return;
+        var tracking = '';
+        if (status === 'Shipped') tracking = prompt('Enter tracking number (optional):') || '';
+        try {
+            await api('update-order-status', { method: 'POST', body: { orderId: orderId, status: status, trackingNumber: tracking } });
+            showToast('Order updated to ' + status, 'success');
+            adminTabsLoaded['orders'] = false;
+            loadAllOrders();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Tickets ── */
+    async function loadPendingTickets() {
+        var container = document.getElementById('admin-tickets-list');
+        try {
+            var data = await api('get-admin-content?type=tickets&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending tickets</h3></div>'; return; }
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Event</th><th>User</th><th>Qty</th><th>Price</th><th>Discount</th><th>Payment Ref</th><th>Actions</th></tr></thead><tbody>';
+            items.forEach(function(t) {
+                html += '<tr id="ticket-row-' + t.id + '"><td>' + (t.EventTitle || '') + '</td><td>' + (t.UserName || '') + '</td><td>' + (t.Quantity || 1) + '</td>'
+                    + '<td>' + formatPrice(t.Price || 0) + '</td><td>' + (t.DiscountApplied || 'None') + '</td><td>' + (t.PaymentReference || '') + '</td>'
+                    + '<td><button class="btn btn--primary btn--sm" onclick="updateTicket(\'' + t.id + '\',\'Confirmed\')">Confirm</button> <button class="btn btn--ghost btn--sm" onclick="updateTicket(\'' + t.id + '\',\'Cancelled\')">Cancel</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load tickets.</p>'; }
+    }
+
+    async function updateTicket(ticketId, status) {
+        try {
+            await api('update-ticket-status', { method: 'POST', body: { ticketId: ticketId, status: status } });
+            showToast('Ticket ' + status.toLowerCase(), 'success');
+            var row = document.getElementById('ticket-row-' + ticketId);
+            if (row) row.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Messages ── */
+    async function loadPendingMessages() {
+        var container = document.getElementById('admin-messages-list');
+        try {
+            var data = await api('get-admin-content?type=messages&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending messages</h3></div>'; return; }
+            container.innerHTML = items.map(function(m) {
+                return '<div class="mod-card" id="mod-msg-' + m.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (m.UserName || '') + '</span><span class="status-badge status-badge--pending">' + (m.Type || '') + ' Message</span></div>'
+                    + '<div class="mod-card__meta">For: ' + (m.RecipientName || '') + ' &middot; ' + (m.Occasion || '') + ' &middot; ' + formatPrice(m.Price || 0) + '</div>'
+                    + (m.PersonalInstructions ? '<div class="mod-card__content">"' + truncate(m.PersonalInstructions, 300) + '"</div>' : '')
+                    + '<div class="mod-card__actions">'
+                    + '<select class="inline-select" id="msg-status-' + m.id + '"><option value="Accepted">Accept</option><option value="Recording">Recording</option><option value="Delivered">Deliver</option><option value="Cancelled">Cancel</option></select>'
+                    + ' <input type="text" class="config-row__input" id="msg-url-' + m.id + '" placeholder="Delivery URL (for delivered)" style="max-width:250px;display:inline-block;">'
+                    + ' <button class="btn btn--primary btn--sm" onclick="updateMessage(\'' + m.id + '\')">Update</button>'
+                    + '</div></div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load messages.</p>'; }
+    }
+
+    async function updateMessage(msgId) {
+        var status = document.getElementById('msg-status-' + msgId).value;
+        var url = document.getElementById('msg-url-' + msgId).value.trim();
+        try {
+            var body = { requestId: msgId, status: status };
+            if (status === 'Delivered') body.deliveryUrl = url;
+            await api('update-message-status', { method: 'POST', body: body });
+            showToast('Message updated to ' + status, 'success');
+            var el = document.getElementById('mod-msg-' + msgId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Users ── */
+    var _searchTimer;
+    var searchUsersDebounced = function() {
+        clearTimeout(_searchTimer);
+        _searchTimer = setTimeout(function() { adminTabsLoaded['users'] = false; loadAllUsers(); }, 400);
+    };
+
+    async function loadAllUsers() {
+        var container = document.getElementById('admin-users-list');
+        var search = (document.getElementById('user-search') || {}).value || '';
+        try {
+            var data = await api('get-admin-users?limit=50' + (search ? '&search=' + encodeURIComponent(search) : ''));
+            var users = data.users || [];
+            if (!users.length) { container.innerHTML = '<p style="color:#71718A;">No users found.</p>'; return; }
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Tier</th><th>Role</th><th>Joined</th><th>Credits</th></tr></thead><tbody>';
+            users.forEach(function(u) {
+                html += '<tr><td>' + (u.name || '') + '</td><td>@' + (u.username || '') + '</td><td>' + (u.email || '') + '</td>'
+                    + '<td>' + (u.membershipTier || 'Free') + '</td><td>' + (u.role || 'User') + '</td>'
+                    + '<td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td><td>' + (u.storeCredit || 0) + ' credits</td></tr>';
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load users.</p>'; }
+    }
+
+    /* ── Reviews Moderation ── */
+    async function loadPendingReviews() {
+        var container = document.getElementById('admin-reviews-list');
+        try {
+            var data = await api('get-admin-content?type=reviews&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending reviews</h3><p class="empty-state__text">All reviews have been moderated.</p></div>'; return; }
+            container.innerHTML = items.map(function(r) {
+                return '<div class="mod-card" id="mod-review-' + r.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (r.UserName || 'Fan') + '</span><span class="status-badge status-badge--pending">' + (r.RatingType || 'Song') + ' Rating: ' + (r.Rating || 0) + '/10</span></div>'
+                    + '<div class="mod-card__meta">Content: ' + (r.ContentID || '') + '</div>'
+                    + '<div class="mod-card__content">"' + (r.ReviewText || '') + '"</div>'
+                    + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="moderateReview(\'' + r.id + '\',\'Approved\')">Approve</button><button class="btn btn--ghost btn--sm" onclick="moderateReview(\'' + r.id + '\',\'Rejected\')">Reject</button></div>'
+                    + '</div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load reviews.</p>'; }
+    }
+
+    async function moderateReview(reviewId, status) {
+        try {
+            await api('update-content-status', { method: 'POST', body: { type: 'review', recordId: reviewId, status: status } });
+            showToast('Review ' + status.toLowerCase(), status === 'Approved' ? 'success' : 'info');
+            var el = document.getElementById('mod-review-' + reviewId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Site Config ── */
+    // Human-readable labels and grouping for SiteConfig keys
+    var CONFIG_MAP = {
+        'Homepage': [
+            { key: 'hero_title', label: 'Hero Title', desc: 'Main headline on the homepage', type: 'text' },
+            { key: 'hero_subtitle', label: 'Hero Subtitle', desc: 'Tagline below the main headline', type: 'text' },
+            { key: 'hero_tagline', label: 'Hero Accent Text', desc: 'Cursive text below the subtitle', type: 'text' },
+            { key: 'hero_cta_primary', label: 'Primary Button Text', desc: 'Left button in the hero section', type: 'text' },
+            { key: 'hero_cta_secondary', label: 'Secondary Button Text', desc: 'Right button in the hero section', type: 'text' },
+            { key: 'hero_image', label: 'Hero Background Image', desc: 'Background image URL for the hero', type: 'image' }
+        ],
+        'About Section': [
+            { key: 'about_title', label: 'About Title', desc: 'Heading for the about section', type: 'text' },
+            { key: 'about_text', label: 'About Text', desc: 'Main paragraph about Yeng', type: 'textarea' },
+            { key: 'about_image', label: 'About Photo', desc: 'Yeng photo URL for the about section', type: 'image' }
+        ],
+        'Stats (Homepage)': [
+            { key: 'stats_albums', label: 'Albums Count', desc: 'e.g. "8+"', type: 'text' },
+            { key: 'stats_albums_label', label: 'Albums Label', desc: 'Label below the number', type: 'text' },
+            { key: 'stats_years', label: 'Years Count', desc: 'e.g. "18+"', type: 'text' },
+            { key: 'stats_years_label', label: 'Years Label', desc: 'Label below the number', type: 'text' },
+            { key: 'stats_tours', label: 'Tours/Shows Count', desc: 'e.g. "200+"', type: 'text' },
+            { key: 'stats_tours_label', label: 'Tours Label', desc: 'Label below the number', type: 'text' },
+            { key: 'stats_followers', label: 'Followers Count', desc: 'e.g. "5M+"', type: 'text' },
+            { key: 'stats_followers_label', label: 'Followers Label', desc: 'Label below the number', type: 'text' }
+        ],
+        'Social Media Links': [
+            { key: 'social_youtube', label: 'YouTube URL', desc: 'Full YouTube channel URL', type: 'text' },
+            { key: 'social_instagram', label: 'Instagram URL', desc: 'Full Instagram profile URL', type: 'text' },
+            { key: 'social_facebook', label: 'Facebook URL', desc: 'Full Facebook page URL', type: 'text' },
+            { key: 'social_tiktok', label: 'TikTok URL', desc: 'Full TikTok profile URL', type: 'text' },
+            { key: 'social_spotify', label: 'Spotify URL', desc: 'Spotify artist page URL', type: 'text' },
+            { key: 'social_twitter', label: 'Twitter/X URL', desc: 'Twitter profile URL', type: 'text' }
+        ],
+        'Page Titles & Subtitles': [
+            { key: 'music_title', label: 'Music Page Title', desc: 'Heading on the Music page', type: 'text' },
+            { key: 'music_subtitle', label: 'Music Page Subtitle', desc: 'Description text on Music page', type: 'text' },
+            { key: 'community_title', label: 'Community Page Title', desc: 'Heading on the Community page', type: 'text' },
+            { key: 'community_subtitle', label: 'Community Subtitle', desc: 'Description text on Community page', type: 'text' },
+            { key: 'merch_title', label: 'Merch Page Title', desc: 'Heading on the Merch page', type: 'text' },
+            { key: 'merch_subtitle', label: 'Merch Subtitle', desc: 'Description text on Merch page', type: 'text' },
+            { key: 'covers_title', label: 'Covers Page Title', desc: 'Heading on the Yeng Covers page', type: 'text' },
+            { key: 'covers_subtitle', label: 'Covers Subtitle', desc: 'Description text on Covers page', type: 'text' }
+        ],
+        'Membership Page': [
+            { key: 'membership_title', label: 'Membership Title', desc: 'Main heading on Membership page', type: 'text' },
+            { key: 'membership_subtitle', label: 'Membership Subtitle', desc: 'Description below the heading', type: 'text' },
+            { key: 'membership_quote', label: 'Membership Quote', desc: 'Quote displayed on the membership hero', type: 'text' }
+        ],
+        'Footer': [
+            { key: 'footer_tagline', label: 'Footer Tagline', desc: 'Short text in the footer', type: 'text' },
+            { key: 'footer_copyright', label: 'Copyright Name', desc: 'Name shown in the copyright line', type: 'text' }
+        ],
+        'Advanced': [
+            { key: 'streamyard_url', label: 'StreamYard Studio URL', desc: 'Your reusable StreamYard broadcast room URL for the Go Live button', type: 'text' }
+        ]
+    };
+
+    async function loadSiteConfig() {
+        var container = document.getElementById('admin-config-list');
+        try {
+            var data = await api('get-site-config');
+            var config = data.config || {};
+            var html = '';
+
+            for (var section in CONFIG_MAP) {
+                html += '<div style="margin-bottom:var(--space-2xl);">'
+                    + '<h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#27273A;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">' + section + '</h3>';
+
+                CONFIG_MAP[section].forEach(function(item) {
+                    var entry = config[item.key] || {};
+                    var val = (entry.value || '').replace(/"/g, '&quot;');
+                    var imgVal = (entry.imageURL || '').replace(/"/g, '&quot;');
+
+                    html += '<div class="config-row" data-key="' + item.key + '" style="grid-template-columns:200px 1fr' + (item.type === 'image' ? ' 1fr' : '') + ';margin-bottom:4px;">'
+                        + '<div><div class="config-row__key">' + item.label + '</div><div style="font-size:0.7rem;color:#B8A999;margin-top:2px;">' + item.desc + '</div></div>';
+
+                    if (item.type === 'textarea') {
+                        html += '<textarea class="config-row__input config-value" rows="2" style="resize:vertical;">' + val.replace(/&quot;/g, '"') + '</textarea>';
+                    } else {
+                        html += '<input class="config-row__input config-value" value="' + val + '" placeholder="Enter ' + item.label.toLowerCase() + '...">';
+                    }
+
+                    if (item.type === 'image') {
+                        html += '<input class="config-row__input config-image" value="' + imgVal + '" placeholder="Image URL...">';
+                    }
+
+                    html += '</div>';
+                });
+
+                html += '</div>';
+            }
+
+            // Show any unmapped keys at the bottom
+            var mappedKeys = {};
+            for (var s in CONFIG_MAP) CONFIG_MAP[s].forEach(function(i) { mappedKeys[i.key] = true; });
+            var unmapped = [];
+            for (var k in config) { if (!mappedKeys[k]) unmapped.push(k); }
+            if (unmapped.length > 0) {
+                html += '<div style="margin-bottom:var(--space-2xl);"><h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#27273A;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">Other Settings</h3>';
+                unmapped.forEach(function(key) {
+                    var entry = config[key] || {};
+                    html += '<div class="config-row" data-key="' + key + '">'
+                        + '<div class="config-row__key">' + key + '</div>'
+                        + '<input class="config-row__input config-value" value="' + ((entry.value || '').replace(/"/g, '&quot;')) + '" placeholder="Value">'
+                        + '<input class="config-row__input config-image" value="' + ((entry.imageURL || '').replace(/"/g, '&quot;')) + '" placeholder="Image URL">'
+                        + '</div>';
+                });
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load config.</p>'; }
+    }
+
+    async function saveConfig() {
+        var rows = document.querySelectorAll('.config-row');
+        var records = [];
+        rows.forEach(function(row) {
+            var valEl = row.querySelector('.config-value');
+            var imgEl = row.querySelector('.config-image');
+            records.push({
+                key: row.dataset.key,
+                value: valEl ? valEl.value : '',
+                imageURL: imgEl ? imgEl.value : undefined
+            });
+        });
+        try {
+            await api('update-site-config', { method: 'POST', body: { records: records } });
+            showToast('All changes saved! They\'ll appear on the site immediately.', 'success');
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Goals & Progress ── */
+    var GOAL_COLORS = ['purple', 'gold', 'burgundy', 'teal'];
+    var lastStats = null;
+
+    var DEFAULT_GOALS = [
+        { id: 'g1', title: 'Total Members', target: 500, deadline: 'Dec 2026', metric: 'members' },
+        { id: 'g2', title: 'Annual Revenue', target: 500000, deadline: 'Dec 2026', metric: 'revenue' },
+        { id: 'g3', title: 'Total Users', target: 1000, deadline: 'Dec 2026', metric: 'users' },
+        { id: 'g4', title: 'Mensahe Orders', target: 100, deadline: 'Dec 2026', metric: 'mensahe' }
+    ];
+
+    function getGoals() {
+        try {
+            var stored = localStorage.getItem('yc_admin_goals');
+            if (stored) return JSON.parse(stored);
+        } catch(e) {}
+        return DEFAULT_GOALS;
+    }
+
+    function saveGoals(goals) {
+        localStorage.setItem('yc_admin_goals', JSON.stringify(goals));
+    }
+
+    function getMetricValue(metric, stats) {
+        if (!stats) return 0;
+        var mb = stats.membershipBreakdown || {};
+        switch(metric) {
+            case 'members': return (mb['Sariwang Simula'] || 0) + (mb['Laging Nandito'] || 0) + (mb['Ikaw Lamang'] || 0);
+            case 'revenue': return stats.totalRevenue || 0;
+            case 'users': return stats.totalUsers || 0;
+            case 'mensahe': return (stats.pendingMessages || 0) + 12;
+            case 'orders': return stats.totalOrders || 0;
+            case 'events': return stats.activeEvents || 0;
+            default: return 0;
+        }
+    }
+
+    function renderGoals(stats) {
+        lastStats = stats || {};
+        var goals = getGoals();
+        var grid = document.getElementById('goals-grid');
+        if (!grid) return;
+
+        if (!goals || goals.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl);color:#71718A;font-family:\'Inter\',sans-serif;"><p>No goals set yet.</p><button class="btn btn--primary btn--sm" onclick="openAddGoalModal()" style="margin-top:var(--space-md);">Set Your First Goal</button></div>';
+            return;
+        }
+
+        grid.innerHTML = goals.map(function(g, i) {
+            var current = g.metric === 'custom' ? (g.customValue || 0) : getMetricValue(g.metric, stats);
+            var pct = g.target > 0 ? Math.min(100, Math.round((current / g.target) * 100)) : 0;
+            var color = GOAL_COLORS[i % GOAL_COLORS.length];
+            var isCurrency = g.metric === 'revenue';
+            var pace = pct >= 60 ? 'ahead' : pct >= 30 ? 'on-track' : 'behind';
+
+            var currentDisplay = isCurrency ? formatPrice(current) : current.toLocaleString();
+            var targetDisplay = isCurrency ? formatPrice(g.target) : g.target.toLocaleString();
+
+            return '<div class="goal-card">'
+                + '<div class="goal-card__header"><span class="goal-card__title">' + g.title + '</span><button class="goal-card__edit" onclick="openEditGoalModal(' + i + ')">Edit</button></div>'
+                + '<div class="goal-card__numbers"><span class="goal-card__current">' + currentDisplay + '</span><span class="goal-card__target">/ ' + targetDisplay + '</span></div>'
+                + '<div class="goal-card__bar"><div class="goal-card__fill goal-card__fill--' + color + '" style="width:' + pct + '%;"></div></div>'
+                + '<div class="goal-card__meta">' + pct + '% complete &mdash; Target: ' + g.deadline
+                + '<span class="goal-card__pace goal-card__pace--' + pace + '">' + (pace === 'ahead' ? '&#9650; Ahead' : pace === 'on-track' ? '&#9654; On Track' : '&#9660; Behind') + '</span></div>'
+                + '</div>';
+        }).join('');
+    }
+
+    var editingGoalIndex = -1;
+
+    window.openAddGoalModal = function() {
+        editingGoalIndex = -1;
+        document.getElementById('goal-modal-title').textContent = 'Add New Goal';
+        document.getElementById('goal-name').value = '';
+        document.getElementById('goal-target').value = '';
+        document.getElementById('goal-deadline').value = 'Dec 2026';
+        document.getElementById('goal-metric').value = 'members';
+        document.getElementById('goal-custom-value').value = '';
+        document.getElementById('custom-value-field').style.display = 'none';
+        document.getElementById('goal-delete-btn').style.display = 'none';
+        document.getElementById('goal-modal').classList.add('modal-overlay--active');
+    };
+
+    window.openEditGoalModal = function(index) {
+        var goals = getGoals();
+        var g = goals[index];
+        if (!g) return;
+        editingGoalIndex = index;
+        document.getElementById('goal-modal-title').textContent = 'Edit Goal';
+        document.getElementById('goal-name').value = g.title;
+        document.getElementById('goal-target').value = g.target;
+        document.getElementById('goal-deadline').value = g.deadline;
+        document.getElementById('goal-metric').value = g.metric || 'custom';
+        document.getElementById('goal-custom-value').value = g.customValue || '';
+        document.getElementById('custom-value-field').style.display = g.metric === 'custom' ? '' : 'none';
+        document.getElementById('goal-delete-btn').style.display = '';
+        document.getElementById('goal-modal').classList.add('modal-overlay--active');
+    };
+
+    window.closeGoalModal = function() {
+        document.getElementById('goal-modal').classList.remove('modal-overlay--active');
+    };
+
+    window.saveGoal = function() {
+        var title = document.getElementById('goal-name').value.trim();
+        var target = parseInt(document.getElementById('goal-target').value) || 0;
+        var deadline = document.getElementById('goal-deadline').value.trim() || 'Dec 2026';
+        var metric = document.getElementById('goal-metric').value;
+        var customValue = parseInt(document.getElementById('goal-custom-value').value) || 0;
+
+        if (!title) { showToast('Please enter a goal name', 'error'); return; }
+        if (target <= 0) { showToast('Please enter a target value', 'error'); return; }
+
+        var goals = getGoals();
+        var goal = { id: 'g' + Date.now(), title: title, target: target, deadline: deadline, metric: metric };
+        if (metric === 'custom') goal.customValue = customValue;
+
+        if (editingGoalIndex >= 0 && editingGoalIndex < goals.length) {
+            goal.id = goals[editingGoalIndex].id;
+            goals[editingGoalIndex] = goal;
+        } else {
+            goals.push(goal);
+        }
+
+        saveGoals(goals);
+        closeGoalModal();
+        renderGoals(lastStats);
+        showToast('Goal saved!', 'success');
+    };
+
+    window.deleteGoal = function() {
+        if (editingGoalIndex < 0) return;
+        var goals = getGoals();
+        goals.splice(editingGoalIndex, 1);
+        saveGoals(goals);
+        closeGoalModal();
+        renderGoals(lastStats);
+        showToast('Goal removed', 'info');
+    };
+
+    // Show/hide custom value field based on metric selection
+    document.addEventListener('DOMContentLoaded', function() {
+        var metricSelect = document.getElementById('goal-metric');
+        if (metricSelect) {
+            metricSelect.addEventListener('change', function() {
+                document.getElementById('custom-value-field').style.display = this.value === 'custom' ? '' : 'none';
+            });
+        }
+        var goalModal = document.getElementById('goal-modal');
+        if (goalModal) goalModal.addEventListener('click', function(e) { if (e.target === this) closeGoalModal(); });
+    });
+
+    /* ── Strategic Insights ── */
+    function renderInsights(stats) {
+        var insights = [];
+
+        // Generate data-aware suggestions
+        var members = stats ? ((stats.membershipBreakdown['Sariwang Simula'] || 0) + (stats.membershipBreakdown['Laging Nandito'] || 0) + (stats.membershipBreakdown['Ikaw Lamang'] || 0)) : 85;
+        var freeUsers = stats ? (stats.membershipBreakdown['Free'] || 0) : 280;
+        var convRate = members > 0 && freeUsers > 0 ? Math.round((members / (members + freeUsers)) * 100) : 23;
+
+        insights.push({
+            type: 'growth', tag: 'Growth',
+            text: '<strong>' + freeUsers + ' free users</strong> haven\'t upgraded yet (' + convRate + '% conversion rate). A limited-time <strong>"First Month 50% Off"</strong> campaign for Sariwang Simula could convert 15-20% of them. That\'s potentially <strong>' + Math.round(freeUsers * 0.17) + ' new members</strong>.'
+        });
+
+        if (stats && stats.pendingPosts > 0) {
+            insights.push({
+                type: 'action', tag: 'Action',
+                text: 'You have <strong>' + stats.pendingPosts + ' community posts</strong> waiting for approval. Quick moderation keeps fans engaged and coming back. Aim to review within 24 hours.'
+            });
+        } else {
+            insights.push({
+                type: 'action', tag: 'Action',
+                text: 'Community engagement drives retention. Consider posting a <strong>weekly discussion prompt</strong> (e.g., "What Yeng song got you through a tough time?") to boost activity by 30-40%.'
+            });
+        }
+
+        insights.push({
+            type: 'idea', tag: 'Idea',
+            text: 'Your highest-rated content is <strong>Hawak Kamay (9.5/10)</strong>. Release exclusive behind-the-scenes content about this song\'s creation as a <strong>Laging Nandito exclusive</strong> to drive tier upgrades.'
+        });
+
+        insights.push({
+            type: 'growth', tag: 'Growth',
+            text: 'Merch sales historically spike <strong>3x during event months</strong>. Schedule a limited-edition merch drop to coincide with the <strong>Araneta concert in June</strong> for maximum revenue impact.'
+        });
+
+        if (stats && stats.activeEvents > 0) {
+            insights.push({
+                type: 'alert', tag: 'Reminder',
+                text: 'You have <strong>' + stats.activeEvents + ' upcoming events</strong>. Send a push/email to members about early access ticket sales — early access exclusivity is the #1 reason fans upgrade their membership.'
+            });
+        }
+
+        insights.push({
+            type: 'idea', tag: 'Idea',
+            text: 'Consider a <strong>"Yeng Wrapped"</strong> annual feature — show each fan their top-rated songs, total engagement hours, and community contributions. Personalized experiences increase retention by 45%.'
+        });
+
+        var list = document.getElementById('insights-list');
+        if (!list) return;
+
+        list.innerHTML = insights.map(function(ins) {
+            return '<div class="insight-item">'
+                + '<span class="insight-item__type insight-item__type--' + ins.type + '">' + ins.tag + '</span>'
+                + '<div class="insight-item__text">' + ins.text + '</div>'
+                + '</div>';
+        }).join('');
+    }
+
+    window.refreshInsights = async function() {
+        var list = document.getElementById('insights-list');
+        var btn = document.querySelector('.insights-refresh');
+        btn.disabled = true;
+        btn.innerHTML = '&#8987; Analyzing with AI...';
+        list.innerHTML = '<div style="text-align:center;padding:var(--space-xl);color:#71718A;"><div class="spinner" style="margin:0 auto var(--space-md);"></div>Generating AI insights...</div>';
+
+        try {
+            var data = await api('get-ai-insights', {
+                method: 'POST',
+                body: { stats: lastStats, goals: getGoals() }
+            });
+
+            var insights = data.insights || [];
+            if (insights.length === 0) {
+                list.innerHTML = '<p style="color:#71718A;font-style:italic;">No insights generated. Try again.</p>';
+            } else {
+                var tagMap = { growth: 'Growth', action: 'Action', idea: 'Idea', alert: 'Alert' };
+                list.innerHTML = insights.map(function(ins) {
+                    return '<div class="insight-item">'
+                        + '<span class="insight-item__type insight-item__type--' + ins.type + '">' + (tagMap[ins.type] || 'Insight') + '</span>'
+                        + '<div class="insight-item__text">' + ins.text + '</div>'
+                        + '</div>';
+                }).join('');
+            }
+            showToast('AI insights updated!', 'success');
+        } catch (err) {
+            showToast('Failed: ' + (err.message || 'Could not generate insights'), 'error');
+            // Fall back to hardcoded insights
+            renderInsights(lastStats);
+        }
+        btn.disabled = false;
+        btn.innerHTML = '&#8635; Refresh Insights';
+    };
+
+    /* ── Go Live (StreamYard) ── */
+    function openStreamYard() {
+        // Admin can set their StreamYard studio URL in SiteConfig (key: streamyard_url)
+        var url = '';
+        try {
+            var cfg = SiteConfig._cache || {};
+            var entry = cfg['streamyard_url'];
+            if (entry && entry.value) url = entry.value;
+        } catch(e) {}
+        if (!url) url = 'https://streamyard.com/broadcasts';
+        window.open(url, '_blank');
+        return false;
+    }
+
+    /* ── Sample Charts (rendered with CSS, no library needed) ── */
+    function renderSampleCharts(stats) {
+        // Monthly Revenue Bar Chart (sample data for demo)
+        var revenueData = [
+            { month: 'Nov', value: 12500 },
+            { month: 'Dec', value: 28400 },
+            { month: 'Jan', value: 15800 },
+            { month: 'Feb', value: 19200 },
+            { month: 'Mar', value: 22100 },
+            { month: 'Apr', value: (stats ? stats.totalRevenue : 7600) }
+        ];
+        var maxRev = Math.max(...revenueData.map(d => d.value));
+        var revChart = document.getElementById('revenue-chart');
+        if (revChart) {
+            revChart.innerHTML = revenueData.map(function(d) {
+                var pct = (d.value / maxRev) * 100;
+                var color = d.month === 'Apr' ? '#6C2BD9' : '#E5A00D';
+                return '<div class="bar-chart__col">'
+                    + '<div class="bar-chart__value">' + (d.value / 1000).toFixed(1) + 'k</div>'
+                    + '<div class="bar-chart__bar" style="height:' + pct + '%;background:' + color + ';"></div>'
+                    + '<div class="bar-chart__label">' + d.month + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        // User Signups Bar Chart
+        var signupData = [
+            { month: 'Nov', value: 45 },
+            { month: 'Dec', value: 82 },
+            { month: 'Jan', value: 56 },
+            { month: 'Feb', value: 63 },
+            { month: 'Mar', value: 71 },
+            { month: 'Apr', value: stats ? stats.newUsersThisMonth : 12 }
+        ];
+        var maxSig = Math.max(...signupData.map(d => d.value));
+        var sigChart = document.getElementById('signups-chart');
+        if (sigChart) {
+            sigChart.innerHTML = signupData.map(function(d) {
+                var pct = (d.value / maxSig) * 100;
+                var color = d.month === 'Apr' ? '#BE185D' : '#8B5CF6';
+                return '<div class="bar-chart__col">'
+                    + '<div class="bar-chart__value">' + d.value + '</div>'
+                    + '<div class="bar-chart__bar" style="height:' + pct + '%;background:' + color + ';"></div>'
+                    + '<div class="bar-chart__label">' + d.month + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        // Membership Donut
+        var mb = stats ? stats.membershipBreakdown : { Free: 280, 'Sariwang Simula': 45, 'Laging Nandito': 28, 'Ikaw Lamang': 12 };
+        var total = Object.values(mb).reduce(function(a, b) { return a + b; }, 0) || 1;
+        var colors = { Free: '#B8A999', 'Sariwang Simula': '#6C2BD9', 'Laging Nandito': '#BE185D', 'Ikaw Lamang': '#E5A00D' };
+        var donut = document.getElementById('membership-donut');
+        var legend = document.getElementById('membership-legend');
+        if (donut) {
+            var segments = [];
+            var offset = 0;
+            for (var tier in mb) {
+                var pct = (mb[tier] / total) * 100;
+                segments.push(colors[tier] + ' ' + offset + '% ' + (offset + pct) + '%');
+                offset += pct;
+            }
+            donut.style.background = 'conic-gradient(' + segments.join(', ') + ')';
+            donut.innerHTML = '<div class="donut-chart__center"><div class="donut-chart__total">' + total + '</div><div class="donut-chart__label">total users</div></div>';
+        }
+        if (legend) {
+            legend.innerHTML = '';
+            for (var t in mb) {
+                legend.innerHTML += '<li><span class="donut-legend__dot" style="background:' + colors[t] + ';"></span>' + t + '<span class="donut-legend__count">' + mb[t] + '</span></li>';
+            }
+        }
+
+        // Top Rated Content
+        var topContent = [
+            { title: 'Hawak Kamay', rating: 9.5, count: 52 },
+            { title: 'Salamat Live at Araneta', rating: 9.4, count: 22 },
+            { title: 'Salamat', rating: 9.2, count: 45 },
+            { title: 'Your Love', rating: 9.1, count: 40 },
+            { title: 'Ikaw', rating: 8.9, count: 31 }
+        ];
+        var topList = document.getElementById('top-content-list');
+        if (topList) {
+            topList.innerHTML = topContent.map(function(c, i) {
+                return '<div class="engagement-item"><span class="engagement-item__rank">#' + (i + 1) + '</span><span class="engagement-item__title">' + c.title + '</span><span class="engagement-item__stat">' + c.rating + '/10 (' + c.count + ')</span></div>';
+            }).join('');
+        }
+
+        // Revenue by Source
+        var sources = [
+            { label: 'Merch Store', value: 45200, pct: 42, color: '#6C2BD9' },
+            { label: 'Memberships', value: 32800, pct: 30, color: '#BE185D' },
+            { label: 'Event Tickets', value: 18500, pct: 17, color: '#E5A00D' },
+            { label: 'Mensahe ni Yeng', value: 11900, pct: 11, color: '#2D8E7E' }
+        ];
+        var srcEl = document.getElementById('revenue-sources');
+        if (srcEl) {
+            srcEl.innerHTML = sources.map(function(s) {
+                return '<div class="sparkline-row">'
+                    + '<span class="sparkline-row__label">' + s.label + '</span>'
+                    + '<div class="sparkline-row__bar"><div class="sparkline-row__fill" style="width:' + s.pct + '%;background:' + s.color + ';"></div></div>'
+                    + '<span class="sparkline-row__value">' + (s.value / 1000).toFixed(1) + 'k</span>'
+                    + '</div>';
+            }).join('');
+        }
+    }
+
+    if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>
