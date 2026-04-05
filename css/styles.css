@@ -1022,17 +1022,9 @@ textarea.form-input {
     transform: scale(1.05);
 }
 
-.ig-feed__item--embed {
-    cursor: default;
-}
-
-.ig-feed__item--embed iframe {
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    width: calc(100% + 2px);
-    height: calc(100% + 2px);
-    border: none;
+.ig-feed__embed {
+    border-radius: var(--radius-md);
+    overflow: hidden;
 }
 
 .ig-feed__item::after {

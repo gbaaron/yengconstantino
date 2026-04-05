@@ -590,12 +590,13 @@ function applyGoogleTranslate(langCode) {
 }
 
 /* ── Instagram Feed ── */
-// Normalize any IG URL to a full https permalink
+// Normalize any IG URL to a clean permalink
 function normalizeIgUrl(url) {
     if (!url) return '';
     url = url.trim();
     if (!url.startsWith('http')) url = 'https://' + url;
-    // Ensure trailing slash
+    // Strip query params like ?img_index=1
+    url = url.split('?')[0];
     if (!url.endsWith('/')) url += '/';
     return url;
 }
@@ -604,8 +605,6 @@ function initInstagramFeed() {
     const grid = document.getElementById('ig-feed-grid');
     if (!grid) return;
 
-    // Load IG post URLs from Airtable SiteConfig (ig_post_1 through ig_post_9)
-    // Just paste the Instagram post URL — no image URL needed
     SiteConfig.load().then(() => {
         const posts = [];
         for (let i = 1; i <= 9; i++) {
@@ -623,13 +622,25 @@ function initInstagramFeed() {
 }
 
 function renderIgEmbeds(grid, postUrls) {
+    // Use Instagram's official blockquote embed
     grid.innerHTML = postUrls.map(url =>
-        '<div class="ig-feed__item ig-feed__item--embed">' +
-            '<iframe src="' + url + 'embed/" ' +
-                'frameborder="0" scrolling="no" allowtransparency="true" ' +
-                'loading="lazy" style="width:100%;height:100%;border:none;overflow:hidden;"></iframe>' +
-        '</div>'
+        '<blockquote class="instagram-media ig-feed__embed" ' +
+            'data-instgrm-permalink="' + url + '" ' +
+            'data-instgrm-version="14" ' +
+            'style="max-width:100%;min-width:0;width:100%;margin:0;padding:0;">' +
+        '</blockquote>'
     ).join('');
+
+    // Load or re-process Instagram embed.js
+    if (!document.getElementById('ig-embed-script')) {
+        var script = document.createElement('script');
+        script.id = 'ig-embed-script';
+        script.async = true;
+        script.src = '//www.instagram.com/embed.js';
+        document.body.appendChild(script);
+    } else if (window.instgrm) {
+        window.instgrm.Embeds.process();
+    }
 }
 
 function renderIgPlaceholder(grid) {
