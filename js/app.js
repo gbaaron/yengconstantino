@@ -341,24 +341,33 @@ function initInstagramFeed() {
     const grid = document.getElementById('ig-feed-grid');
     if (!grid) return;
 
-    // Try loading from API first, fall back to config
-    fetch(`${APP.API_BASE}/get-instagram-feed`)
-        .then(r => r.ok ? r.json() : Promise.reject())
-        .then(data => {
-            const posts = (data.posts || []).slice(0, 9);
-            if (posts.length) renderIgGrid(grid, posts);
-            else renderIgPlaceholder(grid);
-        })
-        .catch(() => renderIgPlaceholder(grid));
+    // Load IG posts from Airtable SiteConfig
+    // In Airtable: create rows with keys "ig_post_1" through "ig_post_9"
+    // Set the "value" field to the Instagram post URL (e.g. https://www.instagram.com/p/ABC123/)
+    // Attach the photo in the "image" attachment field
+    SiteConfig.load().then(() => {
+        const posts = [];
+        for (let i = 1; i <= 9; i++) {
+            const img = SiteConfig.getImage('ig_post_' + i);
+            const url = SiteConfig.get('ig_post_' + i);
+            if (img) {
+                posts.push({ img: img, url: url || 'https://www.instagram.com/yeng/' });
+            }
+        }
+        if (posts.length > 0) {
+            renderIgGrid(grid, posts);
+        } else {
+            renderIgPlaceholder(grid);
+        }
+    });
 }
 
 function renderIgGrid(grid, posts) {
     grid.innerHTML = posts.map(p => {
-        const img = p.imageUrl || p.thumbnail || '';
-        const url = p.permalink || p.url || 'https://www.instagram.com/yeng/';
-        const alt = p.caption ? p.caption.substring(0, 80) : 'Yeng Constantino Instagram post';
+        const img = p.img || p.imageUrl || p.thumbnail || '';
+        const url = p.url || p.permalink || 'https://www.instagram.com/yeng/';
         return '<a href="' + url + '" target="_blank" rel="noopener" class="ig-feed__item">' +
-            '<img src="' + img + '" alt="' + alt.replace(/"/g, '&quot;') + '" loading="lazy">' +
+            '<img src="' + img + '" alt="Yeng Constantino Instagram post" loading="lazy">' +
             '</a>';
     }).join('');
 }
