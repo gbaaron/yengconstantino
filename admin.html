@@ -143,6 +143,93 @@
             .config-row { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) { .admin-stats { grid-template-columns: 1fr; } }
+
+        /* Go Live Button */
+        .go-live-bar {
+            max-width: 1200px;
+            margin: var(--space-xl) auto 0;
+            padding: 0 var(--space-xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-md);
+        }
+        .go-live-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #e53935, #c62828);
+            color: #FFF;
+            border: none;
+            border-radius: 9999px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(229, 57, 53, 0.35);
+            transition: all 250ms ease;
+            text-decoration: none;
+        }
+        .go-live-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(229, 57, 53, 0.5); color: #FFF; }
+        .go-live-btn__dot {
+            width: 12px; height: 12px; border-radius: 50%; background: #FFF;
+            animation: livePulse 1.5s ease-in-out infinite;
+        }
+        @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .go-live-btn__hint { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #8E7F70; }
+
+        /* CSS Charts */
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
+        .chart-card {
+            background: #FFF; border-radius: var(--radius-md); padding: var(--space-xl);
+            box-shadow: 0 2px 8px rgba(212,165,71,0.06);
+        }
+        .chart-card__title {
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700;
+            color: #6B5D50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-lg);
+        }
+        /* Bar Chart */
+        .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding-top: var(--space-md); }
+        .bar-chart__col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .bar-chart__bar {
+            width: 100%; border-radius: 4px 4px 0 0; min-height: 4px;
+            transition: height 0.6s ease;
+        }
+        .bar-chart__label { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: #8E7F70; text-align: center; }
+        .bar-chart__value { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #352A20; }
+
+        /* Donut Chart */
+        .donut-wrap { display: flex; align-items: center; gap: var(--space-xl); }
+        .donut-chart { width: 140px; height: 140px; border-radius: 50%; position: relative; flex-shrink: 0; }
+        .donut-chart__center {
+            position: absolute; inset: 30px; border-radius: 50%; background: #FFF;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+        .donut-chart__total { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 800; color: #5B2D8E; }
+        .donut-chart__label { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: #8E7F70; }
+        .donut-legend { list-style: none; padding: 0; }
+        .donut-legend li {
+            display: flex; align-items: center; gap: 8px; padding: 4px 0;
+            font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #352A20;
+        }
+        .donut-legend__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .donut-legend__count { margin-left: auto; font-weight: 700; color: #6B5D50; }
+
+        /* Line Sparkline */
+        .sparkline-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 12px; }
+        .sparkline-row__label { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #352A20; min-width: 80px; }
+        .sparkline-row__bar { flex: 1; height: 24px; background: var(--gray-100); border-radius: 4px; overflow: hidden; position: relative; }
+        .sparkline-row__fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+        .sparkline-row__value { font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700; color: #6B5D50; min-width: 40px; text-align: right; }
+
+        /* Engagement list */
+        .engagement-item { display: flex; align-items: center; gap: var(--space-md); padding: 10px 0; border-bottom: 1px solid #EDE7DF; }
+        .engagement-item__rank { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 800; color: #D4A547; min-width: 30px; }
+        .engagement-item__title { font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #352A20; flex: 1; }
+        .engagement-item__stat { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 700; color: #5B2D8E; }
+
+        @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } .donut-wrap { flex-direction: column; } .go-live-bar { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
@@ -186,6 +273,14 @@
             <div class="stat-card"><div class="stat-card__icon">&#128179;</div><div class="stat-card__value" id="stat-credit">--</div><div class="stat-card__label">Credits Outstanding</div></div>
         </div>
 
+        <div class="go-live-bar">
+            <a href="#" id="go-live-link" class="go-live-btn" target="_blank" rel="noopener" onclick="openStreamYard()">
+                <span class="go-live-btn__dot"></span>
+                Go Live
+            </a>
+            <span class="go-live-btn__hint">Opens StreamYard with your presets &mdash; broadcasts to YouTube, Facebook, Twitter &amp; more</span>
+        </div>
+
         <div class="admin-tabs">
             <button class="admin-tab admin-tab--active" data-tab="overview" onclick="switchAdminTab('overview')">Overview</button>
             <button class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')">Posts <span class="admin-tab__badge" id="badge-posts" style="display:none;">0</span></button>
@@ -202,9 +297,43 @@
             <!-- Overview Panel -->
             <div class="admin-panel admin-panel--active" id="admin-panel-overview">
                 <h2 class="admin-panel__title">Overview</h2>
-                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);">Membership Distribution</h3>
-                <div class="tier-bar" id="tier-bar"></div>
-                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);margin-top:var(--space-2xl);">Recent Orders</h3>
+
+                <div class="charts-grid">
+                    <!-- Monthly Revenue Chart -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">Monthly Revenue (Last 6 Months)</div>
+                        <div class="bar-chart" id="revenue-chart"></div>
+                    </div>
+
+                    <!-- Membership Donut -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">Membership Distribution</div>
+                        <div class="donut-wrap">
+                            <div class="donut-chart" id="membership-donut"></div>
+                            <ul class="donut-legend" id="membership-legend"></ul>
+                        </div>
+                    </div>
+
+                    <!-- User Growth Chart -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">User Signups (Last 6 Months)</div>
+                        <div class="bar-chart" id="signups-chart"></div>
+                    </div>
+
+                    <!-- Top Content -->
+                    <div class="chart-card">
+                        <div class="chart-card__title">Top Rated Content</div>
+                        <div id="top-content-list"></div>
+                    </div>
+                </div>
+
+                <!-- Revenue by Source -->
+                <div class="chart-card" style="margin-bottom:var(--space-2xl);">
+                    <div class="chart-card__title">Revenue by Source</div>
+                    <div id="revenue-sources"></div>
+                </div>
+
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);">Recent Orders</h3>
                 <div class="admin-table-wrap" id="overview-orders"><div class="loading-overlay"><div class="spinner"></div></div></div>
                 <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);margin-top:var(--space-2xl);">Recent Signups</h3>
                 <div class="admin-table-wrap" id="overview-signups"><div class="loading-overlay"><div class="spinner"></div></div></div>
@@ -305,9 +434,11 @@
             var data = await api('get-admin-stats');
             statsData = data;
             renderStatCards(data.stats);
+            renderSampleCharts(data.stats);
             renderOverview(data);
         } catch (err) {
             showToast('Failed to load admin stats', 'error');
+            renderSampleCharts(null);
         }
     }
 
@@ -615,6 +746,126 @@
             await api('update-site-config', { method: 'POST', body: { records: records } });
             showToast('Site config saved!', 'success');
         } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Go Live (StreamYard) ── */
+    function openStreamYard() {
+        // Admin can set their StreamYard studio URL in SiteConfig (key: streamyard_url)
+        var url = '';
+        try {
+            var cfg = SiteConfig._cache || {};
+            var entry = cfg['streamyard_url'];
+            if (entry && entry.value) url = entry.value;
+        } catch(e) {}
+        if (!url) url = 'https://streamyard.com/broadcasts';
+        window.open(url, '_blank');
+        return false;
+    }
+
+    /* ── Sample Charts (rendered with CSS, no library needed) ── */
+    function renderSampleCharts(stats) {
+        // Monthly Revenue Bar Chart (sample data for demo)
+        var revenueData = [
+            { month: 'Nov', value: 12500 },
+            { month: 'Dec', value: 28400 },
+            { month: 'Jan', value: 15800 },
+            { month: 'Feb', value: 19200 },
+            { month: 'Mar', value: 22100 },
+            { month: 'Apr', value: (stats ? stats.totalRevenue : 7600) }
+        ];
+        var maxRev = Math.max(...revenueData.map(d => d.value));
+        var revChart = document.getElementById('revenue-chart');
+        if (revChart) {
+            revChart.innerHTML = revenueData.map(function(d) {
+                var pct = (d.value / maxRev) * 100;
+                var color = d.month === 'Apr' ? '#5B2D8E' : '#D4A547';
+                return '<div class="bar-chart__col">'
+                    + '<div class="bar-chart__value">' + (d.value / 1000).toFixed(1) + 'k</div>'
+                    + '<div class="bar-chart__bar" style="height:' + pct + '%;background:' + color + ';"></div>'
+                    + '<div class="bar-chart__label">' + d.month + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        // User Signups Bar Chart
+        var signupData = [
+            { month: 'Nov', value: 45 },
+            { month: 'Dec', value: 82 },
+            { month: 'Jan', value: 56 },
+            { month: 'Feb', value: 63 },
+            { month: 'Mar', value: 71 },
+            { month: 'Apr', value: stats ? stats.newUsersThisMonth : 12 }
+        ];
+        var maxSig = Math.max(...signupData.map(d => d.value));
+        var sigChart = document.getElementById('signups-chart');
+        if (sigChart) {
+            sigChart.innerHTML = signupData.map(function(d) {
+                var pct = (d.value / maxSig) * 100;
+                var color = d.month === 'Apr' ? '#8B2252' : '#7E4FB5';
+                return '<div class="bar-chart__col">'
+                    + '<div class="bar-chart__value">' + d.value + '</div>'
+                    + '<div class="bar-chart__bar" style="height:' + pct + '%;background:' + color + ';"></div>'
+                    + '<div class="bar-chart__label">' + d.month + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        // Membership Donut
+        var mb = stats ? stats.membershipBreakdown : { Free: 280, 'Sariwang Simula': 45, 'Laging Nandito': 28, 'Ikaw Lamang': 12 };
+        var total = Object.values(mb).reduce(function(a, b) { return a + b; }, 0) || 1;
+        var colors = { Free: '#B8A999', 'Sariwang Simula': '#5B2D8E', 'Laging Nandito': '#8B2252', 'Ikaw Lamang': '#D4A547' };
+        var donut = document.getElementById('membership-donut');
+        var legend = document.getElementById('membership-legend');
+        if (donut) {
+            var segments = [];
+            var offset = 0;
+            for (var tier in mb) {
+                var pct = (mb[tier] / total) * 100;
+                segments.push(colors[tier] + ' ' + offset + '% ' + (offset + pct) + '%');
+                offset += pct;
+            }
+            donut.style.background = 'conic-gradient(' + segments.join(', ') + ')';
+            donut.innerHTML = '<div class="donut-chart__center"><div class="donut-chart__total">' + total + '</div><div class="donut-chart__label">total users</div></div>';
+        }
+        if (legend) {
+            legend.innerHTML = '';
+            for (var t in mb) {
+                legend.innerHTML += '<li><span class="donut-legend__dot" style="background:' + colors[t] + ';"></span>' + t + '<span class="donut-legend__count">' + mb[t] + '</span></li>';
+            }
+        }
+
+        // Top Rated Content
+        var topContent = [
+            { title: 'Hawak Kamay', rating: 9.5, count: 52 },
+            { title: 'Salamat Live at Araneta', rating: 9.4, count: 22 },
+            { title: 'Salamat', rating: 9.2, count: 45 },
+            { title: 'Your Love', rating: 9.1, count: 40 },
+            { title: 'Ikaw', rating: 8.9, count: 31 }
+        ];
+        var topList = document.getElementById('top-content-list');
+        if (topList) {
+            topList.innerHTML = topContent.map(function(c, i) {
+                return '<div class="engagement-item"><span class="engagement-item__rank">#' + (i + 1) + '</span><span class="engagement-item__title">' + c.title + '</span><span class="engagement-item__stat">' + c.rating + '/10 (' + c.count + ')</span></div>';
+            }).join('');
+        }
+
+        // Revenue by Source
+        var sources = [
+            { label: 'Merch Store', value: 45200, pct: 42, color: '#5B2D8E' },
+            { label: 'Memberships', value: 32800, pct: 30, color: '#8B2252' },
+            { label: 'Event Tickets', value: 18500, pct: 17, color: '#D4A547' },
+            { label: 'Mensahe ni Yeng', value: 11900, pct: 11, color: '#2D8E7E' }
+        ];
+        var srcEl = document.getElementById('revenue-sources');
+        if (srcEl) {
+            srcEl.innerHTML = sources.map(function(s) {
+                return '<div class="sparkline-row">'
+                    + '<span class="sparkline-row__label">' + s.label + '</span>'
+                    + '<div class="sparkline-row__bar"><div class="sparkline-row__fill" style="width:' + s.pct + '%;background:' + s.color + ';"></div></div>'
+                    + '<span class="sparkline-row__value">' + (s.value / 1000).toFixed(1) + 'k</span>'
+                    + '</div>';
+            }).join('');
+        }
     }
 
     if (window.lucide) lucide.createIcons();
