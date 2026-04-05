@@ -325,7 +325,6 @@
 
         .about__image-placeholder {
             width: 100%;
-            aspect-ratio: 4/5;
             border-radius: var(--radius-xl);
             background: linear-gradient(135deg, rgba(108,43,217,0.08), rgba(229,160,13,0.12));
             display: flex;
@@ -334,6 +333,15 @@
             font-family: 'Caveat', cursive;
             font-size: 1.5rem;
             color: #71718A;
+            overflow: hidden;
+            min-height: 300px;
+        }
+
+        .about__image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-xl);
         }
 
         /* Stories */
@@ -639,8 +647,9 @@
                     <p>Yeng Nation is more than a fan base. It is a family united by the universal language of music, celebrating every milestone and moment together.</p>
                     <div class="about__accent">"Ang musika ang nagbubuklod sa ating lahat."</div>
                 </div>
-                <div class="about__image-placeholder" data-config-bg="about_image">
-                    Yeng Photo
+                <div class="about__image-placeholder">
+                    <img data-config-img="about_image" src="" alt="Yeng Constantino" style="display:none;">
+                    <span class="about__image-text">Yeng Photo</span>
                 </div>
             </div>
         </div>
