@@ -364,6 +364,9 @@ const SiteConfig = {
             if (url) {
                 el.src = url;
                 el.style.display = '';
+                // Hide any sibling placeholder text
+                const sibling = el.parentElement && el.parentElement.querySelector('.about__image-text');
+                if (sibling) sibling.style.display = 'none';
             }
         });
 
@@ -372,7 +375,8 @@ const SiteConfig = {
             const key = el.dataset.configBg;
             const url = this.getImage(key);
             if (url) {
-                el.style.backgroundImage = `url(${url})`;
+                el.style.background = `url(${url}) center/cover no-repeat`;
+                el.textContent = '';
             }
         });
 
