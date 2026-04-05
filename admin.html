@@ -183,7 +183,7 @@
             <div class="stat-card"><div class="stat-card__icon">&#127915;</div><div class="stat-card__value" id="stat-events">--</div><div class="stat-card__label">Active Events</div></div>
             <div class="stat-card"><div class="stat-card__icon">&#127908;</div><div class="stat-card__value" id="stat-messages">--</div><div class="stat-card__label">Pending Messages</div></div>
             <div class="stat-card"><div class="stat-card__icon">&#127915;</div><div class="stat-card__value" id="stat-tickets">--</div><div class="stat-card__label">Pending Tickets</div></div>
-            <div class="stat-card"><div class="stat-card__icon">&#128179;</div><div class="stat-card__value" id="stat-credit">--</div><div class="stat-card__label">Store Credit Out</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128179;</div><div class="stat-card__value" id="stat-credit">--</div><div class="stat-card__label">Credits Outstanding</div></div>
         </div>
 
         <div class="admin-tabs">
@@ -256,6 +256,7 @@
             <!-- Config Panel -->
             <div class="admin-panel" id="admin-panel-config">
                 <h2 class="admin-panel__title">Site Configuration</h2>
+                <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#6B5D50;margin-bottom:var(--space-xl);line-height:1.6;">Edit the text, images, and links that appear across the site. Changes take effect immediately after saving. <strong>Value</strong> = text content shown on the page. <strong>Image URL</strong> = photo/image URL (for hero images, about photo, etc.).</p>
                 <div id="admin-config-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
                 <div style="margin-top:var(--space-xl);"><button class="btn btn--primary" onclick="saveConfig()">Save All Changes</button></div>
             </div>
@@ -328,7 +329,7 @@
         document.getElementById('stat-events').textContent = s.activeEvents || 0;
         document.getElementById('stat-messages').textContent = s.pendingMessages || 0;
         document.getElementById('stat-tickets').textContent = s.pendingTickets || 0;
-        document.getElementById('stat-credit').textContent = formatPrice(s.storeCreditOutstanding || 0);
+        document.getElementById('stat-credit').textContent = (s.storeCreditOutstanding || 0).toLocaleString();
 
         // Tab badges
         if (s.pendingPosts > 0) { var b = document.getElementById('badge-posts'); b.textContent = s.pendingPosts; b.style.display = ''; }
@@ -543,11 +544,11 @@
             var data = await api('get-admin-users?limit=50' + (search ? '&search=' + encodeURIComponent(search) : ''));
             var users = data.users || [];
             if (!users.length) { container.innerHTML = '<p style="color:#8E7F70;">No users found.</p>'; return; }
-            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Tier</th><th>Role</th><th>Joined</th><th>Credit</th></tr></thead><tbody>';
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Tier</th><th>Role</th><th>Joined</th><th>Credits</th></tr></thead><tbody>';
             users.forEach(function(u) {
                 html += '<tr><td>' + (u.name || '') + '</td><td>@' + (u.username || '') + '</td><td>' + (u.email || '') + '</td>'
                     + '<td>' + (u.membershipTier || 'Free') + '</td><td>' + (u.role || 'User') + '</td>'
-                    + '<td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td><td>' + formatPrice(u.storeCredit || 0) + '</td></tr>';
+                    + '<td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td><td>' + (u.storeCredit || 0) + ' credits</td></tr>';
             });
             html += '</tbody></table></div>';
             container.innerHTML = html;
