@@ -818,21 +818,117 @@
     }
 
     /* ── Site Config ── */
+    // Human-readable labels and grouping for SiteConfig keys
+    var CONFIG_MAP = {
+        'Homepage': [
+            { key: 'hero_title', label: 'Hero Title', desc: 'Main headline on the homepage', type: 'text' },
+            { key: 'hero_subtitle', label: 'Hero Subtitle', desc: 'Tagline below the main headline', type: 'text' },
+            { key: 'hero_tagline', label: 'Hero Accent Text', desc: 'Cursive text below the subtitle', type: 'text' },
+            { key: 'hero_cta_primary', label: 'Primary Button Text', desc: 'Left button in the hero section', type: 'text' },
+            { key: 'hero_cta_secondary', label: 'Secondary Button Text', desc: 'Right button in the hero section', type: 'text' },
+            { key: 'hero_image', label: 'Hero Background Image', desc: 'Background image URL for the hero', type: 'image' }
+        ],
+        'About Section': [
+            { key: 'about_title', label: 'About Title', desc: 'Heading for the about section', type: 'text' },
+            { key: 'about_text', label: 'About Text', desc: 'Main paragraph about Yeng', type: 'textarea' },
+            { key: 'about_image', label: 'About Photo', desc: 'Yeng photo URL for the about section', type: 'image' }
+        ],
+        'Stats (Homepage)': [
+            { key: 'stats_albums', label: 'Albums Count', desc: 'e.g. "8+"', type: 'text' },
+            { key: 'stats_albums_label', label: 'Albums Label', desc: 'Label below the number', type: 'text' },
+            { key: 'stats_years', label: 'Years Count', desc: 'e.g. "18+"', type: 'text' },
+            { key: 'stats_years_label', label: 'Years Label', desc: 'Label below the number', type: 'text' },
+            { key: 'stats_tours', label: 'Tours/Shows Count', desc: 'e.g. "200+"', type: 'text' },
+            { key: 'stats_tours_label', label: 'Tours Label', desc: 'Label below the number', type: 'text' },
+            { key: 'stats_followers', label: 'Followers Count', desc: 'e.g. "5M+"', type: 'text' },
+            { key: 'stats_followers_label', label: 'Followers Label', desc: 'Label below the number', type: 'text' }
+        ],
+        'Social Media Links': [
+            { key: 'social_youtube', label: 'YouTube URL', desc: 'Full YouTube channel URL', type: 'text' },
+            { key: 'social_instagram', label: 'Instagram URL', desc: 'Full Instagram profile URL', type: 'text' },
+            { key: 'social_facebook', label: 'Facebook URL', desc: 'Full Facebook page URL', type: 'text' },
+            { key: 'social_tiktok', label: 'TikTok URL', desc: 'Full TikTok profile URL', type: 'text' },
+            { key: 'social_spotify', label: 'Spotify URL', desc: 'Spotify artist page URL', type: 'text' },
+            { key: 'social_twitter', label: 'Twitter/X URL', desc: 'Twitter profile URL', type: 'text' }
+        ],
+        'Page Titles & Subtitles': [
+            { key: 'music_title', label: 'Music Page Title', desc: 'Heading on the Music page', type: 'text' },
+            { key: 'music_subtitle', label: 'Music Page Subtitle', desc: 'Description text on Music page', type: 'text' },
+            { key: 'community_title', label: 'Community Page Title', desc: 'Heading on the Community page', type: 'text' },
+            { key: 'community_subtitle', label: 'Community Subtitle', desc: 'Description text on Community page', type: 'text' },
+            { key: 'merch_title', label: 'Merch Page Title', desc: 'Heading on the Merch page', type: 'text' },
+            { key: 'merch_subtitle', label: 'Merch Subtitle', desc: 'Description text on Merch page', type: 'text' },
+            { key: 'covers_title', label: 'Covers Page Title', desc: 'Heading on the Yeng Covers page', type: 'text' },
+            { key: 'covers_subtitle', label: 'Covers Subtitle', desc: 'Description text on Covers page', type: 'text' }
+        ],
+        'Membership Page': [
+            { key: 'membership_title', label: 'Membership Title', desc: 'Main heading on Membership page', type: 'text' },
+            { key: 'membership_subtitle', label: 'Membership Subtitle', desc: 'Description below the heading', type: 'text' },
+            { key: 'membership_quote', label: 'Membership Quote', desc: 'Quote displayed on the membership hero', type: 'text' }
+        ],
+        'Footer': [
+            { key: 'footer_tagline', label: 'Footer Tagline', desc: 'Short text in the footer', type: 'text' },
+            { key: 'footer_copyright', label: 'Copyright Name', desc: 'Name shown in the copyright line', type: 'text' }
+        ],
+        'Advanced': [
+            { key: 'streamyard_url', label: 'StreamYard Studio URL', desc: 'Your reusable StreamYard broadcast room URL for the Go Live button', type: 'text' }
+        ]
+    };
+
     async function loadSiteConfig() {
         var container = document.getElementById('admin-config-list');
         try {
             var data = await api('get-site-config');
-            var records = data.records || [];
-            if (!records.length) { container.innerHTML = '<p style="color:#8E7F70;">No config records found.</p>'; return; }
-            container.innerHTML = records.map(function(r) {
-                var f = r.fields || r;
-                return '<div class="config-row" data-key="' + (f.Key || '') + '">'
-                    + '<div class="config-row__key">' + (f.Key || '') + '</div>'
-                    + '<input class="config-row__input config-value" value="' + ((f.Value || '').replace(/"/g, '&quot;')) + '" placeholder="Value">'
-                    + '<input class="config-row__input config-image" value="' + ((f.ImageURL || '').replace(/"/g, '&quot;')) + '" placeholder="Image URL">'
-                    + '<span style="font-size:0.75rem;color:#8E7F70;min-width:80px;">' + (f.Category || '') + '</span>'
-                    + '</div>';
-            }).join('');
+            var config = data.config || {};
+            var html = '';
+
+            for (var section in CONFIG_MAP) {
+                html += '<div style="margin-bottom:var(--space-2xl);">'
+                    + '<h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#352A20;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">' + section + '</h3>';
+
+                CONFIG_MAP[section].forEach(function(item) {
+                    var entry = config[item.key] || {};
+                    var val = (entry.value || '').replace(/"/g, '&quot;');
+                    var imgVal = (entry.imageURL || '').replace(/"/g, '&quot;');
+
+                    html += '<div class="config-row" data-key="' + item.key + '" style="grid-template-columns:200px 1fr' + (item.type === 'image' ? ' 1fr' : '') + ';margin-bottom:4px;">'
+                        + '<div><div class="config-row__key">' + item.label + '</div><div style="font-size:0.7rem;color:#B8A999;margin-top:2px;">' + item.desc + '</div></div>';
+
+                    if (item.type === 'textarea') {
+                        html += '<textarea class="config-row__input config-value" rows="2" style="resize:vertical;">' + val.replace(/&quot;/g, '"') + '</textarea>';
+                    } else {
+                        html += '<input class="config-row__input config-value" value="' + val + '" placeholder="Enter ' + item.label.toLowerCase() + '...">';
+                    }
+
+                    if (item.type === 'image') {
+                        html += '<input class="config-row__input config-image" value="' + imgVal + '" placeholder="Image URL...">';
+                    }
+
+                    html += '</div>';
+                });
+
+                html += '</div>';
+            }
+
+            // Show any unmapped keys at the bottom
+            var mappedKeys = {};
+            for (var s in CONFIG_MAP) CONFIG_MAP[s].forEach(function(i) { mappedKeys[i.key] = true; });
+            var unmapped = [];
+            for (var k in config) { if (!mappedKeys[k]) unmapped.push(k); }
+            if (unmapped.length > 0) {
+                html += '<div style="margin-bottom:var(--space-2xl);"><h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#352A20;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">Other Settings</h3>';
+                unmapped.forEach(function(key) {
+                    var entry = config[key] || {};
+                    html += '<div class="config-row" data-key="' + key + '">'
+                        + '<div class="config-row__key">' + key + '</div>'
+                        + '<input class="config-row__input config-value" value="' + ((entry.value || '').replace(/"/g, '&quot;')) + '" placeholder="Value">'
+                        + '<input class="config-row__input config-image" value="' + ((entry.imageURL || '').replace(/"/g, '&quot;')) + '" placeholder="Image URL">'
+                        + '</div>';
+                });
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
         } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load config.</p>'; }
     }
 
@@ -840,15 +936,17 @@
         var rows = document.querySelectorAll('.config-row');
         var records = [];
         rows.forEach(function(row) {
+            var valEl = row.querySelector('.config-value');
+            var imgEl = row.querySelector('.config-image');
             records.push({
                 key: row.dataset.key,
-                value: row.querySelector('.config-value').value,
-                imageURL: row.querySelector('.config-image').value
+                value: valEl ? valEl.value : '',
+                imageURL: imgEl ? imgEl.value : undefined
             });
         });
         try {
             await api('update-site-config', { method: 'POST', body: { records: records } });
-            showToast('Site config saved!', 'success');
+            showToast('All changes saved! They\'ll appear on the site immediately.', 'success');
         } catch (err) { showToast('Failed: ' + err.message, 'error'); }
     }
 
