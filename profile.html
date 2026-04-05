@@ -200,12 +200,16 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link nav__link--active"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -232,6 +236,9 @@
             <button class="profile-tab" data-tab="ratings" onclick="switchTab('ratings')">My Ratings</button>
             <button class="profile-tab" data-tab="exclusive" onclick="switchTab('exclusive')">Exclusive Content</button>
             <button class="profile-tab" data-tab="covers" onclick="switchTab('covers')">My Covers</button>
+            <button class="profile-tab" data-tab="tickets" onclick="switchTab('tickets')">My Tickets</button>
+            <button class="profile-tab" data-tab="messages" onclick="switchTab('messages')">My Messages</button>
+            <button class="profile-tab" data-tab="topsongs" onclick="switchTab('topsongs')">My Top Songs</button>
         </div>
 
         <div class="profile-panels">
@@ -283,6 +290,26 @@
                 <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Covers</h2>
                 <div id="covers-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading your covers...</span></div></div>
             </div>
+
+            <!-- My Tickets Tab -->
+            <div class="profile-panel" id="panel-tickets">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Tickets</h2>
+                <div id="tickets-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading tickets...</span></div></div>
+            </div>
+
+            <!-- My Messages Tab -->
+            <div class="profile-panel" id="panel-messages">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-xl);">My Messages</h2>
+                <div id="messages-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading message requests...</span></div></div>
+            </div>
+
+            <!-- My Top Songs Tab -->
+            <div class="profile-panel" id="panel-topsongs">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#352A20;margin-bottom:var(--space-md);">My Top Songs</h2>
+                <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#8E7F70;margin-bottom:var(--space-xl);">Your top 10 favorite Yeng songs. Drag to reorder, then save.</p>
+                <div id="topsongs-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading favorites...</span></div></div>
+                <div id="topsongs-save" style="display:none;margin-top:var(--space-xl);"><button class="btn btn--primary" onclick="saveTopSongs()">Save Order</button></div>
+            </div>
         </div>
     </div>
 
@@ -300,8 +327,8 @@
                         <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
                     </div>
                 </div>
-                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
-                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
                 <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">
@@ -395,6 +422,9 @@
                 else if (tab === 'ratings') loadRatings();
                 else if (tab === 'exclusive') loadExclusiveContent();
                 else if (tab === 'covers') loadMyCovers();
+                else if (tab === 'tickets') loadMyTickets();
+                else if (tab === 'messages') loadMyMessages();
+                else if (tab === 'topsongs') loadMyTopSongs();
             }
         }
 
@@ -455,6 +485,94 @@
                     return '<div class="cover-list-card"><div class="cover-list-card__header"><span class="cover-list-card__title">' + c.title + '</span><span class="badge" style="background:' + sc + '20;color:' + sc + ';">' + c.status + '</span></div><div class="cover-list-card__meta">' + (c.songTitle || '') + ' &middot; ' + (c.arrangementStyle || '') + ' &middot; ' + (c.submittedAt ? formatDate(c.submittedAt) : '') + ' &middot; ' + (c.upvotes || 0) + ' upvotes</div></div>';
                 }).join('');
             } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load covers.</p>'; }
+        }
+
+        async function loadMyTickets() {
+            var container = document.getElementById('tickets-list');
+            try {
+                var data = await api('get-user-tickets');
+                var tickets = data.tickets || [];
+                if (!tickets.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#127915;</div><h3 class="empty-state__title">No tickets yet</h3><p class="empty-state__text">Check out <a href="/events.html">Events</a> for upcoming shows!</p></div>'; return; }
+                container.innerHTML = tickets.map(function(t) {
+                    var statusClass = 'order-card__status--' + (t.status || 'pending').toLowerCase();
+                    return '<div class="order-card"><div class="order-card__header"><span class="order-card__number">' + (t.eventTitle || 'Event') + '</span><span class="order-card__status ' + statusClass + '">' + (t.status || 'Pending') + '</span></div><div class="order-card__details"><p>' + (t.purchasedAt ? formatDate(t.purchasedAt) : '') + ' &middot; ' + (t.quantity || 1) + ' ticket(s) &middot; ' + formatPrice(t.price || 0) + (t.discountApplied && t.discountApplied !== 'None' ? ' (' + t.discountApplied + ' off)' : '') + '</p></div></div>';
+                }).join('');
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load tickets.</p>'; }
+        }
+
+        async function loadMyMessages() {
+            var container = document.getElementById('messages-list');
+            try {
+                var data = await api('get-message-requests');
+                var messages = data.requests || [];
+                if (!messages.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#128140;</div><h3 class="empty-state__title">No message requests</h3><p class="empty-state__text">Request a personal message from Yeng on <a href="/mensahe.html">Mensahe ni Yeng</a>!</p></div>'; return; }
+                var statusColors = { 'Pending': '#C68B1E', 'Accepted': '#5B2D8E', 'Recording': '#8B2252', 'Delivered': '#2D8E7E', 'Cancelled': '#8B2252' };
+                container.innerHTML = messages.map(function(m) {
+                    var sc = statusColors[m.status] || '#8E7F70';
+                    return '<div class="order-card"><div class="order-card__header"><span class="order-card__number">' + (m.type || '') + ' Message for ' + (m.recipientName || 'Someone Special') + '</span><span class="order-card__status" style="background:' + sc + '20;color:' + sc + ';">' + (m.status || 'Pending') + '</span></div><div class="order-card__details"><p>' + (m.requestedAt ? formatDate(m.requestedAt) : '') + ' &middot; ' + (m.occasion || '') + ' &middot; ' + formatPrice(m.price || 0) + '</p>' +
+                        (m.status === 'Delivered' && m.deliveryUrl ? '<a href="' + m.deliveryUrl + '" target="_blank" class="btn btn--primary btn--sm" style="margin-top:var(--space-sm);">View Message</a>' : '') +
+                        '</div></div>';
+                }).join('');
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load messages.</p>'; }
+        }
+
+        var topSongsData = [];
+
+        async function loadMyTopSongs() {
+            var container = document.getElementById('topsongs-list');
+            var saveBtn = document.getElementById('topsongs-save');
+            try {
+                var data = await api('get-user-favorites');
+                topSongsData = data.favorites || [];
+                if (!topSongsData.length) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#127926;</div><h3 class="empty-state__title">No top songs yet</h3><p class="empty-state__text">Rate songs on the <a href="/music.html">Music</a> page and add them to your favorites!</p></div>';
+                    saveBtn.style.display = 'none';
+                    return;
+                }
+                saveBtn.style.display = '';
+                renderTopSongs();
+            } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load favorites.</p>'; }
+        }
+
+        function renderTopSongs() {
+            var container = document.getElementById('topsongs-list');
+            container.innerHTML = topSongsData.map(function(f, i) {
+                return '<div class="order-card" draggable="true" data-idx="' + i + '" style="cursor:grab;display:flex;align-items:center;gap:var(--space-md);" ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="dropSong(event)">'
+                    + '<span style="font-family:\'Playfair Display\',serif;font-size:1.5rem;font-weight:800;color:#D4A547;min-width:40px;text-align:center;">#' + (i + 1) + '</span>'
+                    + '<div style="flex:1;"><span class="order-card__number">' + (f.contentTitle || 'Song') + '</span></div>'
+                    + '<button style="background:none;border:none;color:#8E7F70;cursor:pointer;font-size:1.2rem;padding:4px;" onclick="removeFavorite(' + i + ')">&times;</button>'
+                    + '</div>';
+            }).join('');
+        }
+
+        var dragIdx = null;
+        function dragStart(e) { dragIdx = parseInt(e.target.closest('[data-idx]').dataset.idx); e.dataTransfer.effectAllowed = 'move'; }
+        function dragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+        function dropSong(e) {
+            e.preventDefault();
+            var dropIdx = parseInt(e.target.closest('[data-idx]').dataset.idx);
+            if (dragIdx === null || dragIdx === dropIdx) return;
+            var item = topSongsData.splice(dragIdx, 1)[0];
+            topSongsData.splice(dropIdx, 0, item);
+            renderTopSongs();
+            dragIdx = null;
+        }
+
+        function removeFavorite(idx) {
+            topSongsData.splice(idx, 1);
+            renderTopSongs();
+            if (topSongsData.length === 0) {
+                document.getElementById('topsongs-list').innerHTML = '<p style="color:#8E7F70;">All favorites removed. Add songs from the Music page.</p>';
+                document.getElementById('topsongs-save').style.display = 'none';
+            }
+        }
+
+        async function saveTopSongs() {
+            try {
+                var favs = topSongsData.map(function(f) { return { contentId: f.contentId, contentTitle: f.contentTitle }; });
+                await api('update-user-favorites', { method: 'POST', body: { favorites: favs } });
+                showToast('Top songs saved!', 'success');
+            } catch (err) { showToast('Failed to save: ' + err.message, 'error'); }
         }
     </script>
 </body>

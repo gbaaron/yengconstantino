@@ -13,7 +13,7 @@ exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Content-Type': 'application/json'
     };
 
@@ -27,43 +27,24 @@ exports.handler = async (event) => {
 
     const decoded = verifyToken(event);
     if (!decoded) {
-        return {
-            statusCode: 401,
-            headers,
-            body: JSON.stringify({ error: 'Authentication required' })
-        };
+        return { statusCode: 401, headers, body: JSON.stringify({ error: 'Authentication required' }) };
     }
 
     try {
         const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
-        const record = await base('Users').find(decoded.userId);
-        const fields = record.fields;
+        const userRecord = await base('Users').find(decoded.userId);
 
         return {
             statusCode: 200,
             headers,
             body: JSON.stringify({
-                user: {
-                    id: record.id,
-                    name: fields.Name,
-                    username: fields.Username,
-                    email: fields.Email,
-                    membershipTier: fields.MembershipTier || 'Free',
-                    avatar: fields.Avatar || null,
-                    bio: fields.Bio || null,
-                    joinDate: fields.JoinDate || null,
-                    membershipExpiry: fields.MembershipExpiry || null,
-                    role: fields.Role || 'User'
-                }
+                storeCredit: userRecord.fields.StoreCredit || 0,
+                tier: userRecord.fields.MembershipTier || 'Free'
             })
         };
     } catch (error) {
-        console.error('Get user error:', error);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Failed to fetch user profile' })
-        };
+        console.error('Get store credit error:', error);
+        return { statusCode: 500, headers, body: JSON.stringify({ error: 'Failed to fetch store credit' }) };
     }
 };

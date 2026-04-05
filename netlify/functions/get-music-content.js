@@ -116,7 +116,12 @@ exports.handler = async (event) => {
                 publishDate: record.fields.PublishDate || null,
                 featured: !!record.fields.Featured,
                 avgRating: record.fields.AvgRating || 0,
-                ratingCount: record.fields.RatingCount || 0
+                ratingCount: record.fields.RatingCount || 0,
+                avgSongRating: record.fields.AvgSongRating || 0,
+                songRatingCount: record.fields.SongRatingCount || 0,
+                avgVideoRating: record.fields.AvgVideoRating || 0,
+                videoRatingCount: record.fields.VideoRatingCount || 0,
+                spotifyUrl: record.fields.SpotifyURL || record.fields.SpotifyUrl || null
             };
         });
 

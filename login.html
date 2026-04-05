@@ -336,12 +336,16 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -406,14 +410,14 @@
 
                     <form class="auth-form" id="login-form" novalidate>
                         <div class="form-group">
-                            <label class="form-label" for="login-email">Email Address</label>
+                            <label class="form-label" for="login-email">Email or Username</label>
                             <input
-                                type="email"
+                                type="text"
                                 id="login-email"
                                 class="form-input"
-                                placeholder="you@email.com"
+                                placeholder="you@email.com or username"
                                 required
-                                autocomplete="email"
+                                autocomplete="username"
                             >
                         </div>
 
@@ -466,6 +470,7 @@
                         <li><a href="/music.html">Music Archive</a></li>
                         <li><a href="/covers.html">Yeng Covers</a></li>
                         <li><a href="/community.html">Community</a></li>
+                        <li><a href="/events.html">Events</a></li>
                         <li><a href="/merch.html">Merch Store</a></li>
                     </ul>
                 </div>
@@ -473,6 +478,7 @@
                     <h4 class="footer__heading">Fan Hub</h4>
                     <ul class="footer__list">
                         <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/mensahe.html">Mensahe ni Yeng</a></li>
                         <li><a href="/profile.html">My Profile</a></li>
                         <li><a href="/signup.html">Join Yeng Nation</a></li>
                     </ul>
@@ -535,18 +541,12 @@
                 e.preventDefault();
                 hideError();
 
-                var email = emailInput.value.trim();
+                var loginValue = emailInput.value.trim();
                 var password = passwordInput.value;
 
                 // Validation
-                if (!email) {
-                    showError('Please enter your email address.');
-                    emailInput.focus();
-                    return;
-                }
-
-                if (!email.includes('@') || !email.includes('.')) {
-                    showError('Please enter a valid email address.');
+                if (!loginValue) {
+                    showError('Please enter your email or username.');
                     emailInput.focus();
                     return;
                 }
@@ -562,7 +562,7 @@
                 try {
                     var data = await api('login', {
                         method: 'POST',
-                        body: { email: email, password: password }
+                        body: { login: loginValue, password: password }
                     });
 
                     Auth.setSession(data.token, data.user);

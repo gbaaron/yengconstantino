@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Yeng Constantino Official</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .admin-page { padding-top: 72px; min-height: 100vh; background: #FBF7F2; }
+
+        .admin-header {
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            padding: var(--space-3xl) 0 calc(var(--space-3xl) + 60px);
+            text-align: center;
+        }
+        .admin-header__eyebrow { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #D4A547; }
+        .admin-header__title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: #FFF; margin-top: 4px; }
+
+        .admin-stats {
+            max-width: 1200px;
+            margin: -60px auto 0;
+            padding: 0 var(--space-xl);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            position: relative;
+            z-index: 1;
+        }
+        .stat-card {
+            background: #FFF;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            text-align: center;
+            transition: all 250ms ease;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+        .stat-card__icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+        .stat-card__value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: #5B2D8E; line-height: 1.1; }
+        .stat-card__label { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #8E7F70; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; font-weight: 600; }
+        .stat-card__sub { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: #D4A547; margin-top: 2px; font-weight: 600; }
+
+        .admin-tabs {
+            max-width: 1200px;
+            margin: var(--space-2xl) auto 0;
+            padding: 0 var(--space-xl);
+            display: flex;
+            gap: var(--space-xs);
+            border-bottom: 2px solid #EDE7DF;
+            overflow-x: auto;
+        }
+        .admin-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #8E7F70;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 150ms ease;
+            white-space: nowrap;
+        }
+        .admin-tab:hover { color: #5B2D8E; }
+        .admin-tab--active { color: #5B2D8E; border-bottom-color: #5B2D8E; }
+        .admin-tab__badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            background: #8B2252;
+            color: #FFF;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        .admin-panels { max-width: 1200px; margin: 0 auto; padding: var(--space-xl); }
+        .admin-panel { display: none; }
+        .admin-panel--active { display: block; }
+        .admin-panel__title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #352A20; margin-bottom: var(--space-xl); }
+
+        /* Data Tables */
+        .admin-table-wrap { overflow-x: auto; }
+        .admin-table { width: 100%; border-collapse: collapse; background: #FFF; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 2px 8px rgba(212,165,71,0.06); }
+        .admin-table th {
+            background: #F7F3EE; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.72rem;
+            text-transform: uppercase; letter-spacing: 0.05em; color: #6B5D50; padding: 12px 16px; text-align: left;
+        }
+        .admin-table td { padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: #352A20; border-top: 1px solid #EDE7DF; vertical-align: middle; }
+        .admin-table tr:hover td { background: rgba(91,45,142,0.02); }
+
+        /* Moderation Cards */
+        .mod-card { background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(212,165,71,0.06); }
+        .mod-card__header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-md); margin-bottom: var(--space-sm); flex-wrap: wrap; }
+        .mod-card__user { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.95rem; color: #352A20; }
+        .mod-card__meta { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #8E7F70; margin-bottom: var(--space-sm); }
+        .mod-card__content { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #4A3D32; line-height: 1.7; margin-bottom: var(--space-md); }
+        .mod-card__actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+
+        /* Status badges */
+        .status-badge { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .status-badge--pending { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .status-badge--confirmed, .status-badge--approved { background: rgba(91,45,142,0.12); color: #5B2D8E; }
+        .status-badge--shipped, .status-badge--delivered, .status-badge--active { background: rgba(45,142,126,0.12); color: #2D8E7E; }
+        .status-badge--cancelled, .status-badge--rejected { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .status-badge--recording, .status-badge--accepted { background: rgba(91,45,142,0.12); color: #7E4FB5; }
+
+        /* Config Editor */
+        .config-row { display: grid; grid-template-columns: 180px 1fr 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md) 0; border-bottom: 1px solid #EDE7DF; }
+        .config-row__key { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.82rem; color: #352A20; word-break: break-all; }
+        .config-row__input { padding: 8px 12px; border: 2px solid #EDE7DF; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #352A20; width: 100%; }
+        .config-row__input:focus { outline: none; border-color: #5B2D8E; }
+
+        /* Membership bar */
+        .tier-bar { display: flex; height: 32px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: var(--space-md); }
+        .tier-bar__segment { display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; color: #FFF; min-width: 40px; }
+        .tier-bar__segment--free { background: #B8A999; }
+        .tier-bar__segment--sariwang { background: #5B2D8E; }
+        .tier-bar__segment--laging { background: #8B2252; }
+        .tier-bar__segment--ikaw { background: #D4A547; color: #231A12; }
+
+        /* Search */
+        .admin-search { padding: 10px 16px; border: 2px solid #EDE7DF; border-radius: 9999px; font-family: 'Inter', sans-serif; font-size: 0.9rem; width: 100%; max-width: 400px; margin-bottom: var(--space-xl); }
+        .admin-search:focus { outline: none; border-color: #5B2D8E; box-shadow: 0 0 0 3px rgba(91,45,142,0.12); }
+
+        /* Inline select */
+        .inline-select { padding: 4px 24px 4px 8px; border: 1px solid #EDE7DF; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #352A20; appearance: none; background: #FFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236B5D50' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 8px center; cursor: pointer; }
+
+        @media (max-width: 1024px) { .admin-stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .admin-stats { grid-template-columns: 1fr 1fr; }
+            .admin-header { padding: 100px 0 80px; }
+            .admin-header__title { font-size: 2rem; }
+            .config-row { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) { .admin-stats { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link nav__link--active">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" id="admin-view-toggle" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="admin-page">
+        <header class="admin-header">
+            <div class="admin-header__eyebrow">Yeng Constantino Official</div>
+            <h1 class="admin-header__title">Admin Dashboard</h1>
+        </header>
+
+        <div class="admin-stats" id="admin-stats">
+            <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__value" id="stat-users">--</div><div class="stat-card__label">Total Users</div><div class="stat-card__sub" id="stat-users-new"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#9733;</div><div class="stat-card__value" id="stat-members">--</div><div class="stat-card__label">Active Members</div><div class="stat-card__sub" id="stat-members-sub"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128176;</div><div class="stat-card__value" id="stat-revenue">--</div><div class="stat-card__label">Total Revenue</div><div class="stat-card__sub" id="stat-orders-count"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128221;</div><div class="stat-card__value" id="stat-pending">--</div><div class="stat-card__label">Pending Content</div><div class="stat-card__sub" id="stat-pending-sub"></div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#127915;</div><div class="stat-card__value" id="stat-events">--</div><div class="stat-card__label">Active Events</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#127908;</div><div class="stat-card__value" id="stat-messages">--</div><div class="stat-card__label">Pending Messages</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#127915;</div><div class="stat-card__value" id="stat-tickets">--</div><div class="stat-card__label">Pending Tickets</div></div>
+            <div class="stat-card"><div class="stat-card__icon">&#128179;</div><div class="stat-card__value" id="stat-credit">--</div><div class="stat-card__label">Store Credit Out</div></div>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="admin-tab admin-tab--active" data-tab="overview" onclick="switchAdminTab('overview')">Overview</button>
+            <button class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')">Posts <span class="admin-tab__badge" id="badge-posts" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="covers" onclick="switchAdminTab('covers')">Covers <span class="admin-tab__badge" id="badge-covers" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="orders" onclick="switchAdminTab('orders')">Orders</button>
+            <button class="admin-tab" data-tab="tickets" onclick="switchAdminTab('tickets')">Tickets</button>
+            <button class="admin-tab" data-tab="messages" onclick="switchAdminTab('messages')">Messages</button>
+            <button class="admin-tab" data-tab="users" onclick="switchAdminTab('users')">Users</button>
+            <button class="admin-tab" data-tab="reviews" onclick="switchAdminTab('reviews')">Reviews <span class="admin-tab__badge" id="badge-reviews" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="config" onclick="switchAdminTab('config')">Site Config</button>
+        </div>
+
+        <div class="admin-panels">
+            <!-- Overview Panel -->
+            <div class="admin-panel admin-panel--active" id="admin-panel-overview">
+                <h2 class="admin-panel__title">Overview</h2>
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);">Membership Distribution</h3>
+                <div class="tier-bar" id="tier-bar"></div>
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);margin-top:var(--space-2xl);">Recent Orders</h3>
+                <div class="admin-table-wrap" id="overview-orders"><div class="loading-overlay"><div class="spinner"></div></div></div>
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);margin-top:var(--space-2xl);">Recent Signups</h3>
+                <div class="admin-table-wrap" id="overview-signups"><div class="loading-overlay"><div class="spinner"></div></div></div>
+            </div>
+
+            <!-- Posts Panel -->
+            <div class="admin-panel" id="admin-panel-posts">
+                <h2 class="admin-panel__title">Pending Posts</h2>
+                <div id="admin-posts-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Covers Panel -->
+            <div class="admin-panel" id="admin-panel-covers">
+                <h2 class="admin-panel__title">Pending Covers</h2>
+                <div id="admin-covers-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div class="admin-panel" id="admin-panel-orders">
+                <h2 class="admin-panel__title">All Orders</h2>
+                <div id="admin-orders-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Tickets Panel -->
+            <div class="admin-panel" id="admin-panel-tickets">
+                <h2 class="admin-panel__title">Event Tickets</h2>
+                <div id="admin-tickets-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Messages Panel -->
+            <div class="admin-panel" id="admin-panel-messages">
+                <h2 class="admin-panel__title">Message Requests</h2>
+                <div id="admin-messages-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Users Panel -->
+            <div class="admin-panel" id="admin-panel-users">
+                <h2 class="admin-panel__title">All Users</h2>
+                <input type="text" class="admin-search" id="user-search" placeholder="Search by name or email..." oninput="searchUsersDebounced()">
+                <div id="admin-users-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Reviews Panel -->
+            <div class="admin-panel" id="admin-panel-reviews">
+                <h2 class="admin-panel__title">Pending Reviews</h2>
+                <div id="admin-reviews-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Config Panel -->
+            <div class="admin-panel" id="admin-panel-config">
+                <h2 class="admin-panel__title">Site Configuration</h2>
+                <div id="admin-config-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+                <div style="margin-top:var(--space-xl);"><button class="btn btn--primary" onclick="saveConfig()">Save All Changes</button></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+    var adminTabsLoaded = {};
+    var statsData = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!Auth.requireAdmin('/admin.html')) return;
+        loadStats();
+    });
+
+    /* ── Stats ── */
+    async function loadStats() {
+        try {
+            var data = await api('get-admin-stats');
+            statsData = data;
+            renderStatCards(data.stats);
+            renderOverview(data);
+        } catch (err) {
+            showToast('Failed to load admin stats', 'error');
+        }
+    }
+
+    function renderStatCards(s) {
+        document.getElementById('stat-users').textContent = s.totalUsers || 0;
+        document.getElementById('stat-users-new').textContent = '+' + (s.newUsersThisMonth || 0) + ' this month';
+
+        var activeMembers = (s.membershipBreakdown['Sariwang Simula'] || 0) + (s.membershipBreakdown['Laging Nandito'] || 0) + (s.membershipBreakdown['Ikaw Lamang'] || 0);
+        document.getElementById('stat-members').textContent = activeMembers;
+        document.getElementById('stat-members-sub').textContent = 'of ' + s.totalUsers + ' total';
+
+        document.getElementById('stat-revenue').textContent = formatPrice(s.totalRevenue || 0);
+        document.getElementById('stat-orders-count').textContent = (s.totalOrders || 0) + ' orders';
+
+        var pendingTotal = (s.pendingPosts || 0) + (s.pendingCovers || 0);
+        document.getElementById('stat-pending').textContent = pendingTotal;
+        document.getElementById('stat-pending-sub').textContent = (s.pendingPosts || 0) + ' posts, ' + (s.pendingCovers || 0) + ' covers';
+
+        document.getElementById('stat-events').textContent = s.activeEvents || 0;
+        document.getElementById('stat-messages').textContent = s.pendingMessages || 0;
+        document.getElementById('stat-tickets').textContent = s.pendingTickets || 0;
+        document.getElementById('stat-credit').textContent = formatPrice(s.storeCreditOutstanding || 0);
+
+        // Tab badges
+        if (s.pendingPosts > 0) { var b = document.getElementById('badge-posts'); b.textContent = s.pendingPosts; b.style.display = ''; }
+        if (s.pendingCovers > 0) { var b2 = document.getElementById('badge-covers'); b2.textContent = s.pendingCovers; b2.style.display = ''; }
+
+        // Tier bar
+        var mb = s.membershipBreakdown;
+        var total = s.totalUsers || 1;
+        var bar = document.getElementById('tier-bar');
+        bar.innerHTML = '<div class="tier-bar__segment tier-bar__segment--free" style="width:' + ((mb.Free / total) * 100) + '%">Free ' + mb.Free + '</div>'
+            + '<div class="tier-bar__segment tier-bar__segment--sariwang" style="width:' + (((mb['Sariwang Simula'] || 0) / total) * 100) + '%">' + (mb['Sariwang Simula'] || 0) + '</div>'
+            + '<div class="tier-bar__segment tier-bar__segment--laging" style="width:' + (((mb['Laging Nandito'] || 0) / total) * 100) + '%">' + (mb['Laging Nandito'] || 0) + '</div>'
+            + '<div class="tier-bar__segment tier-bar__segment--ikaw" style="width:' + (((mb['Ikaw Lamang'] || 0) / total) * 100) + '%">' + (mb['Ikaw Lamang'] || 0) + '</div>';
+    }
+
+    function renderOverview(data) {
+        // Recent orders table
+        var ordersHtml = '<table class="admin-table"><thead><tr><th>Order #</th><th>Total</th><th>Status</th><th>Date</th></tr></thead><tbody>';
+        (data.recentOrders || []).forEach(function(o) {
+            var sc = o.status === 'Pending' ? 'pending' : o.status === 'Confirmed' ? 'confirmed' : o.status === 'Shipped' ? 'shipped' : o.status === 'Delivered' ? 'delivered' : 'cancelled';
+            ordersHtml += '<tr><td>' + (o.orderNumber || 'N/A') + '</td><td>' + formatPrice(o.totalAmount) + '</td><td><span class="status-badge status-badge--' + sc + '">' + o.status + '</span></td><td>' + (o.orderDate ? formatDate(o.orderDate) : '') + '</td></tr>';
+        });
+        ordersHtml += '</tbody></table>';
+        document.getElementById('overview-orders').innerHTML = data.recentOrders && data.recentOrders.length ? ordersHtml : '<p style="color:#8E7F70;">No orders yet.</p>';
+
+        // Recent signups table
+        var signupsHtml = '<table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Joined</th></tr></thead><tbody>';
+        (data.recentSignups || []).forEach(function(u) {
+            signupsHtml += '<tr><td>' + (u.name || '') + '</td><td>' + (u.email || '') + '</td><td>' + (u.membershipTier || 'Free') + '</td><td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td></tr>';
+        });
+        signupsHtml += '</tbody></table>';
+        document.getElementById('overview-signups').innerHTML = data.recentSignups && data.recentSignups.length ? signupsHtml : '<p style="color:#8E7F70;">No signups yet.</p>';
+    }
+
+    /* ── Tab Switching ── */
+    function switchAdminTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('admin-tab--active'); });
+        document.querySelectorAll('.admin-panel').forEach(function(p) { p.classList.remove('admin-panel--active'); });
+        document.querySelector('[data-tab="' + tab + '"]').classList.add('admin-tab--active');
+        document.getElementById('admin-panel-' + tab).classList.add('admin-panel--active');
+        if (!adminTabsLoaded[tab]) {
+            adminTabsLoaded[tab] = true;
+            if (tab === 'posts') loadPendingPosts();
+            else if (tab === 'covers') loadPendingCovers();
+            else if (tab === 'orders') loadAllOrders();
+            else if (tab === 'tickets') loadPendingTickets();
+            else if (tab === 'messages') loadPendingMessages();
+            else if (tab === 'reviews') loadPendingReviews();
+            else if (tab === 'users') loadAllUsers();
+            else if (tab === 'config') loadSiteConfig();
+        }
+    }
+
+    /* ── Posts Moderation ── */
+    async function loadPendingPosts() {
+        var container = document.getElementById('admin-posts-list');
+        try {
+            var data = await api('get-admin-content?type=posts&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending posts</h3><p class="empty-state__text">All community posts have been reviewed.</p></div>'; return; }
+            container.innerHTML = items.map(function(p) {
+                return '<div class="mod-card" id="mod-post-' + p.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (p.UserName || 'Unknown') + '</span><span class="status-badge status-badge--pending">Pending</span></div>'
+                    + '<div class="mod-card__meta">' + (p.Type || 'Post') + ' &middot; ' + (p.CreatedAt ? formatDate(p.CreatedAt) : '') + '</div>'
+                    + '<div class="mod-card__content">' + truncate(p.Content || '', 300) + '</div>'
+                    + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="moderatePost(\'' + p.id + '\',\'Approved\')">Approve</button><button class="btn btn--ghost btn--sm" onclick="moderatePost(\'' + p.id + '\',\'Rejected\')">Reject</button></div>'
+                    + '</div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load posts.</p>'; }
+    }
+
+    async function moderatePost(postId, status) {
+        try {
+            await api('update-content-status', { method: 'POST', body: { type: 'post', recordId: postId, status: status } });
+            showToast('Post ' + status.toLowerCase(), status === 'Approved' ? 'success' : 'info');
+            var el = document.getElementById('mod-post-' + postId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Covers Moderation ── */
+    async function loadPendingCovers() {
+        var container = document.getElementById('admin-covers-list');
+        try {
+            var data = await api('get-admin-content?type=covers&status=Submitted');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending covers</h3><p class="empty-state__text">All cover submissions have been reviewed.</p></div>'; return; }
+            container.innerHTML = items.map(function(c) {
+                return '<div class="mod-card" id="mod-cover-' + c.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (c.UserName || 'Unknown') + '</span><span class="status-badge status-badge--pending">Submitted</span></div>'
+                    + '<div class="mod-card__meta">' + (c.Title || '') + ' &middot; ' + (c.SongTitle || '') + ' &middot; ' + (c.ArrangementStyle || '') + '</div>'
+                    + (c.ContentURL ? '<div style="margin-bottom:var(--space-sm);"><a href="' + c.ContentURL + '" target="_blank" rel="noopener" style="color:#5B2D8E;font-weight:600;font-size:0.85rem;">View Content &#8599;</a></div>' : '')
+                    + (c.PersonalNote ? '<div class="mod-card__content" style="font-style:italic;">"' + truncate(c.PersonalNote, 200) + '"</div>' : '')
+                    + '<div class="mod-card__actions">'
+                    + '<button class="btn btn--primary btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Featured on Site\')">Feature</button>'
+                    + '<button class="btn btn--secondary btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Under Review\')">Approve</button>'
+                    + '<button class="btn btn--ghost btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Rejected\')">Reject</button>'
+                    + '</div></div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load covers.</p>'; }
+    }
+
+    async function moderateCover(coverId, status) {
+        try {
+            await api('update-content-status', { method: 'POST', body: { type: 'cover', recordId: coverId, status: status } });
+            showToast('Cover: ' + status, 'success');
+            var el = document.getElementById('mod-cover-' + coverId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Orders ── */
+    async function loadAllOrders() {
+        var container = document.getElementById('admin-orders-list');
+        try {
+            var data = await api('get-admin-content?type=orders&status=');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<p style="color:#8E7F70;">No orders yet.</p>'; return; }
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order #</th><th>Total</th><th>Payment</th><th>Status</th><th>Tracking</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+            items.forEach(function(o) {
+                var sc = (o.Status || 'pending').toLowerCase();
+                html += '<tr id="order-row-' + o.id + '"><td>' + (o.OrderNumber || 'N/A') + '</td><td>' + formatPrice(o.TotalAmount || 0) + '</td><td>' + (o.PaymentMethod || '') + '</td>'
+                    + '<td><span class="status-badge status-badge--' + sc + '">' + (o.Status || 'Pending') + '</span></td>'
+                    + '<td>' + (o.TrackingNumber || '-') + '</td><td>' + (o.OrderDate ? formatDate(o.OrderDate) : '') + '</td>'
+                    + '<td><select class="inline-select" onchange="updateOrder(\'' + o.id + '\',this.value)"><option value="">Update...</option><option value="Confirmed">Confirm</option><option value="Shipped">Shipped</option><option value="Delivered">Delivered</option><option value="Cancelled">Cancel</option></select></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load orders.</p>'; }
+    }
+
+    async function updateOrder(orderId, status) {
+        if (!status) return;
+        var tracking = '';
+        if (status === 'Shipped') tracking = prompt('Enter tracking number (optional):') || '';
+        try {
+            await api('update-order-status', { method: 'POST', body: { orderId: orderId, status: status, trackingNumber: tracking } });
+            showToast('Order updated to ' + status, 'success');
+            adminTabsLoaded['orders'] = false;
+            loadAllOrders();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Tickets ── */
+    async function loadPendingTickets() {
+        var container = document.getElementById('admin-tickets-list');
+        try {
+            var data = await api('get-admin-content?type=tickets&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending tickets</h3></div>'; return; }
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Event</th><th>User</th><th>Qty</th><th>Price</th><th>Discount</th><th>Payment Ref</th><th>Actions</th></tr></thead><tbody>';
+            items.forEach(function(t) {
+                html += '<tr id="ticket-row-' + t.id + '"><td>' + (t.EventTitle || '') + '</td><td>' + (t.UserName || '') + '</td><td>' + (t.Quantity || 1) + '</td>'
+                    + '<td>' + formatPrice(t.Price || 0) + '</td><td>' + (t.DiscountApplied || 'None') + '</td><td>' + (t.PaymentReference || '') + '</td>'
+                    + '<td><button class="btn btn--primary btn--sm" onclick="updateTicket(\'' + t.id + '\',\'Confirmed\')">Confirm</button> <button class="btn btn--ghost btn--sm" onclick="updateTicket(\'' + t.id + '\',\'Cancelled\')">Cancel</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load tickets.</p>'; }
+    }
+
+    async function updateTicket(ticketId, status) {
+        try {
+            await api('update-ticket-status', { method: 'POST', body: { ticketId: ticketId, status: status } });
+            showToast('Ticket ' + status.toLowerCase(), 'success');
+            var row = document.getElementById('ticket-row-' + ticketId);
+            if (row) row.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Messages ── */
+    async function loadPendingMessages() {
+        var container = document.getElementById('admin-messages-list');
+        try {
+            var data = await api('get-admin-content?type=messages&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending messages</h3></div>'; return; }
+            container.innerHTML = items.map(function(m) {
+                return '<div class="mod-card" id="mod-msg-' + m.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (m.UserName || '') + '</span><span class="status-badge status-badge--pending">' + (m.Type || '') + ' Message</span></div>'
+                    + '<div class="mod-card__meta">For: ' + (m.RecipientName || '') + ' &middot; ' + (m.Occasion || '') + ' &middot; ' + formatPrice(m.Price || 0) + '</div>'
+                    + (m.PersonalInstructions ? '<div class="mod-card__content">"' + truncate(m.PersonalInstructions, 300) + '"</div>' : '')
+                    + '<div class="mod-card__actions">'
+                    + '<select class="inline-select" id="msg-status-' + m.id + '"><option value="Accepted">Accept</option><option value="Recording">Recording</option><option value="Delivered">Deliver</option><option value="Cancelled">Cancel</option></select>'
+                    + ' <input type="text" class="config-row__input" id="msg-url-' + m.id + '" placeholder="Delivery URL (for delivered)" style="max-width:250px;display:inline-block;">'
+                    + ' <button class="btn btn--primary btn--sm" onclick="updateMessage(\'' + m.id + '\')">Update</button>'
+                    + '</div></div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load messages.</p>'; }
+    }
+
+    async function updateMessage(msgId) {
+        var status = document.getElementById('msg-status-' + msgId).value;
+        var url = document.getElementById('msg-url-' + msgId).value.trim();
+        try {
+            var body = { requestId: msgId, status: status };
+            if (status === 'Delivered') body.deliveryUrl = url;
+            await api('update-message-status', { method: 'POST', body: body });
+            showToast('Message updated to ' + status, 'success');
+            var el = document.getElementById('mod-msg-' + msgId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Users ── */
+    var searchUsersDebounced = debounce(function() { adminTabsLoaded['users'] = false; loadAllUsers(); }, 400);
+
+    async function loadAllUsers() {
+        var container = document.getElementById('admin-users-list');
+        var search = (document.getElementById('user-search') || {}).value || '';
+        try {
+            var data = await api('get-admin-users?limit=50' + (search ? '&search=' + encodeURIComponent(search) : ''));
+            var users = data.users || [];
+            if (!users.length) { container.innerHTML = '<p style="color:#8E7F70;">No users found.</p>'; return; }
+            var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Tier</th><th>Role</th><th>Joined</th><th>Credit</th></tr></thead><tbody>';
+            users.forEach(function(u) {
+                html += '<tr><td>' + (u.name || '') + '</td><td>@' + (u.username || '') + '</td><td>' + (u.email || '') + '</td>'
+                    + '<td>' + (u.membershipTier || 'Free') + '</td><td>' + (u.role || 'User') + '</td>'
+                    + '<td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td><td>' + formatPrice(u.storeCredit || 0) + '</td></tr>';
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load users.</p>'; }
+    }
+
+    /* ── Reviews Moderation ── */
+    async function loadPendingReviews() {
+        var container = document.getElementById('admin-reviews-list');
+        try {
+            var data = await api('get-admin-content?type=reviews&status=Pending');
+            var items = data.items || [];
+            if (!items.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#10003;</div><h3 class="empty-state__title">No pending reviews</h3><p class="empty-state__text">All reviews have been moderated.</p></div>'; return; }
+            container.innerHTML = items.map(function(r) {
+                return '<div class="mod-card" id="mod-review-' + r.id + '">'
+                    + '<div class="mod-card__header"><span class="mod-card__user">' + (r.UserName || 'Fan') + '</span><span class="status-badge status-badge--pending">' + (r.RatingType || 'Song') + ' Rating: ' + (r.Rating || 0) + '/10</span></div>'
+                    + '<div class="mod-card__meta">Content: ' + (r.ContentID || '') + '</div>'
+                    + '<div class="mod-card__content">"' + (r.ReviewText || '') + '"</div>'
+                    + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="moderateReview(\'' + r.id + '\',\'Approved\')">Approve</button><button class="btn btn--ghost btn--sm" onclick="moderateReview(\'' + r.id + '\',\'Rejected\')">Reject</button></div>'
+                    + '</div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load reviews.</p>'; }
+    }
+
+    async function moderateReview(reviewId, status) {
+        try {
+            await api('update-content-status', { method: 'POST', body: { type: 'review', recordId: reviewId, status: status } });
+            showToast('Review ' + status.toLowerCase(), status === 'Approved' ? 'success' : 'info');
+            var el = document.getElementById('mod-review-' + reviewId);
+            if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Site Config ── */
+    async function loadSiteConfig() {
+        var container = document.getElementById('admin-config-list');
+        try {
+            var data = await api('get-site-config');
+            var records = data.records || [];
+            if (!records.length) { container.innerHTML = '<p style="color:#8E7F70;">No config records found.</p>'; return; }
+            container.innerHTML = records.map(function(r) {
+                var f = r.fields || r;
+                return '<div class="config-row" data-key="' + (f.Key || '') + '">'
+                    + '<div class="config-row__key">' + (f.Key || '') + '</div>'
+                    + '<input class="config-row__input config-value" value="' + ((f.Value || '').replace(/"/g, '&quot;')) + '" placeholder="Value">'
+                    + '<input class="config-row__input config-image" value="' + ((f.ImageURL || '').replace(/"/g, '&quot;')) + '" placeholder="Image URL">'
+                    + '<span style="font-size:0.75rem;color:#8E7F70;min-width:80px;">' + (f.Category || '') + '</span>'
+                    + '</div>';
+            }).join('');
+        } catch (err) { container.innerHTML = '<p style="color:#8B2252;">Failed to load config.</p>'; }
+    }
+
+    async function saveConfig() {
+        var rows = document.querySelectorAll('.config-row');
+        var records = [];
+        rows.forEach(function(row) {
+            records.push({
+                key: row.dataset.key,
+                value: row.querySelector('.config-value').value,
+                imageURL: row.querySelector('.config-image').value
+            });
+        });
+        try {
+            await api('update-site-config', { method: 'POST', body: { records: records } });
+            showToast('Site config saved!', 'success');
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

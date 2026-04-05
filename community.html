@@ -683,12 +683,16 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
                 <li><a href="/community.html" class="nav__link nav__link--active">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -813,6 +817,7 @@
                         <li><a href="/music.html">Music Archive</a></li>
                         <li><a href="/covers.html">Yeng Covers</a></li>
                         <li><a href="/community.html">Community</a></li>
+                        <li><a href="/events.html">Events</a></li>
                         <li><a href="/merch.html">Merch Store</a></li>
                     </ul>
                 </div>
@@ -820,6 +825,7 @@
                     <h4 class="footer__heading">Fan Hub</h4>
                     <ul class="footer__list">
                         <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/mensahe.html">Mensahe ni Yeng</a></li>
                         <li><a href="/profile.html">My Profile</a></li>
                         <li><a href="/signup.html">Join Yeng Nation</a></li>
                     </ul>
@@ -958,6 +964,330 @@
                     likes: 1204,
                     liked: true,
                     featured: true
+                },
+                {
+                    id: 'demo-7',
+                    username: 'Lea from Baguio',
+                    avatarInitial: 'L',
+                    avatarBg: avatarBgOptions[6],
+                    type: 'post',
+                    time: '2 hours ago',
+                    content: 'Just realized Yeng has been in the industry for almost 20 years and her music still hits different every time. That\'s the mark of a true artist. OPM wouldn\'t be the same without her. Who else has been a fan since the Star Power days?',
+                    imageUrl: null,
+                    likes: 198,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-8',
+                    username: 'Miguel from Pampanga',
+                    avatarInitial: 'M',
+                    avatarBg: avatarBgOptions[1],
+                    type: 'fanart',
+                    time: '3 hours ago',
+                    content: 'Digital painting of Yeng performing at Araneta! Used Procreate on my iPad. Took about 12 hours total. The lighting at that concert was incredible — tried to capture the purple and gold stage lights.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #F3E5F5 0%, #E8D5FF 100%)', icon: '&#x1F5BC;', label: 'Digital Painting', color: '#5B2D8E' },
+                    likes: 412,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-9',
+                    username: 'DJ from Iloilo',
+                    avatarInitial: 'D',
+                    avatarBg: avatarBgOptions[3],
+                    type: 'cover',
+                    time: '5 hours ago',
+                    content: 'My jazz arrangement of "Chinito" — complete with saxophone and piano! Been working on this for weeks. Yeng\'s melodies translate so well to jazz. Let me know what you think, fam!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FFF8E1 0%, #F3E5F5 100%)', icon: '&#x1F3B7;', label: 'Jazz Cover', color: '#C68B1E' },
+                    likes: 345,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-10',
+                    username: 'Tina from Batangas',
+                    avatarInitial: 'T',
+                    avatarBg: avatarBgOptions[2],
+                    type: 'memory',
+                    time: '2 days ago',
+                    content: 'My lola used to sing Yeng songs while cooking. She passed away last year, but every time I hear "Ikaw" I can still smell her adobo and feel her warm kitchen. Music really does keep people alive in our hearts. Salamat, Yeng, for giving us songs that become part of our family story.',
+                    imageUrl: null,
+                    likes: 956,
+                    liked: false,
+                    featured: true
+                },
+                {
+                    id: 'demo-11',
+                    username: 'Andrei from Makati',
+                    avatarInitial: 'A',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'question',
+                    time: '4 hours ago',
+                    content: 'If Yeng could collab with any international artist, who would you want her to work with? I think a Yeng x Adele duet would be absolutely insane. Both have that raw emotional power in their vocals. Drop your dream collabs below!',
+                    imageUrl: null,
+                    likes: 234,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-12',
+                    username: 'Bea from Antipolo',
+                    avatarInitial: 'B',
+                    avatarBg: avatarBgOptions[4],
+                    type: 'edit',
+                    time: '7 hours ago',
+                    content: 'Made a compilation edit of Yeng\'s best high notes throughout her career! From Star Power audition to her latest concert — her voice has only gotten more powerful. Watch till the end for the goosebumps moment!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%)', icon: '&#x1F3AC;', label: 'High Notes Compilation', color: '#5B2D8E' },
+                    likes: 678,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-13',
+                    username: 'Paolo, OFW in Singapore',
+                    avatarInitial: 'P',
+                    avatarBg: avatarBgOptions[5],
+                    type: 'post',
+                    time: '1 day ago',
+                    content: 'Yeng Nation Singapore chapter checking in! We\'re organizing a listening party for her next album release. If you\'re in SG and want to join, let me know! Last time we had 30 people in a small HDB flat all singing along. Our neighbors probably hate us but worth it.',
+                    imageUrl: null,
+                    likes: 187,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-14',
+                    username: 'Kath from Laguna',
+                    avatarInitial: 'K',
+                    avatarBg: avatarBgOptions[6],
+                    type: 'fanart',
+                    time: '1 day ago',
+                    content: 'Watercolor portrait of Yeng! This is my first attempt at painting a real person. Not perfect but I\'m proud of how the colors came out. The purple-gold palette just screams Yeng vibes.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FCE4EC 0%, #F3E5F5 100%)', icon: '&#x1F3A8;', label: 'Watercolor Portrait', color: '#8B2252' },
+                    likes: 389,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-15',
+                    username: 'Jayson from Taguig',
+                    avatarInitial: 'J',
+                    avatarBg: avatarBgOptions[2],
+                    type: 'cover',
+                    time: '2 days ago',
+                    content: 'Ukulele cover of "Nosi Balasi" with my 5-year-old daughter singing along! She knows every word even though she doesn\'t fully understand them yet. Passing the Yeng love to the next generation!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E8F5E9 0%, #FFF8E1 100%)', icon: '&#x1F3B6;', label: 'Ukulele Cover with Daughter', color: '#2D8E7E' },
+                    likes: 1102,
+                    liked: false,
+                    featured: true
+                },
+                {
+                    id: 'demo-16',
+                    username: 'Charm from Zamboanga',
+                    avatarInitial: 'C',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'question',
+                    time: '3 days ago',
+                    content: 'What song do you think is the most underrated in Yeng\'s discography? For me it\'s "Alaala" — barely anyone talks about it but it\'s one of her most beautifully written tracks. The bridge gives me chills every single time.',
+                    imageUrl: null,
+                    likes: 156,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-17',
+                    username: 'Nik from Pasig',
+                    avatarInitial: 'N',
+                    avatarBg: avatarBgOptions[3],
+                    type: 'post',
+                    time: '3 days ago',
+                    content: 'Just got my Yeng Nation merch delivered! The quality is amazing. The shirt fabric is so soft and the print is vibrant. Already planning to wear it to her next concert. Who else has the new collection?',
+                    imageUrl: null,
+                    likes: 145,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-18',
+                    username: 'Ate Liza from Rizal',
+                    avatarInitial: 'L',
+                    avatarBg: avatarBgOptions[4],
+                    type: 'memory',
+                    time: 'Last week',
+                    content: 'I played "Your Love" at my wedding as my walk-down-the-aisle song. My husband didn\'t know I was going to do it. When the first notes played, he started crying. That song became our love story in a melody. Now we play it every anniversary. Yeng, you are part of our love story forever.',
+                    imageUrl: null,
+                    likes: 1487,
+                    liked: false,
+                    featured: true
+                },
+                {
+                    id: 'demo-19',
+                    username: 'Marco from Bulacan',
+                    avatarInitial: 'M',
+                    avatarBg: avatarBgOptions[1],
+                    type: 'edit',
+                    time: '4 days ago',
+                    content: 'Fan-made music video for "Forever" using clips from Yeng\'s concerts over the years. Spent a whole weekend editing this. The evolution of her stage presence is incredible!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FFF3E0 0%, #E3F2FD 100%)', icon: '&#x1F4F9;', label: 'Fan-Made Music Video', color: '#8B2252' },
+                    likes: 445,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-20',
+                    username: 'Angel from Cavite',
+                    avatarInitial: 'A',
+                    avatarBg: avatarBgOptions[6],
+                    type: 'fanart',
+                    time: '5 days ago',
+                    content: 'Embroidered Yeng\'s silhouette on a denim jacket! Hand-stitched everything — took about 3 weeks. The gold thread for the microphone came out better than I expected.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E8EAF6 0%, #FCE4EC 100%)', icon: '&#x1F9F5;', label: 'Hand-Embroidered Jacket', color: '#5B2D8E' },
+                    likes: 567,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-21',
+                    username: 'Rhea from Quezon',
+                    avatarInitial: 'R',
+                    avatarBg: avatarBgOptions[5],
+                    type: 'cover',
+                    time: 'Last week',
+                    content: 'Full band cover of "Himala"! Our college band performed this at our university fair. The crowd went wild when we hit the chorus. Yeng\'s songs really bring people together.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #F3E5F5 0%, #FFF3E0 100%)', icon: '&#x1F3B8;', label: 'Full Band Cover', color: '#5B2D8E' },
+                    likes: 478,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-22',
+                    username: 'Kuya Ben from Pangasinan',
+                    avatarInitial: 'B',
+                    avatarBg: avatarBgOptions[2],
+                    type: 'question',
+                    time: '5 days ago',
+                    content: 'Do you remember where you were when you first heard a Yeng song? I was 14 years old, sitting in a jeepney stuck in EDSA traffic, and "Salamat" came on the driver\'s radio. Been a fan ever since. What\'s your origin story?',
+                    imageUrl: null,
+                    likes: 267,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-23',
+                    username: 'Ella from Tacloban',
+                    avatarInitial: 'E',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'post',
+                    time: 'Last week',
+                    content: 'Just finished a 5-hour Yeng marathon study session. Her music is the BEST background for cramming. Something about her voice keeps me focused. Anyone else use Yeng as their study playlist? Top picks: the acoustic album tracks.',
+                    imageUrl: null,
+                    likes: 89,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-24',
+                    username: 'Vince from Marikina',
+                    avatarInitial: 'V',
+                    avatarBg: avatarBgOptions[3],
+                    type: 'edit',
+                    time: 'Last week',
+                    content: 'Yeng\'s vocal evolution timeline edit — from 2004 Star Power to 2026. Side-by-side comparison of the same songs performed years apart. Her control and range have only improved. Living legend!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E0F7FA 0%, #F3E5F5 100%)', icon: '&#x1F4CA;', label: 'Vocal Evolution Timeline', color: '#2D8E7E' },
+                    likes: 534,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-25',
+                    username: 'Trish from Cagayan de Oro',
+                    avatarInitial: 'T',
+                    avatarBg: avatarBgOptions[4],
+                    type: 'memory',
+                    time: 'March 15, 2026',
+                    content: 'During typhoon Odette, our house was destroyed. In the evacuation center, a volunteer played Yeng songs on a small speaker. For a few minutes, all of us — strangers, scared, displaced — sang together. Music was our shelter when we had none. Thank you, Yeng.',
+                    imageUrl: null,
+                    likes: 1345,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-26',
+                    username: 'Dan from Paranaque',
+                    avatarInitial: 'D',
+                    avatarBg: avatarBgOptions[1],
+                    type: 'post',
+                    time: 'March 20, 2026',
+                    content: 'Hot take: Yeng\'s live performances are actually BETTER than her studio recordings. Her energy, the way she connects with the crowd, the improvisations — she\'s a different beast on stage. Agree or disagree?',
+                    imageUrl: null,
+                    likes: 302,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-27',
+                    username: 'Jessa from Bacolod',
+                    avatarInitial: 'J',
+                    avatarBg: avatarBgOptions[6],
+                    type: 'fanart',
+                    time: 'March 18, 2026',
+                    content: 'Calligraphy art piece with Yeng lyrics! Wrote out the chorus of "Pag-ibig" in modern Filipino calligraphy with gold ink on black paper. Framed it for my room!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #212121 0%, #37474F 100%)', icon: '&#x270D;', label: 'Gold Calligraphy Art', color: '#D4A547' },
+                    likes: 298,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-28',
+                    username: 'Rico from San Pablo',
+                    avatarInitial: 'R',
+                    avatarBg: avatarBgOptions[5],
+                    type: 'question',
+                    time: 'March 22, 2026',
+                    content: 'If you could only listen to 5 Yeng songs for the rest of your life, which 5 would you choose? This is harder than any exam I\'ve ever taken. My list: Salamat, Ikaw, Hawak Kamay, Chinito, and Your Love. Fight me.',
+                    imageUrl: null,
+                    likes: 421,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-29',
+                    username: 'Mia, OFW in Japan',
+                    avatarInitial: 'M',
+                    avatarBg: avatarBgOptions[2],
+                    type: 'cover',
+                    time: 'March 25, 2026',
+                    content: 'Piano cover of "Ikaw" recorded in my tiny Tokyo apartment. My Japanese neighbor actually knocked on my door — not to complain, but to say it was beautiful and ask what language the song was in. Yeng\'s music transcends borders!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #ECEFF1 0%, #F3E5F5 100%)', icon: '&#x1F3B9;', label: 'Piano Cover from Tokyo', color: '#5B2D8E' },
+                    likes: 623,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-30',
+                    username: 'Gab from Mandaluyong',
+                    avatarInitial: 'G',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'edit',
+                    time: 'March 12, 2026',
+                    content: 'Aesthetic edit of Yeng concert clips with lo-fi beats underneath. Perfect for study or chill vibes. The purple stage lighting matched so well with the mood I was going for.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #EDE7F6 0%, #E8EAF6 100%)', icon: '&#x2728;', label: 'Lo-fi Concert Aesthetic', color: '#7E4FB5' },
+                    likes: 267,
+                    liked: false,
+                    featured: false
                 }
             ];
 

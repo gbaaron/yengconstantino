@@ -45,6 +45,50 @@ const Auth = {
             return false;
         }
         return true;
+    },
+
+    /* ── Admin Helpers ── */
+    getRole() {
+        const user = this.getUser();
+        return user ? user.role || 'User' : 'User';
+    },
+
+    isAdmin() {
+        const role = this.getRole();
+        return role === 'Admin' || role === 'SuperAdmin';
+    },
+
+    isSuperAdmin() {
+        return this.getRole() === 'SuperAdmin';
+    },
+
+    getViewMode() {
+        if (!this.isAdmin()) return 'user';
+        return sessionStorage.getItem('yc_view_mode') || 'admin';
+    },
+
+    setViewMode(mode) {
+        sessionStorage.setItem('yc_view_mode', mode);
+        updateNavAuth();
+    },
+
+    isAdminView() {
+        return this.isAdmin() && this.getViewMode() === 'admin';
+    },
+
+    getEffectiveTier() {
+        if (this.isAdmin()) return 'Ikaw Lamang';
+        return this.getUserTier();
+    },
+
+    requireAdmin(redirectTo) {
+        if (!this.requireAuth(redirectTo)) return false;
+        if (!this.isAdmin()) {
+            window.location.href = '/';
+            showToast('Access denied', 'error');
+            return false;
+        }
+        return true;
     }
 };
 
@@ -129,17 +173,38 @@ function initNav() {
 function updateNavAuth() {
     const authLinks = document.querySelectorAll('[data-auth]');
     const guestLinks = document.querySelectorAll('[data-guest]');
+    const adminLinks = document.querySelectorAll('[data-admin]');
     const loggedIn = Auth.isLoggedIn();
+    const isAdmin = Auth.isAdmin();
+    const isAdminView = Auth.isAdminView();
 
     authLinks.forEach(el => el.style.display = loggedIn ? '' : 'none');
     guestLinks.forEach(el => el.style.display = loggedIn ? 'none' : '');
+    adminLinks.forEach(el => el.style.display = (loggedIn && isAdmin) ? '' : 'none');
 
-    // Set username
     if (loggedIn) {
         const user = Auth.getUser();
         document.querySelectorAll('[data-user-name]').forEach(el => {
             el.textContent = user?.name || 'Fan';
         });
+
+        // Admin view toggle label
+        const toggleLabel = document.getElementById('view-toggle-label');
+        if (toggleLabel && isAdmin) {
+            toggleLabel.textContent = isAdminView ? 'User View' : 'Admin View';
+        }
+    }
+}
+
+/* ── Admin View Toggle ── */
+function toggleAdminView() {
+    var current = Auth.getViewMode();
+    var next = current === 'admin' ? 'user' : 'admin';
+    Auth.setViewMode(next);
+    if (next === 'admin') {
+        showToast('Switched to Admin View', 'info');
+    } else {
+        showToast('Switched to User View (Ikaw Lamang)', 'info');
     }
 }
 
@@ -336,8 +401,81 @@ function initScrollAnimations() {
     });
 }
 
+/* ── Page Loader (Signature Animation) ── */
+function initPageLoader() {
+    // Skip if already shown this session (only show once per session)
+    if (sessionStorage.getItem('yc_loader_shown')) {
+        return;
+    }
+    sessionStorage.setItem('yc_loader_shown', '1');
+
+    // Create loader HTML
+    var loader = document.createElement('div');
+    loader.className = 'page-loader';
+    loader.id = 'page-loader';
+    loader.innerHTML = '<svg class="page-loader__signature" viewBox="0 0 440 150" xmlns="http://www.w3.org/2000/svg">'
+        // "Yeng" — large, bold cursive
+        + '<path class="sig-line-1" style="--path-length:800" d="'
+        // Y
+        + 'M60,15 Q65,10 72,28 L90,65 Q95,75 88,85 Q80,95 68,100'
+        + ' M110,10 Q105,15 95,45 L88,65'
+        // e
+        + ' M115,40 Q130,35 135,45 Q138,55 128,60 Q118,62 115,55 Q112,48 118,42'
+        + ' Q125,60 140,55'
+        // n
+        + ' M145,38 L142,62 M145,45 Q152,35 160,40 Q165,45 162,62'
+        // g
+        + ' M172,38 Q182,35 188,42 Q192,50 185,58 Q178,62 172,58'
+        + ' Q168,55 172,48 Q175,40 182,42'
+        + ' M188,55 Q190,72 182,82 Q175,88 165,85'
+        + '" />'
+        // "Constantino" — smaller flowing script beneath
+        + '<path class="sig-line-2" style="--path-length:1100" d="'
+        // C
+        + 'M115,98 Q105,88 108,80 Q112,72 122,72 Q130,73 132,78'
+        // o
+        + ' M138,78 Q145,72 150,78 Q153,85 147,88 Q140,90 138,84'
+        // n
+        + ' M155,75 L153,90 M155,80 Q160,73 166,76 Q170,80 168,90'
+        // s
+        + ' M175,77 Q180,73 184,76 Q186,80 180,82 Q175,84 178,87 Q182,90 186,87'
+        // t
+        + ' M192,68 L190,90 M186,76 L196,76'
+        // a
+        + ' M200,78 Q208,72 212,78 Q215,85 208,88 Q202,90 200,85 L212,88'
+        // n
+        + ' M218,75 L216,90 M218,80 Q223,73 228,76 Q232,80 230,90'
+        // t
+        + ' M236,68 L234,90 M230,76 L240,76'
+        // i
+        + ' M244,75 L243,90 M244,70 L244,71'
+        // n
+        + ' M250,75 L248,90 M250,80 Q255,73 260,76 Q264,80 262,90'
+        // o
+        + ' M270,78 Q277,72 282,78 Q285,85 278,88 Q272,90 270,84'
+        + '" />'
+        // Decorative underline flourish
+        + '<path class="sig-underline" style="--path-length:400" d="'
+        + 'M55,108 Q120,118 220,105 Q320,95 390,102 Q400,104 380,106'
+        + '" />'
+        + '</svg>'
+        + '<div class="page-loader__tagline">OPM Icon</div>';
+
+    document.body.prepend(loader);
+
+    // Hide loader after signature animation completes
+    setTimeout(function() {
+        loader.classList.add('page-loader--hidden');
+        // Remove from DOM after transition
+        setTimeout(function() {
+            loader.remove();
+        }, 600);
+    }, 2800);
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
+    initPageLoader();
     initNav();
     initScrollAnimations();
 

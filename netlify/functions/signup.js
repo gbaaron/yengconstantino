@@ -69,12 +69,13 @@ exports.handler = async (event) => {
             Email: email,
             Password: hashedPassword,
             MembershipTier: 'Free',
+            Role: 'User',
             JoinDate: new Date().toISOString().split('T')[0]
         });
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: record.id, email, username },
+            { userId: record.id, email, username, role: 'User' },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -91,6 +92,7 @@ exports.handler = async (event) => {
                     username,
                     email,
                     membershipTier: 'Free',
+                    role: 'User',
                     joinDate: new Date().toISOString().split('T')[0]
                 }
             })

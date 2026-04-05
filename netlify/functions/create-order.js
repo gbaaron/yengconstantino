@@ -9,6 +9,8 @@ function verifyToken(event) {
     } catch { return null; }
 }
 
+const TIER_DISCOUNTS = { 'Sariwang Simula': 5, 'Laging Nandito': 10, 'Ikaw Lamang': 15 };
+
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -35,7 +37,7 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { items, shippingAddress, contactNumber, paymentMethod } = JSON.parse(event.body);
+        const { items, shippingAddress, contactNumber, paymentMethod, storeCreditUsed } = JSON.parse(event.body);
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return {
@@ -55,8 +57,13 @@ exports.handler = async (event) => {
 
         const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
-        // Calculate total from items
-        let totalAmount = 0;
+        // Fetch user for tier and store credit
+        const userRecord = await base('Users').find(decoded.userId);
+        const userTier = userRecord.fields.MembershipTier || 'Free';
+        const availableCredit = userRecord.fields.StoreCredit || 0;
+
+        // Calculate subtotal from items
+        let subtotal = 0;
         for (const item of items) {
             if (!item.productId || !item.quantity || !item.price) {
                 return {
@@ -65,7 +72,24 @@ exports.handler = async (event) => {
                     body: JSON.stringify({ error: 'Each item must have productId, quantity, and price' })
                 };
             }
-            totalAmount += item.price * item.quantity;
+            subtotal += item.price * item.quantity;
+        }
+
+        // Apply tier discount
+        const discountPercent = TIER_DISCOUNTS[userTier] || 0;
+        const discountAmount = Math.round(subtotal * discountPercent / 100);
+        let totalAfterDiscount = subtotal - discountAmount;
+
+        // Apply store credit
+        let creditUsed = 0;
+        if (storeCreditUsed && storeCreditUsed > 0) {
+            creditUsed = Math.min(storeCreditUsed, availableCredit, totalAfterDiscount);
+            totalAfterDiscount -= creditUsed;
+
+            // Deduct from user's store credit
+            await base('Users').update(decoded.userId, {
+                StoreCredit: availableCredit - creditUsed
+            });
         }
 
         // Generate order number (YC-XXXXXX)
@@ -76,7 +100,11 @@ exports.handler = async (event) => {
             OrderNumber: orderNumber,
             UserId: decoded.userId,
             Items: JSON.stringify(items),
-            TotalAmount: totalAmount,
+            Subtotal: subtotal,
+            DiscountPercent: discountPercent,
+            DiscountAmount: discountAmount,
+            StoreCreditUsed: creditUsed,
+            TotalAmount: totalAfterDiscount,
             ShippingAddress: shippingAddress,
             ContactNumber: contactNumber,
             PaymentMethod: paymentMethod,
@@ -93,7 +121,11 @@ exports.handler = async (event) => {
                     id: record.id,
                     orderNumber,
                     items,
-                    totalAmount,
+                    subtotal,
+                    discountPercent,
+                    discountAmount,
+                    storeCreditUsed: creditUsed,
+                    totalAmount: totalAfterDiscount,
                     shippingAddress,
                     contactNumber,
                     paymentMethod,

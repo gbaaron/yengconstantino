@@ -19,21 +19,23 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { email, password } = JSON.parse(event.body);
+        const { email, login, password } = JSON.parse(event.body);
+        const identifier = (login || email || '').trim();
 
-        if (!email || !password) {
+        if (!identifier || !password) {
             return {
                 statusCode: 400,
                 headers,
-                body: JSON.stringify({ error: 'Email and password are required' })
+                body: JSON.stringify({ error: 'Email/username and password are required' })
             };
         }
 
         const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
-        // Find user by email
+        // Find user by email OR username
+        const escaped = identifier.replace(/'/g, "\\'");
         const records = await base('Users').select({
-            filterByFormula: `{Email} = '${email.replace(/'/g, "\\'")}'`,
+            filterByFormula: `OR({Email} = '${escaped}', {Username} = '${escaped}')`,
             maxRecords: 1
         }).firstPage();
 
@@ -41,7 +43,7 @@ exports.handler = async (event) => {
             return {
                 statusCode: 401,
                 headers,
-                body: JSON.stringify({ error: 'Invalid email or password' })
+                body: JSON.stringify({ error: 'Invalid email/username or password' })
             };
         }
 
@@ -60,7 +62,7 @@ exports.handler = async (event) => {
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: user.id, email: fields.Email, username: fields.Username },
+            { userId: user.id, email: fields.Email, username: fields.Username, role: fields.Role || 'User' },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -78,7 +80,8 @@ exports.handler = async (event) => {
                     username: fields.Username,
                     membershipTier: fields.MembershipTier || 'Free',
                     avatar: fields.Avatar || null,
-                    bio: fields.Bio || null
+                    bio: fields.Bio || null,
+                    role: fields.Role || 'User'
                 }
             })
         };

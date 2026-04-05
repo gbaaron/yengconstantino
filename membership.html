@@ -223,12 +223,16 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link nav__link--active">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -260,6 +264,9 @@
                     <li class="pricing-card__feature">Behind the scenes content</li>
                     <li class="pricing-card__feature">Exclusive posts</li>
                     <li class="pricing-card__feature">Member badge</li>
+                    <li class="pricing-card__feature">5% off merch &amp; events</li>
+                    <li class="pricing-card__feature">Early event access</li>
+                    <li class="pricing-card__feature">5% off Mensahe ni Yeng</li>
                 </ul>
                 <button class="pricing-card__cta pricing-card__cta--purple" onclick="selectTier('Sariwang Simula',149)">Sumali Na!</button>
             </div>
@@ -275,6 +282,8 @@
                     <li class="pricing-card__feature">Early content access</li>
                     <li class="pricing-card__feature">Priority cover feature</li>
                     <li class="pricing-card__feature">Live Q&amp;A replays</li>
+                    <li class="pricing-card__feature">10% off merch &amp; events</li>
+                    <li class="pricing-card__feature">10% off Mensahe ni Yeng</li>
                 </ul>
                 <button class="pricing-card__cta pricing-card__cta--burgundy" onclick="selectTier('Laging Nandito',349)">Sumali Na!</button>
             </div>
@@ -287,9 +296,11 @@
                     <li class="pricing-card__feature">Everything in Laging Nandito</li>
                     <li class="pricing-card__feature">Personal voice messages from Yeng</li>
                     <li class="pricing-card__feature">Exclusive acoustic recordings</li>
-                    <li class="pricing-card__feature">Merch discounts (15%)</li>
+                    <li class="pricing-card__feature">15% off merch, events &amp; Mensahe</li>
                     <li class="pricing-card__feature">Exclusive limited drops access</li>
                     <li class="pricing-card__feature">Birthday shoutouts</li>
+                    <li class="pricing-card__feature">2 free event tickets per year</li>
+                    <li class="pricing-card__feature">Christmas store credit (&#8369;500)</li>
                 </ul>
                 <button class="pricing-card__cta pricing-card__cta--gold" onclick="selectTier('Ikaw Lamang',799)">Sumali Na!</button>
             </div>
@@ -351,8 +362,8 @@
                         <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
                     </div>
                 </div>
-                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
-                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
                 <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">

@@ -1062,3 +1062,73 @@ textarea.form-input {
     clip: rect(0,0,0,0);
     border: 0;
 }
+
+/* ── Page Loader — Signature Animation ── */
+.page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: linear-gradient(135deg, #3a1a5e 0%, #5B2D8E 40%, #7E4FB5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.page-loader--hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.page-loader__signature {
+    width: 400px;
+    max-width: 85vw;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.15));
+}
+
+.page-loader__signature path {
+    fill: none;
+    stroke: #FFFFFF;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: var(--path-length);
+    stroke-dashoffset: var(--path-length);
+    animation: signatureDraw 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.page-loader__signature .sig-line-1 {
+    stroke-width: 2.8;
+}
+
+.page-loader__signature .sig-line-2 {
+    animation-delay: 0.6s;
+    stroke-width: 2;
+}
+
+.page-loader__signature .sig-underline {
+    stroke-width: 1.5;
+    opacity: 0.5;
+    animation-delay: 1.4s;
+    animation-duration: 0.6s;
+}
+
+@keyframes signatureDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+.page-loader__tagline {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: var(--space-lg);
+    opacity: 0;
+    animation: loaderFadeIn 0.6s ease 1.6s forwards;
+}
+
+@keyframes loaderFadeIn {
+    to { opacity: 1; }
+}

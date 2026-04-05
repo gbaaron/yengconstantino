@@ -35,6 +35,15 @@ exports.handler = async (event) => {
     }
 
     try {
+        const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
+
+        // Verify admin role
+        const userRecord = await base('Users').find(decoded.userId);
+        const role = userRecord.fields.Role || 'User';
+        if (role !== 'Admin' && role !== 'SuperAdmin') {
+            return { statusCode: 403, headers, body: JSON.stringify({ error: 'Admin access required' }) };
+        }
+
         const { coverId, status } = JSON.parse(event.body);
 
         if (!coverId) {
@@ -53,8 +62,6 @@ exports.handler = async (event) => {
                 body: JSON.stringify({ error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` })
             };
         }
-
-        const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
         // Update the cover record
         const record = await base('Covers').update(coverId, {

@@ -791,12 +791,16 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link nav__link--active">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -843,6 +847,15 @@
                         <span class="submit-panel__trigger-icon">+</span>
                     </button>
                     <div class="submit-panel__form">
+                        <div style="background: rgba(91,45,142,0.06); border: 1px solid rgba(91,45,142,0.15); border-radius: var(--radius-md, 12px); padding: 1.5rem; margin-bottom: 1.5rem;">
+                            <h4 style="font-family: var(--yeng-font-display); font-size: 1rem; font-weight: 700; color: var(--yeng-purple); margin-bottom: 0.5rem;">Community Guidelines</h4>
+                            <ul style="font-family: var(--yeng-font-body); font-size: 0.85rem; color: #6B5D50; line-height: 1.8; list-style: none; padding: 0; margin: 0;">
+                                <li style="padding: 4px 0;">&#10003; Covers must be hosted on YouTube, TikTok, or SoundCloud</li>
+                                <li style="padding: 4px 0;">&#10003; Content must be appropriate and music-related</li>
+                                <li style="padding: 4px 0;">&#10003; All submissions are reviewed by admin before going live</li>
+                                <li style="padding: 4px 0;">&#10003; Inappropriate content will be removed and account may be restricted</li>
+                            </ul>
+                        </div>
                         <form class="covers-form" id="cover-form" onsubmit="submitCover(event)">
                             <div class="form-group">
                                 <label class="form-label" for="cover-url">Video URL (YouTube or TikTok) *</label>
@@ -972,8 +985,8 @@
                         <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
                     </div>
                 </div>
-                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
-                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
                 <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events — Yeng Constantino Official</title>
+    <meta name="description" content="Upcoming concerts, meet & greets, and special events. Get tickets and exclusive member perks for Yeng Constantino events.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .events-hero {
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .events-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .events-hero__content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
+        .events-hero__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #D4A547 0%, #E8C36B 50%, #FFFFFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-md);
+        }
+        .events-hero__subtitle { font-family: 'Inter', sans-serif; font-size: 1.15rem; color: rgba(255,255,255,0.7); margin-bottom: var(--space-lg); }
+        .events-hero__tagline { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #D4A547; }
+
+        .events-filters {
+            background: #FFF8F0;
+            padding: var(--space-xl) 0;
+            position: sticky;
+            top: 72px;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212,165,71,0.15);
+        }
+        .events-filters__inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+            display: flex;
+            gap: var(--space-sm);
+            overflow-x: auto;
+        }
+        .events-filter-tab {
+            padding: 10px 24px;
+            border: 2px solid #EDE7DF;
+            border-radius: 9999px;
+            background: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #6B5D50;
+            cursor: pointer;
+            transition: all 250ms ease;
+            white-space: nowrap;
+        }
+        .events-filter-tab:hover { border-color: #5B2D8E; color: #5B2D8E; }
+        .events-filter-tab--active {
+            background: linear-gradient(135deg, #5B2D8E, #7E4FB5);
+            color: #FFFFFF;
+            border-color: transparent;
+        }
+
+        .events-section { padding: var(--space-4xl) 0; background: #FBF7F2; }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .event-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(212,165,71,0.08);
+            transition: all 250ms ease;
+        }
+        .event-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(212,165,71,0.18); }
+        .event-card__image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: linear-gradient(135deg, rgba(91,45,142,0.08), rgba(212,165,71,0.08));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            color: #8E7F70;
+        }
+        .event-card__body { padding: var(--space-lg); }
+        .event-card__type {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-radius: 9999px;
+        }
+        .event-card__type--concert { background: rgba(91,45,142,0.12); color: #5B2D8E; }
+        .event-card__type--meetandgreet { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .event-card__type--special { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .event-card__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #231A12;
+            margin-top: var(--space-sm);
+        }
+        .event-card__meta {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: #6B5D50;
+            margin-top: var(--space-sm);
+            line-height: 1.6;
+        }
+        .event-card__meta span { display: block; }
+        .event-card__price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #231A12;
+            margin-top: var(--space-md);
+        }
+        .event-card__price-original {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: #8E7F70;
+            text-decoration: line-through;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+        .event-card__discount {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            border-radius: 9999px;
+            background: rgba(45,142,126,0.12);
+            color: #2D8E7E;
+            margin-left: 8px;
+        }
+        .event-card__early-access {
+            display: inline-block;
+            margin-top: var(--space-sm);
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            border-radius: 9999px;
+            background: rgba(212,165,71,0.15);
+            color: #C68B1E;
+        }
+        .event-card__actions { margin-top: var(--space-lg); }
+        .event-card__status {
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .event-card__status--soldout { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .event-card__status--past { background: rgba(107,93,80,0.12); color: #6B5D50; }
+
+        .ticket-modal__event { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-sm); color: #231A12; }
+        .ticket-modal__price { text-align: center; font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
+        .ticket-modal__free-note { text-align: center; font-family: 'Caveat', cursive; font-size: 1.1rem; color: #D4A547; margin-bottom: var(--space-md); }
+
+        @media (max-width: 768px) {
+            .events-hero { padding: 120px 0 60px; }
+            .events-hero__title { font-size: 2.2rem; }
+            .events-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link nav__link--active">Events</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="events-hero">
+        <div class="events-hero__content">
+            <h1 class="events-hero__title">Events</h1>
+            <p class="events-hero__subtitle">Concerts, meet & greets, and special fan events. See Yeng live!</p>
+            <p class="events-hero__tagline">Sama-sama sa musika</p>
+        </div>
+    </section>
+
+    <div class="events-filters">
+        <div class="events-filters__inner">
+            <button class="events-filter-tab events-filter-tab--active" data-type="">All Events</button>
+            <button class="events-filter-tab" data-type="Concert">Concerts</button>
+            <button class="events-filter-tab" data-type="MeetAndGreet">Meet &amp; Greets</button>
+            <button class="events-filter-tab" data-type="Special">Special Events</button>
+        </div>
+    </div>
+
+    <section class="events-section">
+        <div class="container">
+            <div class="events-grid" id="events-grid">
+                <div class="event-card"><div class="skeleton" style="height:200px;"></div><div class="event-card__body"><div class="skeleton" style="height:14px;width:30%;margin-bottom:8px;"></div><div class="skeleton" style="height:22px;width:80%;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:60%;"></div></div></div>
+                <div class="event-card"><div class="skeleton" style="height:200px;"></div><div class="event-card__body"><div class="skeleton" style="height:14px;width:30%;margin-bottom:8px;"></div><div class="skeleton" style="height:22px;width:80%;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:60%;"></div></div></div>
+                <div class="event-card"><div class="skeleton" style="height:200px;"></div><div class="event-card__body"><div class="skeleton" style="height:14px;width:30%;margin-bottom:8px;"></div><div class="skeleton" style="height:22px;width:80%;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:60%;"></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticket Purchase Modal -->
+    <div class="modal-overlay" id="ticket-modal">
+        <div class="modal">
+            <button class="modal__close" onclick="closeTicketModal()">&times;</button>
+            <h3 class="ticket-modal__event" id="ticket-event-name"></h3>
+            <p class="ticket-modal__price" id="ticket-price-display"></p>
+            <div class="ticket-modal__free-note" id="ticket-free-note" style="display:none;">You have free tickets available!</div>
+            <div class="form-group">
+                <label class="form-label">Quantity</label>
+                <select class="form-select" id="ticket-quantity">
+                    <option value="1">1 ticket</option>
+                    <option value="2">2 tickets</option>
+                </select>
+            </div>
+            <div class="form-group" id="ticket-free-group" style="display:none;">
+                <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:0.9rem;color:#4A3D32;cursor:pointer;">
+                    <input type="checkbox" id="ticket-use-free" onchange="updateTicketPrice()">
+                    Use free ticket (Ikaw Lamang perk)
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <select class="form-select" id="ticket-payment-method">
+                    <option value="">Select payment method...</option>
+                    <option value="GCash">GCash</option>
+                    <option value="Maya">Maya</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Reference Number</label>
+                <input type="text" class="form-input" id="ticket-payment-ref" placeholder="Enter your payment reference...">
+            </div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya, then enter your reference number above. Your ticket will be confirmed within 24 hours.</p>
+            <button class="btn btn--primary btn--block" id="ticket-confirm-btn" onclick="purchaseTicket()">Confirm Purchase</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+        var allEvents = [];
+        var currentFilter = '';
+        var selectedEvent = null;
+        var freeTicketsRemaining = 0;
+
+        var TIER_DISCOUNTS = { 'Sariwang Simula': 5, 'Laging Nandito': 10, 'Ikaw Lamang': 15 };
+
+        // Demo events for fallback
+        var demoEvents = [
+            { id: 'demo-1', title: 'Yeng Live in Araneta', date: '2026-06-15', venue: 'Araneta Coliseum', city: 'Quezon City', country: 'Philippines', type: 'Concert', description: 'The biggest OPM concert of the year! Yeng returns to the Big Dome for an unforgettable night of music.', image: null, ticketUrl: 'https://ticketnet.com.ph', price: 0, earlyAccessDate: null, maxTickets: null, ticketsSold: 0, status: 'Upcoming', featured: true },
+            { id: 'demo-2', title: 'Yeng x Fans: Intimate Meet & Greet', date: '2026-05-20', venue: 'SM Megamall Event Center', city: 'Mandaluyong', country: 'Philippines', type: 'MeetAndGreet', description: 'An intimate afternoon with Yeng! Photo ops, autograph signing, and a special acoustic performance for 100 lucky fans.', image: null, ticketUrl: null, price: 2500, earlyAccessDate: '2026-05-10', maxTickets: 100, ticketsSold: 34, status: 'Upcoming', featured: true },
+            { id: 'demo-3', title: 'Yeng Nation Anniversary Celebration', date: '2026-07-12', venue: 'Manila Hotel', city: 'Manila', country: 'Philippines', type: 'Special', description: 'Celebrate the Yeng Nation anniversary with an exclusive dinner, acoustic set, and fan awards ceremony.', image: null, ticketUrl: null, price: 3500, earlyAccessDate: '2026-06-28', maxTickets: 200, ticketsSold: 67, status: 'Upcoming', featured: false },
+            { id: 'demo-4', title: 'Yeng Live in Cebu', date: '2026-08-08', venue: 'Waterfront Hotel Grand Ballroom', city: 'Cebu City', country: 'Philippines', type: 'Concert', description: 'Yeng brings her concert tour to the Queen City of the South!', image: null, ticketUrl: 'https://ticketnet.com.ph', price: 0, earlyAccessDate: null, maxTickets: null, ticketsSold: 0, status: 'Upcoming', featured: false },
+            { id: 'demo-5', title: 'Yeng Birthday Fan Day', date: '2026-12-04', venue: 'Circuit Makati', city: 'Makati', country: 'Philippines', type: 'Special', description: 'Celebrate Yeng\'s birthday with the Yeng Nation family! Games, performances, and special surprises.', image: null, ticketUrl: null, price: 1500, earlyAccessDate: '2026-11-20', maxTickets: 300, ticketsSold: 0, status: 'Upcoming', featured: false },
+            { id: 'demo-6', title: 'OPM Festival 2026', date: '2026-04-01', venue: 'MOA Arena', city: 'Pasay', country: 'Philippines', type: 'Concert', description: 'Yeng headlines the biggest OPM festival alongside other top artists.', image: null, ticketUrl: 'https://smtickets.com', price: 0, earlyAccessDate: null, maxTickets: null, ticketsSold: 0, status: 'Past', featured: false }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEvents();
+            setupFilters();
+        });
+
+        async function loadEvents() {
+            try {
+                var data = await api('get-events');
+                allEvents = data.events || [];
+                if (allEvents.length === 0) allEvents = demoEvents;
+            } catch (err) {
+                console.warn('Events load failed, using demo data:', err.message);
+                allEvents = demoEvents;
+            }
+            renderEvents(allEvents);
+        }
+
+        function setupFilters() {
+            document.querySelectorAll('.events-filter-tab').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    currentFilter = this.dataset.type || '';
+                    document.querySelectorAll('.events-filter-tab').forEach(function(t) { t.classList.remove('events-filter-tab--active'); });
+                    this.classList.add('events-filter-tab--active');
+                    var filtered = currentFilter ? allEvents.filter(function(e) { return e.type === currentFilter; }) : allEvents;
+                    renderEvents(filtered);
+                });
+            });
+        }
+
+        function renderEvents(events) {
+            var grid = document.getElementById('events-grid');
+            if (events.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state__icon">&#127915;</div><h3 class="empty-state__title">No events found</h3><p class="empty-state__text">Check back soon for upcoming events!</p></div>';
+                return;
+            }
+
+            var userTier = Auth.getUserTier();
+            var discount = TIER_DISCOUNTS[userTier] || 0;
+
+            grid.innerHTML = events.map(function(evt) {
+                var isConcert = evt.type === 'Concert';
+                var isSoldOut = evt.status === 'SoldOut';
+                var isPast = evt.status === 'Past';
+                var typeClass = isConcert ? 'concert' : evt.type === 'MeetAndGreet' ? 'meetandgreet' : 'special';
+                var typeLabel = isConcert ? 'Concert' : evt.type === 'MeetAndGreet' ? 'Meet & Greet' : 'Special Event';
+                var eventDate = evt.date ? new Date(evt.date).toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'TBA';
+
+                // Early access check
+                var now = new Date();
+                var earlyDate = evt.earlyAccessDate ? new Date(evt.earlyAccessDate) : null;
+                var isEarlyAccessPeriod = earlyDate && now < earlyDate;
+
+                // Price display
+                var priceHtml = '';
+                if (!isConcert && evt.price > 0) {
+                    var discountedPrice = discount > 0 ? Math.round(evt.price * (1 - discount / 100)) : evt.price;
+                    if (discount > 0) {
+                        priceHtml = '<div class="event-card__price">' + formatPrice(discountedPrice) + '<span class="event-card__price-original">' + formatPrice(evt.price) + '</span><span class="event-card__discount">' + discount + '% off</span></div>';
+                    } else {
+                        priceHtml = '<div class="event-card__price">' + formatPrice(evt.price) + '</div>';
+                    }
+                }
+
+                // Availability
+                var availHtml = '';
+                if (!isConcert && evt.maxTickets) {
+                    var remaining = evt.maxTickets - (evt.ticketsSold || 0);
+                    if (remaining <= 20 && remaining > 0) {
+                        availHtml = '<div style="font-family:\'Inter\',sans-serif;font-size:0.8rem;color:#8B2252;font-weight:600;margin-top:4px;">Only ' + remaining + ' tickets left!</div>';
+                    }
+                }
+
+                // Early access badge
+                var earlyHtml = '';
+                if (isEarlyAccessPeriod && !isPast) {
+                    earlyHtml = '<div class="event-card__early-access">&#9733; Member Early Access</div>';
+                }
+
+                // Action button
+                var actionHtml = '';
+                if (isPast) {
+                    actionHtml = '<span class="event-card__status event-card__status--past">Past Event</span>';
+                } else if (isSoldOut) {
+                    actionHtml = '<span class="event-card__status event-card__status--soldout">Sold Out</span>';
+                } else if (isConcert && evt.ticketUrl) {
+                    actionHtml = '<a href="' + evt.ticketUrl + '" target="_blank" rel="noopener" class="btn btn--primary btn--sm">Get Tickets &#8599;</a>';
+                } else if (!isConcert) {
+                    if (isEarlyAccessPeriod && !Auth.isLoggedIn()) {
+                        actionHtml = '<span style="font-family:\'Inter\',sans-serif;font-size:0.85rem;color:#8B2252;font-weight:600;">Members get early access — <a href="/signup.html">Join now</a></span>';
+                    } else {
+                        actionHtml = '<button class="btn btn--primary btn--sm" onclick="openTicketModal(\'' + evt.id + '\')">Buy Tickets</button>';
+                    }
+                }
+
+                return '<div class="event-card">' +
+                    (evt.image ? '<img class="event-card__image" src="' + evt.image + '" alt="' + evt.title + '" loading="lazy">' : '<div class="event-card__image">' + typeLabel + '</div>') +
+                    '<div class="event-card__body">' +
+                    '<span class="event-card__type event-card__type--' + typeClass + '">' + typeLabel + '</span>' +
+                    '<h3 class="event-card__title">' + evt.title + '</h3>' +
+                    '<div class="event-card__meta"><span>&#128197; ' + eventDate + '</span><span>&#128205; ' + evt.venue + ', ' + evt.city + '</span></div>' +
+                    priceHtml + availHtml + earlyHtml +
+                    '<div class="event-card__actions">' + actionHtml + '</div>' +
+                    '</div></div>';
+            }).join('');
+        }
+
+        function openTicketModal(eventId) {
+            if (!Auth.isLoggedIn()) { Auth.requireAuth('/events.html'); return; }
+
+            selectedEvent = allEvents.find(function(e) { return e.id === eventId; });
+            if (!selectedEvent) return;
+
+            var userTier = Auth.getUserTier();
+            var discount = TIER_DISCOUNTS[userTier] || 0;
+            var discountedPrice = discount > 0 ? Math.round(selectedEvent.price * (1 - discount / 100)) : selectedEvent.price;
+
+            document.getElementById('ticket-event-name').textContent = selectedEvent.title;
+            document.getElementById('ticket-price-display').textContent = formatPrice(discountedPrice) + ' per ticket' + (discount > 0 ? ' (' + discount + '% member discount)' : '');
+            document.getElementById('ticket-payment-ref').value = '';
+            document.getElementById('ticket-payment-method').value = '';
+            document.getElementById('ticket-quantity').value = '1';
+
+            // Free ticket check for Ikaw Lamang
+            var freeGroup = document.getElementById('ticket-free-group');
+            var freeNote = document.getElementById('ticket-free-note');
+            freeGroup.style.display = 'none';
+            freeNote.style.display = 'none';
+            document.getElementById('ticket-use-free').checked = false;
+
+            if (userTier === 'Ikaw Lamang') {
+                freeGroup.style.display = '';
+                freeNote.style.display = '';
+            }
+
+            document.getElementById('ticket-modal').classList.add('modal-overlay--active');
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticket-modal').classList.remove('modal-overlay--active');
+        }
+
+        function updateTicketPrice() {
+            if (!selectedEvent) return;
+            var useFree = document.getElementById('ticket-use-free').checked;
+            var userTier = Auth.getUserTier();
+            var discount = TIER_DISCOUNTS[userTier] || 0;
+
+            if (useFree) {
+                document.getElementById('ticket-price-display').textContent = 'FREE (Ikaw Lamang perk)';
+            } else {
+                var discountedPrice = discount > 0 ? Math.round(selectedEvent.price * (1 - discount / 100)) : selectedEvent.price;
+                document.getElementById('ticket-price-display').textContent = formatPrice(discountedPrice) + ' per ticket' + (discount > 0 ? ' (' + discount + '% member discount)' : '');
+            }
+        }
+
+        async function purchaseTicket() {
+            if (!selectedEvent) return;
+            var pm = document.getElementById('ticket-payment-method').value;
+            var pr = document.getElementById('ticket-payment-ref').value.trim();
+            var qty = parseInt(document.getElementById('ticket-quantity').value) || 1;
+            var useFree = document.getElementById('ticket-use-free').checked;
+
+            if (!pm) { showToast('Please select a payment method', 'error'); return; }
+            if (!pr) { showToast('Please enter your payment reference number', 'error'); return; }
+
+            var btn = document.getElementById('ticket-confirm-btn');
+            btn.disabled = true; btn.textContent = 'Processing...';
+
+            try {
+                await api('create-event-ticket', {
+                    method: 'POST',
+                    body: {
+                        eventId: selectedEvent.id,
+                        quantity: qty,
+                        paymentMethod: pm,
+                        paymentReference: pr,
+                        useFreeTicket: useFree
+                    }
+                });
+                showToast('Ticket purchased! Salamat! Check your profile for details.', 'success');
+                closeTicketModal();
+            } catch (err) {
+                showToast(err.message || 'Failed to purchase ticket', 'error');
+            }
+            btn.disabled = false; btn.textContent = 'Confirm Purchase';
+        }
+
+        document.getElementById('ticket-modal').addEventListener('click', function(e) { if (e.target === this) closeTicketModal(); });
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

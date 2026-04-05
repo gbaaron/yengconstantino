@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensahe ni Yeng — Yeng Constantino Official</title>
+    <meta name="description" content="Request a personalized video, voice, or written message from Yeng Constantino. The perfect gift for birthdays, graduations, and special occasions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .mensahe-hero {
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #8B2252 100%);
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .mensahe-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .mensahe-hero__content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
+        .mensahe-hero__title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #D4A547 0%, #E8C36B 50%, #FFFFFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-md);
+        }
+        .mensahe-hero__subtitle { font-family: 'Inter', sans-serif; font-size: 1.15rem; color: rgba(255,255,255,0.7); margin-bottom: var(--space-lg); }
+        .mensahe-hero__tagline { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #D4A547; }
+
+        .message-types { padding: var(--space-4xl) 0; background: #FBF7F2; }
+        .message-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); max-width: 1000px; margin: 0 auto; padding: 0 var(--space-xl); align-items: start; }
+        .message-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            transition: all 250ms ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        .message-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(212,165,71,0.16); }
+        .message-card--featured { transform: scale(1.05); border-color: #8B2252; box-shadow: 0 8px 40px rgba(139,34,82,0.2); z-index: 2; }
+        .message-card--featured:hover { transform: scale(1.05) translateY(-4px); }
+        .message-card__popular {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #8B2252, #A83B6B);
+            color: #FFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 6px 20px;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+        .message-card__icon { font-size: 3rem; margin-bottom: var(--space-md); }
+        .message-card__type { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 800; color: #231A12; margin-bottom: 4px; }
+        .message-card__desc { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #6B5D50; line-height: 1.6; margin-bottom: var(--space-lg); }
+        .message-card__price { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800; color: #231A12; margin-bottom: var(--space-xs); }
+        .message-card__price-note { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #8E7F70; margin-bottom: var(--space-lg); }
+        .message-card__discount { font-family: 'Caveat', cursive; font-size: 1.1rem; color: #2D8E7E; margin-bottom: var(--space-lg); }
+        .message-card__divider { width: 60px; height: 3px; border-radius: 2px; margin: var(--space-lg) auto; }
+        .message-card__divider--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); }
+        .message-card__divider--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); }
+        .message-card__divider--gold { background: linear-gradient(135deg, #D4A547, #C68B1E); }
+        .message-card__cta {
+            width: 100%;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 250ms ease;
+            color: #FFF;
+        }
+        .message-card__cta--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); box-shadow: 0 4px 15px rgba(91,45,142,0.3); }
+        .message-card__cta--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); box-shadow: 0 4px 15px rgba(139,34,82,0.3); }
+        .message-card__cta--gold { background: linear-gradient(135deg, #D4A547, #C68B1E); color: #231A12; box-shadow: 0 4px 15px rgba(212,165,71,0.3); }
+        .message-card__cta:hover { transform: translateY(-2px); }
+
+        .how-it-works { padding: var(--space-4xl) 0; background: #FFF8F0; }
+        .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-xl); max-width: 1000px; margin: 0 auto; padding: 0 var(--space-xl); text-align: center; }
+        .step__number {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, #5B2D8E, #8B2252);
+            color: #FFF; font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-md);
+        }
+        .step__title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #231A12; margin-bottom: var(--space-sm); }
+        .step__desc { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #6B5D50; line-height: 1.6; }
+
+        .mensahe-faq { padding: var(--space-4xl) 0; background: #FBF7F2; }
+        .faq-list { max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
+        .faq-item { background: #FFF; border-radius: var(--radius-md); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(212,165,71,0.06); overflow: hidden; }
+        .faq-question { width: 100%; padding: 18px 24px; background: none; border: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; color: #352A20; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question:hover { color: #5B2D8E; }
+        .faq-question__icon { font-size: 1.2rem; transition: transform 400ms ease; color: #8E7F70; }
+        .faq-item--open .faq-question__icon { transform: rotate(45deg); color: #5B2D8E; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 400ms ease; }
+        .faq-item--open .faq-answer { max-height: 300px; }
+        .faq-answer__inner { padding: 0 24px 20px; font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #6B5D50; line-height: 1.7; }
+
+        .mensahe-modal__type { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-sm); color: #231A12; }
+        .mensahe-modal__price { text-align: center; font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
+
+        @media (max-width: 1024px) {
+            .message-grid { grid-template-columns: 1fr; max-width: 420px; }
+            .message-card--featured { transform: none; }
+            .message-card--featured:hover { transform: translateY(-4px); }
+            .steps-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .mensahe-hero { padding: 120px 0 60px; }
+            .mensahe-hero__title { font-size: 2.2rem; }
+            .steps-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link nav__link--active">Mensahe</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="mensahe-hero">
+        <div class="mensahe-hero__content">
+            <h1 class="mensahe-hero__title">Mensahe ni Yeng</h1>
+            <p class="mensahe-hero__subtitle">Request a personalized message from Yeng for yourself or a loved one. The perfect gift for any occasion.</p>
+            <p class="mensahe-hero__tagline">Mula sa puso ni Yeng, para sa iyo</p>
+        </div>
+    </section>
+
+    <section class="message-types">
+        <div class="section-header" style="margin-bottom:var(--space-3xl);">
+            <span class="section-header__eyebrow">Pumili ng Uri</span>
+            <h2 class="section-header__title">Choose Your Message</h2>
+        </div>
+        <div class="message-grid" id="message-grid">
+            <div class="message-card">
+                <div class="message-card__icon">&#128221;</div>
+                <h3 class="message-card__type">Written Message</h3>
+                <p class="message-card__desc">A heartfelt handwritten-style note from Yeng, delivered digitally.</p>
+                <div class="message-card__divider message-card__divider--purple"></div>
+                <div class="message-card__price">&#8369;300</div>
+                <div class="message-card__price-note">One-time fee</div>
+                <div class="message-card__discount" id="discount-written"></div>
+                <button class="message-card__cta message-card__cta--purple" onclick="selectMessageType('Written', 300)">Request Now</button>
+            </div>
+            <div class="message-card message-card--featured">
+                <div class="message-card__popular">Most Popular</div>
+                <div class="message-card__icon">&#127909;</div>
+                <h3 class="message-card__type">Video Message</h3>
+                <p class="message-card__desc">A personal video message from Yeng, recorded just for you or your loved one.</p>
+                <div class="message-card__divider message-card__divider--burgundy"></div>
+                <div class="message-card__price">&#8369;1,500</div>
+                <div class="message-card__price-note">One-time fee</div>
+                <div class="message-card__discount" id="discount-video"></div>
+                <button class="message-card__cta message-card__cta--burgundy" onclick="selectMessageType('Video', 1500)">Request Now</button>
+            </div>
+            <div class="message-card">
+                <div class="message-card__icon">&#127908;</div>
+                <h3 class="message-card__type">Voice Message</h3>
+                <p class="message-card__desc">A personal voice recording from Yeng with your special message.</p>
+                <div class="message-card__divider message-card__divider--gold"></div>
+                <div class="message-card__price">&#8369;800</div>
+                <div class="message-card__price-note">One-time fee</div>
+                <div class="message-card__discount" id="discount-voice"></div>
+                <button class="message-card__cta message-card__cta--gold" onclick="selectMessageType('Voice', 800)">Request Now</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="section-header" style="margin-bottom:var(--space-3xl);">
+            <span class="section-header__eyebrow">Paano ba ito?</span>
+            <h2 class="section-header__title">How It Works</h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step">
+                <div class="step__number">1</div>
+                <h3 class="step__title">Choose Type</h3>
+                <p class="step__desc">Pick from Video, Voice, or Written message based on your preference.</p>
+            </div>
+            <div class="step">
+                <div class="step__number">2</div>
+                <h3 class="step__title">Fill Details</h3>
+                <p class="step__desc">Tell us the occasion, recipient name, and any special instructions for Yeng.</p>
+            </div>
+            <div class="step">
+                <div class="step__number">3</div>
+                <h3 class="step__title">Pay &amp; Submit</h3>
+                <p class="step__desc">Complete payment via GCash or Maya, and submit your request.</p>
+            </div>
+            <div class="step">
+                <div class="step__number">4</div>
+                <h3 class="step__title">Receive Message</h3>
+                <p class="step__desc">Yeng records your message and it appears in your profile within 7 days!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Request Modal -->
+    <div class="modal-overlay" id="mensahe-modal">
+        <div class="modal">
+            <button class="modal__close" onclick="closeMensaheModal()">&times;</button>
+            <h3 class="mensahe-modal__type" id="modal-msg-type"></h3>
+            <p class="mensahe-modal__price" id="modal-msg-price"></p>
+            <div class="form-group">
+                <label class="form-label">Occasion *</label>
+                <select class="form-select" id="msg-occasion">
+                    <option value="">Select occasion...</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Graduation">Graduation</option>
+                    <option value="Anniversary">Anniversary</option>
+                    <option value="Encouragement">Encouragement</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Recipient Name *</label>
+                <input type="text" class="form-input" id="msg-recipient" placeholder="Who is this message for?">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Personal Instructions</label>
+                <textarea class="form-input" id="msg-instructions" rows="3" placeholder="Any special requests or details you'd like Yeng to include..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Method *</label>
+                <select class="form-select" id="msg-payment-method">
+                    <option value="">Select payment method...</option>
+                    <option value="GCash">GCash</option>
+                    <option value="Maya">Maya</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Reference Number *</label>
+                <input type="text" class="form-input" id="msg-payment-ref" placeholder="Enter your payment reference...">
+            </div>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya, then enter your reference number. Your message will be delivered to your profile within 7 days.</p>
+            <button class="btn btn--primary btn--block" id="msg-confirm-btn" onclick="submitMessageRequest()">Submit Request</button>
+        </div>
+    </div>
+
+    <section class="mensahe-faq">
+        <div class="section-header" style="margin-bottom:var(--space-2xl);">
+            <span class="section-header__eyebrow">Mga Tanong</span>
+            <h2 class="section-header__title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">How long does delivery take? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Most messages are delivered within 7 days. Video messages may take slightly longer during busy periods. You'll be notified in your profile when your message is ready!</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Can I request a specific song or melody? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">You can mention song preferences in your instructions! While we can't guarantee specific performances, Yeng will do her best to incorporate your requests into the message.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Do members get a discount? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Yes! Sariwang Simula members get 5% off, Laging Nandito members get 10% off, and Ikaw Lamang members get 15% off all message types.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Can I get a refund? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Refunds are available if your request is cancelled before recording begins. Once Yeng has started recording, refunds are no longer possible. Contact support for any issues.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Where do I view my message? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Once delivered, your message will appear in the "My Messages" tab on your Profile page. You'll also receive a notification when it's ready.</div></div></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="#" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="#" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="#" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="#" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/events.html">Events</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/membership.html">Membership</a></li><li><a href="/mensahe.html">Mensahe ni Yeng</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="#" data-config-href="social_youtube">YouTube</a></li><li><a href="#" data-config-href="social_instagram">Instagram</a></li><li><a href="#" data-config-href="social_facebook">Facebook</a></li><li><a href="#" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/app.js" defer></script>
+    <script>
+        var selectedMsgType = '';
+        var selectedMsgPrice = 0;
+        var TIER_DISCOUNTS = { 'Sariwang Simula': 5, 'Laging Nandito': 10, 'Ikaw Lamang': 15 };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDiscountDisplay();
+        });
+
+        function updateDiscountDisplay() {
+            var tier = Auth.getUserTier();
+            var discount = TIER_DISCOUNTS[tier] || 0;
+            if (discount > 0) {
+                var types = { written: 300, video: 1500, voice: 800 };
+                for (var key in types) {
+                    var el = document.getElementById('discount-' + key);
+                    if (el) {
+                        var discounted = Math.round(types[key] * (1 - discount / 100));
+                        el.textContent = 'Members: ' + formatPrice(discounted) + ' (' + discount + '% off)';
+                    }
+                }
+            }
+        }
+
+        function selectMessageType(type, basePrice) {
+            if (!Auth.isLoggedIn()) { Auth.requireAuth('/mensahe.html'); return; }
+            selectedMsgType = type;
+
+            var tier = Auth.getUserTier();
+            var discount = TIER_DISCOUNTS[tier] || 0;
+            selectedMsgPrice = discount > 0 ? Math.round(basePrice * (1 - discount / 100)) : basePrice;
+
+            document.getElementById('modal-msg-type').textContent = type + ' Message';
+            document.getElementById('modal-msg-price').textContent = formatPrice(selectedMsgPrice) + (discount > 0 ? ' (' + discount + '% member discount)' : '');
+            document.getElementById('msg-occasion').value = '';
+            document.getElementById('msg-recipient').value = '';
+            document.getElementById('msg-instructions').value = '';
+            document.getElementById('msg-payment-method').value = '';
+            document.getElementById('msg-payment-ref').value = '';
+            document.getElementById('mensahe-modal').classList.add('modal-overlay--active');
+        }
+
+        function closeMensaheModal() {
+            document.getElementById('mensahe-modal').classList.remove('modal-overlay--active');
+        }
+
+        async function submitMessageRequest() {
+            var occasion = document.getElementById('msg-occasion').value;
+            var recipient = document.getElementById('msg-recipient').value.trim();
+            var instructions = document.getElementById('msg-instructions').value.trim();
+            var pm = document.getElementById('msg-payment-method').value;
+            var pr = document.getElementById('msg-payment-ref').value.trim();
+
+            if (!occasion) { showToast('Please select an occasion', 'error'); return; }
+            if (!recipient) { showToast('Please enter the recipient name', 'error'); return; }
+            if (!pm) { showToast('Please select a payment method', 'error'); return; }
+            if (!pr) { showToast('Please enter your payment reference', 'error'); return; }
+
+            var btn = document.getElementById('msg-confirm-btn');
+            btn.disabled = true; btn.textContent = 'Submitting...';
+
+            try {
+                await api('create-message-request', {
+                    method: 'POST',
+                    body: {
+                        type: selectedMsgType,
+                        occasion: occasion,
+                        recipientName: recipient,
+                        instructions: instructions,
+                        paymentMethod: pm,
+                        paymentReference: pr
+                    }
+                });
+                showToast('Message request submitted! Check your profile for updates.', 'success');
+                closeMensaheModal();
+            } catch (err) {
+                showToast(err.message || 'Failed to submit request', 'error');
+            }
+            btn.disabled = false; btn.textContent = 'Submit Request';
+        }
+
+        function toggleFAQ(btn) {
+            var item = btn.closest('.faq-item');
+            var isOpen = item.classList.contains('faq-item--open');
+            document.querySelectorAll('.faq-item--open').forEach(function(el) { el.classList.remove('faq-item--open'); });
+            if (!isOpen) item.classList.add('faq-item--open');
+        }
+
+        document.getElementById('mensahe-modal').addEventListener('click', function(e) { if (e.target === this) closeMensaheModal(); });
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

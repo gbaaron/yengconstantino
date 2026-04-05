@@ -817,6 +817,179 @@
                 font-size: 0.85rem;
             }
         }
+
+        /* ── Music Detail Modal ── */
+        .music-detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(19, 14, 8, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 9998;
+            justify-content: center;
+            align-items: flex-start;
+            padding: var(--space-xl);
+            overflow-y: auto;
+        }
+        .music-detail-overlay--active { display: flex; }
+        .music-detail {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            max-width: 800px;
+            width: 100%;
+            margin: 80px auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            animation: ratingModalIn 0.3s ease;
+            overflow: hidden;
+        }
+        .music-detail__player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #1a0a2e;
+        }
+        .music-detail__player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .music-detail__player-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255,255,255,0.15);
+        }
+        .music-detail__player-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .music-detail__body { padding: var(--space-2xl); }
+        .music-detail__close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .music-detail__close:hover { background: rgba(0,0,0,0.7); }
+        .music-detail__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--space-md); }
+        .music-detail__title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin-bottom: var(--space-sm);
+        }
+        .music-detail__desc {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            line-height: 1.7;
+            margin-bottom: var(--space-xl);
+        }
+        .music-detail__links { display: flex; gap: var(--space-md); margin-bottom: var(--space-xl); }
+        .music-detail__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.82rem;
+            transition: all 150ms ease;
+        }
+        .music-detail__link--spotify { background: rgba(30,215,96,0.12); color: #1DB954; }
+        .music-detail__link--spotify:hover { background: rgba(30,215,96,0.2); }
+        .music-detail__link--youtube { background: rgba(255,0,0,0.08); color: #FF0000; }
+        .music-detail__link--youtube:hover { background: rgba(255,0,0,0.15); }
+
+        /* Dual Rating Section */
+        .music-detail__ratings { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xl); }
+        .rating-section { background: var(--gray-50); border-radius: var(--radius-md); padding: var(--space-lg); }
+        .rating-section__title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--gray-700); margin-bottom: var(--space-sm); }
+        .rating-section__avg { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--gold); }
+        .rating-section__count { font-size: 0.75rem; color: var(--gray-400); }
+        .rating-section__grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: var(--space-md); }
+        .rating-section__btn {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .rating-section__btn:hover { transform: scale(1.1); border-color: var(--gray-300); }
+        .rating-section__btn--selected { border-color: transparent; color: var(--white); transform: scale(1.1); }
+        .rating-section__btn--selected.rs-low { background: var(--burgundy); }
+        .rating-section__btn--selected.rs-mid { background: var(--gold); color: #2d1245; }
+        .rating-section__btn--selected.rs-high { background: var(--primary); }
+
+        /* Review Form */
+        .review-form { margin-bottom: var(--space-xl); }
+        .review-form__textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            min-height: 80px;
+            resize: vertical;
+            color: var(--gray-700);
+        }
+        .review-form__textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+        .review-form__actions { display: flex; gap: var(--space-md); align-items: center; margin-top: var(--space-sm); }
+
+        /* Reviews List */
+        .reviews-list { margin-top: var(--space-xl); }
+        .reviews-list__title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--gray-700); margin-bottom: var(--space-md); }
+        .review-item { padding: var(--space-md) 0; border-bottom: 1px solid var(--gray-100); }
+        .review-item__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .review-item__user { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--gray-700); }
+        .review-item__rating { color: var(--gold); font-weight: 700; font-size: 0.85rem; }
+        .review-item__text { font-family: var(--font-body); font-size: 0.88rem; color: var(--gray-500); line-height: 1.6; }
+        .review-item__date { font-size: 0.75rem; color: var(--gray-400); margin-top: 4px; }
+
+        /* Favorite button */
+        .fav-btn {
+            background: none;
+            border: 2px solid var(--gray-200);
+            border-radius: 9999px;
+            padding: 8px 20px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 150ms ease;
+        }
+        .fav-btn:hover { border-color: var(--burgundy); color: var(--burgundy); }
+        .fav-btn--active { background: rgba(139,34,82,0.1); border-color: var(--burgundy); color: var(--burgundy); }
+
+        @media (max-width: 768px) {
+            .music-detail { margin: 20px auto; }
+            .music-detail__ratings { grid-template-columns: 1fr; }
+            .music-detail__title { font-size: 1.4rem; }
+            .rating-section__grid { grid-template-columns: repeat(5, 1fr); }
+        }
     </style>
 </head>
 <body>
@@ -831,12 +1004,16 @@
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link nav__link--active">Music</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/events.html" class="nav__link">Events</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
                 <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li><a href="/mensahe.html" class="nav__link">Mensahe</a></li>
                 <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
                 <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
                 <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link">Admin</a></li>
+                <li data-admin style="display:none"><button class="nav__link" onclick="toggleAdminView()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:8px 16px;"><span id="view-toggle-label">User View</span></button></li>
                 <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
             </ul>
         </div>
@@ -940,6 +1117,35 @@
         </div>
     </section>
 
+    <!-- ── Music Detail Modal ── -->
+    <div class="music-detail-overlay" id="detailModal">
+        <div class="music-detail" style="position:relative;">
+            <button class="music-detail__close" onclick="closeDetailModal()">&times;</button>
+            <div class="music-detail__player" id="detail-player"></div>
+            <div class="music-detail__body">
+                <div class="music-detail__badges" id="detail-badges"></div>
+                <h2 class="music-detail__title" id="detail-title"></h2>
+                <p class="music-detail__desc" id="detail-desc"></p>
+                <div class="music-detail__links" id="detail-links"></div>
+
+                <div class="music-detail__ratings" id="detail-ratings"></div>
+
+                <div class="review-form" id="review-form-section" style="display:none;">
+                    <textarea class="review-form__textarea" id="review-textarea" placeholder="Write your review... (optional)"></textarea>
+                    <div class="review-form__actions">
+                        <button class="btn btn--primary btn--sm" id="submit-rating-btn" onclick="submitDetailRating()">Submit Rating</button>
+                        <button class="fav-btn" id="fav-btn" onclick="toggleFavorite()">&#9825; Add to Favorites</button>
+                    </div>
+                </div>
+
+                <div class="reviews-list" id="detail-reviews">
+                    <h3 class="reviews-list__title">Fan Reviews</h3>
+                    <div id="reviews-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ── Rating Modal ── -->
     <div class="rating-modal-overlay" id="ratingModal">
         <div class="rating-modal">
@@ -975,6 +1181,7 @@
                         <li><a href="/music.html">Music Archive</a></li>
                         <li><a href="/covers.html">Yeng Covers</a></li>
                         <li><a href="/community.html">Community</a></li>
+                        <li><a href="/events.html">Events</a></li>
                         <li><a href="/merch.html">Merch Store</a></li>
                     </ul>
                 </div>
@@ -982,6 +1189,7 @@
                     <h4 class="footer__heading">Fan Hub</h4>
                     <ul class="footer__list">
                         <li><a href="/membership.html">Membership</a></li>
+                        <li><a href="/mensahe.html">Mensahe ni Yeng</a></li>
                         <li><a href="/profile.html">My Profile</a></li>
                         <li><a href="/signup.html">Join Yeng Nation</a></li>
                     </ul>
@@ -1100,7 +1308,7 @@
                     ? '<small>You: ' + userRating + '</small>'
                     : '';
 
-                return '<div class="music-card" data-id="' + item.id + '">' +
+                return '<div class="music-card" data-id="' + item.id + '" onclick="openDetailModal(\'' + item.id + '\')" style="cursor:pointer;">' +
                     '<div class="music-card__thumb">' +
                         thumbContent +
                         '<span class="music-card__badge music-card__badge--' + badgeColor + '">' + item.category + '</span>' +
@@ -1113,7 +1321,7 @@
                         '<div class="music-card__meta">' +
                             (item.year ? '<span>' + item.year + '</span>' : '') +
                             (item.duration ? '<span>' + item.duration + '</span>' : '') +
-                            '<span class="music-card__rating" onclick="openRatingModal(\'' + item.id + '\', \'' + item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">' +
+                            '<span class="music-card__rating">' +
                                 ratingDisplay + userRatingHtml +
                             '</span>' +
                         '</div>' +
@@ -1434,10 +1642,10 @@
                 userRatings[ratingModalContentId] = ratingModalSelected;
 
                 try {
-                    var data = await api('rate-vlog', {
+                    var data = await api('rate-content', {
                         method: 'POST',
                         body: {
-                            vlogId: ratingModalContentId,
+                            contentId: ratingModalContentId,
                             rating: ratingModalSelected
                         }
                     });
@@ -1545,6 +1753,201 @@
                 if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
                     loadUserRatings();
                 }
+            });
+
+            // ── Detail Modal ──
+            var detailContentId = null;
+            var detailSongRating = 0;
+            var detailVideoRating = 0;
+
+            window.openDetailModal = function(contentId) {
+                var item = allContent.find(function(c) { return c.id === contentId; });
+                if (!item) return;
+                detailContentId = contentId;
+                detailSongRating = 0;
+                detailVideoRating = 0;
+
+                // Player
+                var playerEl = document.getElementById('detail-player');
+                var videoId = extractYouTubeId(item.youtubeUrl);
+                if (videoId) {
+                    playerEl.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?rel=0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+                } else if (item.thumbnail) {
+                    playerEl.innerHTML = '<div class="music-detail__player-placeholder"><img src="' + item.thumbnail + '" alt="' + item.title + '"></div>';
+                } else {
+                    playerEl.innerHTML = '<div class="music-detail__player-placeholder">&#9835;</div>';
+                }
+
+                // Info
+                document.getElementById('detail-title').textContent = item.title;
+                document.getElementById('detail-desc').textContent = item.description || '';
+
+                // Badges
+                var badgesHtml = '<span class="music-card__badge music-card__badge--' + (categoryBadgeMap[item.category] || 'purple') + '" style="position:static;">' + item.category + '</span>';
+                if (item.era) badgesHtml += '<span class="music-card__era" style="position:static;">' + item.era + '</span>';
+                item.mood.forEach(function(m) { if (m) badgesHtml += '<span class="music-card__mood-tag">' + m + '</span>'; });
+                if (item.year) badgesHtml += '<span style="font-size:0.8rem;color:var(--gray-400);">' + item.year + '</span>';
+                if (item.duration) badgesHtml += '<span style="font-size:0.8rem;color:var(--gray-400);">' + item.duration + '</span>';
+                document.getElementById('detail-badges').innerHTML = badgesHtml;
+
+                // Links
+                var linksHtml = '';
+                if (item.youtubeUrl) linksHtml += '<a href="' + item.youtubeUrl + '" target="_blank" rel="noopener" class="music-detail__link music-detail__link--youtube">&#9654; YouTube</a>';
+                if (item.spotifyUrl) linksHtml += '<a href="' + item.spotifyUrl + '" target="_blank" rel="noopener" class="music-detail__link music-detail__link--spotify">&#9835; Spotify</a>';
+                document.getElementById('detail-links').innerHTML = linksHtml;
+
+                // Dual ratings
+                var ratingsHtml = buildRatingSection('Song', item.avgSongRating || item.avgRating || 0, item.songRatingCount || item.ratingCount || 0, 'song');
+                if (videoId) {
+                    ratingsHtml += buildRatingSection('Video', item.avgVideoRating || 0, item.videoRatingCount || 0, 'video');
+                }
+                document.getElementById('detail-ratings').innerHTML = ratingsHtml;
+
+                // Show review form if logged in
+                var formSection = document.getElementById('review-form-section');
+                if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
+                    formSection.style.display = '';
+                    document.getElementById('review-textarea').value = '';
+                    document.getElementById('submit-rating-btn').disabled = true;
+                    document.getElementById('submit-rating-btn').textContent = 'Select a rating first';
+                } else {
+                    formSection.style.display = 'none';
+                }
+
+                // Load reviews
+                loadContentReviews(contentId);
+
+                // Show modal
+                document.getElementById('detailModal').classList.add('music-detail-overlay--active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            function extractYouTubeId(url) {
+                if (!url) return null;
+                var match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{11})/);
+                return match ? match[1] : null;
+            }
+
+            function buildRatingSection(label, avg, count, type) {
+                var userRating = 0; // will be set by click
+                var html = '<div class="rating-section"><div class="rating-section__title">Rate the ' + label + '</div>';
+                html += '<div><span class="rating-section__avg">' + (avg > 0 ? avg.toFixed(1) : '--') + '</span><span class="rating-section__count"> / 10' + (count > 0 ? ' (' + count + ' ratings)' : '') + '</span></div>';
+                html += '<div class="rating-section__grid">';
+                for (var i = 1; i <= 10; i++) {
+                    var cls = i <= 3 ? 'rs-low' : i <= 6 ? 'rs-mid' : 'rs-high';
+                    html += '<button class="rating-section__btn" data-type="' + type + '" data-value="' + i + '" onclick="selectDetailRating(\'' + type + '\',' + i + ')">' + i + '</button>';
+                }
+                html += '</div></div>';
+                return html;
+            }
+
+            window.selectDetailRating = function(type, value) {
+                if (type === 'song') detailSongRating = value;
+                else detailVideoRating = value;
+
+                // Update button states
+                document.querySelectorAll('.rating-section__btn[data-type="' + type + '"]').forEach(function(btn) {
+                    var v = parseInt(btn.dataset.value);
+                    var cls = v <= 3 ? 'rs-low' : v <= 6 ? 'rs-mid' : 'rs-high';
+                    btn.className = 'rating-section__btn' + (v === value ? ' rating-section__btn--selected ' + cls : '');
+                });
+
+                // Enable submit
+                var submitBtn = document.getElementById('submit-rating-btn');
+                if (detailSongRating > 0 || detailVideoRating > 0) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Rating';
+                }
+            };
+
+            window.submitDetailRating = async function() {
+                if (!detailContentId) return;
+                var reviewText = document.getElementById('review-textarea').value.trim();
+                var btn = document.getElementById('submit-rating-btn');
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+
+                try {
+                    if (detailSongRating > 0) {
+                        await api('rate-content', {
+                            method: 'POST',
+                            body: { contentId: detailContentId, rating: detailSongRating, ratingType: 'Song', review: reviewText }
+                        });
+                        userRatings[detailContentId] = detailSongRating;
+                    }
+                    if (detailVideoRating > 0) {
+                        await api('rate-content', {
+                            method: 'POST',
+                            body: { contentId: detailContentId, rating: detailVideoRating, ratingType: 'Video', review: '' }
+                        });
+                    }
+                    showToast('Rating saved! Salamat!' + (reviewText ? ' Review submitted for approval.' : ''), 'success');
+                    closeDetailModal();
+                    loadContent();
+                } catch (err) {
+                    showToast('Failed to save rating', 'error');
+                }
+                btn.disabled = false;
+                btn.textContent = 'Submit Rating';
+            };
+
+            async function loadContentReviews(contentId) {
+                var container = document.getElementById('reviews-container');
+                try {
+                    var data = await api('get-content-reviews?contentId=' + contentId);
+                    var reviews = data.reviews || [];
+                    if (reviews.length === 0) {
+                        container.innerHTML = '<p style="color:var(--gray-400);font-size:0.85rem;font-style:italic;">No reviews yet. Be the first!</p>';
+                        return;
+                    }
+                    container.innerHTML = reviews.map(function(r) {
+                        var stars = '';
+                        for (var s = 0; s < 10; s++) stars += s < r.rating ? '&#9733;' : '&#9734;';
+                        return '<div class="review-item"><div class="review-item__header"><span class="review-item__user">' + r.userName + '</span><span class="review-item__rating">' + stars + ' ' + r.rating + '/10 (' + r.ratingType + ')</span></div><div class="review-item__text">' + r.review + '</div><div class="review-item__date">' + (r.ratedAt ? formatDate(r.ratedAt) : '') + '</div></div>';
+                    }).join('');
+                } catch (err) {
+                    container.innerHTML = '<p style="color:var(--gray-400);font-size:0.85rem;">Could not load reviews.</p>';
+                }
+            }
+
+            window.closeDetailModal = function() {
+                document.getElementById('detailModal').classList.remove('music-detail-overlay--active');
+                document.body.style.overflow = '';
+                // Stop YouTube video
+                var player = document.getElementById('detail-player');
+                if (player) player.innerHTML = '';
+                detailContentId = null;
+            };
+
+            window.toggleFavorite = function() {
+                if (!detailContentId || !Auth.isLoggedIn()) { Auth.requireAuth('/music.html'); return; }
+                var item = allContent.find(function(c) { return c.id === detailContentId; });
+                if (!item) return;
+                var btn = document.getElementById('fav-btn');
+                // Simple add — full management on profile/top-songs page
+                api('update-user-favorites', {
+                    method: 'POST',
+                    body: { favorites: [{ contentId: detailContentId, contentTitle: item.title }] }
+                }).then(function() {
+                    btn.innerHTML = '&#9829; Added!';
+                    btn.classList.add('fav-btn--active');
+                    showToast(item.title + ' added to favorites!', 'success');
+                }).catch(function() {
+                    showToast('Could not add to favorites', 'error');
+                });
+            };
+
+            // Close detail modal on Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    var detailOverlay = document.getElementById('detailModal');
+                    if (detailOverlay && detailOverlay.classList.contains('music-detail-overlay--active')) {
+                        closeDetailModal();
+                    }
+                }
+            });
+            document.getElementById('detailModal').addEventListener('click', function(e) {
+                if (e.target === this) closeDetailModal();
             });
 
         })();
