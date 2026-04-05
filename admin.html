@@ -811,7 +811,11 @@
     }
 
     /* ── Users ── */
-    var searchUsersDebounced = debounce(function() { adminTabsLoaded['users'] = false; loadAllUsers(); }, 400);
+    var _searchTimer;
+    var searchUsersDebounced = function() {
+        clearTimeout(_searchTimer);
+        _searchTimer = setTimeout(function() { adminTabsLoaded['users'] = false; loadAllUsers(); }, 400);
+    };
 
     async function loadAllUsers() {
         var container = document.getElementById('admin-users-list');
@@ -1016,8 +1020,9 @@
 
     function getMetricValue(metric, stats) {
         if (!stats) return 0;
+        var mb = stats.membershipBreakdown || {};
         switch(metric) {
-            case 'members': return (stats.membershipBreakdown['Sariwang Simula'] || 0) + (stats.membershipBreakdown['Laging Nandito'] || 0) + (stats.membershipBreakdown['Ikaw Lamang'] || 0);
+            case 'members': return (mb['Sariwang Simula'] || 0) + (mb['Laging Nandito'] || 0) + (mb['Ikaw Lamang'] || 0);
             case 'revenue': return stats.totalRevenue || 0;
             case 'users': return stats.totalUsers || 0;
             case 'mensahe': return (stats.pendingMessages || 0) + 12;
@@ -1028,12 +1033,12 @@
     }
 
     function renderGoals(stats) {
-        lastStats = stats;
+        lastStats = stats || {};
         var goals = getGoals();
         var grid = document.getElementById('goals-grid');
         if (!grid) return;
 
-        if (goals.length === 0) {
+        if (!goals || goals.length === 0) {
             grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl);color:#8E7F70;font-family:\'Inter\',sans-serif;"><p>No goals set yet.</p><button class="btn btn--primary btn--sm" onclick="openAddGoalModal()" style="margin-top:var(--space-md);">Set Your First Goal</button></div>';
             return;
         }
