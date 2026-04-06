@@ -329,10 +329,7 @@
         .slide.in-view .flow > :nth-child(8) { transition-delay: 0.65s; }
         .slide.in-view .flow > :nth-child(9) { transition-delay: 0.7s; }
 
-        /* Bar chart bars grow up (animated via JS) */
-        .bar-chart__bar {
-            transition: height 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+        /* Bar chart bars - static, no animation */
 
         /* Donut chart spins in */
         .donut-chart {
@@ -677,20 +674,8 @@
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('in-view');
-                    // Animate bar chart bars if this slide has them
-                    var bars = entry.target.querySelectorAll('.bar-chart__bar[data-height]');
-                    bars.forEach(function(bar, i) {
-                        setTimeout(function() {
-                            bar.style.height = bar.dataset.height + '%';
-                        }, 600 + i * 150);
-                    });
                 } else {
                     entry.target.classList.remove('in-view');
-                    // Reset bars
-                    var bars = entry.target.querySelectorAll('.bar-chart__bar[data-height]');
-                    bars.forEach(function(bar) {
-                        bar.style.height = '0';
-                    });
                 }
             });
         }, { threshold: 0.3 });
