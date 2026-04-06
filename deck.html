@@ -21,10 +21,36 @@
         body { font-family: 'Inter', sans-serif; background: white; color: var(--dark); }
 
         @media print {
-            body { background: white; }
-            .slide { break-after: page; break-inside: avoid; box-shadow: none; margin: 0; border-radius: 0; }
+            body { background: white; margin: 0; padding: 0; }
+            .slide {
+                break-after: page; break-inside: avoid; box-shadow: none !important;
+                margin: 0 !important; border-radius: 0 !important;
+                width: 11in !important; max-width: 11in !important;
+                height: 8.5in; min-height: 8.5in;
+                overflow: hidden;
+                padding: 0.5in 0.6in;
+            }
             .no-print { display: none !important; }
-            @page { size: landscape; margin: 0; }
+            @page { size: 11in 8.5in; margin: 0; }
+            h1 { font-size: 2.2rem !important; }
+            h2 { font-size: 1.5rem !important; }
+            h3 { font-size: 0.9rem !important; }
+            p, .legend__item, .stat__label, .tier__list, .tier__price { font-size: 0.75rem !important; }
+            .eyebrow { font-size: 0.6rem !important; }
+            .slide--hero h1 { font-size: 2.4rem !important; }
+            .slide--hero .subtitle { font-size: 1.2rem !important; }
+            .slide--hero p { font-size: 0.9rem !important; }
+            .slide--accent h2 { font-size: 2rem !important; }
+            .grid-5 { gap: 12px !important; }
+            .card { padding: 16px !important; }
+            .card p { font-size: 0.7rem !important; }
+            .card h3 { font-size: 0.8rem !important; }
+            .flow__step { padding: 10px 14px !important; font-size: 0.7rem !important; min-width: 90px !important; }
+            .stat__number { font-size: 2rem !important; }
+            .donut-chart { width: 150px !important; height: 150px !important; }
+            .donut-chart__center { width: 80px !important; height: 80px !important; }
+            .donut-chart__number { font-size: 1.3rem !important; }
+            .bar-chart { height: 130px !important; }
         }
 
         @media screen {
@@ -59,7 +85,7 @@
 
         /* ── Typography ── */
         h1 { font-family: 'Playfair Display', serif; font-weight: 800; }
-        h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 2rem; margin-bottom: 8px; }
+        h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem; margin-bottom: 8px; }
         h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
         p { font-size: 0.95rem; line-height: 1.6; color: var(--gray); }
 
@@ -71,6 +97,7 @@
         .gradient-text {
             background: linear-gradient(135deg, var(--purple), var(--pink), var(--gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            display: inline-block;
         }
 
         .divider { width: 60px; height: 3px; background: linear-gradient(135deg, var(--purple), var(--pink)); border-radius: 2px; margin: 16px 0; }
@@ -81,7 +108,7 @@
             text-align: center; justify-content: center; align-items: center;
         }
         .slide--hero h1 {
-            font-size: 3.2rem;
+            font-size: 2.6rem;
             background: linear-gradient(135deg, var(--purple-light), var(--pink), var(--gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             margin-bottom: 16px;
