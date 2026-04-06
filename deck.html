@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeng Constantino Official — Platform Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #6C2BD9;
+            --purple-light: #8B5CF6;
+            --pink: #BE185D;
+            --gold: #E5A00D;
+            --dark: #1A1A2E;
+            --gray: #52526B;
+            --light-gray: #A1A1B5;
+            --bg: #FAFAFC;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: var(--dark);
+        }
+
+        /* ── Print / PDF styles ── */
+        @media print {
+            body { background: white; }
+            .slide { break-after: page; break-inside: avoid; box-shadow: none; margin: 0; border-radius: 0; }
+            .no-print { display: none !important; }
+            @page { size: landscape; margin: 0; }
+        }
+
+        /* ── Screen styles ── */
+        @media screen {
+            body { background: var(--bg); padding: 40px 20px; }
+            .slide { margin: 0 auto 40px; box-shadow: 0 8px 40px rgba(108,43,217,0.1); }
+        }
+
+        .slide {
+            width: 1024px;
+            max-width: 100%;
+            min-height: 576px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 80px;
+        }
+
+        /* ── Print button ── */
+        .print-bar {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 36px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: white;
+            background: linear-gradient(135deg, var(--purple), var(--purple-light));
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(108,43,217,0.3);
+            transition: all 0.2s;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(108,43,217,0.4);
+        }
+
+        /* ── Typography ── */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--gray);
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--purple);
+            margin-bottom: 8px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--purple), var(--pink), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Slide variants ── */
+        .slide--hero {
+            background: linear-gradient(135deg, #1a0a2e 0%, #2D1B69 40%, #3d1a3d 70%, #2a1535 100%);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            min-height: 576px;
+        }
+
+        .slide--hero h1 {
+            font-size: 3.2rem;
+            background: linear-gradient(135deg, var(--purple-light), var(--pink), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .slide--hero p {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.1rem;
+            max-width: 500px;
+        }
+
+        .slide--hero .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 8px;
+        }
+
+        .slide--hero .badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .slide--dark {
+            background: var(--dark);
+            color: white;
+        }
+
+        .slide--dark h2 { color: white; }
+        .slide--dark p { color: rgba(255,255,255,0.6); }
+        .slide--dark h3 { color: white; }
+
+        .slide--accent {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            text-align: center;
+            align-items: center;
+        }
+
+        .slide--accent h2 { color: white; font-size: 2.4rem; }
+        .slide--accent p { color: rgba(255,255,255,0.85); font-size: 1.1rem; max-width: 600px; }
+
+        /* ── Grid layouts ── */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+
+        /* ── Feature card ── */
+        .feature-card {
+            padding: 24px;
+            border-radius: 12px;
+            background: var(--bg);
+            border: 1px solid #E8E8EF;
+        }
+
+        .feature-card--dark {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .feature-card__icon {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 { font-size: 1rem; }
+        .feature-card p { font-size: 0.82rem; margin-top: 4px; }
+
+        /* ── Stat ── */
+        .stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat__number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--purple);
+        }
+
+        .stat__label {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .slide--dark .stat__number { color: var(--gold); }
+
+        /* ── Tier card ── */
+        .tier-card {
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #E8E8EF;
+            text-align: center;
+        }
+
+        .tier-card__name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .tier-card__price {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            margin-bottom: 8px;
+        }
+
+        .tier-card__features {
+            list-style: none;
+            font-size: 0.75rem;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .tier--free .tier-card__name { color: var(--purple); }
+        .tier--mid .tier-card__name { color: var(--pink); }
+        .tier--top .tier-card__name { color: var(--gold); }
+
+        /* ── Slide number ── */
+        .slide-num {
+            position: absolute;
+            bottom: 24px;
+            right: 40px;
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            font-weight: 600;
+        }
+
+        .slide--dark .slide-num,
+        .slide--hero .slide-num,
+        .slide--accent .slide-num { color: rgba(255,255,255,0.3); }
+
+        /* ── Bullet list ── */
+        .bullets {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullets li {
+            padding: 6px 0;
+            font-size: 0.9rem;
+            color: var(--gray);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .bullets li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--purple);
+            flex-shrink: 0;
+            margin-top: 7px;
+        }
+
+        .slide--dark .bullets li { color: rgba(255,255,255,0.7); }
+        .slide--dark .bullets li::before { background: var(--gold); }
+
+        /* ── Divider ── */
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            border-radius: 2px;
+            margin: 16px 0;
+        }
+
+        .slide--accent .divider { background: rgba(255,255,255,0.3); margin: 16px auto; }
+
+        /* ── Footer ── */
+        .slide-footer {
+            position: absolute;
+            bottom: 24px;
+            left: 80px;
+            font-size: 0.65rem;
+            color: var(--light-gray);
+            font-weight: 500;
+        }
+
+        .slide--dark .slide-footer,
+        .slide--hero .slide-footer { color: rgba(255,255,255,0.25); }
+    </style>
+</head>
+<body>
+
+    <!-- Print Button -->
+    <div class="print-bar no-print">
+        <button class="print-btn" onclick="window.print()">&#128196; Save as PDF</button>
+        <p style="margin-top:12px;font-size:0.82rem;color:var(--light-gray);">Click the button above, then choose "Save as PDF" in the print dialog.</p>
+    </div>
+
+    <!-- ═══ SLIDE 1: Title ═══ -->
+    <div class="slide slide--hero">
+        <h1>Yeng Constantino</h1>
+        <div class="subtitle">Official Fan Platform</div>
+        <p>A full-featured digital hub for the Philippines' OPM Icon — music, community, membership, merch, and more.</p>
+        <div class="badge">Platform Overview 2026</div>
+        <span class="slide-num">1</span>
+    </div>
+
+    <!-- ═══ SLIDE 2: What Is This? ═══ -->
+    <div class="slide">
+        <div class="eyebrow">Overview</div>
+        <h2 class="gradient-text">What Is This Platform?</h2>
+        <div class="divider"></div>
+        <div class="grid-2" style="margin-top:24px;">
+            <div>
+                <p>The Yeng Constantino Official platform is a custom-built fan hub that brings together everything Yeng — her music catalog, fan community, exclusive merchandise, tiered membership, and direct engagement tools.</p>
+                <p style="margin-top:12px;">It serves as the central destination for Yeng Nation, replacing fragmented social media with a unified, owned platform.</p>
+            </div>
+            <div>
+                <h3>Key Highlights</h3>
+                <ul class="bullets">
+                    <li>9-page responsive website</li>
+                    <li>Full music archive with video + audio</li>
+                    <li>Fan community with posts, fan art, covers</li>
+                    <li>3-tier membership system</li>
+                    <li>Merch store with order management</li>
+                    <li>Admin dashboard with analytics</li>
+                    <li>Multi-language support (4 languages)</li>
+                </ul>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">2</span>
+    </div>
+
+    <!-- ═══ SLIDE 3: Platform at a Glance ═══ -->
+    <div class="slide slide--dark">
+        <div class="eyebrow" style="color:var(--gold);">By The Numbers</div>
+        <h2>Platform at a Glance</h2>
+        <div class="grid-4" style="margin-top:32px;">
+            <div class="stat">
+                <div class="stat__number">9</div>
+                <div class="stat__label">Pages</div>
+            </div>
+            <div class="stat">
+                <div class="stat__number">20</div>
+                <div class="stat__label">API Endpoints</div>
+            </div>
+            <div class="stat">
+                <div class="stat__number">10</div>
+                <div class="stat__label">Database Tables</div>
+            </div>
+            <div class="stat">
+                <div class="stat__number">36</div>
+                <div class="stat__label">Config Keys</div>
+            </div>
+        </div>
+        <div class="grid-3" style="margin-top:24px;">
+            <div class="feature-card feature-card--dark">
+                <div class="feature-card__icon">&#127925;</div>
+                <h3>Music Archive</h3>
+                <p>Full discography with video + audio cards, era/mood/category filters, fan ratings</p>
+            </div>
+            <div class="feature-card feature-card--dark">
+                <div class="feature-card__icon">&#128101;</div>
+                <h3>Fan Community</h3>
+                <p>User posts, fan art, cover submissions, Hall of Fame, real-time engagement</p>
+            </div>
+            <div class="feature-card feature-card--dark">
+                <div class="feature-card__icon">&#127915;</div>
+                <h3>Content Hub</h3>
+                <p>Exclusive member content, behind the scenes, interviews, live performances</p>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">3</span>
+    </div>
+
+    <!-- ═══ SLIDE 4: Core Features ═══ -->
+    <div class="slide">
+        <div class="eyebrow">Features</div>
+        <h2 class="gradient-text">Core Features</h2>
+        <div class="divider"></div>
+        <div class="grid-3" style="margin-top:24px;">
+            <div class="feature-card">
+                <div class="feature-card__icon">&#127911;</div>
+                <h3>Music & Video Archive</h3>
+                <p>Complete discography browser with video cards (play overlay, YouTube links) and audio cards (Spotify/YouTube). Filter by era, category, mood. Fan rating system (1-10).</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card__icon">&#128722;</div>
+                <h3>Merch Store</h3>
+                <p>Full e-commerce with product catalog, size/variant selection, cart, checkout, order tracking. Admin manages products via Airtable.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card__icon">&#11088;</div>
+                <h3>Membership Tiers</h3>
+                <p>3-tier system (Free / Sariwang Himig / Ikaw Lamang) with exclusive content, early access, discounts, and community perks.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card__icon">&#127908;</div>
+                <h3>Yeng Covers</h3>
+                <p>Fan cover submission portal with YouTube link integration, admin review, featuring system, and Hall of Fame. Leaderboard-style rankings.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card__icon">&#128172;</div>
+                <h3>Community</h3>
+                <p>Fan posts with categories (Post, Fan Art, Cover Video, Memory, Question). Like system, admin moderation, engagement tools.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-card__icon">&#128248;</div>
+                <h3>Instagram Integration</h3>
+                <p>Live Instagram feed grid on homepage and community page. Admin-managed via Site Config with simple URL input.</p>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">4</span>
+    </div>
+
+    <!-- ═══ SLIDE 5: Membership Tiers ═══ -->
+    <div class="slide">
+        <div class="eyebrow">Monetization</div>
+        <h2 class="gradient-text">Membership Tiers</h2>
+        <div class="divider"></div>
+        <div class="grid-3" style="margin-top:32px;">
+            <div class="tier-card tier--free">
+                <div class="tier-card__name">Free</div>
+                <div class="tier-card__price">PHP 0/month</div>
+                <ul class="tier-card__features">
+                    <li>Browse music archive</li>
+                    <li>Community access</li>
+                    <li>Rate & review content</li>
+                    <li>Submit covers</li>
+                </ul>
+            </div>
+            <div class="tier-card tier--mid" style="border-color:var(--pink);">
+                <div class="tier-card__name">Sariwang Himig</div>
+                <div class="tier-card__price">PHP 99/month</div>
+                <ul class="tier-card__features">
+                    <li>Everything in Free</li>
+                    <li>Exclusive content access</li>
+                    <li>5% merch discount</li>
+                    <li>Priority cover reviews</li>
+                    <li>Member badge</li>
+                </ul>
+            </div>
+            <div class="tier-card tier--top" style="border-color:var(--gold);">
+                <div class="tier-card__name">Ikaw Lamang</div>
+                <div class="tier-card__price">PHP 249/month</div>
+                <ul class="tier-card__features">
+                    <li>Everything in Sariwang Himig</li>
+                    <li>All exclusive content</li>
+                    <li>15% merch discount</li>
+                    <li>Early event access</li>
+                    <li>Direct engagement features</li>
+                </ul>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">5</span>
+    </div>
+
+    <!-- ═══ SLIDE 6: Admin & Management ═══ -->
+    <div class="slide slide--dark">
+        <div class="eyebrow" style="color:var(--gold);">Management</div>
+        <h2>Admin Dashboard</h2>
+        <div class="divider" style="background:var(--gold);"></div>
+        <div class="grid-2" style="margin-top:24px;">
+            <div>
+                <p>Full admin panel with role-based access control. Manage every aspect of the platform without touching code.</p>
+                <ul class="bullets" style="margin-top:16px;">
+                    <li>Real-time analytics and stats</li>
+                    <li>User and member management</li>
+                    <li>Content moderation tools</li>
+                    <li>Site configuration editor (36 keys)</li>
+                    <li>Instagram feed management</li>
+                    <li>Goal tracking with progress bars</li>
+                    <li>Strategic insights engine</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="margin-bottom:16px;">Tech Stack</h3>
+                <div class="grid-2" style="gap:12px;">
+                    <div class="feature-card feature-card--dark">
+                        <h3 style="font-size:0.85rem;">Frontend</h3>
+                        <p style="font-size:0.75rem;">HTML5, CSS3, Vanilla JS<br>Fully responsive, no frameworks</p>
+                    </div>
+                    <div class="feature-card feature-card--dark">
+                        <h3 style="font-size:0.85rem;">Backend</h3>
+                        <p style="font-size:0.75rem;">Netlify Functions<br>20 serverless endpoints</p>
+                    </div>
+                    <div class="feature-card feature-card--dark">
+                        <h3 style="font-size:0.85rem;">Database</h3>
+                        <p style="font-size:0.75rem;">Airtable CMS<br>10 tables, 36 config keys</p>
+                    </div>
+                    <div class="feature-card feature-card--dark">
+                        <h3 style="font-size:0.85rem;">Hosting</h3>
+                        <p style="font-size:0.75rem;">Netlify CDN<br>Global edge, auto SSL</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">6</span>
+    </div>
+
+    <!-- ═══ SLIDE 7: All Pages ═══ -->
+    <div class="slide">
+        <div class="eyebrow">Site Map</div>
+        <h2 class="gradient-text">All Pages</h2>
+        <div class="divider"></div>
+        <div class="grid-3" style="margin-top:24px;">
+            <div class="feature-card">
+                <h3>&#127968; Homepage</h3>
+                <p>Hero section, featured music, about, stats, stories, Instagram feed, membership CTA</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#127925; Music Archive</h3>
+                <p>Full discography with search, filter by era/category/mood, sort, video + audio cards</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#128101; Community</h3>
+                <p>Fan posts, fan art, cover videos, questions, likes, Instagram feed</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#128722; Merch Store</h3>
+                <p>Product catalog, cart, checkout, order management</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#127908; Yeng Covers</h3>
+                <p>Fan cover submissions, admin review, Hall of Fame, leaderboards</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#11088; Membership</h3>
+                <p>Tier comparison, pricing, benefits breakdown, sign-up flow</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#128100; Profile</h3>
+                <p>User dashboard, orders, ratings, exclusive content, cover submissions</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#128274; Login / Sign Up</h3>
+                <p>Authentication flow with tier selection on sign-up</p>
+            </div>
+            <div class="feature-card">
+                <h3>&#9881; Admin</h3>
+                <p>Full admin dashboard — stats, config, goals, user management</p>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">7</span>
+    </div>
+
+    <!-- ═══ SLIDE 8: Closing ═══ -->
+    <div class="slide slide--accent">
+        <h2>Built for Yeng Nation</h2>
+        <div class="divider"></div>
+        <p>A platform that grows with the artist and her fans — music, community, and commerce in one place.</p>
+        <div style="margin-top:40px;font-size:0.9rem;color:rgba(255,255,255,0.7);">
+            <div style="margin-bottom:4px;font-weight:700;color:white;">Yeng Constantino Official</div>
+            <div>yengconstantino.netlify.app</div>
+        </div>
+        <span class="slide-num">8</span>
+    </div>
+
+</body>
+</html>
