@@ -329,18 +329,10 @@
         .slide.in-view .flow > :nth-child(8) { transition-delay: 0.65s; }
         .slide.in-view .flow > :nth-child(9) { transition-delay: 0.7s; }
 
-        /* Bar chart bars grow up */
+        /* Bar chart bars grow up (animated via JS) */
         .bar-chart__bar {
-            transform-origin: bottom !important;
-            transform: scaleY(0) !important;
-            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            transition: height 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .slide.in-view .bar-chart__bar { transform: scaleY(1) !important; }
-        .slide.in-view .bar-chart__col:nth-child(1) .bar-chart__bar { transition-delay: 0.6s !important; }
-        .slide.in-view .bar-chart__col:nth-child(2) .bar-chart__bar { transition-delay: 0.75s !important; }
-        .slide.in-view .bar-chart__col:nth-child(3) .bar-chart__bar { transition-delay: 0.9s !important; }
-        .slide.in-view .bar-chart__col:nth-child(4) .bar-chart__bar { transition-delay: 1.05s !important; }
-        .slide.in-view .bar-chart__col:nth-child(5) .bar-chart__bar { transition-delay: 1.2s !important; }
 
         /* Donut chart spins in */
         .donut-chart {
@@ -378,7 +370,11 @@
                 opacity: 1 !important;
                 transform: none !important;
             }
-            .bar-chart__bar { transform: scaleY(1) !important; }
+            .bar-chart__bar[data-height="90"] { height: 90% !important; }
+            .bar-chart__bar[data-height="82"] { height: 82% !important; }
+            .bar-chart__bar[data-height="55"] { height: 55% !important; }
+            .bar-chart__bar[data-height="45"] { height: 45% !important; }
+            .bar-chart__bar[data-height="28"] { height: 28% !important; }
         }
     </style>
 </head>
@@ -547,30 +543,30 @@
         <div class="g2" style="margin-top:28px;align-items:center;">
             <div>
                 <p style="margin-bottom:24px;">Multiple income channels built into the platform from day one.</p>
-                <div class="bar-chart">
+                <div class="bar-chart" id="revenue-bars">
                     <div class="bar-chart__col">
                         <div class="bar-chart__value">High</div>
-                        <div class="bar-chart__bar" style="height:90%;background:var(--gold);"></div>
+                        <div class="bar-chart__bar" data-height="90" style="height:0;background:var(--gold);"></div>
                         <div class="bar-chart__label">Membership<br>Fees</div>
                     </div>
                     <div class="bar-chart__col">
                         <div class="bar-chart__value">High</div>
-                        <div class="bar-chart__bar" style="height:82%;background:var(--pink);"></div>
+                        <div class="bar-chart__bar" data-height="82" style="height:0;background:var(--pink);"></div>
                         <div class="bar-chart__label">Merch<br>Sales</div>
                     </div>
                     <div class="bar-chart__col">
                         <div class="bar-chart__value">Med</div>
-                        <div class="bar-chart__bar" style="height:55%;background:var(--purple);"></div>
+                        <div class="bar-chart__bar" data-height="55" style="height:0;background:var(--purple);"></div>
                         <div class="bar-chart__label">Exclusive<br>Content</div>
                     </div>
                     <div class="bar-chart__col">
                         <div class="bar-chart__value">Med</div>
-                        <div class="bar-chart__bar" style="height:45%;background:var(--purple-light);"></div>
+                        <div class="bar-chart__bar" data-height="45" style="height:0;background:var(--purple-light);"></div>
                         <div class="bar-chart__label">Brand<br>Partners</div>
                     </div>
                     <div class="bar-chart__col">
                         <div class="bar-chart__value">New</div>
-                        <div class="bar-chart__bar" style="height:28%;background:var(--teal);"></div>
+                        <div class="bar-chart__bar" data-height="28" style="height:0;background:var(--teal);"></div>
                         <div class="bar-chart__label">Event<br>Tickets</div>
                     </div>
                 </div>
@@ -681,9 +677,20 @@
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('in-view');
+                    // Animate bar chart bars if this slide has them
+                    var bars = entry.target.querySelectorAll('.bar-chart__bar[data-height]');
+                    bars.forEach(function(bar, i) {
+                        setTimeout(function() {
+                            bar.style.height = bar.dataset.height + '%';
+                        }, 600 + i * 150);
+                    });
                 } else {
-                    // Remove so it re-animates when scrolling back
                     entry.target.classList.remove('in-view');
+                    // Reset bars
+                    var bars = entry.target.querySelectorAll('.bar-chart__bar[data-height]');
+                    bars.forEach(function(bar) {
+                        bar.style.height = '0';
+                    });
                 }
             });
         }, { threshold: 0.3 });
