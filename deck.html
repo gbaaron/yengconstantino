@@ -18,14 +18,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: white; color: var(--dark); }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: white;
-            color: var(--dark);
-        }
-
-        /* ── Print / PDF styles ── */
         @media print {
             body { background: white; }
             .slide { break-after: page; break-inside: avoid; box-shadow: none; margin: 0; border-radius: 0; }
@@ -33,9 +27,8 @@
             @page { size: landscape; margin: 0; }
         }
 
-        /* ── Screen styles ── */
         @media screen {
-            body { background: var(--bg); padding: 40px 20px; }
+            body { background: #f0eff4; padding: 40px 20px; }
             .slide { margin: 0 auto 40px; box-shadow: 0 8px 40px rgba(108,43,217,0.1); }
         }
 
@@ -54,449 +47,315 @@
         }
 
         /* ── Print button ── */
-        .print-bar {
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
+        .print-bar { text-align: center; padding: 20px; margin-bottom: 20px; }
         .print-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 36px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: white;
-            background: linear-gradient(135deg, var(--purple), var(--purple-light));
-            border: none;
-            border-radius: 999px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(108,43,217,0.3);
-            transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 36px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.95rem;
+            color: white; background: linear-gradient(135deg, var(--purple), var(--purple-light));
+            border: none; border-radius: 999px; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(108,43,217,0.3); transition: all 0.2s;
         }
-
-        .print-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(108,43,217,0.4);
-        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,43,217,0.4); }
 
         /* ── Typography ── */
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-        }
-
-        h2 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 6px;
-        }
-
-        p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--gray);
-        }
+        h1 { font-family: 'Playfair Display', serif; font-weight: 800; }
+        h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 2rem; margin-bottom: 8px; }
+        h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
+        p { font-size: 0.95rem; line-height: 1.6; color: var(--gray); }
 
         .eyebrow {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--purple);
-            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple); margin-bottom: 8px;
         }
 
         .gradient-text {
             background: linear-gradient(135deg, var(--purple), var(--pink), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
+
+        .divider { width: 60px; height: 3px; background: linear-gradient(135deg, var(--purple), var(--pink)); border-radius: 2px; margin: 16px 0; }
 
         /* ── Slide variants ── */
         .slide--hero {
             background: linear-gradient(135deg, #1a0a2e 0%, #2D1B69 40%, #3d1a3d 70%, #2a1535 100%);
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-            min-height: 576px;
+            text-align: center; justify-content: center; align-items: center;
         }
-
         .slide--hero h1 {
             font-size: 3.2rem;
             background: linear-gradient(135deg, var(--purple-light), var(--pink), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             margin-bottom: 16px;
         }
-
-        .slide--hero p {
-            color: rgba(255,255,255,0.6);
-            font-size: 1.1rem;
-            max-width: 500px;
-        }
-
-        .slide--hero .subtitle {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            color: rgba(255,255,255,0.85);
-            margin-bottom: 8px;
-        }
-
+        .slide--hero p { color: rgba(255,255,255,0.6); font-size: 1.1rem; max-width: 500px; }
+        .slide--hero .subtitle { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: rgba(255,255,255,0.85); margin-bottom: 8px; }
         .slide--hero .badge {
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            color: var(--gold);
-            font-weight: 700;
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-top: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+            display: inline-block; padding: 6px 20px; border-radius: 999px;
+            background: rgba(255,255,255,0.08); color: var(--gold); font-weight: 700; font-size: 0.75rem;
+            letter-spacing: 0.08em; text-transform: uppercase; margin-top: 24px; border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .slide--dark {
-            background: var(--dark);
-            color: white;
-        }
-
+        .slide--dark { background: var(--dark); color: white; }
         .slide--dark h2 { color: white; }
-        .slide--dark p { color: rgba(255,255,255,0.6); }
         .slide--dark h3 { color: white; }
+        .slide--dark p { color: rgba(255,255,255,0.6); }
 
         .slide--accent {
             background: linear-gradient(135deg, var(--purple), var(--pink));
-            color: white;
-            text-align: center;
-            align-items: center;
+            color: white; text-align: center; align-items: center;
         }
-
         .slide--accent h2 { color: white; font-size: 2.4rem; }
         .slide--accent p { color: rgba(255,255,255,0.85); font-size: 1.1rem; max-width: 600px; }
+        .slide--accent .divider { background: rgba(255,255,255,0.3); margin: 16px auto; }
 
-        /* ── Grid layouts ── */
+        /* ── Grids ── */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
         .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+        .grid-5 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 16px; }
 
         /* ── Feature card ── */
-        .feature-card {
-            padding: 24px;
-            border-radius: 12px;
-            background: var(--bg);
-            border: 1px solid #E8E8EF;
+        .card {
+            padding: 24px; border-radius: 12px; background: var(--bg); border: 1px solid #E8E8EF;
         }
-
-        .feature-card--dark {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.1);
-        }
-
-        .feature-card__icon {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-        }
-
-        .feature-card h3 { font-size: 1rem; }
-        .feature-card p { font-size: 0.82rem; margin-top: 4px; }
+        .card--dark { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+        .card h3 { font-size: 0.95rem; }
+        .card p { font-size: 0.82rem; margin-top: 4px; }
 
         /* ── Stat ── */
-        .stat {
-            text-align: center;
-            padding: 20px;
-        }
+        .stat { text-align: center; padding: 16px; }
+        .stat__number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 800; }
+        .stat__label { font-size: 0.78rem; color: var(--light-gray); margin-top: 2px; font-weight: 600; }
 
-        .stat__number {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--purple);
+        /* ── Bar chart ── */
+        .bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 180px; padding-top: 10px; }
+        .bar-chart__col { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 6px; }
+        .bar-chart__bar {
+            width: 100%; border-radius: 6px 6px 0 0; min-height: 8px;
+            transition: height 0.3s;
         }
+        .bar-chart__label { font-size: 0.65rem; font-weight: 600; color: var(--light-gray); text-align: center; }
+        .bar-chart__value { font-size: 0.7rem; font-weight: 700; color: var(--dark); }
 
-        .stat__label {
-            font-size: 0.8rem;
-            color: var(--light-gray);
-            margin-top: 4px;
-            font-weight: 600;
+        .slide--dark .bar-chart__label { color: rgba(255,255,255,0.5); }
+        .slide--dark .bar-chart__value { color: white; }
+
+        /* ── Donut chart (CSS) ── */
+        .donut-chart {
+            width: 180px; height: 180px; border-radius: 50%; position: relative;
+            display: flex; align-items: center; justify-content: center;
         }
+        .donut-chart__center {
+            width: 100px; height: 100px; border-radius: 50%; background: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; z-index: 1;
+        }
+        .slide--dark .donut-chart__center { background: var(--dark); }
+        .donut-chart__number { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.6rem; }
+        .donut-chart__text { font-size: 0.65rem; color: var(--light-gray); font-weight: 600; }
 
-        .slide--dark .stat__number { color: var(--gold); }
+        /* ── Legend ── */
+        .legend { display: flex; flex-direction: column; gap: 8px; }
+        .legend__item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--gray); }
+        .legend__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .slide--dark .legend__item { color: rgba(255,255,255,0.7); }
+
+        /* ── Flow diagram ── */
+        .flow { display: flex; align-items: center; justify-content: center; gap: 0; }
+        .flow__step {
+            padding: 14px 20px; border-radius: 10px; text-align: center; min-width: 120px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+        .flow__arrow { font-size: 1.2rem; color: var(--light-gray); padding: 0 4px; }
+        .slide--dark .flow__arrow { color: rgba(255,255,255,0.3); }
 
         /* ── Tier card ── */
-        .tier-card {
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #E8E8EF;
-            text-align: center;
-        }
+        .tier { padding: 20px; border-radius: 12px; border: 1px solid #E8E8EF; text-align: center; }
+        .tier__name { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1rem; margin-bottom: 2px; }
+        .tier__price { font-size: 0.78rem; color: var(--light-gray); margin-bottom: 10px; }
+        .tier__list { list-style: none; font-size: 0.75rem; color: var(--gray); line-height: 1.9; }
 
-        .tier-card__name {
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-            font-size: 1rem;
-            margin-bottom: 4px;
-        }
-
-        .tier-card__price {
-            font-size: 0.8rem;
-            color: var(--light-gray);
-            margin-bottom: 8px;
-        }
-
-        .tier-card__features {
-            list-style: none;
-            font-size: 0.75rem;
-            color: var(--gray);
-            line-height: 1.8;
-        }
-
-        .tier--free .tier-card__name { color: var(--purple); }
-        .tier--mid .tier-card__name { color: var(--pink); }
-        .tier--top .tier-card__name { color: var(--gold); }
-
-        /* ── Slide number ── */
-        .slide-num {
-            position: absolute;
-            bottom: 24px;
-            right: 40px;
-            font-size: 0.7rem;
-            color: var(--light-gray);
-            font-weight: 600;
-        }
-
-        .slide--dark .slide-num,
-        .slide--hero .slide-num,
-        .slide--accent .slide-num { color: rgba(255,255,255,0.3); }
-
-        /* ── Bullet list ── */
-        .bullets {
-            list-style: none;
-            padding: 0;
-        }
-
-        .bullets li {
-            padding: 6px 0;
-            font-size: 0.9rem;
-            color: var(--gray);
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .bullets li::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--purple);
-            flex-shrink: 0;
-            margin-top: 7px;
-        }
-
-        .slide--dark .bullets li { color: rgba(255,255,255,0.7); }
-        .slide--dark .bullets li::before { background: var(--gold); }
-
-        /* ── Divider ── */
-        .divider {
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--purple), var(--pink));
-            border-radius: 2px;
-            margin: 16px 0;
-        }
-
-        .slide--accent .divider { background: rgba(255,255,255,0.3); margin: 16px auto; }
-
-        /* ── Footer ── */
-        .slide-footer {
-            position: absolute;
-            bottom: 24px;
-            left: 80px;
-            font-size: 0.65rem;
-            color: var(--light-gray);
-            font-weight: 500;
-        }
-
-        .slide--dark .slide-footer,
-        .slide--hero .slide-footer { color: rgba(255,255,255,0.25); }
+        /* ── Slide number & footer ── */
+        .slide-num { position: absolute; bottom: 24px; right: 40px; font-size: 0.7rem; color: var(--light-gray); font-weight: 600; }
+        .slide-footer { position: absolute; bottom: 24px; left: 80px; font-size: 0.65rem; color: var(--light-gray); font-weight: 500; }
+        .slide--dark .slide-num, .slide--hero .slide-num, .slide--accent .slide-num { color: rgba(255,255,255,0.3); }
+        .slide--dark .slide-footer, .slide--hero .slide-footer { color: rgba(255,255,255,0.25); }
     </style>
 </head>
 <body>
 
-    <!-- Print Button -->
     <div class="print-bar no-print">
-        <button class="print-btn" onclick="window.print()">&#128196; Save as PDF</button>
-        <p style="margin-top:12px;font-size:0.82rem;color:var(--light-gray);">Click the button above, then choose "Save as PDF" in the print dialog.</p>
+        <button class="print-btn" onclick="window.print()">Save as PDF</button>
+        <p style="margin-top:12px;font-size:0.82rem;color:var(--light-gray);">Click above, then choose "Save as PDF" in the print dialog.</p>
     </div>
 
-    <!-- ═══ SLIDE 1: Title ═══ -->
+    <!-- ═══ 1: TITLE ═══ -->
     <div class="slide slide--hero">
         <h1>Yeng Constantino</h1>
         <div class="subtitle">Official Fan Platform</div>
-        <p>A full-featured digital hub for the Philippines' OPM Icon — music, community, membership, merch, and more.</p>
+        <p>A dedicated digital home for the Philippines' OPM Icon and her fans.</p>
         <div class="badge">Platform Overview 2026</div>
         <span class="slide-num">1</span>
     </div>
 
-    <!-- ═══ SLIDE 2: What Is This? ═══ -->
+    <!-- ═══ 2: WHAT IT IS ═══ -->
     <div class="slide">
-        <div class="eyebrow">Overview</div>
-        <h2 class="gradient-text">What Is This Platform?</h2>
+        <div class="eyebrow">The Platform</div>
+        <h2 class="gradient-text">Everything Yeng, One Place</h2>
         <div class="divider"></div>
-        <div class="grid-2" style="margin-top:24px;">
-            <div>
-                <p>The Yeng Constantino Official platform is a custom-built fan hub that brings together everything Yeng — her music catalog, fan community, exclusive merchandise, tiered membership, and direct engagement tools.</p>
-                <p style="margin-top:12px;">It serves as the central destination for Yeng Nation, replacing fragmented social media with a unified, owned platform.</p>
+        <p style="max-width:700px;margin-bottom:32px;">A custom-built website that brings together Yeng's music, fan community, merchandise, and membership program into a single, professionally managed destination.</p>
+        <div class="grid-5" style="text-align:center;">
+            <div class="card">
+                <h3>Music</h3>
+                <p>Full catalog of songs, videos, and live performances</p>
             </div>
-            <div>
-                <h3>Key Highlights</h3>
-                <ul class="bullets">
-                    <li>9-page responsive website</li>
-                    <li>Full music archive with video + audio</li>
-                    <li>Fan community with posts, fan art, covers</li>
-                    <li>3-tier membership system</li>
-                    <li>Merch store with order management</li>
-                    <li>Admin dashboard with analytics</li>
-                    <li>Multi-language support (4 languages)</li>
-                </ul>
+            <div class="card">
+                <h3>Community</h3>
+                <p>Fan posts, fan art, discussions, and engagement</p>
+            </div>
+            <div class="card">
+                <h3>Merch</h3>
+                <p>Online store with product catalog and ordering</p>
+            </div>
+            <div class="card">
+                <h3>Membership</h3>
+                <p>Tiered fan club with exclusive perks</p>
+            </div>
+            <div class="card">
+                <h3>Fan Covers</h3>
+                <p>Fans submit their own Yeng covers for featuring</p>
             </div>
         </div>
         <span class="slide-footer">Yeng Constantino Official</span>
         <span class="slide-num">2</span>
     </div>
 
-    <!-- ═══ SLIDE 3: Platform at a Glance ═══ -->
+    <!-- ═══ 3: FAN JOURNEY ═══ -->
     <div class="slide slide--dark">
-        <div class="eyebrow" style="color:var(--gold);">By The Numbers</div>
-        <h2>Platform at a Glance</h2>
-        <div class="grid-4" style="margin-top:32px;">
-            <div class="stat">
-                <div class="stat__number">9</div>
-                <div class="stat__label">Pages</div>
-            </div>
-            <div class="stat">
-                <div class="stat__number">20</div>
-                <div class="stat__label">API Endpoints</div>
-            </div>
-            <div class="stat">
-                <div class="stat__number">10</div>
-                <div class="stat__label">Database Tables</div>
-            </div>
-            <div class="stat">
-                <div class="stat__number">36</div>
-                <div class="stat__label">Config Keys</div>
-            </div>
+        <div class="eyebrow" style="color:var(--gold);">Fan Experience</div>
+        <h2>How Fans Engage</h2>
+        <div class="divider" style="background:var(--gold);"></div>
+        <p style="margin-bottom:28px;">The platform guides fans from discovery to active community membership.</p>
+        <div class="flow" style="margin-bottom:36px;">
+            <div class="flow__step" style="background:rgba(108,43,217,0.15);color:var(--purple-light);">Visit Site</div>
+            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__step" style="background:rgba(190,24,93,0.15);color:#DB2777;">Browse Music</div>
+            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__step" style="background:rgba(229,160,13,0.15);color:var(--gold);">Sign Up Free</div>
+            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__step" style="background:rgba(108,43,217,0.15);color:var(--purple-light);">Join Community</div>
+            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__step" style="background:rgba(229,160,13,0.2);color:var(--gold);border:1px solid rgba(229,160,13,0.3);">Become Member</div>
         </div>
-        <div class="grid-3" style="margin-top:24px;">
-            <div class="feature-card feature-card--dark">
-                <div class="feature-card__icon">&#127925;</div>
-                <h3>Music Archive</h3>
-                <p>Full discography with video + audio cards, era/mood/category filters, fan ratings</p>
+        <div class="grid-3">
+            <div class="card card--dark" style="text-align:center;">
+                <div class="stat__number" style="color:var(--purple-light);font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;">9</div>
+                <div class="stat__label">Pages on the Platform</div>
             </div>
-            <div class="feature-card feature-card--dark">
-                <div class="feature-card__icon">&#128101;</div>
-                <h3>Fan Community</h3>
-                <p>User posts, fan art, cover submissions, Hall of Fame, real-time engagement</p>
+            <div class="card card--dark" style="text-align:center;">
+                <div class="stat__number" style="color:var(--gold);font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;">4</div>
+                <div class="stat__label">Languages Supported</div>
             </div>
-            <div class="feature-card feature-card--dark">
-                <div class="feature-card__icon">&#127915;</div>
-                <h3>Content Hub</h3>
-                <p>Exclusive member content, behind the scenes, interviews, live performances</p>
+            <div class="card card--dark" style="text-align:center;">
+                <div class="stat__number" style="color:#DB2777;font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;">3</div>
+                <div class="stat__label">Membership Tiers</div>
             </div>
         </div>
         <span class="slide-footer">Yeng Constantino Official</span>
         <span class="slide-num">3</span>
     </div>
 
-    <!-- ═══ SLIDE 4: Core Features ═══ -->
+    <!-- ═══ 4: PLATFORM BREAKDOWN ═══ -->
     <div class="slide">
-        <div class="eyebrow">Features</div>
-        <h2 class="gradient-text">Core Features</h2>
+        <div class="eyebrow">Platform Breakdown</div>
+        <h2 class="gradient-text">What's Inside</h2>
         <div class="divider"></div>
-        <div class="grid-3" style="margin-top:24px;">
-            <div class="feature-card">
-                <div class="feature-card__icon">&#127911;</div>
-                <h3>Music & Video Archive</h3>
-                <p>Complete discography browser with video cards (play overlay, YouTube links) and audio cards (Spotify/YouTube). Filter by era, category, mood. Fan rating system (1-10).</p>
+        <div class="grid-2" style="margin-top:20px;align-items:center;">
+            <div>
+                <!-- Donut chart showing content distribution -->
+                <div style="display:flex;align-items:center;gap:32px;">
+                    <div class="donut-chart" style="background: conic-gradient(var(--purple) 0% 30%, var(--pink) 30% 50%, var(--gold) 50% 70%, #8B5CF6 70% 85%, #0D9488 85% 100%);">
+                        <div class="donut-chart__center">
+                            <div class="donut-chart__number">9</div>
+                            <div class="donut-chart__text">Sections</div>
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <div class="legend__item"><div class="legend__dot" style="background:var(--purple);"></div> Music Archive</div>
+                        <div class="legend__item"><div class="legend__dot" style="background:var(--pink);"></div> Fan Community</div>
+                        <div class="legend__item"><div class="legend__dot" style="background:var(--gold);"></div> Merch Store</div>
+                        <div class="legend__item"><div class="legend__dot" style="background:#8B5CF6;"></div> Membership</div>
+                        <div class="legend__item"><div class="legend__dot" style="background:#0D9488;"></div> Fan Covers</div>
+                    </div>
+                </div>
             </div>
-            <div class="feature-card">
-                <div class="feature-card__icon">&#128722;</div>
-                <h3>Merch Store</h3>
-                <p>Full e-commerce with product catalog, size/variant selection, cart, checkout, order tracking. Admin manages products via Airtable.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-card__icon">&#11088;</div>
-                <h3>Membership Tiers</h3>
-                <p>3-tier system (Free / Sariwang Himig / Ikaw Lamang) with exclusive content, early access, discounts, and community perks.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-card__icon">&#127908;</div>
-                <h3>Yeng Covers</h3>
-                <p>Fan cover submission portal with YouTube link integration, admin review, featuring system, and Hall of Fame. Leaderboard-style rankings.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-card__icon">&#128172;</div>
-                <h3>Community</h3>
-                <p>Fan posts with categories (Post, Fan Art, Cover Video, Memory, Question). Like system, admin moderation, engagement tools.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-card__icon">&#128248;</div>
-                <h3>Instagram Integration</h3>
-                <p>Live Instagram feed grid on homepage and community page. Admin-managed via Site Config with simple URL input.</p>
+            <div>
+                <h3 style="margin-bottom:12px;">Key Capabilities</h3>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>
+                        <span style="font-size:0.88rem;color:var(--gray);">Music videos and audio tracks with ratings</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:var(--pink);flex-shrink:0;"></div>
+                        <span style="font-size:0.88rem;color:var(--gray);">Fan posts, fan art submissions, and discussions</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
+                        <span style="font-size:0.88rem;color:var(--gray);">Online merch store with ordering and tracking</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:#8B5CF6;flex-shrink:0;"></div>
+                        <span style="font-size:0.88rem;color:var(--gray);">Paid tiers with exclusive content and perks</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:#0D9488;flex-shrink:0;"></div>
+                        <span style="font-size:0.88rem;color:var(--gray);">Fan cover submissions with Hall of Fame</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:var(--light-gray);flex-shrink:0;"></div>
+                        <span style="font-size:0.88rem;color:var(--gray);">Instagram feed, social links, multi-language</span>
+                    </div>
+                </div>
             </div>
         </div>
         <span class="slide-footer">Yeng Constantino Official</span>
         <span class="slide-num">4</span>
     </div>
 
-    <!-- ═══ SLIDE 5: Membership Tiers ═══ -->
+    <!-- ═══ 5: MEMBERSHIP ═══ -->
     <div class="slide">
-        <div class="eyebrow">Monetization</div>
+        <div class="eyebrow">Revenue</div>
         <h2 class="gradient-text">Membership Tiers</h2>
         <div class="divider"></div>
-        <div class="grid-3" style="margin-top:32px;">
-            <div class="tier-card tier--free">
-                <div class="tier-card__name">Free</div>
-                <div class="tier-card__price">PHP 0/month</div>
-                <ul class="tier-card__features">
-                    <li>Browse music archive</li>
-                    <li>Community access</li>
-                    <li>Rate & review content</li>
-                    <li>Submit covers</li>
+        <p style="margin-bottom:28px;">Three tiers designed to grow with the fanbase — from free access to premium experiences.</p>
+        <div class="grid-3">
+            <div class="tier">
+                <div class="tier__name" style="color:var(--purple);">Free</div>
+                <div class="tier__price">PHP 0 / month</div>
+                <ul class="tier__list">
+                    <li>Browse full music catalog</li>
+                    <li>Join community discussions</li>
+                    <li>Rate and review content</li>
+                    <li>Submit fan covers</li>
                 </ul>
             </div>
-            <div class="tier-card tier--mid" style="border-color:var(--pink);">
-                <div class="tier-card__name">Sariwang Himig</div>
-                <div class="tier-card__price">PHP 99/month</div>
-                <ul class="tier-card__features">
+            <div class="tier" style="border-color:var(--pink);">
+                <div class="tier__name" style="color:var(--pink);">Sariwang Himig</div>
+                <div class="tier__price">PHP 99 / month</div>
+                <ul class="tier__list">
                     <li>Everything in Free</li>
-                    <li>Exclusive content access</li>
+                    <li>Exclusive behind-the-scenes content</li>
                     <li>5% merch discount</li>
                     <li>Priority cover reviews</li>
                     <li>Member badge</li>
                 </ul>
             </div>
-            <div class="tier-card tier--top" style="border-color:var(--gold);">
-                <div class="tier-card__name">Ikaw Lamang</div>
-                <div class="tier-card__price">PHP 249/month</div>
-                <ul class="tier-card__features">
-                    <li>Everything in Sariwang Himig</li>
-                    <li>All exclusive content</li>
+            <div class="tier" style="border-color:var(--gold);">
+                <div class="tier__name" style="color:var(--gold);">Ikaw Lamang</div>
+                <div class="tier__price">PHP 249 / month</div>
+                <ul class="tier__list">
+                    <li>All Sariwang Himig perks</li>
+                    <li>Full exclusive content library</li>
                     <li>15% merch discount</li>
                     <li>Early event access</li>
                     <li>Direct engagement features</li>
@@ -507,43 +366,56 @@
         <span class="slide-num">5</span>
     </div>
 
-    <!-- ═══ SLIDE 6: Admin & Management ═══ -->
+    <!-- ═══ 6: REVENUE POTENTIAL ═══ -->
     <div class="slide slide--dark">
-        <div class="eyebrow" style="color:var(--gold);">Management</div>
-        <h2>Admin Dashboard</h2>
+        <div class="eyebrow" style="color:var(--gold);">Growth</div>
+        <h2>Revenue Streams</h2>
         <div class="divider" style="background:var(--gold);"></div>
-        <div class="grid-2" style="margin-top:24px;">
+        <div class="grid-2" style="margin-top:24px;align-items:center;">
             <div>
-                <p>Full admin panel with role-based access control. Manage every aspect of the platform without touching code.</p>
-                <ul class="bullets" style="margin-top:16px;">
-                    <li>Real-time analytics and stats</li>
-                    <li>User and member management</li>
-                    <li>Content moderation tools</li>
-                    <li>Site configuration editor (36 keys)</li>
-                    <li>Instagram feed management</li>
-                    <li>Goal tracking with progress bars</li>
-                    <li>Strategic insights engine</li>
-                </ul>
+                <p style="margin-bottom:20px;">Multiple income channels built into the platform from day one.</p>
+                <!-- Bar chart showing revenue channels -->
+                <div class="bar-chart" style="height:160px;">
+                    <div class="bar-chart__col">
+                        <div class="bar-chart__value">High</div>
+                        <div class="bar-chart__bar" style="height:90%;background:var(--gold);"></div>
+                        <div class="bar-chart__label">Membership Fees</div>
+                    </div>
+                    <div class="bar-chart__col">
+                        <div class="bar-chart__value">High</div>
+                        <div class="bar-chart__bar" style="height:85%;background:var(--pink);"></div>
+                        <div class="bar-chart__label">Merch Sales</div>
+                    </div>
+                    <div class="bar-chart__col">
+                        <div class="bar-chart__value">Medium</div>
+                        <div class="bar-chart__bar" style="height:55%;background:var(--purple);"></div>
+                        <div class="bar-chart__label">Exclusive Content</div>
+                    </div>
+                    <div class="bar-chart__col">
+                        <div class="bar-chart__value">Medium</div>
+                        <div class="bar-chart__bar" style="height:45%;background:var(--purple-light);"></div>
+                        <div class="bar-chart__label">Brand Partnerships</div>
+                    </div>
+                    <div class="bar-chart__col">
+                        <div class="bar-chart__value">Growing</div>
+                        <div class="bar-chart__bar" style="height:30%;background:#0D9488;"></div>
+                        <div class="bar-chart__label">Event Tickets</div>
+                    </div>
+                </div>
             </div>
             <div>
-                <h3 style="margin-bottom:16px;">Tech Stack</h3>
-                <div class="grid-2" style="gap:12px;">
-                    <div class="feature-card feature-card--dark">
-                        <h3 style="font-size:0.85rem;">Frontend</h3>
-                        <p style="font-size:0.75rem;">HTML5, CSS3, Vanilla JS<br>Fully responsive, no frameworks</p>
-                    </div>
-                    <div class="feature-card feature-card--dark">
-                        <h3 style="font-size:0.85rem;">Backend</h3>
-                        <p style="font-size:0.75rem;">Netlify Functions<br>20 serverless endpoints</p>
-                    </div>
-                    <div class="feature-card feature-card--dark">
-                        <h3 style="font-size:0.85rem;">Database</h3>
-                        <p style="font-size:0.75rem;">Airtable CMS<br>10 tables, 36 config keys</p>
-                    </div>
-                    <div class="feature-card feature-card--dark">
-                        <h3 style="font-size:0.85rem;">Hosting</h3>
-                        <p style="font-size:0.75rem;">Netlify CDN<br>Global edge, auto SSL</p>
-                    </div>
+                <h3 style="margin-bottom:16px;">Growth Scenario</h3>
+                <div class="card card--dark" style="margin-bottom:12px;">
+                    <h3 style="font-size:0.85rem;">500 Members at PHP 99/mo</h3>
+                    <p>= PHP 49,500 monthly recurring revenue from mid-tier alone</p>
+                </div>
+                <div class="card card--dark" style="margin-bottom:12px;">
+                    <h3 style="font-size:0.85rem;">100 Members at PHP 249/mo</h3>
+                    <p>= PHP 24,900 additional monthly from premium tier</p>
+                </div>
+                <div class="card card--dark">
+                    <h3 style="font-size:0.85rem;">Merch Store</h3>
+                    <p>Unlimited product listings, order management, direct-to-fan sales</p>
                 </div>
             </div>
         </div>
@@ -551,54 +423,74 @@
         <span class="slide-num">6</span>
     </div>
 
-    <!-- ═══ SLIDE 7: All Pages ═══ -->
+    <!-- ═══ 7: MANAGEMENT ═══ -->
     <div class="slide">
-        <div class="eyebrow">Site Map</div>
-        <h2 class="gradient-text">All Pages</h2>
+        <div class="eyebrow">Management</div>
+        <h2 class="gradient-text">Easy to Run</h2>
         <div class="divider"></div>
-        <div class="grid-3" style="margin-top:24px;">
-            <div class="feature-card">
-                <h3>&#127968; Homepage</h3>
-                <p>Hero section, featured music, about, stats, stories, Instagram feed, membership CTA</p>
+        <p style="margin-bottom:28px;">The platform comes with a built-in admin dashboard — no technical skills needed to manage content, members, or settings.</p>
+        <div class="grid-3">
+            <div class="card" style="text-align:center;">
+                <h3>Content Management</h3>
+                <p>Add music, update photos, manage the Instagram feed, and edit all site text from one panel</p>
             </div>
-            <div class="feature-card">
-                <h3>&#127925; Music Archive</h3>
-                <p>Full discography with search, filter by era/category/mood, sort, video + audio cards</p>
+            <div class="card" style="text-align:center;">
+                <h3>Member Oversight</h3>
+                <p>View signups, membership tiers, fan engagement, and community moderation tools</p>
             </div>
-            <div class="feature-card">
-                <h3>&#128101; Community</h3>
-                <p>Fan posts, fan art, cover videos, questions, likes, Instagram feed</p>
-            </div>
-            <div class="feature-card">
-                <h3>&#128722; Merch Store</h3>
-                <p>Product catalog, cart, checkout, order management</p>
-            </div>
-            <div class="feature-card">
-                <h3>&#127908; Yeng Covers</h3>
-                <p>Fan cover submissions, admin review, Hall of Fame, leaderboards</p>
-            </div>
-            <div class="feature-card">
-                <h3>&#11088; Membership</h3>
-                <p>Tier comparison, pricing, benefits breakdown, sign-up flow</p>
-            </div>
-            <div class="feature-card">
-                <h3>&#128100; Profile</h3>
-                <p>User dashboard, orders, ratings, exclusive content, cover submissions</p>
-            </div>
-            <div class="feature-card">
-                <h3>&#128274; Login / Sign Up</h3>
-                <p>Authentication flow with tier selection on sign-up</p>
-            </div>
-            <div class="feature-card">
-                <h3>&#9881; Admin</h3>
-                <p>Full admin dashboard — stats, config, goals, user management</p>
+            <div class="card" style="text-align:center;">
+                <h3>Performance Tracking</h3>
+                <p>Built-in analytics showing member growth, revenue, engagement, and goal progress</p>
             </div>
         </div>
+        <div style="margin-top:28px;display:flex;gap:16px;justify-content:center;">
+            <div style="padding:10px 20px;border-radius:8px;background:var(--bg);border:1px solid #E8E8EF;font-size:0.8rem;font-weight:600;color:var(--gray);">English</div>
+            <div style="padding:10px 20px;border-radius:8px;background:var(--bg);border:1px solid #E8E8EF;font-size:0.8rem;font-weight:600;color:var(--gray);">Filipino</div>
+            <div style="padding:10px 20px;border-radius:8px;background:var(--bg);border:1px solid #E8E8EF;font-size:0.8rem;font-weight:600;color:var(--gray);">Cebuano</div>
+            <div style="padding:10px 20px;border-radius:8px;background:var(--bg);border:1px solid #E8E8EF;font-size:0.8rem;font-weight:600;color:var(--gray);">Ilocano</div>
+        </div>
+        <p style="text-align:center;font-size:0.78rem;margin-top:8px;color:var(--light-gray);">Multi-language support reaches fans across the Philippines</p>
         <span class="slide-footer">Yeng Constantino Official</span>
         <span class="slide-num">7</span>
     </div>
 
-    <!-- ═══ SLIDE 8: Closing ═══ -->
+    <!-- ═══ 8: FULLY CUSTOMIZABLE ═══ -->
+    <div class="slide slide--dark">
+        <div class="eyebrow" style="color:var(--gold);">Your Vision</div>
+        <h2>Fully Customizable</h2>
+        <div class="divider" style="background:var(--gold);"></div>
+        <p style="max-width:600px;margin-bottom:32px;">This platform is built to evolve. Whatever Yeng envisions for her fans, we can build it — no limitations, no templates, no waiting.</p>
+        <div class="grid-3">
+            <div class="card card--dark">
+                <h3>New Features on Demand</h3>
+                <p>Want live streaming, ticketed events, fan voting, a podcast section, or anything else? We add it.</p>
+            </div>
+            <div class="card card--dark">
+                <h3>Design That Matches the Brand</h3>
+                <p>Every color, font, image, and layout is adjustable. The site always reflects Yeng's current era and aesthetic.</p>
+            </div>
+            <div class="card card--dark">
+                <h3>Grows With the Audience</h3>
+                <p>From hundreds of fans to millions — the platform scales. New pages, new tools, new revenue streams as needed.</p>
+            </div>
+        </div>
+        <div style="margin-top:28px;text-align:center;">
+            <div style="display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Live Streaming</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Fan Voting</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Events Calendar</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Podcast</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Fan Meetups</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Notifications</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:0.78rem;color:rgba(255,255,255,0.5);">Mobile App</div>
+                <div style="padding:8px 16px;border-radius:8px;border:1px solid rgba(229,160,13,0.3);background:rgba(229,160,13,0.08);font-size:0.78rem;color:var(--gold);font-weight:600;">Anything Yeng Wants</div>
+            </div>
+        </div>
+        <span class="slide-footer">Yeng Constantino Official</span>
+        <span class="slide-num">8</span>
+    </div>
+
+    <!-- ═══ 9: CLOSING ═══ -->
     <div class="slide slide--accent">
         <h2>Built for Yeng Nation</h2>
         <div class="divider"></div>
@@ -607,7 +499,7 @@
             <div style="margin-bottom:4px;font-weight:700;color:white;">Yeng Constantino Official</div>
             <div>yengconstantino.netlify.app</div>
         </div>
-        <span class="slide-num">8</span>
+        <span class="slide-num">9</span>
     </div>
 
 </body>
