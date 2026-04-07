@@ -7,242 +7,130 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --purple: #6C2BD9;
-            --purple-light: #8B5CF6;
-            --pink: #BE185D;
-            --gold: #E5A00D;
-            --dark: #0F0E1A;
-            --dark2: #1A1A2E;
-            --gray: #52526B;
-            --light-gray: #A1A1B5;
-            --bg: #F4F4F8;
-            --teal: #0D9488;
+            --purple: #6C2BD9; --purple-light: #8B5CF6; --pink: #BE185D;
+            --gold: #E5A00D; --dark: #0F0E1A; --gray: #52526B;
+            --light-gray: #A1A1B5; --teal: #0D9488;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--dark); color: white; overflow-x: hidden; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--dark);
-            color: white;
-            overflow-x: hidden;
-        }
-
-        /* ── Full-screen slides ── */
+        /* ── Slides ── */
         .slide {
-            width: 100vw;
-            height: 100vh;
-            min-height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 60px 10vw;
-            position: relative;
-            overflow: hidden;
+            width: 100vw; height: 100vh; scroll-snap-align: start;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 50px 8vw; position: relative; overflow: hidden;
         }
 
-        /* ── Ambient glow ── */
-        .slide::before {
-            content: '';
-            position: absolute;
-            width: 600px; height: 600px;
-            border-radius: 50%;
-            filter: blur(150px);
-            opacity: 0.08;
-            pointer-events: none;
+        /* ── Background images ── */
+        .slide-bg {
+            position: absolute; inset: 0; z-index: 0;
+            background-size: cover; background-position: center;
         }
+        .slide-bg::after {
+            content: ''; position: absolute; inset: 0;
+        }
+        .slide-bg--dark::after { background: rgba(15,14,26,0.85); }
+        .slide-bg--darker::after { background: rgba(15,14,26,0.92); }
+        .slide-bg--gradient::after { background: linear-gradient(135deg, rgba(108,43,217,0.9), rgba(190,24,93,0.85)); }
+        .slide > *:not(.slide-bg):not(.slide-footer) { position: relative; z-index: 1; }
 
         /* ── Typography ── */
         h1 { font-family: 'Playfair Display', serif; font-weight: 800; }
-        h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 2.4rem; margin-bottom: 10px; color: white; }
-        h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; color: white; margin-bottom: 6px; }
-        p { font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,0.55); }
-
-        .eyebrow {
-            font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem;
-            text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 10px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, var(--purple-light), var(--pink), var(--gold));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-
-        .divider {
-            width: 50px; height: 3px; border-radius: 2px; margin: 20px 0;
-            background: linear-gradient(90deg, var(--purple), var(--pink));
-        }
+        h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(2rem, 3.5vw, 2.8rem); margin-bottom: 6px; color: white; }
+        h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.15rem; color: white; margin-bottom: 6px; }
+        p { font-size: 1.05rem; line-height: 1.65; color: rgba(255,255,255,0.6); }
+        .eyebrow { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 8px; }
+        .gradient-text { background: linear-gradient(135deg, var(--purple-light), var(--pink), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .divider { width: 50px; height: 3px; border-radius: 2px; margin: 14px 0; background: linear-gradient(90deg, var(--purple), var(--pink)); }
 
         /* ── Grids ── */
-        .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-        .g5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+        .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+        .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+        .g5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 
         /* ── Cards ── */
         .card {
-            padding: 28px 24px;
-            border-radius: 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            padding: 24px 20px; border-radius: 14px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            transition: transform 0.2s, border-color 0.2s;
         }
-        .card:hover {
-            transform: translateY(-4px) scale(1.02);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 8px 30px rgba(108,43,217,0.15);
-        }
-        .card p { font-size: 0.85rem; margin-top: 6px; }
+        .card p { font-size: 0.9rem; margin-top: 4px; }
 
-        /* ── Slide variants ── */
-
-        /* Hero */
-        .slide--hero {
-            background: radial-gradient(ellipse at 30% 50%, #2D1B69 0%, var(--dark) 70%);
-            text-align: center; align-items: center;
-        }
-        .slide--hero::before { background: var(--purple); top: -200px; right: -200px; }
-        .slide--hero::after {
-            content: ''; position: absolute; width: 400px; height: 400px;
-            border-radius: 50%; filter: blur(120px); opacity: 0.06;
-            background: var(--pink); bottom: -100px; left: -100px;
-        }
+        /* ── Hero ── */
+        .slide--hero { text-align: center; align-items: center; }
         .slide--hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            background: linear-gradient(135deg, var(--purple-light) 0%, var(--pink) 50%, var(--gold) 100%);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            background: linear-gradient(135deg, var(--purple-light), var(--pink), var(--gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-        .slide--hero .subtitle {
-            font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2vw, 1.5rem);
-            color: rgba(255,255,255,0.7); margin-bottom: 10px;
-        }
-        .slide--hero p { max-width: 500px; font-size: 1.05rem; }
-        .slide--hero .badge {
-            display: inline-block; padding: 8px 24px; border-radius: 999px;
-            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-            color: var(--gold); font-weight: 700; font-size: 0.72rem;
-            letter-spacing: 0.12em; text-transform: uppercase; margin-top: 32px;
-            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-        }
-        .slide--hero .badge:hover {
-            transform: scale(1.05);
-            background: rgba(255,255,255,0.1);
-            box-shadow: 0 4px 20px rgba(229,160,13,0.2);
+        .slide--hero .subtitle { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2vw, 1.6rem); color: rgba(255,255,255,0.75); margin-bottom: 8px; }
+        .slide--hero p { max-width: 520px; font-size: 1.1rem; }
+        .badge {
+            display: inline-block; padding: 8px 24px; border-radius: 999px; margin-top: 28px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+            color: var(--gold); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
         }
 
-        /* Accent (closing) */
-        .slide--accent {
-            background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
-            text-align: center; align-items: center;
-        }
-        .slide--accent h2 { font-size: clamp(2rem, 4vw, 3rem); }
-        .slide--accent p { color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 600px; }
-        .slide--accent .divider { background: rgba(255,255,255,0.25); margin: 20px auto; }
+        /* ── Accent ── */
+        .slide--accent { text-align: center; align-items: center; }
+        .slide--accent h2 { font-size: clamp(2.2rem, 4vw, 3.2rem); }
+        .slide--accent p { color: rgba(255,255,255,0.8); font-size: 1.15rem; max-width: 600px; }
+        .slide--accent .divider { background: rgba(255,255,255,0.3); margin: 16px auto; }
 
-        /* Glow variants */
-        .glow-purple::before { background: var(--purple); top: -100px; right: -200px; }
-        .glow-pink::before { background: var(--pink); bottom: -200px; left: -100px; }
-        .glow-gold::before { background: var(--gold); top: 50%; right: -200px; }
-
-        /* ── Flow diagram ── */
+        /* ── Flow ── */
         .flow { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
-        .flow__step {
-            padding: 12px 22px; border-radius: 10px; font-size: 0.82rem; font-weight: 600;
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            cursor: default;
-        }
-        .flow__step:hover {
-            transform: translateY(-3px) scale(1.04);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 6px 20px rgba(108,43,217,0.15);
-        }
-        .flow__arrow { color: rgba(255,255,255,0.2); font-size: 1rem; }
+        .flow__step { padding: 12px 22px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+        .flow__arrow { color: rgba(255,255,255,0.25); font-size: 1rem; }
 
-        /* ── Stat ── */
-        .stat__number { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800; transition: transform 0.2s; }
-        .card:hover .stat__number { transform: scale(1.1); }
-        .stat__label { font-size: 0.78rem; color: var(--light-gray); margin-top: 4px; font-weight: 500; }
+        /* ── Stats ── */
+        .stat__number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 800; }
+        .stat__label { font-size: 0.82rem; color: var(--light-gray); margin-top: 2px; }
 
         /* ── Bar chart ── */
-        .bar-chart { display: flex; align-items: flex-end; gap: 14px; height: 180px; }
-        .bar-chart__col { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 8px; }
-        .bar-chart__bar { width: 100%; border-radius: 8px 8px 0 0; }
-        .bar-chart__label { font-size: 0.68rem; font-weight: 500; color: rgba(255,255,255,0.4); text-align: center; }
-        .bar-chart__value { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.7); }
+        .bar-chart { display: flex; align-items: flex-end; gap: 14px; height: 200px; }
+        .bar-chart__col { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 6px; height: 100%; justify-content: flex-end; }
+        .bar-chart__bar { width: 100%; border-radius: 8px 8px 0 0; min-width: 30px; }
+        .bar-chart__label { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.45); text-align: center; }
+        .bar-chart__value { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.75); }
 
         /* ── Donut ── */
-        .donut-chart {
-            width: 180px; height: 180px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-        }
-        .donut-chart__center {
-            width: 100px; height: 100px; border-radius: 50%;
-            background: var(--dark); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 1;
-        }
-        .donut-chart__number { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.8rem; color: white; }
-        .donut-chart__text { font-size: 0.65rem; color: var(--light-gray); font-weight: 600; }
-
+        .donut-chart { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .donut-chart__center { width: 90px; height: 90px; border-radius: 50%; background: var(--dark); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; }
+        .donut-chart__number { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.8rem; }
+        .donut-chart__text { font-size: 0.65rem; color: var(--light-gray); }
         .legend { display: flex; flex-direction: column; gap: 10px; }
-        .legend__item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .legend__item { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: rgba(255,255,255,0.6); }
         .legend__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-        /* ── Tier ── */
-        .tier {
-            padding: 28px 24px; border-radius: 16px; text-align: center;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-        }
-        .tier__name { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 4px; }
-        .tier__price { font-size: 0.8rem; color: var(--light-gray); margin-bottom: 16px; }
-        .tier__list { list-style: none; font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 2; }
-        .tier { transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
-        .tier:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(108,43,217,0.15);
-        }
+        /* ── Tiers ── */
+        .tier { padding: 26px 22px; border-radius: 14px; text-align: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); }
+        .tier__name { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.15rem; margin-bottom: 3px; }
+        .tier__price { font-size: 0.85rem; color: var(--light-gray); margin-bottom: 14px; }
+        .tier__list { list-style: none; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 2; }
 
         /* ── Tags ── */
-        .tag {
-            display: inline-block; padding: 8px 18px; border-radius: 8px;
-            font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-        }
-        .tag { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; cursor: default; }
-        .tag:hover {
-            transform: translateY(-2px) scale(1.05);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 4px 15px rgba(108,43,217,0.12);
-        }
-        .tag--gold {
-            color: var(--gold); background: rgba(229,160,13,0.08);
-            border-color: rgba(229,160,13,0.2); font-weight: 700;
-        }
-        .tag--gold:hover {
-            box-shadow: 0 4px 20px rgba(229,160,13,0.25);
-            transform: translateY(-3px) scale(1.08);
-        }
+        .tag { display: inline-block; padding: 8px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+        .tag--gold { color: var(--gold); background: rgba(229,160,13,0.1); border-color: rgba(229,160,13,0.25); font-weight: 700; }
 
-        /* ── Slide footer ── */
-        .slide-footer {
-            position: absolute; bottom: 28px; left: 10vw; right: 10vw;
-            display: flex; justify-content: space-between;
-            font-size: 0.68rem; color: rgba(255,255,255,0.2); font-weight: 500;
-        }
+        /* ── Footer ── */
+        .slide-footer { position: absolute; bottom: 24px; left: 8vw; right: 8vw; display: flex; justify-content: space-between; font-size: 0.68rem; color: rgba(255,255,255,0.2); z-index: 1; }
 
-        /* ── Scroll indicator ── */
-        .scroll-hint {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-            font-size: 0.7rem; color: rgba(255,255,255,0.25); letter-spacing: 0.1em;
-            text-transform: uppercase; z-index: 100;
-            animation: pulse 2s ease-in-out infinite;
-        }
+        /* ── Scroll hint ── */
+        .scroll-hint { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; z-index: 100; animation: pulse 2s ease-in-out infinite; }
         @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+
+        /* ── Transitions ── */
+        .slide > *:not(.slide-bg):not(.slide-footer) { opacity: 0; transform: translateY(25px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .slide.in-view > *:not(.slide-bg):not(.slide-footer) { opacity: 1; transform: translateY(0); }
+        .slide.in-view > *:nth-child(2) { transition-delay: 0.05s; }
+        .slide.in-view > *:nth-child(3) { transition-delay: 0.1s; }
+        .slide.in-view > *:nth-child(4) { transition-delay: 0.15s; }
+        .slide.in-view > *:nth-child(5) { transition-delay: 0.2s; }
+        .slide.in-view > *:nth-child(6) { transition-delay: 0.25s; }
+        .slide .slide-footer { opacity: 0; transition: opacity 0.6s ease 0.5s; }
+        .slide.in-view .slide-footer { opacity: 1; }
 
         /* ── Responsive ── */
         @media (max-width: 900px) {
@@ -250,128 +138,15 @@
             .g2, .g3, .g5 { grid-template-columns: 1fr; }
             .flow { flex-direction: column; }
             .flow__arrow { transform: rotate(90deg); }
-            h2 { font-size: 1.8rem; }
         }
 
-        /* ── Slide transitions ── */
-        .slide > * {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .slide.in-view > * {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Stagger children */
-        .slide.in-view > *:nth-child(1) { transition-delay: 0.1s; }
-        .slide.in-view > *:nth-child(2) { transition-delay: 0.2s; }
-        .slide.in-view > *:nth-child(3) { transition-delay: 0.3s; }
-        .slide.in-view > *:nth-child(4) { transition-delay: 0.4s; }
-        .slide.in-view > *:nth-child(5) { transition-delay: 0.5s; }
-        .slide.in-view > *:nth-child(6) { transition-delay: 0.6s; }
-        .slide.in-view > *:nth-child(7) { transition-delay: 0.7s; }
-
-        /* Don't animate the footer or pseudo-elements */
-        .slide .slide-footer {
-            opacity: 0;
-            transform: none;
-            transition: opacity 0.8s ease 0.8s;
-        }
-        .slide.in-view .slide-footer { opacity: 1; }
-
-        /* Ambient glow fades in */
-        .slide::before {
-            transition: opacity 1s ease 0.3s;
-        }
-
-        /* Cards get a subtle scale */
-        .card, .tier, .flow__step {
-            opacity: 0;
-            transform: translateY(20px) scale(0.97);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .slide.in-view .card,
-        .slide.in-view .tier,
-        .slide.in-view .flow__step {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* Stagger cards within grids */
-        .slide.in-view .g3 > :nth-child(1) .card,
-        .slide.in-view .g3 > :nth-child(1).card,
-        .slide.in-view .g3 > :nth-child(1).tier { transition-delay: 0.3s; }
-        .slide.in-view .g3 > :nth-child(2) .card,
-        .slide.in-view .g3 > :nth-child(2).card,
-        .slide.in-view .g3 > :nth-child(2).tier { transition-delay: 0.45s; }
-        .slide.in-view .g3 > :nth-child(3) .card,
-        .slide.in-view .g3 > :nth-child(3).card,
-        .slide.in-view .g3 > :nth-child(3).tier { transition-delay: 0.6s; }
-
-        .slide.in-view .g5 > :nth-child(1).card { transition-delay: 0.25s; }
-        .slide.in-view .g5 > :nth-child(2).card { transition-delay: 0.35s; }
-        .slide.in-view .g5 > :nth-child(3).card { transition-delay: 0.45s; }
-        .slide.in-view .g5 > :nth-child(4).card { transition-delay: 0.55s; }
-        .slide.in-view .g5 > :nth-child(5).card { transition-delay: 0.65s; }
-
-        /* Flow steps stagger */
-        .slide.in-view .flow > :nth-child(1) { transition-delay: 0.3s; }
-        .slide.in-view .flow > :nth-child(2) { transition-delay: 0.35s; }
-        .slide.in-view .flow > :nth-child(3) { transition-delay: 0.4s; }
-        .slide.in-view .flow > :nth-child(4) { transition-delay: 0.45s; }
-        .slide.in-view .flow > :nth-child(5) { transition-delay: 0.5s; }
-        .slide.in-view .flow > :nth-child(6) { transition-delay: 0.55s; }
-        .slide.in-view .flow > :nth-child(7) { transition-delay: 0.6s; }
-        .slide.in-view .flow > :nth-child(8) { transition-delay: 0.65s; }
-        .slide.in-view .flow > :nth-child(9) { transition-delay: 0.7s; }
-
-        /* Bar chart bars - static, no animation */
-
-        /* Donut chart spins in */
-        .donut-chart {
-            transform: scale(0.8) rotate(-90deg);
-            opacity: 0;
-            transition: transform 0.8s ease 0.3s, opacity 0.6s ease 0.3s;
-        }
-        .slide.in-view .donut-chart {
-            transform: scale(1) rotate(0deg);
-            opacity: 1;
-        }
-
-        /* Tags pop in */
-        .tag {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .slide.in-view .tag { opacity: 1; transform: scale(1); }
-
-        /* Print ── */
+        /* ── Print ── */
         @media print {
             html { scroll-snap-type: none; }
-            .slide { break-after: page; break-inside: avoid; height: auto; min-height: 100vh; }
+            .slide { break-after: page; height: auto; min-height: 100vh; }
             .scroll-hint { display: none; }
             @page { size: landscape; margin: 0; }
-            /* Disable all animations for print */
-            *, *::before, *::after {
-                animation: none !important;
-                transition: none !important;
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            .slide > *, .card, .tier, .flow__step, .tag, .bar-chart__bar, .donut-chart, .slide-footer {
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            .bar-chart__bar[data-height="90"] { height: 90% !important; }
-            .bar-chart__bar[data-height="82"] { height: 82% !important; }
-            .bar-chart__bar[data-height="55"] { height: 55% !important; }
-            .bar-chart__bar[data-height="45"] { height: 45% !important; }
-            .bar-chart__bar[data-height="28"] { height: 28% !important; }
+            *, *::before, *::after { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
         }
     </style>
 </head>
@@ -381,6 +156,7 @@
 
     <!-- ═══ 1: TITLE ═══ -->
     <div class="slide slide--hero">
+        <div class="slide-bg slide-bg--dark" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1600&q=80');"></div>
         <h1>Yeng Constantino</h1>
         <div class="subtitle">Official Fan Platform</div>
         <p>A dedicated digital home for the Philippines' OPM Icon and her fans.</p>
@@ -389,82 +165,57 @@
     </div>
 
     <!-- ═══ 2: EVERYTHING YENG ═══ -->
-    <div class="slide glow-purple">
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1600&q=80');"></div>
         <div class="eyebrow">The Platform</div>
         <h2 class="gradient-text">Everything Yeng, One Place</h2>
         <div class="divider"></div>
-        <p style="max-width:650px;margin-bottom:36px;">Yeng's music, fan community, merchandise, and membership program — all in a single, professionally managed destination.</p>
+        <p style="max-width:650px;margin-bottom:28px;">Yeng's music, fan community, merchandise, and membership — all in a single destination.</p>
         <div class="g5">
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--purple-light);">Music</h3>
-                <p>Full catalog of songs, videos, and live performances</p>
-            </div>
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--pink);">Community</h3>
-                <p>Fan posts, fan art, discussions, and engagement</p>
-            </div>
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--gold);">Merch</h3>
-                <p>Online store with product catalog and ordering</p>
-            </div>
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--purple-light);">Membership</h3>
-                <p>Tiered fan club with exclusive perks</p>
-            </div>
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--teal);">Fan Covers</h3>
-                <p>Fans submit their own Yeng covers for featuring</p>
-            </div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--purple-light);">Music</h3><p>Songs, videos, live performances</p></div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--pink);">Community</h3><p>Fan posts, fan art, engagement</p></div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--gold);">Merch</h3><p>Online store with ordering</p></div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--purple-light);">Membership</h3><p>Fan club with exclusive perks</p></div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--teal);">Fan Covers</h3><p>Submit covers for featuring</p></div>
         </div>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>2 / 9</span></div>
     </div>
 
     <!-- ═══ 3: FAN JOURNEY ═══ -->
-    <div class="slide glow-pink">
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1600&q=80');"></div>
         <div class="eyebrow">Fan Experience</div>
         <h2>How Fans Engage</h2>
         <div class="divider" style="background:var(--gold);"></div>
-        <p style="margin-bottom:32px;">The platform guides fans from discovery to active community membership.</p>
-        <div class="flow" style="margin-bottom:40px;">
+        <p style="margin-bottom:24px;">From discovery to active membership in five steps.</p>
+        <div class="flow" style="margin-bottom:32px;">
             <div class="flow__step" style="color:var(--purple-light);">Visit Site</div>
-            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__arrow">&rarr;</div>
             <div class="flow__step" style="color:var(--pink);">Browse Music</div>
-            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__arrow">&rarr;</div>
             <div class="flow__step" style="color:var(--gold);">Sign Up Free</div>
-            <div class="flow__arrow">&#8594;</div>
+            <div class="flow__arrow">&rarr;</div>
             <div class="flow__step" style="color:var(--purple-light);">Join Community</div>
-            <div class="flow__arrow">&#8594;</div>
-            <div class="flow__step" style="color:var(--gold);border-color:rgba(229,160,13,0.2);">Become Member</div>
+            <div class="flow__arrow">&rarr;</div>
+            <div class="flow__step" style="color:var(--gold);border-color:rgba(229,160,13,0.25);">Become Member</div>
         </div>
         <div class="g3">
-            <div class="card" style="text-align:center;">
-                <div class="stat__number" style="color:var(--purple-light);">9</div>
-                <div class="stat__label">Pages on the Platform</div>
-            </div>
-            <div class="card" style="text-align:center;">
-                <div class="stat__number" style="color:var(--gold);">4</div>
-                <div class="stat__label">Languages Supported</div>
-            </div>
-            <div class="card" style="text-align:center;">
-                <div class="stat__number" style="color:var(--pink);">3</div>
-                <div class="stat__label">Membership Tiers</div>
-            </div>
+            <div class="card" style="text-align:center;"><div class="stat__number" style="color:var(--purple-light);">9</div><div class="stat__label">Pages</div></div>
+            <div class="card" style="text-align:center;"><div class="stat__number" style="color:var(--gold);">4</div><div class="stat__label">Languages</div></div>
+            <div class="card" style="text-align:center;"><div class="stat__number" style="color:var(--pink);">3</div><div class="stat__label">Membership Tiers</div></div>
         </div>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>3 / 9</span></div>
     </div>
 
     <!-- ═══ 4: WHAT'S INSIDE ═══ -->
-    <div class="slide glow-gold">
+    <div class="slide">
         <div class="eyebrow">Platform Breakdown</div>
         <h2 class="gradient-text">What's Inside</h2>
         <div class="divider"></div>
-        <div class="g2" style="margin-top:24px;align-items:center;">
-            <div style="display:flex;align-items:center;gap:36px;">
+        <div class="g2" style="margin-top:16px;align-items:center;">
+            <div style="display:flex;align-items:center;gap:32px;">
                 <div class="donut-chart" style="background:conic-gradient(var(--purple) 0% 30%, var(--pink) 30% 50%, var(--gold) 50% 70%, var(--purple-light) 70% 85%, var(--teal) 85% 100%);">
-                    <div class="donut-chart__center">
-                        <div class="donut-chart__number">9</div>
-                        <div class="donut-chart__text">Sections</div>
-                    </div>
+                    <div class="donut-chart__center"><div class="donut-chart__number">9</div><div class="donut-chart__text">Sections</div></div>
                 </div>
                 <div class="legend">
                     <div class="legend__item"><div class="legend__dot" style="background:var(--purple);"></div>Music Archive</div>
@@ -475,14 +226,14 @@
                 </div>
             </div>
             <div>
-                <h3 style="margin-bottom:16px;color:rgba(255,255,255,0.8);">Key Capabilities</h3>
-                <div style="display:flex;flex-direction:column;gap:14px;">
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div><span style="font-size:0.9rem;color:rgba(255,255,255,0.55);">Music videos and audio tracks with fan ratings</span></div>
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--pink);flex-shrink:0;"></div><span style="font-size:0.9rem;color:rgba(255,255,255,0.55);">Fan posts, fan art submissions, and discussions</span></div>
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div><span style="font-size:0.9rem;color:rgba(255,255,255,0.55);">Online merch store with ordering and tracking</span></div>
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple-light);flex-shrink:0;"></div><span style="font-size:0.9rem;color:rgba(255,255,255,0.55);">Paid tiers with exclusive content and perks</span></div>
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;"></div><span style="font-size:0.9rem;color:rgba(255,255,255,0.55);">Fan cover submissions with Hall of Fame</span></div>
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--light-gray);flex-shrink:0;"></div><span style="font-size:0.9rem;color:rgba(255,255,255,0.55);">Instagram feed, social links, multi-language</span></div>
+                <h3 style="margin-bottom:14px;color:rgba(255,255,255,0.85);">Key Capabilities</h3>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div><span style="font-size:0.95rem;color:rgba(255,255,255,0.55);">Music videos and audio tracks with fan ratings</span></div>
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--pink);flex-shrink:0;"></div><span style="font-size:0.95rem;color:rgba(255,255,255,0.55);">Fan posts, fan art, and community discussions</span></div>
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div><span style="font-size:0.95rem;color:rgba(255,255,255,0.55);">Online merch store with ordering and tracking</span></div>
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple-light);flex-shrink:0;"></div><span style="font-size:0.95rem;color:rgba(255,255,255,0.55);">Paid membership tiers with exclusive content</span></div>
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;"></div><span style="font-size:0.95rem;color:rgba(255,255,255,0.55);">Fan cover submissions with Hall of Fame</span></div>
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--light-gray);flex-shrink:0;"></div><span style="font-size:0.95rem;color:rgba(255,255,255,0.55);">Instagram feed, social links, 4 languages</span></div>
                 </div>
             </div>
         </div>
@@ -490,161 +241,91 @@
     </div>
 
     <!-- ═══ 5: MEMBERSHIP ═══ -->
-    <div class="slide glow-purple">
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=1600&q=80');"></div>
         <div class="eyebrow">Revenue</div>
         <h2 class="gradient-text">Membership Tiers</h2>
         <div class="divider"></div>
-        <p style="margin-bottom:32px;">Three tiers designed to grow with the fanbase — from free access to premium experiences.</p>
+        <p style="margin-bottom:24px;">Three tiers — from free access to premium fan experiences.</p>
         <div class="g3">
             <div class="tier">
                 <div class="tier__name" style="color:var(--purple-light);">Free</div>
                 <div class="tier__price">PHP 0 / month</div>
-                <ul class="tier__list">
-                    <li>Browse full music catalog</li>
-                    <li>Join community discussions</li>
-                    <li>Rate and review content</li>
-                    <li>Submit fan covers</li>
-                </ul>
+                <ul class="tier__list"><li>Full music catalog</li><li>Community discussions</li><li>Rate and review</li><li>Submit covers</li></ul>
             </div>
             <div class="tier" style="border-color:rgba(190,24,93,0.3);">
                 <div class="tier__name" style="color:var(--pink);">Sariwang Himig</div>
                 <div class="tier__price">PHP 99 / month</div>
-                <ul class="tier__list">
-                    <li>Everything in Free</li>
-                    <li>Exclusive behind-the-scenes content</li>
-                    <li>5% merch discount</li>
-                    <li>Priority cover reviews</li>
-                    <li>Member badge</li>
-                </ul>
+                <ul class="tier__list"><li>Everything in Free</li><li>Behind-the-scenes content</li><li>5% merch discount</li><li>Priority reviews</li><li>Member badge</li></ul>
             </div>
             <div class="tier" style="border-color:rgba(229,160,13,0.3);">
                 <div class="tier__name" style="color:var(--gold);">Ikaw Lamang</div>
                 <div class="tier__price">PHP 249 / month</div>
-                <ul class="tier__list">
-                    <li>All Sariwang Himig perks</li>
-                    <li>Full exclusive content library</li>
-                    <li>15% merch discount</li>
-                    <li>Early event access</li>
-                    <li>Direct engagement features</li>
-                </ul>
+                <ul class="tier__list"><li>All Sariwang Himig perks</li><li>Full exclusive library</li><li>15% merch discount</li><li>Early event access</li><li>Direct engagement</li></ul>
             </div>
         </div>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>5 / 9</span></div>
     </div>
 
     <!-- ═══ 6: REVENUE ═══ -->
-    <div class="slide glow-gold">
+    <div class="slide">
         <div class="eyebrow">Growth</div>
         <h2>Revenue Streams</h2>
         <div class="divider" style="background:var(--gold);"></div>
-        <div class="g2" style="margin-top:28px;align-items:center;">
+        <div class="g2" style="margin-top:20px;align-items:start;">
             <div>
-                <p style="margin-bottom:24px;">Multiple income channels built into the platform from day one.</p>
-                <div class="bar-chart" id="revenue-bars">
-                    <div class="bar-chart__col">
-                        <div class="bar-chart__value">High</div>
-                        <div class="bar-chart__bar" data-height="90" style="height:90%;background:var(--gold);"></div>
-                        <div class="bar-chart__label">Membership<br>Fees</div>
-                    </div>
-                    <div class="bar-chart__col">
-                        <div class="bar-chart__value">High</div>
-                        <div class="bar-chart__bar" data-height="82" style="height:82%;background:var(--pink);"></div>
-                        <div class="bar-chart__label">Merch<br>Sales</div>
-                    </div>
-                    <div class="bar-chart__col">
-                        <div class="bar-chart__value">Med</div>
-                        <div class="bar-chart__bar" data-height="55" style="height:55%;background:var(--purple);"></div>
-                        <div class="bar-chart__label">Exclusive<br>Content</div>
-                    </div>
-                    <div class="bar-chart__col">
-                        <div class="bar-chart__value">Med</div>
-                        <div class="bar-chart__bar" data-height="45" style="height:45%;background:var(--purple-light);"></div>
-                        <div class="bar-chart__label">Brand<br>Partners</div>
-                    </div>
-                    <div class="bar-chart__col">
-                        <div class="bar-chart__value">New</div>
-                        <div class="bar-chart__bar" data-height="28" style="height:28%;background:var(--teal);"></div>
-                        <div class="bar-chart__label">Event<br>Tickets</div>
-                    </div>
+                <p style="margin-bottom:20px;">Multiple income channels from day one.</p>
+                <div class="bar-chart">
+                    <div class="bar-chart__col"><div class="bar-chart__value">High</div><div class="bar-chart__bar" style="height:162px;background:var(--gold);"></div><div class="bar-chart__label">Membership<br>Fees</div></div>
+                    <div class="bar-chart__col"><div class="bar-chart__value">High</div><div class="bar-chart__bar" style="height:148px;background:var(--pink);"></div><div class="bar-chart__label">Merch<br>Sales</div></div>
+                    <div class="bar-chart__col"><div class="bar-chart__value">Med</div><div class="bar-chart__bar" style="height:99px;background:var(--purple);"></div><div class="bar-chart__label">Exclusive<br>Content</div></div>
+                    <div class="bar-chart__col"><div class="bar-chart__value">Med</div><div class="bar-chart__bar" style="height:81px;background:var(--purple-light);"></div><div class="bar-chart__label">Brand<br>Partners</div></div>
+                    <div class="bar-chart__col"><div class="bar-chart__value">New</div><div class="bar-chart__bar" style="height:50px;background:var(--teal);"></div><div class="bar-chart__label">Event<br>Tickets</div></div>
                 </div>
             </div>
             <div>
-                <h3 style="margin-bottom:18px;color:rgba(255,255,255,0.8);">Growth Scenario</h3>
-                <div class="card" style="margin-bottom:14px;">
-                    <h3 style="font-size:0.9rem;color:var(--gold);">500 Members at PHP 99/mo</h3>
-                    <p>= PHP 49,500 monthly recurring revenue</p>
-                </div>
-                <div class="card" style="margin-bottom:14px;">
-                    <h3 style="font-size:0.9rem;color:var(--pink);">100 Members at PHP 249/mo</h3>
-                    <p>= PHP 24,900 additional monthly</p>
-                </div>
-                <div class="card">
-                    <h3 style="font-size:0.9rem;color:var(--purple-light);">Merch Store</h3>
-                    <p>Unlimited products, direct-to-fan sales</p>
-                </div>
+                <h3 style="margin-bottom:16px;color:rgba(255,255,255,0.85);">Growth Scenario</h3>
+                <div class="card" style="margin-bottom:12px;"><h3 style="font-size:0.95rem;color:var(--gold);">500 Members at PHP 99/mo</h3><p>= PHP 49,500 monthly recurring revenue</p></div>
+                <div class="card" style="margin-bottom:12px;"><h3 style="font-size:0.95rem;color:var(--pink);">100 Members at PHP 249/mo</h3><p>= PHP 24,900 additional monthly</p></div>
+                <div class="card"><h3 style="font-size:0.95rem;color:var(--purple-light);">Merch Store</h3><p>Unlimited products, direct-to-fan sales</p></div>
             </div>
         </div>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>6 / 9</span></div>
     </div>
 
     <!-- ═══ 7: MANAGEMENT ═══ -->
-    <div class="slide glow-pink">
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1600&q=80');"></div>
         <div class="eyebrow">Management</div>
         <h2 class="gradient-text">Easy to Run</h2>
         <div class="divider"></div>
-        <p style="margin-bottom:32px;">Built-in admin dashboard — no technical skills needed to manage content, members, or settings.</p>
+        <p style="margin-bottom:24px;">Built-in admin dashboard — no technical skills needed.</p>
         <div class="g3">
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--purple-light);">Content Management</h3>
-                <p>Add music, update photos, manage the Instagram feed, and edit all site text from one panel</p>
-            </div>
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--pink);">Member Oversight</h3>
-                <p>View signups, membership tiers, fan engagement, and community moderation tools</p>
-            </div>
-            <div class="card" style="text-align:center;">
-                <h3 style="color:var(--gold);">Performance Tracking</h3>
-                <p>Built-in analytics showing member growth, revenue, engagement, and goal progress</p>
-            </div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--purple-light);">Content</h3><p>Music, photos, Instagram feed, and all site text from one panel</p></div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--pink);">Members</h3><p>Signups, tiers, engagement, and community moderation</p></div>
+            <div class="card" style="text-align:center;"><h3 style="color:var(--gold);">Analytics</h3><p>Growth, revenue, engagement, and goal tracking</p></div>
         </div>
-        <div style="margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <div class="tag">English</div>
-            <div class="tag">Filipino</div>
-            <div class="tag">Cebuano</div>
-            <div class="tag">Ilocano</div>
+        <div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <div class="tag">English</div><div class="tag">Filipino</div><div class="tag">Cebuano</div><div class="tag">Ilocano</div>
         </div>
-        <p style="text-align:center;font-size:0.75rem;margin-top:10px;color:rgba(255,255,255,0.25);">Multi-language support reaches fans across the Philippines</p>
+        <p style="text-align:center;font-size:0.8rem;margin-top:8px;color:rgba(255,255,255,0.25);">Multi-language support across the Philippines</p>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>7 / 9</span></div>
     </div>
 
     <!-- ═══ 8: CUSTOMIZABLE ═══ -->
-    <div class="slide glow-gold">
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1600&q=80');"></div>
         <div class="eyebrow">Your Vision</div>
         <h2>Fully Customizable</h2>
         <div class="divider" style="background:var(--gold);"></div>
-        <p style="max-width:650px;margin-bottom:32px;">This platform is built to evolve. Whatever Yeng envisions for her fans, we can build it — no limitations, no templates, no waiting.</p>
+        <p style="max-width:650px;margin-bottom:24px;">Whatever Yeng envisions for her fans, we build it — no limitations, no templates, no waiting.</p>
         <div class="g3">
-            <div class="card">
-                <h3 style="color:var(--purple-light);">New Features on Demand</h3>
-                <p>Want live streaming, ticketed events, fan voting, a podcast section, or anything else? We add it.</p>
-            </div>
-            <div class="card">
-                <h3 style="color:var(--pink);">Design That Matches the Brand</h3>
-                <p>Every color, font, image, and layout is adjustable. The site always reflects Yeng's current era.</p>
-            </div>
-            <div class="card">
-                <h3 style="color:var(--gold);">Grows With the Audience</h3>
-                <p>From hundreds to millions — the platform scales. New pages, tools, and revenue streams as needed.</p>
-            </div>
+            <div class="card"><h3 style="color:var(--purple-light);">New Features on Demand</h3><p>Live streaming, events, fan voting, podcasts — we add it.</p></div>
+            <div class="card"><h3 style="color:var(--pink);">Matches the Brand</h3><p>Every detail adjustable. Always reflects Yeng's current era.</p></div>
+            <div class="card"><h3 style="color:var(--gold);">Grows With the Audience</h3><p>Hundreds to millions. New pages, tools, revenue streams.</p></div>
         </div>
-        <div style="margin-top:32px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-            <div class="tag">Live Streaming</div>
-            <div class="tag">Fan Voting</div>
-            <div class="tag">Events Calendar</div>
-            <div class="tag">Podcast</div>
-            <div class="tag">Fan Meetups</div>
-            <div class="tag">Notifications</div>
-            <div class="tag">Mobile App</div>
+        <div style="margin-top:24px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <div class="tag">Live Streaming</div><div class="tag">Fan Voting</div><div class="tag">Events</div><div class="tag">Podcast</div><div class="tag">Meetups</div><div class="tag">Notifications</div><div class="tag">Mobile App</div>
             <div class="tag tag--gold">Anything Yeng Wants</div>
         </div>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>8 / 9</span></div>
@@ -652,41 +333,31 @@
 
     <!-- ═══ 9: CLOSING ═══ -->
     <div class="slide slide--accent">
+        <div class="slide-bg slide-bg--gradient" style="background-image:url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1600&q=80');"></div>
         <h2>Built for Yeng Nation</h2>
         <div class="divider"></div>
         <p>A platform that grows with the artist and her fans — music, community, and commerce in one place.</p>
-        <div style="margin-top:48px;">
-            <div style="font-weight:700;font-size:1.05rem;color:white;">Yeng Constantino Official</div>
-            <div style="font-size:0.9rem;color:rgba(255,255,255,0.6);margin-top:4px;">yengconstantino.netlify.app</div>
+        <div style="margin-top:40px;">
+            <div style="font-weight:700;font-size:1.1rem;">Yeng Constantino Official</div>
+            <div style="font-size:0.95rem;color:rgba(255,255,255,0.65);margin-top:4px;">yengconstantino.netlify.app</div>
         </div>
         <div class="slide-footer"><span></span><span>9 / 9</span></div>
     </div>
 
     <script>
-        // Hide scroll hint after first scroll
         window.addEventListener('scroll', function() {
             var hint = document.querySelector('.scroll-hint');
             if (hint && window.scrollY > 100) hint.style.display = 'none';
         }, { passive: true });
 
-        // Trigger slide transitions on scroll into view
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                } else {
-                    entry.target.classList.remove('in-view');
-                }
+                entry.target.classList.toggle('in-view', entry.isIntersecting);
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.2 });
 
-        document.querySelectorAll('.slide').forEach(function(slide) {
-            observer.observe(slide);
-        });
-
-        // First slide should be visible immediately
+        document.querySelectorAll('.slide').forEach(function(slide) { observer.observe(slide); });
         document.querySelector('.slide').classList.add('in-view');
     </script>
-
 </body>
 </html>
