@@ -140,11 +140,28 @@
             .flow__arrow { transform: rotate(90deg); }
         }
 
+        /* ── PDF button ── */
+        .pdf-btn {
+            position: fixed; bottom: 24px; left: 24px; z-index: 100;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 20px; border-radius: 999px;
+            font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+            color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+            backdrop-filter: blur(10px); text-decoration: none;
+            transition: all 0.2s;
+        }
+        .pdf-btn:hover {
+            color: white; background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
         /* ── Print ── */
         @media print {
             html { scroll-snap-type: none; }
             .slide { break-after: page; height: auto; min-height: 100vh; }
-            .scroll-hint { display: none; }
+            .scroll-hint, .pdf-btn { display: none; }
             @page { size: landscape; margin: 0; }
             *, *::before, *::after { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
         }
@@ -153,6 +170,7 @@
 <body>
 
     <div class="scroll-hint">Scroll to explore</div>
+    <a class="pdf-btn" onclick="window.print()" title="Save as PDF">&#8681; Save PDF</a>
 
     <!-- ═══ 1: TITLE ═══ -->
     <div class="slide slide--hero">
