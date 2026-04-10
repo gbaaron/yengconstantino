@@ -1,0 +1,19 @@
+{
+  "subject_name": "Yeng Constantino",
+  "card_title": "Live in Pasay",
+  "rarity": "Legendary",
+  "card_number": "1",
+  "card_total": "25",
+  "holographic": true,
+  "primary_color": "#bb00ff",
+  "secondary_color": "#e31937",
+  "photo_fit": "cover",
+  "photo_zoom": 105,
+  "photo_x": 50,
+  "photo_y": 0,
+  "bio": "A once-in-a-generation voice. This card captures a moment from one of the most iconic live performances of her career.",
+  "reward_description": "Unlocks the digital card",
+  "yeng_credits": "500",
+  "bonus_perk": "Scan this card up to two separate times for the ability to skip the line at a meet and greet. ",
+  "redeem_url": "https://pvlcardgame.netlify.app?redeem=Yeng-Yeng-Constantino-1"
+}
