@@ -134,10 +134,52 @@
 
         /* ── Responsive ── */
         @media (max-width: 900px) {
-            .slide { padding: 40px 6vw; }
-            .g2, .g3, .g5 { grid-template-columns: 1fr; }
-            .flow { flex-direction: column; }
+            .slide {
+                padding: 60px 6vw 80px;
+                height: auto;
+                min-height: 100vh;
+                scroll-snap-align: none;
+            }
+            html { scroll-snap-type: none; }
+            .g2, .g3, .g5 { grid-template-columns: 1fr; gap: 14px; }
+            .flow { flex-direction: column; gap: 8px; }
             .flow__arrow { transform: rotate(90deg); }
+            h2 { font-size: 1.8rem !important; }
+            .slide--hero h1 { font-size: 2.4rem !important; }
+            .slide--hero .subtitle { font-size: 1.1rem !important; }
+            .slide--hero p { font-size: 0.95rem; }
+            .slide--accent h2 { font-size: 2rem !important; }
+            p { font-size: 0.95rem; }
+            .card { padding: 18px 16px; }
+            .card h3 { font-size: 0.95rem; }
+            .card p { font-size: 0.82rem; }
+            .tier { padding: 22px 18px; }
+            .bar-chart { height: 160px; gap: 8px; }
+            .donut-chart { width: 140px; height: 140px; }
+            .donut-chart__center { width: 75px; height: 75px; }
+            .donut-chart__number { font-size: 1.5rem; }
+            .stat__number { font-size: 2.2rem; }
+            .slide-footer { left: 6vw; right: 6vw; bottom: 16px; font-size: 0.62rem; }
+            .pdf-btn, .pack-trigger-btn { bottom: 16px; padding: 8px 16px; font-size: 0.7rem; }
+            .scroll-hint { display: none; }
+            /* Stack hero/title/divider tightly */
+            .slide .eyebrow { margin-bottom: 6px; }
+            .divider { margin: 10px 0; }
+        }
+        @media (max-width: 600px) {
+            .slide { padding: 50px 5vw 70px; }
+            h2 { font-size: 1.4rem !important; }
+            .slide--hero h1 { font-size: 1.8rem !important; line-height: 1.1; }
+            .slide--hero .subtitle { font-size: 1rem !important; }
+            .slide--hero p { font-size: 0.88rem !important; }
+            .slide--accent h2 { font-size: 1.6rem !important; }
+            .badge { font-size: 0.62rem; padding: 6px 16px; }
+            .yc-card { width: 200px; }
+            .pack-3d { width: 220px; height: 300px; }
+            .pack-face__title { font-size: 1.7rem; }
+            .card-flip-wrapper { width: 220px; height: 320px; }
+            .stat__number { font-size: 1.8rem !important; }
+            .pack-trigger-btn { font-size: 0.75rem; padding: 12px 24px; }
         }
 
         /* ── PDF button ── */
@@ -157,7 +199,246 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        /* ── Print ── */
+        /* ── Digital Card preview (mini card on slide) ── */
+        .yc-card {
+            width: 240px;
+            aspect-ratio: 408 / 608;
+            border-radius: 18px;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--gold), #c9a800);
+            box-shadow: 0 0 24px rgba(157,78,221,0.4), 0 0 60px rgba(157,78,221,0.4), 0 20px 60px rgba(0,0,0,0.6);
+            margin: 0 auto;
+            position: relative;
+            transition: transform 0.4s ease;
+        }
+        .yc-card:hover { transform: translateY(-6px) rotate(-1deg); }
+        .yc-card__inner {
+            width: 100%; height: 100%; border-radius: 14px;
+            background: linear-gradient(160deg, #0a0a14 0%, #121225 50%, #0a0a14 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            padding: 18px 16px; color: white; position: relative; overflow: hidden;
+        }
+        .yc-card__inner::before {
+            content: ''; position: absolute; inset: 0; opacity: 0.05;
+            background: radial-gradient(circle at 50% 30%, var(--gold) 0%, transparent 60%);
+        }
+        .yc-card__rarity {
+            position: absolute; top: 12px; left: 12px;
+            font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700;
+            letter-spacing: 0.15em; color: var(--purple-light); text-transform: uppercase;
+        }
+        .yc-card__num {
+            position: absolute; top: 12px; right: 12px;
+            font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: var(--gold);
+        }
+        .yc-card__num small { color: rgba(255,255,255,0.4); font-size: 0.7rem; }
+        .yc-card__photo {
+            width: 100%; flex: 1; margin-top: 32px;
+            border-radius: 8px; background: linear-gradient(135deg, #2D1B69, #BE185D, #E5A00D);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; color: rgba(255,255,255,0.3); font-size: 0.85rem;
+        }
+        .yc-card__name {
+            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem;
+            margin-top: 12px; text-align: center; line-height: 1.1;
+        }
+        .yc-card__title {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 0.78rem; color: var(--gold); margin-top: 4px; text-align: center;
+        }
+        .yc-card__divider {
+            width: 60%; height: 1px; margin: 8px auto 0;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        /* ── Pack Opening Modal ── */
+        .pack-modal {
+            display: none;
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            justify-content: center; align-items: center;
+        }
+        .pack-modal.active { display: flex; }
+
+        .pack-modal__close {
+            position: absolute; top: 20px; right: 24px;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+            font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+            z-index: 10001; transition: all 0.2s;
+        }
+        .pack-modal__close:hover { background: rgba(255,255,255,0.15); transform: rotate(90deg); }
+
+        .pack-container {
+            position: relative; width: 100%; max-width: 600px;
+            display: flex; flex-direction: column; align-items: center; padding: 40px 20px;
+        }
+
+        /* 3D Pack */
+        .pack-3d {
+            width: 280px; height: 380px; position: relative;
+            transform-style: preserve-3d;
+            animation: packSpin3D 2s ease-in-out;
+        }
+        @keyframes packSpin3D {
+            0% { transform: rotateY(0deg) scale(0.5); opacity: 0; }
+            25% { transform: rotateY(90deg) scale(0.8); opacity: 1; }
+            50% { transform: rotateY(180deg) scale(1.05); }
+            75% { transform: rotateY(270deg) scale(1); }
+            100% { transform: rotateY(360deg) scale(1); opacity: 1; }
+        }
+        .pack-face {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--purple), var(--pink), var(--gold));
+            border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 20px 80px rgba(0,0,0,0.6), 0 0 60px rgba(157,78,221,0.4);
+            border: 3px solid rgba(255,255,255,0.25);
+            overflow: hidden;
+        }
+        .pack-face::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3), transparent 60%);
+            animation: packShine 2s ease-in-out infinite;
+        }
+        @keyframes packShine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+        .pack-face__label {
+            font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700;
+            color: rgba(255,255,255,0.85); letter-spacing: 0.2em; text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .pack-face__title {
+            font-family: 'Playfair Display', serif; font-weight: 800;
+            font-size: 2.4rem; color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            text-align: center; line-height: 1; margin-bottom: 8px;
+        }
+        .pack-face__sub {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1rem; color: rgba(255,255,255,0.85);
+        }
+        .pack-face__opening {
+            position: absolute; bottom: 24px; font-size: 0.85rem;
+            color: rgba(255,255,255,0.85); animation: pulse2 1s ease-in-out infinite;
+        }
+        @keyframes pulse2 {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Pack rip */
+        .pack-rip { animation: packRipExplosion 0.6s ease-out forwards; }
+        @keyframes packRipExplosion {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); filter: brightness(2); }
+            100% { transform: scale(0) rotateZ(180deg); opacity: 0; }
+        }
+        .rip-particle {
+            position: absolute; width: 10px; height: 10px;
+            background: var(--gold); border-radius: 50%;
+            animation: particleExplosion 1s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes particleExplosion {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--px), var(--py)) scale(0); opacity: 0; }
+        }
+
+        /* Card flip reveal */
+        .reveal-container {
+            display: flex; justify-content: center; align-items: center;
+            min-height: 420px;
+        }
+        .card-flip-wrapper {
+            perspective: 1500px; width: 280px; height: 400px;
+            opacity: 0; animation: cardEntrance 0.8s ease-out forwards;
+        }
+        @keyframes cardEntrance {
+            0% { transform: translateY(100px) rotateX(-90deg); opacity: 0; }
+            100% { transform: translateY(0) rotateX(0deg); opacity: 1; }
+        }
+        .card-flip {
+            width: 100%; height: 100%; position: relative;
+            transform-style: preserve-3d;
+            animation: cardFlip 1s ease-out forwards;
+        }
+        @keyframes cardFlip {
+            0% { transform: rotateY(180deg); }
+            100% { transform: rotateY(0deg); }
+        }
+        .card-face {
+            position: absolute; inset: 0; backface-visibility: hidden;
+            border-radius: 18px; overflow: hidden;
+        }
+        .card-face--back {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 3px solid var(--gold);
+            transform: rotateY(180deg);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-weight: 800;
+            font-size: 1.6rem; color: var(--gold); text-align: center;
+        }
+        .card-face--front {
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 30px rgba(255,215,0,0.4), 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .card-face--front .yc-card {
+            width: 100%; height: 100%; margin: 0; box-shadow: none;
+        }
+
+        /* Legendary glow */
+        .legendary-glow {
+            animation: legendaryPulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px var(--gold)) drop-shadow(0 0 60px var(--gold));
+        }
+        @keyframes legendaryPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px var(--gold)) brightness(1); }
+            50% { filter: drop-shadow(0 0 60px var(--gold)) brightness(1.3); }
+        }
+        .screen-flash {
+            position: fixed; inset: 0; pointer-events: none;
+            background: radial-gradient(circle, rgba(255,215,0,0.6), transparent);
+            animation: flash 0.5s ease-out forwards; z-index: 9998;
+        }
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .pack-continue-btn {
+            margin-top: 32px; padding: 14px 40px; border-radius: 999px;
+            background: linear-gradient(135deg, var(--gold), #fbbf24);
+            border: none; color: var(--dark);
+            font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.9rem;
+            letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 10px 40px rgba(255,215,0,0.4);
+            opacity: 0; animation: btnFadeIn 0.5s ease-out 2s forwards;
+            transition: transform 0.2s;
+        }
+        @keyframes btnFadeIn { to { opacity: 1; } }
+        .pack-continue-btn:hover { transform: scale(1.05); }
+
+        /* Pack open trigger button — sits on the slide */
+        .pack-trigger-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 32px; border-radius: 999px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white; border: 1px solid rgba(255,255,255,0.2);
+            font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85rem;
+            letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 8px 30px rgba(108,43,217,0.4);
+            transition: all 0.2s;
+        }
+        .pack-trigger-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 12px 40px rgba(190,24,93,0.5);
+        }
+
+        /* Print ── */
         @media print {
             html { scroll-snap-type: none; }
             .slide { break-after: page; height: auto; min-height: 100vh; }
@@ -179,7 +460,7 @@
         <div class="subtitle">Official Fan Platform</div>
         <p>A dedicated digital home for the Philippines' OPM Icon and her fans.</p>
         <div class="badge">Platform Overview 2026</div>
-        <div class="slide-footer"><span></span><span>1 / 14</span></div>
+        <div class="slide-footer"><span></span><span>1 / 16</span></div>
     </div>
 
     <!-- ═══ 2: WHY THIS MATTERS ═══ -->
@@ -223,7 +504,7 @@
                 </div>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>2 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>2 / 16</span></div>
     </div>
 
     <!-- ═══ 3: EVERYTHING YENG ═══ -->
@@ -240,7 +521,7 @@
             <div class="card" style="text-align:center;"><h3 style="color:var(--purple-light);">Membership</h3><p>Fan club with exclusive perks</p></div>
             <div class="card" style="text-align:center;"><h3 style="color:var(--teal);">Fan Covers</h3><p>Submit covers for featuring</p></div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>3 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>3 / 16</span></div>
     </div>
 
     <!-- ═══ 3: MUSIC ARCHIVE ═══ -->
@@ -284,7 +565,7 @@
                 </div>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>4 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>4 / 16</span></div>
     </div>
 
     <!-- ═══ 4: COMMUNITY ═══ -->
@@ -316,7 +597,7 @@
                 </div>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>5 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>5 / 16</span></div>
     </div>
 
     <!-- ═══ 5: MERCH STORE ═══ -->
@@ -345,7 +626,7 @@
                 </div>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>6 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>6 / 16</span></div>
     </div>
 
     <!-- ═══ 6: FAN COVERS ═══ -->
@@ -376,7 +657,7 @@
                 </div>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>7 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>7 / 16</span></div>
     </div>
 
     <!-- ═══ 7: FAN JOURNEY ═══ -->
@@ -402,7 +683,7 @@
             <div class="card" style="text-align:center;"><div class="stat__number" style="color:var(--gold);">4</div><div class="stat__label">Languages</div></div>
             <div class="card" style="text-align:center;"><div class="stat__number" style="color:var(--pink);">3</div><div class="stat__label">Membership Tiers</div></div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>8 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>8 / 16</span></div>
     </div>
 
     <!-- ═══ 8: MEMBERSHIP ═══ -->
@@ -429,7 +710,7 @@
                 <ul class="tier__list"><li>All Sariwang Himig perks</li><li>Full exclusive library</li><li>15% merch discount</li><li>Early event access</li><li>Direct engagement</li></ul>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>9 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>9 / 16</span></div>
     </div>
 
     <!-- ═══ 6: REVENUE ═══ -->
@@ -455,7 +736,7 @@
                 <div class="card"><h3 style="font-size:0.95rem;color:var(--purple-light);">Merch Store</h3><p>Unlimited products, direct-to-fan sales</p></div>
             </div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>10 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>10 / 16</span></div>
     </div>
 
     <!-- ═══ 7: MANAGEMENT ═══ -->
@@ -474,7 +755,7 @@
             <div class="tag">English</div><div class="tag">Filipino</div><div class="tag">Cebuano</div><div class="tag">Ilocano</div>
         </div>
         <p style="text-align:center;font-size:0.8rem;margin-top:8px;color:rgba(255,255,255,0.25);">Multi-language support across the Philippines</p>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>11 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>11 / 16</span></div>
     </div>
 
     <!-- ═══ 8: CUSTOMIZABLE ═══ -->
@@ -493,7 +774,78 @@
             <div class="tag">Live Streaming</div><div class="tag">Fan Voting</div><div class="tag">Events</div><div class="tag">Podcast</div><div class="tag">Meetups</div><div class="tag">Notifications</div><div class="tag">Mobile App</div>
             <div class="tag tag--gold">Anything Yeng Wants</div>
         </div>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>12 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>12 / 16</span></div>
+    </div>
+
+    <!-- ═══ DIGITAL CARDS — Intro ═══ -->
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1600&q=80');"></div>
+        <div class="eyebrow">Exclusive: Digital Collectibles</div>
+        <h2 class="gradient-text">Yeng Cards</h2>
+        <div class="divider"></div>
+        <div class="g2" style="margin-top:16px;align-items:center;">
+            <div>
+                <p style="margin-bottom:20px;">Limited-edition digital cards that fans can collect, trade, and redeem for real-world rewards. Each card commemorates a moment — a song, a tour, a milestone in Yeng's career.</p>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div class="card" style="padding:16px 18px;"><h3 style="color:var(--gold);font-size:1rem;">Limited Editions</h3><p style="font-size:0.85rem;">Numbered runs (1/100, 1/500) make each card a true collectible. Higher rarities = greater value.</p></div>
+                    <div class="card" style="padding:16px 18px;"><h3 style="color:var(--purple-light);font-size:1rem;">Real Rewards Built In</h3><p style="font-size:0.85rem;">Every card unlocks Yeng Credits, store discounts, ticket perks, and meet-and-greet privileges.</p></div>
+                    <div class="card" style="padding:16px 18px;"><h3 style="color:var(--pink);font-size:1rem;">Tradable & Ownable</h3><p style="font-size:0.85rem;">Fans truly own their cards — trade with other collectors, build a legacy collection over time.</p></div>
+                </div>
+                <div style="margin-top:24px;text-align:center;">
+                    <button class="pack-trigger-btn" onclick="openYengPack()">&#127873; Open a Pack</button>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:center;align-items:center;">
+                <div class="yc-card">
+                    <div class="yc-card__inner">
+                        <div class="yc-card__rarity">Epic</div>
+                        <div class="yc-card__num">1<small>/100</small></div>
+                        <div class="yc-card__photo">Yeng — Live in Pasay</div>
+                        <div>
+                            <div class="yc-card__name">Yeng Constantino</div>
+                            <div class="yc-card__divider"></div>
+                            <div class="yc-card__title">Live in Pasay</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>13 / 16</span></div>
+    </div>
+
+    <!-- ═══ DIGITAL CARDS — Perks ═══ -->
+    <div class="slide">
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80');"></div>
+        <div class="eyebrow">Cards Unlock More Than Art</div>
+        <h2>Real-World Value</h2>
+        <div class="divider" style="background:var(--gold);"></div>
+        <p style="max-width:700px;margin-bottom:24px;">Each card carries built-in perks. Collecting becomes more than a hobby — it becomes a direct path to deeper experiences with Yeng.</p>
+        <div class="g3">
+            <div class="card" style="text-align:center;">
+                <div class="stat__number" style="color:var(--gold);font-size:2.2rem;">500+</div>
+                <h3 style="font-size:1rem;margin-top:6px;">Yeng Credits</h3>
+                <p style="font-size:0.82rem;">Spendable on the platform — merch, exclusive content, premium features. Each card grants credits.</p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div class="stat__number" style="color:var(--pink);font-size:2.2rem;">15%</div>
+                <h3 style="font-size:1rem;margin-top:6px;">Store + Ticket Discounts</h3>
+                <p style="font-size:0.82rem;">Cardholders get automatic discounts on merch and concert tickets. Higher rarities = bigger savings.</p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div class="stat__number" style="color:var(--purple-light);font-size:2.2rem;">2x</div>
+                <h3 style="font-size:1rem;margin-top:6px;">Skip the Line</h3>
+                <p style="font-size:0.82rem;">Card owners skip the meet-and-greet line — twice. Real-world VIP access powered by digital ownership.</p>
+            </div>
+        </div>
+        <div style="margin-top:24px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <div class="tag">Merch Discounts</div>
+            <div class="tag">Ticket Perks</div>
+            <div class="tag">Meet & Greet Access</div>
+            <div class="tag">Trade with Fans</div>
+            <div class="tag">Yeng Credits</div>
+            <div class="tag tag--gold">Built for Yeng Nation</div>
+        </div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>14 / 16</span></div>
     </div>
 
     <!-- ═══ THE BIGGER PICTURE ═══ -->
@@ -521,7 +873,7 @@
             </div>
         </div>
         <p style="text-align:center;margin-top:24px;font-size:0.9rem;color:rgba(255,255,255,0.4);max-width:600px;margin-left:auto;margin-right:auto;">The artists who own their audience are the ones who build lasting careers. This platform makes that possible.</p>
-        <div class="slide-footer"><span>Yeng Constantino Official</span><span>13 / 14</span></div>
+        <div class="slide-footer"><span>Yeng Constantino Official</span><span>15 / 16</span></div>
     </div>
 
     <!-- ═══ CLOSING ═══ -->
@@ -534,7 +886,13 @@
             <div style="font-weight:700;font-size:1.1rem;">Yeng Constantino Official</div>
             <div style="font-size:0.95rem;color:rgba(255,255,255,0.65);margin-top:4px;">yengconstantino.netlify.app</div>
         </div>
-        <div class="slide-footer"><span></span><span>14 / 14</span></div>
+        <div class="slide-footer"><span></span><span>16 / 16</span></div>
+    </div>
+
+    <!-- ═══ PACK OPENING MODAL ═══ -->
+    <div class="pack-modal" id="packModal">
+        <button class="pack-modal__close" onclick="closePackModal()" aria-label="Close">&times;</button>
+        <div class="pack-container" id="packContainer"></div>
     </div>
 
     <script>
@@ -551,6 +909,94 @@
 
         document.querySelectorAll('.slide').forEach(function(slide) { observer.observe(slide); });
         document.querySelector('.slide').classList.add('in-view');
+
+        /* ── PACK OPENING ── */
+        function openYengPack() {
+            var modal = document.getElementById('packModal');
+            var content = document.getElementById('packContainer');
+
+            // Step 1: Show spinning pack
+            content.innerHTML =
+                '<div class="pack-3d">' +
+                    '<div class="pack-face">' +
+                        '<div class="pack-face__label">Yeng Cards</div>' +
+                        '<div class="pack-face__title">Live in Pasay</div>' +
+                        '<div class="pack-face__sub">Limited Edition Pack</div>' +
+                        '<div class="pack-face__opening">Opening...</div>' +
+                    '</div>' +
+                '</div>';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Step 2: Pack rip after 2s
+            setTimeout(function() { triggerPackRip(content); }, 2000);
+        }
+
+        function triggerPackRip(content) {
+            var pack = content.querySelector('.pack-3d');
+            if (pack) pack.classList.add('pack-rip');
+
+            // Particle explosion
+            for (var i = 0; i < 24; i++) {
+                var p = document.createElement('div');
+                p.className = 'rip-particle';
+                var angle = (Math.PI * 2 * i) / 24;
+                var dist = 200 + Math.random() * 120;
+                p.style.setProperty('--px', Math.cos(angle) * dist + 'px');
+                p.style.setProperty('--py', Math.sin(angle) * dist + 'px');
+                p.style.left = '50%';
+                p.style.top = '50%';
+                content.appendChild(p);
+                setTimeout(function(el) { return function() { el.remove(); }; }(p), 1000);
+            }
+
+            // Step 3: Reveal card after 0.6s
+            setTimeout(function() { revealCard(content); }, 600);
+        }
+
+        function revealCard(content) {
+            content.innerHTML =
+                '<div class="reveal-container">' +
+                    '<div class="card-flip-wrapper">' +
+                        '<div class="card-flip legendary-glow">' +
+                            '<div class="card-face card-face--back">YENG<br>CARDS</div>' +
+                            '<div class="card-face card-face--front">' +
+                                '<div class="yc-card">' +
+                                    '<div class="yc-card__inner">' +
+                                        '<div class="yc-card__rarity">Epic</div>' +
+                                        '<div class="yc-card__num">1<small>/100</small></div>' +
+                                        '<div class="yc-card__photo">Yeng — Live in Pasay</div>' +
+                                        '<div>' +
+                                            '<div class="yc-card__name">Yeng Constantino</div>' +
+                                            '<div class="yc-card__divider"></div>' +
+                                            '<div class="yc-card__title">Live in Pasay</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<button class="pack-continue-btn" onclick="closePackModal()">Continue</button>';
+
+            // Screen flash for legendary effect
+            setTimeout(function() {
+                var flash = document.createElement('div');
+                flash.className = 'screen-flash';
+                document.body.appendChild(flash);
+                setTimeout(function() { flash.remove(); }, 500);
+            }, 1000);
+        }
+
+        function closePackModal() {
+            document.getElementById('packModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ESC to close pack modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closePackModal();
+        });
     </script>
 </body>
 </html>
