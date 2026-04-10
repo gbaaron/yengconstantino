@@ -251,6 +251,210 @@
             background: linear-gradient(to right, transparent, var(--gold), transparent);
         }
 
+        /* ── Flippable Yeng Card (front + back) ── */
+        .yeng-card {
+            width: 260px;
+            aspect-ratio: 408 / 608;
+            perspective: 1600px;
+            cursor: pointer;
+            margin: 0 auto;
+            position: relative;
+        }
+        .yeng-card__inner {
+            position: relative; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .yeng-card.flipped .yeng-card__inner { transform: rotateY(180deg); }
+
+        .yeng-card__face {
+            position: absolute; inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--gold), #c9a800);
+            box-shadow: 0 0 24px rgba(187,0,255,0.35), 0 0 60px rgba(187,0,255,0.3), 0 20px 60px rgba(0,0,0,0.7);
+        }
+        .yeng-card__face--back { transform: rotateY(180deg); }
+
+        .yeng-card__body {
+            width: 100%; height: 100%; border-radius: 16px;
+            background: linear-gradient(160deg, #0a0a14 0%, #121225 50%, #0a0a14 100%);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            color: white;
+        }
+
+        /* Corner stars (decorative) */
+        .yeng-card__star {
+            position: absolute; width: 26px; height: 26px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 50%; opacity: 0.3;
+        }
+        .yeng-card__star::before {
+            content: ''; position: absolute; inset: 3px;
+            background: radial-gradient(circle, rgba(255,215,0,0.3), transparent 70%);
+            border-radius: 50%;
+        }
+        .yeng-card__star--tr { top: 12px; right: 12px; }
+        .yeng-card__star--bl { bottom: 12px; left: 12px; }
+
+        /* Holographic sheen */
+        .yeng-card__face::after {
+            content: ''; position: absolute; inset: 4px;
+            border-radius: 16px; pointer-events: none;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+            animation: holoSheen 4s ease-in-out infinite;
+        }
+        @keyframes holoSheen {
+            0%, 100% { transform: translateX(-20%); opacity: 0.3; }
+            50% { transform: translateX(20%); opacity: 0.6; }
+        }
+
+        /* FRONT */
+        .yeng-card__rarity {
+            position: absolute; top: 14px; left: 14px;
+            font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 800;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: #bb00ff;
+            padding: 4px 9px; border: 1px solid rgba(187,0,255,0.4);
+            border-radius: 4px;
+            background: rgba(187,0,255,0.08);
+            z-index: 2;
+        }
+        .yeng-card__num-top {
+            position: absolute; top: 14px; right: 14px;
+            font-family: 'Playfair Display', serif; font-weight: 700;
+            color: var(--gold); z-index: 2;
+            text-align: right; line-height: 1;
+        }
+        .yeng-card__num-top .big { font-size: 1.3rem; }
+        .yeng-card__num-top .big span { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+        .yeng-card__num-top .small {
+            font-size: 0.55rem; letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.35); text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .yeng-card__photo {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 35%, rgba(187,0,255,0.4), transparent 60%),
+                        linear-gradient(170deg, #2D1B69 0%, #BE185D 50%, #E5A00D 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-style: italic;
+            color: rgba(255,255,255,0.35); font-size: 0.85rem;
+        }
+        .yeng-card__photo::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(to top, rgba(10,10,20,0.95), transparent);
+        }
+        .yeng-card__footer {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 16px 14px 18px; text-align: center;
+            z-index: 2;
+        }
+        .yeng-card__name {
+            font-family: 'Inter', sans-serif; font-weight: 700;
+            font-size: 1.15rem; letter-spacing: 0.04em;
+            text-transform: uppercase; line-height: 1;
+            color: white;
+        }
+        .yeng-card__ornament {
+            width: 40%; height: 1px; margin: 8px auto;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+        .yeng-card__title {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-weight: 500; font-size: 0.82rem;
+            color: var(--gold); letter-spacing: 0.02em;
+        }
+
+        /* BACK */
+        .yeng-card__back-content {
+            position: relative; width: 100%; height: 100%;
+            padding: 24px 20px 18px;
+            display: flex; flex-direction: column;
+            z-index: 2;
+        }
+        .yeng-card__logo {
+            text-align: center; margin-bottom: 8px;
+        }
+        .yeng-card__logo-box {
+            display: inline-block; width: 42px; height: 42px; border-radius: 9px;
+            background: linear-gradient(135deg, var(--gold), #c9a800);
+            color: #0a0a14; font-family: 'Inter', sans-serif; font-weight: 800;
+            font-size: 1.4rem; line-height: 42px; text-align: center;
+            box-shadow: 0 4px 12px rgba(255,215,0,0.3);
+        }
+        .yeng-card__top-divider {
+            height: 1px; margin: 6px 0 14px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+        .yeng-card__back-name {
+            text-align: center; margin-bottom: 12px;
+        }
+        .yeng-card__back-name h4 {
+            font-family: 'Inter', sans-serif; font-weight: 700;
+            font-size: 1rem; letter-spacing: 0.06em;
+            text-transform: uppercase; line-height: 1; margin-bottom: 5px;
+            color: white;
+        }
+        .yeng-card__back-name span {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 0.78rem; color: var(--gold);
+        }
+        .yeng-card__bio-panel {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 12px 13px;
+            flex: 1;
+            margin-bottom: 10px;
+        }
+        .yeng-card__bio-label {
+            font-family: 'Inter', sans-serif; font-size: 0.55rem;
+            letter-spacing: 0.18em; color: var(--gold);
+            text-transform: uppercase; font-weight: 700; margin-bottom: 6px;
+        }
+        .yeng-card__bio-text {
+            font-size: 0.72rem; line-height: 1.45;
+            color: rgba(255,255,255,0.75);
+        }
+        .yeng-card__perk {
+            margin-top: 8px;
+            padding: 8px 10px; border-radius: 6px;
+            background: rgba(187,0,255,0.1);
+            border: 1px solid rgba(187,0,255,0.25);
+            font-size: 0.65rem; line-height: 1.4;
+            color: rgba(255,255,255,0.85);
+        }
+        .yeng-card__perk strong {
+            color: #d67aff; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.6rem;
+        }
+        .yeng-card__bottom-row {
+            display: flex; align-items: flex-end; justify-content: space-between;
+        }
+        .yeng-card__rarity-back {
+            font-family: 'Inter', sans-serif; font-size: 0.55rem;
+            letter-spacing: 0.15em; color: #bb00ff;
+            text-transform: uppercase; font-weight: 700;
+        }
+        .yeng-card__num-back {
+            font-family: 'Inter', sans-serif; font-weight: 700; line-height: 1;
+        }
+        .yeng-card__num-back .n { color: #bb00ff; font-size: 1.2rem; }
+        .yeng-card__num-back .s { color: rgba(255,255,255,0.3); font-size: 0.9rem; margin: 0 2px; }
+        .yeng-card__num-back .t { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
+
+        /* Flip hint below card */
+        .yeng-card-hint {
+            text-align: center; margin-top: 16px;
+            font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+            color: rgba(255,255,255,0.4); font-weight: 600;
+            animation: hintPulse 2s ease-in-out infinite;
+        }
+        @keyframes hintPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+
         /* ── Pack Opening Modal ── */
         .pack-modal {
             display: none;
@@ -779,7 +983,7 @@
 
     <!-- ═══ DIGITAL CARDS — Intro ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1755152825416-a7b660d3bf1c?w=1600&q=80');"></div>
         <div class="eyebrow">Exclusive: Digital Collectibles</div>
         <h2 class="gradient-text">Yeng Cards</h2>
         <div class="divider"></div>
@@ -795,19 +999,59 @@
                     <button class="pack-trigger-btn" onclick="openYengPack()">&#127873; Open a Pack</button>
                 </div>
             </div>
-            <div style="display:flex;justify-content:center;align-items:center;">
-                <div class="yc-card">
-                    <div class="yc-card__inner">
-                        <div class="yc-card__rarity">Epic</div>
-                        <div class="yc-card__num">1<small>/100</small></div>
-                        <div class="yc-card__photo">Yeng — Live in Pasay</div>
-                        <div>
-                            <div class="yc-card__name">Yeng Constantino</div>
-                            <div class="yc-card__divider"></div>
-                            <div class="yc-card__title">Live in Pasay</div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
+                <div class="yeng-card" onclick="this.classList.toggle('flipped')">
+                    <div class="yeng-card__inner">
+                        <!-- FRONT -->
+                        <div class="yeng-card__face yeng-card__face--front">
+                            <div class="yeng-card__body">
+                                <div class="yeng-card__star yeng-card__star--tr"></div>
+                                <div class="yeng-card__star yeng-card__star--bl"></div>
+                                <div class="yeng-card__photo"><span>Yeng — Live in Pasay</span></div>
+                                <div class="yeng-card__rarity">Legendary</div>
+                                <div class="yeng-card__num-top">
+                                    <div class="big">1<span>/25</span></div>
+                                    <div class="small">Card No.</div>
+                                </div>
+                                <div class="yeng-card__footer">
+                                    <div class="yeng-card__name">Yeng Constantino</div>
+                                    <div class="yeng-card__ornament"></div>
+                                    <div class="yeng-card__title">Live in Pasay</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BACK -->
+                        <div class="yeng-card__face yeng-card__face--back">
+                            <div class="yeng-card__body">
+                                <div class="yeng-card__star yeng-card__star--tr"></div>
+                                <div class="yeng-card__star yeng-card__star--bl"></div>
+                                <div class="yeng-card__back-content">
+                                    <div class="yeng-card__logo">
+                                        <div class="yeng-card__logo-box">Gb</div>
+                                    </div>
+                                    <div class="yeng-card__top-divider"></div>
+                                    <div class="yeng-card__back-name">
+                                        <h4>Yeng Constantino</h4>
+                                        <span>Live in Pasay</span>
+                                    </div>
+                                    <div class="yeng-card__bio-panel">
+                                        <div class="yeng-card__bio-label">About This Card</div>
+                                        <div class="yeng-card__bio-text">A once-in-a-generation voice. This card captures a moment from one of the most iconic live performances of her career.</div>
+                                        <div class="yeng-card__perk"><strong>Bonus Perk</strong><br>Scan to skip the meet-and-greet line, up to 2 times. Unlocks 500 Yeng Credits.</div>
+                                    </div>
+                                    <div class="yeng-card__bottom-row">
+                                        <div>
+                                            <div class="yeng-card__rarity-back">Legendary</div>
+                                            <div class="yeng-card__num-back"><span class="n">1</span><span class="s">/</span><span class="t">25</span></div>
+                                        </div>
+                                        <div style="width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--gold),#c9a800);color:#0a0a14;font-family:'Inter',sans-serif;font-weight:800;font-size:0.85rem;line-height:28px;text-align:center;opacity:0.4;">Gb</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="yeng-card-hint">Click to flip</div>
             </div>
         </div>
         <div class="slide-footer"><span>Yeng Constantino Official</span><span>13 / 16</span></div>
@@ -963,8 +1207,8 @@
                             '<div class="card-face card-face--front">' +
                                 '<div class="yc-card">' +
                                     '<div class="yc-card__inner">' +
-                                        '<div class="yc-card__rarity">Epic</div>' +
-                                        '<div class="yc-card__num">1<small>/100</small></div>' +
+                                        '<div class="yc-card__rarity" style="color:#bb00ff;">Legendary</div>' +
+                                        '<div class="yc-card__num">1<small>/25</small></div>' +
                                         '<div class="yc-card__photo">Yeng — Live in Pasay</div>' +
                                         '<div>' +
                                             '<div class="yc-card__name">Yeng Constantino</div>' +
@@ -977,7 +1221,25 @@
                         '</div>' +
                     '</div>' +
                 '</div>' +
+                '<p style="margin-top:20px;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);text-align:center;">Tap card to flip &middot; View bonus perks on the back</p>' +
                 '<button class="pack-continue-btn" onclick="closePackModal()">Continue</button>';
+
+            // Make the revealed card flippable on click
+            setTimeout(function() {
+                var revealedCard = content.querySelector('.card-flip-wrapper');
+                if (revealedCard) {
+                    revealedCard.style.cursor = 'pointer';
+                    revealedCard.addEventListener('click', function() {
+                        var flip = this.querySelector('.card-flip');
+                        if (flip) {
+                            flip.style.transition = 'transform 0.8s cubic-bezier(0.4,0,0.2,1)';
+                            flip.style.transform = flip.style.transform.indexOf('180') > -1
+                                ? 'rotateY(0deg)' : 'rotateY(180deg)';
+                        }
+                    });
+                }
+            }, 1200);
+        }
 
             // Screen flash for legendary effect
             setTimeout(function() {
