@@ -947,20 +947,35 @@ private struct HoloCardTile: View {
     var body: some View {
         let radius = width * 0.09
         ZStack {
-            // Base brand gradient
+            // Base brand gradient (fallback behind the photo)
             RoundedRectangle(cornerRadius: radius, style: .continuous)
                 .fill(LinearGradient(colors: [.yengPurpleDeep, .yengPurple, .yengMagenta],
                                      startPoint: .top, endPoint: .bottom))
+
+            // Real card photo — full-bleed, top-aligned (matches the .card-photo crop)
+            Image("YengCardPhoto")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: height, alignment: .top)
+                .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+
+            // Bottom scrim so the name/rarity text stays legible over the photo
+            RoundedRectangle(cornerRadius: radius, style: .continuous)
+                .fill(LinearGradient(
+                    colors: [.clear, .clear, Color.yengPurpleDeep.opacity(0.35),
+                             Color.yengPurpleDeep.opacity(0.85)],
+                    startPoint: .top, endPoint: .bottom))
+
             // Holographic diagonal sheen
             RoundedRectangle(cornerRadius: radius, style: .continuous)
                 .fill(LinearGradient(
-                    colors: [.clear, Color.white.opacity(0.4), .clear,
-                             Color.yengMagenta.opacity(0.35), .clear,
-                             Color.white.opacity(0.25), .clear],
+                    colors: [.clear, Color.white.opacity(0.28), .clear,
+                             Color.yengMagenta.opacity(0.22), .clear,
+                             Color.white.opacity(0.18), .clear],
                     startPoint: .topLeading, endPoint: .bottomTrailing))
                 .blendMode(.softLight)
             // Corner glow
-            RadialGradient(colors: [Color.white.opacity(0.35), .clear],
+            RadialGradient(colors: [Color.white.opacity(0.28), .clear],
                            center: .topLeading, startRadius: 1, endRadius: width * 0.8)
                 .blendMode(.softLight)
 
@@ -989,32 +1004,18 @@ private struct HoloCardTile: View {
                 }
                 Spacer(minLength: 0)
 
-                // Center emblem — concentric holo star
-                ZStack {
-                    Circle()
-                        .fill(RadialGradient(colors: [Color.white.opacity(0.35), .clear],
-                                             center: .center, startRadius: 1, endRadius: width * 0.4))
-                    Circle().stroke(Color.yengGoldLight.opacity(0.6), lineWidth: width * 0.008)
-                        .frame(width: width * 0.5, height: width * 0.5)
-                    Image(systemName: "star.fill")
-                        .font(.system(size: width * 0.32, weight: .bold))
-                        .foregroundStyle(LinearGradient(colors: [.yengGoldLight, .yengGold],
-                                                        startPoint: .top, endPoint: .bottom))
-                        .shadow(color: .yengMagenta.opacity(0.6), radius: width * 0.03)
-                }
-
-                Spacer(minLength: 0)
-
-                // Name block
+                // Name block (overlaid on the photo, over the bottom scrim)
                 VStack(spacing: width * 0.012) {
                     Text(card.title)
                         .font(.system(size: width * 0.088, weight: .bold, design: .serif))
                         .foregroundColor(.white)
                         .lineLimit(1).minimumScaleFactor(0.7)
+                        .shadow(color: .black.opacity(0.6), radius: width * 0.02)
                     Text(card.subject.uppercased())
                         .font(.system(size: width * 0.05, weight: .semibold)).tracking(width * 0.006)
-                        .foregroundColor(.white.opacity(0.8))
+                        .foregroundColor(.white.opacity(0.9))
                         .lineLimit(1).minimumScaleFactor(0.7)
+                        .shadow(color: .black.opacity(0.6), radius: width * 0.02)
                 }
             }
             .padding(width * 0.11)
