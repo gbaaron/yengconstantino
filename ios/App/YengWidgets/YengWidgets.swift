@@ -1048,11 +1048,14 @@ struct CardsWidgetView: View {
         }
     }
 
-    // Small: a single card, centered.
+    // Small: a single card sized to fill the widget as large as it can while
+    // keeping the full 408×608 aspect (never overflow / clip the small tile).
     private var small: some View {
-        HoloCardTile(card: entry.cards[0], width: 92)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(8)
+        GeometryReader { geo in
+            let w = min(geo.size.width, geo.size.height / 1.49)
+            HoloCardTile(card: entry.cards[0], width: w)
+                .frame(width: geo.size.width, height: geo.size.height)
+        }
     }
 
     // Medium: card on the left, collection info on the right.
