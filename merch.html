@@ -271,8 +271,16 @@
         .filter-pills {
             display: flex;
             gap: var(--space-sm);
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             list-style: none;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-pills::-webkit-scrollbar {
+            display: none;
         }
 
         .filter-pill {
@@ -286,6 +294,8 @@
             border-radius: var(--radius-full);
             cursor: pointer;
             transition: all 0.15s ease;
+            white-space: nowrap;
+            flex: 0 0 auto;
         }
 
         .filter-pill:hover {
@@ -1058,7 +1068,7 @@
 
 <!-- Floating Cart Button -->
 <button class="cart-fab" id="cart-fab" onclick="toggleCart()" aria-label="Open Cart">
-    <span>&#128722;</span>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     <span class="cart-fab__badge" id="cart-badge" style="display:none;">0</span>
 </button>
 
@@ -1073,7 +1083,7 @@
     </div>
     <div class="cart-sidebar__items" id="cart-items">
         <div class="cart-sidebar__empty" id="cart-empty">
-            <div class="cart-sidebar__empty-icon">&#128722;</div>
+            <div class="cart-sidebar__empty-icon"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
             <p>Your cart is empty</p>
             <p style="font-size:0.85rem;margin-top:8px;color:var(--gray-300);">Browse our merch and add something you love!</p>
         </div>
@@ -1180,6 +1190,46 @@ let cart = [];
 let currentCategory = '';
 let currentSort = 'newest';
 
+/* ── Branded product art (no external images, self-contained SVG) ── */
+function productArt(label, c1, c2) {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640">'
+        + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+        + '<stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs>'
+        + '<rect width="640" height="640" fill="url(#g)"/>'
+        + '<circle cx="512" cy="128" r="220" fill="rgba(255,255,255,0.08)"/>'
+        + '<circle cx="120" cy="540" r="160" fill="rgba(0,0,0,0.10)"/>'
+        + '<text x="320" y="300" font-family="Playfair Display, Georgia, serif" font-size="120" font-weight="700" fill="#ffffff" text-anchor="middle">YENG</text>'
+        + '<text x="320" y="360" font-family="Inter, Arial, sans-serif" font-size="30" letter-spacing="8" fill="rgba(255,255,255,0.85)" text-anchor="middle">OFFICIAL MERCH</text>'
+        + '<text x="320" y="470" font-family="Inter, Arial, sans-serif" font-size="26" letter-spacing="3" fill="rgba(255,255,255,0.92)" text-anchor="middle">' + label + '</text>'
+        + '</svg>';
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+
+/* ── Seeded catalog (shown when the store API is empty or offline) ── */
+const FALLBACK_PRODUCTS = [
+    { id: 'yc-tee-nation', name: 'Yeng Nation Classic Tee', category: 'Apparel', price: 650, sizes: ['S', 'M', 'L', 'XL'], status: 'Active', image: productArt('CLASSIC TEE', '#6C2BD9', '#8B5CF6') },
+    { id: 'yc-hoodie-hawak', name: 'Hawak Kamay Pullover Hoodie', category: 'Apparel', price: 1250, comparePrice: 1500, sizes: ['S', 'M', 'L', 'XL'], badge: 'BESTSELLER', status: 'Active', image: productArt('PULLOVER HOODIE', '#BE185D', '#8B5CF6') },
+    { id: 'yc-print-ikaw', name: 'Ikaw Lyric Art Print (A3)', category: 'Prints', price: 350, status: 'Active', image: productArt('LYRIC ART PRINT', '#E5A00D', '#FBBF24') },
+    { id: 'yc-poster-tour', name: 'Yeng Live Tour Poster', category: 'Prints', price: 400, status: 'Active', image: productArt('TOUR POSTER', '#6C2BD9', '#BE185D') },
+    { id: 'yc-tote-nation', name: 'Yeng Nation Canvas Tote', category: 'Accessories', price: 450, status: 'Active', image: productArt('CANVAS TOTE', '#E5A00D', '#6C2BD9') },
+    { id: 'yc-cap-yabo', name: 'Yabo Records Dad Cap', category: 'Accessories', price: 550, status: 'Active', image: productArt('DAD CAP', '#8B5CF6', '#BE185D') },
+    { id: 'yc-stickers-pack', name: 'Yeng Sticker Pack (6 pcs)', category: 'Stickers', price: 180, status: 'Active', image: productArt('STICKER PACK', '#FBBF24', '#E5A00D') },
+    { id: 'yc-sticker-notes', name: 'Musical Notes Vinyl Stickers', category: 'Stickers', price: 150, status: 'Active', image: productArt('VINYL STICKERS', '#8B5CF6', '#6C2BD9') },
+    { id: 'yc-vinyl-salamat', name: 'Salamat 15th Anniversary Vinyl', category: 'Limited Drops', price: 1800, badge: 'LIMITED', isLimitedDrop: true, status: 'Active', image: productArt('ANNIVERSARY VINYL', '#E5A00D', '#BE185D') }
+];
+
+function renderFallbackProducts() {
+    let items = FALLBACK_PRODUCTS.slice();
+    if (currentCategory) {
+        items = items.filter(p => (Array.isArray(p.category) ? p.category : [p.category])
+            .some(c => String(c).toLowerCase() === currentCategory.toLowerCase()));
+    }
+    if (currentSort === 'price-low') items.sort((a, b) => a.price - b.price);
+    else if (currentSort === 'price-high') items.sort((a, b) => b.price - a.price);
+    products = items;
+    renderProducts(products);
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
     loadProducts();
@@ -1198,18 +1248,17 @@ async function loadProducts() {
 
         const data = await api(`get-merch?${params}`);
         products = data.products || [];
+        if (!products.length) {
+            renderFallbackProducts();
+            checkLimitedDrops(products);
+            return;
+        }
         renderProducts(products);
         checkLimitedDrops(products);
     } catch (err) {
-        console.error('Failed to load products:', err);
-        document.getElementById('merch-grid').innerHTML = `
-            <div class="empty-state" style="grid-column:1/-1;">
-                <div class="empty-state__icon">&#128722;</div>
-                <h3 class="empty-state__title">Oops! Could not load products</h3>
-                <p class="empty-state__text">Please try refreshing the page.</p>
-                <button class="product-card__cart-btn" style="max-width:200px;margin:0 auto;" onclick="loadProducts()">Retry</button>
-            </div>
-        `;
+        console.warn('Merch API unavailable, using seeded catalog:', err);
+        renderFallbackProducts();
+        checkLimitedDrops(products);
     }
 }
 
@@ -1220,7 +1269,7 @@ function renderProducts(items) {
     if (!items || items.length === 0) {
         grid.innerHTML = `
             <div class="empty-state" style="grid-column:1/-1;">
-                <div class="empty-state__icon">&#128085;</div>
+                <div class="empty-state__icon"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></div>
                 <h3 class="empty-state__title">No products found</h3>
                 <p class="empty-state__text">Check back soon for new merch drops!</p>
             </div>
@@ -1243,7 +1292,7 @@ function renderProducts(items) {
                     ${isSoldOut ? '<div class="product-card__sold-out"><span>SOLD OUT</span></div>' : ''}
                     ${hasImage
                         ? `<img class="product-card__image" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy">`
-                        : '<div class="product-card__placeholder">&#128085;</div>'
+                        : '<div class="product-card__placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></div>'
                     }
                 </div>
                 <div class="product-card__body">
@@ -1370,7 +1419,7 @@ function renderCart() {
         <div class="cart-item">
             ${item.image
                 ? `<img class="cart-item__image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">`
-                : '<div class="cart-item__image" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--gray-300);">&#128085;</div>'
+                : '<div class="cart-item__image" style="display:flex;align-items:center;justify-content:center;color:var(--gray-300);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></div>'
             }
             <div class="cart-item__info">
                 <div class="cart-item__name">${escapeHtml(item.name)}</div>

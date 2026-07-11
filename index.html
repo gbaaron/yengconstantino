@@ -249,9 +249,10 @@
 
         .music-card__image {
             width: 100%;
-            aspect-ratio: 16/9;
+            aspect-ratio: 1/1;
             object-fit: cover;
-            background: linear-gradient(135deg, rgba(108,43,217,0.1), rgba(190,24,93,0.1));
+            display: block;
+            background: #2A0F52;
         }
 
         .music-card__body {
@@ -287,11 +288,124 @@
             line-height: 1.6;
         }
 
-        .music-card__stars {
-            margin-top: var(--space-sm);
-            color: #E5A00D;
-            font-size: 0.9rem;
+        /* Dual rating rows */
+        .music-card__ratings {
+            margin-top: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-row__label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6B5D50;
+            width: 68px;
+            flex-shrink: 0;
+        }
+
+        .stars {
+            position: relative;
+            display: inline-block;
+            font-size: 0.95rem;
+            line-height: 1;
             letter-spacing: 2px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .stars__base {
+            color: #E2DCEF;
+        }
+
+        .stars__fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            color: #E5A00D;
+        }
+
+        .rating-row__count {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.74rem;
+            color: #9A8C7D;
+        }
+
+        /* Streaming buttons */
+        .music-card__actions {
+            margin-top: var(--space-lg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stream-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 8px;
+            border-radius: var(--radius-full);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: 1.5px solid transparent;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .stream-btn svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .stream-btn--spotify {
+            background: #1DB954;
+            color: #FFFFFF;
+        }
+
+        .stream-btn--spotify:hover {
+            background: #1AA34A;
+            transform: translateY(-1px);
+        }
+
+        .stream-btn--youtube {
+            background: #FFFFFF;
+            color: #1A1A2E;
+            border-color: #E2DCEF;
+        }
+
+        .stream-btn--youtube:hover {
+            border-color: #FF0000;
+            transform: translateY(-1px);
+        }
+
+        /* Rating legend under section header */
+        .rating-legend {
+            margin-top: var(--space-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            color: #6B5D50;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .rating-legend strong {
+            color: #6C2BD9;
         }
 
         /* About */
@@ -606,43 +720,100 @@
             <div class="section-header">
                 <span class="section-header__eyebrow">Pakinggan Mo</span>
                 <h2 class="section-header__title">Featured Music</h2>
+                <p class="rating-legend">Every song carries two scores out of <strong>5 stars</strong> &mdash; <strong>Yeng's Pick</strong> is how Yeng herself rates it, and <strong>Fans</strong> is the average rating from Yeng Nation. Tap a button to play the song on Spotify or YouTube.</p>
             </div>
             <div class="music-grid" id="featured-music-grid">
-                <!-- Hardcoded featured songs (self-contained SVG covers, render offline) -->
+                <!-- Hardcoded featured songs (self-contained square SVG covers, render offline) -->
                 <div class="music-card">
-                    <img class="music-card__image" alt="Ikaw — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20338'%3E%3Cdefs%3E%3ClinearGradient%20id='ik'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%232A0F52'/%3E%3Cstop%20offset='0.5'%20stop-color='%23BE185D'/%3E%3Cstop%20offset='1'%20stop-color='%23E5A00D'/%3E%3C/linearGradient%3E%3CradialGradient%20id='ikg1'%20cx='0.25'%20cy='0.3'%20r='0.5'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.3'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient%20id='ikg2'%20cx='0.82'%20cy='0.78'%20r='0.55'%3E%3Cstop%20offset='0'%20stop-color='%23FFD68C'%20stop-opacity='0.45'/%3E%3Cstop%20offset='1'%20stop-color='%23FFD68C'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='338'%20fill='url(%23ik)'/%3E%3Crect%20width='600'%20height='338'%20fill='url(%23ikg1)'/%3E%3Crect%20width='600'%20height='338'%20fill='url(%23ikg2)'/%3E%3Cg%20fill='%23ffffff'%3E%3Ccircle%20cx='90'%20cy='250'%20r='40'%20opacity='0.05'/%3E%3Ccircle%20cx='500'%20cy='80'%20r='55'%20opacity='0.05'/%3E%3Ccircle%20cx='430'%20cy='270'%20r='20'%20opacity='0.07'/%3E%3C/g%3E%3Ccircle%20cx='278'%20cy='165'%20r='50'%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.85'%20stroke-width='4'/%3E%3Ccircle%20cx='330'%20cy='173'%20r='50'%20fill='none'%20stroke='%23FFE9A8'%20stroke-opacity='0.9'%20stroke-width='4'/%3E%3C/svg%3E">
+                    <img class="music-card__image" alt="Ikaw — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20600'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%232A0F52'/%3E%3Cstop%20offset='1'%20stop-color='%23BE185D'/%3E%3C/linearGradient%3E%3CradialGradient%20id='s'%20cx='0.28'%20cy='0.24'%20r='0.6'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.25'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='600'%20fill='url(%23g)'/%3E%3Crect%20width='600'%20height='600'%20fill='url(%23s)'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='210'%20fill='%23140A2E'/%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.07'%20stroke-width='2'%3E%3Ccircle%20cx='300'%20cy='300'%20r='192'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='172'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='152'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='132'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='112'/%3E%3C/g%3E%3Ccircle%20cx='300'%20cy='300'%20r='68'%20fill='%23E5A00D'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='9'%20fill='%23140A2E'/%3E%3C/svg%3E">
                     <div class="music-card__body">
                         <span class="music-card__tag">Original</span>
                         <h3 class="music-card__title">Ikaw</h3>
                         <p class="music-card__desc">Her timeless wedding anthem and one of OPM's most-requested love songs.</p>
-                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <div class="music-card__ratings">
+                            <div class="rating-row">
+                                <span class="rating-row__label">Yeng's Pick</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:100%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-row__label">Fans</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:98%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                                <span class="rating-row__count">4.9 &middot; 3.2k</span>
+                            </div>
+                        </div>
+                        <div class="music-card__actions">
+                            <a class="stream-btn stream-btn--spotify" href="https://open.spotify.com/search/Yeng%20Constantino%20Ikaw" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.59 14.42a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.09-.5 9.72 1.1.29.18.38.56.21.86zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.83c-3.23-1.92-8.56-2.1-11.64-1.16a.94.94 0 1 1-.54-1.8c3.54-1.07 9.42-.86 13.14 1.35a.94.94 0 0 1-.96 1.61z"/></svg>Spotify</a>
+                            <a class="stream-btn stream-btn--youtube" href="https://www.youtube.com/results?search_query=Yeng+Constantino+Ikaw" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/><path fill="#ffffff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>YouTube</a>
+                        </div>
                     </div>
                 </div>
                 <div class="music-card">
-                    <img class="music-card__image" alt="Hawak Kamay — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20338'%3E%3Cdefs%3E%3ClinearGradient%20id='hk'%20x1='0'%20y1='1'%20x2='0.3'%20y2='0'%3E%3Cstop%20offset='0'%20stop-color='%23E5A00D'/%3E%3Cstop%20offset='0.45'%20stop-color='%236C2BD9'/%3E%3Cstop%20offset='1'%20stop-color='%232A0F52'/%3E%3C/linearGradient%3E%3CradialGradient%20id='hksun'%20cx='0.5'%20cy='1'%20r='0.6'%3E%3Cstop%20offset='0'%20stop-color='%23FFE1A8'%20stop-opacity='0.7'/%3E%3Cstop%20offset='1'%20stop-color='%23FFE1A8'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='338'%20fill='url(%23hk)'/%3E%3Cg%20stroke='%23ffffff'%20stroke-opacity='0.12'%20stroke-width='3'%3E%3Cline%20x1='300'%20y1='338'%20x2='120'%20y2='40'/%3E%3Cline%20x1='300'%20y1='338'%20x2='220'%20y2='10'/%3E%3Cline%20x1='300'%20y1='338'%20x2='300'%20y2='0'/%3E%3Cline%20x1='300'%20y1='338'%20x2='380'%20y2='10'/%3E%3Cline%20x1='300'%20y1='338'%20x2='480'%20y2='40'/%3E%3C/g%3E%3Crect%20width='600'%20height='338'%20fill='url(%23hksun)'/%3E%3C/svg%3E">
+                    <img class="music-card__image" alt="Hawak Kamay — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20600'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='1'%20x2='0.3'%20y2='0'%3E%3Cstop%20offset='0'%20stop-color='%23E5A00D'/%3E%3Cstop%20offset='1'%20stop-color='%232A0F52'/%3E%3C/linearGradient%3E%3CradialGradient%20id='s'%20cx='0.28'%20cy='0.24'%20r='0.6'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.25'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='600'%20fill='url(%23g)'/%3E%3Crect%20width='600'%20height='600'%20fill='url(%23s)'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='210'%20fill='%23140A2E'/%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.07'%20stroke-width='2'%3E%3Ccircle%20cx='300'%20cy='300'%20r='192'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='172'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='152'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='132'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='112'/%3E%3C/g%3E%3Ccircle%20cx='300'%20cy='300'%20r='68'%20fill='%23FFE9A8'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='9'%20fill='%23140A2E'/%3E%3C/svg%3E">
                     <div class="music-card__body">
                         <span class="music-card__tag">Original</span>
                         <h3 class="music-card__title">Hawak Kamay</h3>
                         <p class="music-card__desc">A soaring reminder that no one walks alone — a Yeng Nation favorite.</p>
-                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <div class="music-card__ratings">
+                            <div class="rating-row">
+                                <span class="rating-row__label">Yeng's Pick</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:100%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-row__label">Fans</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:96%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                                <span class="rating-row__count">4.8 &middot; 2.7k</span>
+                            </div>
+                        </div>
+                        <div class="music-card__actions">
+                            <a class="stream-btn stream-btn--spotify" href="https://open.spotify.com/search/Yeng%20Constantino%20Hawak%20Kamay" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.59 14.42a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.09-.5 9.72 1.1.29.18.38.56.21.86zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.83c-3.23-1.92-8.56-2.1-11.64-1.16a.94.94 0 1 1-.54-1.8c3.54-1.07 9.42-.86 13.14 1.35a.94.94 0 0 1-.96 1.61z"/></svg>Spotify</a>
+                            <a class="stream-btn stream-btn--youtube" href="https://www.youtube.com/results?search_query=Yeng+Constantino+Hawak+Kamay" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/><path fill="#ffffff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>YouTube</a>
+                        </div>
                     </div>
                 </div>
                 <div class="music-card">
-                    <img class="music-card__image" alt="Chinita Girl — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20338'%3E%3Cdefs%3E%3ClinearGradient%20id='cg'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23E5A00D'/%3E%3Cstop%20offset='0.5'%20stop-color='%23E5486B'/%3E%3Cstop%20offset='1'%20stop-color='%236C2BD9'/%3E%3C/linearGradient%3E%3CradialGradient%20id='cgglow'%20cx='0.7'%20cy='0.3'%20r='0.6'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.35'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='338'%20fill='url(%23cg)'/%3E%3Crect%20width='600'%20height='338'%20fill='url(%23cgglow)'/%3E%3Cg%20fill='%23ffffff'%3E%3Ccircle%20cx='120'%20cy='90'%20r='6'%20opacity='0.8'/%3E%3Ccircle%20cx='480'%20cy='250'%20r='5'%20opacity='0.7'/%3E%3Ccircle%20cx='250'%20cy='262'%20r='4'%20opacity='0.6'/%3E%3Ccircle%20cx='400'%20cy='70'%20r='7'%20opacity='0.85'/%3E%3Ccircle%20cx='90'%20cy='200'%20r='3'%20opacity='0.5'/%3E%3Ccircle%20cx='530'%20cy='140'%20r='4'%20opacity='0.6'/%3E%3C/g%3E%3Cg%20fill='%23FFE9A8'%3E%3Cpath%20d='M300%20118%20l7%2020%2021%202%20-16%2014%205%2021%20-17%20-12%20-17%2012%205%20-21%20-16%20-14%2021%20-2z'%20opacity='0.9'/%3E%3Cpath%20d='M180%20178%20l4%2011%2012%201%20-9%208%203%2012%20-10%20-7%20-10%207%203%20-12%20-9%20-8%2012%20-1z'%20opacity='0.7'/%3E%3C/g%3E%3C/svg%3E">
+                    <img class="music-card__image" alt="Chinita Girl — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20600'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23E5486B'/%3E%3Cstop%20offset='1'%20stop-color='%236C2BD9'/%3E%3C/linearGradient%3E%3CradialGradient%20id='s'%20cx='0.28'%20cy='0.24'%20r='0.6'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.25'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='600'%20fill='url(%23g)'/%3E%3Crect%20width='600'%20height='600'%20fill='url(%23s)'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='210'%20fill='%23140A2E'/%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.07'%20stroke-width='2'%3E%3Ccircle%20cx='300'%20cy='300'%20r='192'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='172'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='152'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='132'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='112'/%3E%3C/g%3E%3Ccircle%20cx='300'%20cy='300'%20r='68'%20fill='%23FFE9A8'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='9'%20fill='%23140A2E'/%3E%3C/svg%3E">
                     <div class="music-card__body">
                         <span class="music-card__tag">Original</span>
                         <h3 class="music-card__title">Chinita Girl</h3>
                         <p class="music-card__desc">Bright, playful pop that became an instant sing-along classic.</p>
-                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                        <div class="music-card__ratings">
+                            <div class="rating-row">
+                                <span class="rating-row__label">Yeng's Pick</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:80%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-row__label">Fans</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:92%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                                <span class="rating-row__count">4.6 &middot; 1.9k</span>
+                            </div>
+                        </div>
+                        <div class="music-card__actions">
+                            <a class="stream-btn stream-btn--spotify" href="https://open.spotify.com/search/Yeng%20Constantino%20Chinita%20Girl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.59 14.42a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.09-.5 9.72 1.1.29.18.38.56.21.86zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.83c-3.23-1.92-8.56-2.1-11.64-1.16a.94.94 0 1 1-.54-1.8c3.54-1.07 9.42-.86 13.14 1.35a.94.94 0 0 1-.96 1.61z"/></svg>Spotify</a>
+                            <a class="stream-btn stream-btn--youtube" href="https://www.youtube.com/results?search_query=Yeng+Constantino+Chinita+Girl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/><path fill="#ffffff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>YouTube</a>
+                        </div>
                     </div>
                 </div>
                 <div class="music-card">
-                    <img class="music-card__image" alt="Jeepney — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20338'%3E%3Cdefs%3E%3ClinearGradient%20id='jp'%20x1='0'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23E5486B'/%3E%3Cstop%20offset='0.45'%20stop-color='%236C2BD9'/%3E%3Cstop%20offset='1'%20stop-color='%23140A2E'/%3E%3C/linearGradient%3E%3CradialGradient%20id='jphz'%20cx='0.5'%20cy='0.45'%20r='0.35'%3E%3Cstop%20offset='0'%20stop-color='%23FFD68C'%20stop-opacity='0.85'/%3E%3Cstop%20offset='1'%20stop-color='%23FFD68C'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='338'%20fill='url(%23jp)'/%3E%3Crect%20width='600'%20height='338'%20fill='url(%23jphz)'/%3E%3Cg%20fill='%23ffffff'%20opacity='0.7'%3E%3Ccircle%20cx='120'%20cy='60'%20r='2'/%3E%3Ccircle%20cx='200'%20cy='40'%20r='1.5'/%3E%3Ccircle%20cx='460'%20cy='55'%20r='2'/%3E%3Ccircle%20cx='520'%20cy='90'%20r='1.5'/%3E%3Ccircle%20cx='380'%20cy='45'%20r='1.5'/%3E%3C/g%3E%3Cpath%20d='M300%20152%20L150%20338%20L250%20338%20Z'%20fill='%23ffffff'%20fill-opacity='0.1'/%3E%3Cpath%20d='M300%20152%20L450%20338%20L350%20338%20Z'%20fill='%23ffffff'%20fill-opacity='0.1'/%3E%3Cg%20stroke='%23FFE9A8'%20stroke-opacity='0.8'%20stroke-width='4'%3E%3Cline%20x1='300'%20y1='190'%20x2='300'%20y2='205'/%3E%3Cline%20x1='300'%20y1='230'%20x2='300'%20y2='255'/%3E%3Cline%20x1='300'%20y1='285'%20x2='300'%20y2='320'/%3E%3C/g%3E%3C/svg%3E">
+                    <img class="music-card__image" alt="Jeepney — Yeng Constantino" loading="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20600'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%236C2BD9'/%3E%3Cstop%20offset='1'%20stop-color='%23140A2E'/%3E%3C/linearGradient%3E%3CradialGradient%20id='s'%20cx='0.28'%20cy='0.24'%20r='0.6'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.25'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='600'%20height='600'%20fill='url(%23g)'/%3E%3Crect%20width='600'%20height='600'%20fill='url(%23s)'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='210'%20fill='%23140A2E'/%3E%3Cg%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.07'%20stroke-width='2'%3E%3Ccircle%20cx='300'%20cy='300'%20r='192'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='172'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='152'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='132'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='112'/%3E%3C/g%3E%3Ccircle%20cx='300'%20cy='300'%20r='68'%20fill='%23E5A00D'/%3E%3Ccircle%20cx='300'%20cy='300'%20r='9'%20fill='%23140A2E'/%3E%3C/svg%3E">
                     <div class="music-card__body">
                         <span class="music-card__tag">Original</span>
                         <h3 class="music-card__title">Jeepney</h3>
                         <p class="music-card__desc">The breakout hit from her Star Power win that started it all.</p>
-                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <div class="music-card__ratings">
+                            <div class="rating-row">
+                                <span class="rating-row__label">Yeng's Pick</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:100%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                            </div>
+                            <div class="rating-row">
+                                <span class="rating-row__label">Fans</span>
+                                <span class="stars"><span class="stars__base">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="stars__fill" style="width:94%">&#9733;&#9733;&#9733;&#9733;&#9733;</span></span>
+                                <span class="rating-row__count">4.7 &middot; 2.4k</span>
+                            </div>
+                        </div>
+                        <div class="music-card__actions">
+                            <a class="stream-btn stream-btn--spotify" href="https://open.spotify.com/search/Yeng%20Constantino%20Jeepney" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.59 14.42a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.09-.5 9.72 1.1.29.18.38.56.21.86zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.83c-3.23-1.92-8.56-2.1-11.64-1.16a.94.94 0 1 1-.54-1.8c3.54-1.07 9.42-.86 13.14 1.35a.94.94 0 0 1-.96 1.61z"/></svg>Spotify</a>
+                            <a class="stream-btn stream-btn--youtube" href="https://www.youtube.com/results?search_query=Yeng+Constantino+Jeepney" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/><path fill="#ffffff" d="M9.6 15.6V8.4l6.2 3.6z"/></svg>YouTube</a>
+                        </div>
                     </div>
                 </div>
             </div>

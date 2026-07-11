@@ -656,6 +656,65 @@
             margin-left: 4px;
         }
 
+        /* ── Tri-rating chips (Yeng's pick / Fans / You) ── */
+        .music-card__rating {
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 5px;
+        }
+
+        .rating-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .rating-chip__label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            opacity: 0.85;
+        }
+
+        .rating-chip__val {
+            font-family: var(--font-display);
+            font-weight: 700;
+        }
+
+        .rating-chip__count {
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+
+        .rating-chip--yeng {
+            background: rgba(108, 43, 217, 0.12);
+            color: var(--yc-purple, #6C2BD9);
+        }
+
+        .rating-chip--fans {
+            background: rgba(212, 165, 71, 0.12);
+            color: var(--gold);
+        }
+
+        .rating-chip--fans .rating-chip__val { color: var(--gold); }
+
+        .rating-chip--you {
+            background: rgba(190, 24, 93, 0.12);
+            color: var(--yc-burgundy, #BE185D);
+        }
+
+        .rating-chip--rate {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--gray-400);
+        }
+
         /* ── No Results ── */
         .no-results {
             text-align: center;
@@ -1029,7 +1088,7 @@
             <p class="music-hero__subtitle" data-config="music_subtitle">Explore Yeng's full discography, live performances, music videos, and exclusive content spanning over two decades of OPM excellence.</p>
             <div class="music-search">
                 <input type="text" class="music-search__input" id="musicSearch" placeholder="Search songs, albums, performances..." aria-label="Search music content">
-                <button class="music-search__btn" aria-label="Search" id="searchBtn">&#x1F50D;</button>
+                <button class="music-search__btn" aria-label="Search" id="searchBtn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
             </div>
         </div>
     </section>
@@ -1104,7 +1163,7 @@
 
             <!-- No Results -->
             <div class="no-results" id="noResults">
-                <div class="no-results__icon">&#x1F3B5;</div>
+                <div class="no-results__icon"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
                 <h3 class="no-results__title">No content found</h3>
                 <p class="no-results__text">Try a different search term or clear your filters to browse the full archive.</p>
             </div>
@@ -1197,6 +1256,80 @@
             let allContent = [];
             let userRatings = {};
             let currentFilters = { era: 'all', category: 'all', mood: '', search: '', sort: 'newest' };
+
+            // ── Hardcoded fallback catalog ──
+            // Shown whenever the API returns nothing or is unreachable so the
+            // page is never empty. Mirrors the homepage "Featured Music" picks.
+            // Ratings are on the site's 1-10 scale (avgRating / yengRating).
+            const FALLBACK_CONTENT = [
+                {
+                    id: 'song-ikaw',
+                    title: 'Ikaw',
+                    description: "Her timeless wedding anthem and one of OPM's most-requested love songs.",
+                    category: 'Studio Recording',
+                    era: 'Treal', year: '2013', duration: '4:08',
+                    mood: ['Romantic'],
+                    avgRating: 9.8, ratingCount: 3200, yengRating: 10,
+                    spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Ikaw',
+                    youtubeUrl: 'https://www.youtube.com/results?search_query=Yeng+Constantino+Ikaw'
+                },
+                {
+                    id: 'song-hawak-kamay',
+                    title: 'Hawak Kamay',
+                    description: 'A soaring reminder that no one walks alone — a Yeng Nation favorite.',
+                    category: 'Studio Recording',
+                    era: 'Bakit Ganito', year: '2009', duration: '4:31',
+                    mood: ['Inspirational'],
+                    avgRating: 9.6, ratingCount: 2700, yengRating: 10,
+                    spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Hawak%20Kamay',
+                    youtubeUrl: 'https://www.youtube.com/results?search_query=Yeng+Constantino+Hawak+Kamay'
+                },
+                {
+                    id: 'song-chinita-girl',
+                    title: 'Chinita Girl',
+                    description: 'Bright, playful pop that became an instant sing-along classic.',
+                    category: 'Studio Recording',
+                    era: 'Reserba', year: '2012', duration: '3:39',
+                    mood: ['Upbeat'],
+                    avgRating: 9.2, ratingCount: 1900, yengRating: 8,
+                    spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Chinita%20Girl',
+                    youtubeUrl: 'https://www.youtube.com/results?search_query=Yeng+Constantino+Chinita+Girl'
+                },
+                {
+                    id: 'song-jeepney',
+                    title: 'Jeepney',
+                    description: 'The breakout hit from her Star Power win that started it all.',
+                    category: 'Studio Recording',
+                    era: 'Salamat', year: '2008', duration: '3:52',
+                    mood: ['Upbeat'],
+                    avgRating: 9.4, ratingCount: 2400, yengRating: 10,
+                    spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Jeepney',
+                    youtubeUrl: 'https://www.youtube.com/results?search_query=Yeng+Constantino+Jeepney'
+                }
+            ];
+
+            // Apply active category/era/mood/search filters to the fallback list
+            // so the hardcoded songs still respond to the filter bar.
+            function filterFallback(items) {
+                return items.filter(function (it) {
+                    if (currentFilters.category && currentFilters.category !== 'all' && it.category !== currentFilters.category) return false;
+                    if (currentFilters.era && currentFilters.era !== 'all' && it.era !== currentFilters.era) return false;
+                    if (currentFilters.mood && it.mood.indexOf(currentFilters.mood) === -1) return false;
+                    if (currentFilters.search) {
+                        var q = currentFilters.search.toLowerCase();
+                        if (it.title.toLowerCase().indexOf(q) === -1 && (it.description || '').toLowerCase().indexOf(q) === -1) return false;
+                    }
+                    return true;
+                });
+            }
+
+            // Render the hardcoded fallback catalog through the normal pipeline.
+            function renderFallback() {
+                allContent = filterFallback(FALLBACK_CONTENT).map(mapContent);
+                totalResults = allContent.length;
+                renderContent(allContent);
+                renderPagination(null);
+            }
             let currentPage = 1;
             let visibleCount = 12;
             let totalResults = 0;
@@ -1254,6 +1387,7 @@
                     thumbnail: thumbnailUrl,
                     avgRating: f.avgRating || f.AvgRating || 0,
                     ratingCount: f.ratingCount || f.RatingCount || 0,
+                    yengRating: f.yengRating || f.YengRating || 0,
                     views: f.views || f.Views || 0,
                     youtubeUrl: f.youtubeUrl || f.YoutubeUrl || f.YoutubeURL || '',
                     spotifyUrl: f.spotifyUrl || f.SpotifyUrl || ''
@@ -1266,15 +1400,47 @@
                 return audioCategories.indexOf(item.category) !== -1;
             }
 
-            // ── Shared rating HTML ──
+            // ── Format large fan counts (3200 -> 3.2k) ──
+            function formatCount(n) {
+                n = Number(n) || 0;
+                if (n >= 1000) {
+                    var k = n / 1000;
+                    return (k >= 10 ? Math.round(k) : k.toFixed(1).replace(/\.0$/, '')) + 'k';
+                }
+                return String(n);
+            }
+
+            // ── Shared tri-rating HTML (Yeng's pick + fans average + your rating) ──
             function buildRatingHtml(item) {
                 var userRating = userRatings[item.id];
-                var ratingDisplay = item.ratingCount > 0
-                    ? '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-num">' + item.avgRating.toFixed(1) + '</span> <span class="music-card__rating-count">(' + item.ratingCount + ')</span>'
-                    : '<span class="music-card__rating-star">&#9733;</span> <span class="music-card__rating-count">Rate</span>';
-                var userRatingHtml = userRating ? '<small>You: ' + userRating + '</small>' : '';
+                var chips = '';
+
+                // Yeng's own pick
+                if (item.yengRating > 0) {
+                    chips += '<span class="rating-chip rating-chip--yeng" title="Yeng\'s own rating">' +
+                        '<span class="rating-chip__label">Yeng</span>' +
+                        '<span class="rating-chip__val">' + item.yengRating.toFixed(1) + '</span></span>';
+                }
+
+                // Fans average
+                if (item.ratingCount > 0) {
+                    chips += '<span class="rating-chip rating-chip--fans" title="Average fan rating">' +
+                        '<span class="music-card__rating-star">&#9733;</span>' +
+                        '<span class="rating-chip__val">' + item.avgRating.toFixed(1) + '</span>' +
+                        '<span class="rating-chip__count">(' + formatCount(item.ratingCount) + ')</span></span>';
+                } else {
+                    chips += '<span class="rating-chip rating-chip--fans">' +
+                        '<span class="music-card__rating-star">&#9733;</span>' +
+                        '<span class="rating-chip__count">Be the first</span></span>';
+                }
+
+                // Your rating (or a prompt to rate)
+                chips += userRating
+                    ? '<span class="rating-chip rating-chip--you" title="Your rating"><span class="rating-chip__label">You</span><span class="rating-chip__val">' + userRating + '</span></span>'
+                    : '<span class="rating-chip rating-chip--rate">Rate it</span>';
+
                 return '<span class="music-card__rating" onclick="openRatingModal(\'' + item.id + '\', \'' + item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')">' +
-                    ratingDisplay + userRatingHtml + '</span>';
+                    chips + '</span>';
             }
 
             // ── Premium textless cover art (generated when no real photo exists) ──
@@ -1420,16 +1586,20 @@
 
                     var data = await api('get-music-content?' + params);
                     allContent = (data.content || data.vlogs || []).map(mapContent);
+                    // No live content yet? Fall back to the hardcoded catalog
+                    // so the page always shows music.
+                    if (!allContent.length) {
+                        renderFallback();
+                        return;
+                    }
                     totalResults = data.pagination ? data.pagination.total : allContent.length;
                     renderContent(allContent);
                     renderPagination(data.pagination);
                 } catch (err) {
-                    // If API fails, show empty state
-                    var grid = document.getElementById('music-grid');
-                    if (grid) grid.innerHTML = '';
-                    document.getElementById('noResults').style.display = 'block';
-                    document.getElementById('resultsCount').innerHTML = 'Showing <strong>0</strong> results';
-                    console.warn('[Music] Failed to load content:', err);
+                    // If the API is unreachable, show the hardcoded catalog
+                    // instead of an empty state.
+                    console.warn('[Music] Failed to load content, using fallback:', err);
+                    renderFallback();
                 }
             }
 
@@ -1728,6 +1898,17 @@
 
                 // Update local state immediately
                 userRatings[ratingModalContentId] = ratingModalSelected;
+
+                // Hardcoded fallback songs have no backend record — save the
+                // rating locally so the "You" chip shows without a server error.
+                if (String(ratingModalContentId).indexOf('song-') === 0) {
+                    showToast('Rating saved! Salamat!', 'success');
+                    closeRatingModal();
+                    renderContent(allContent);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Rating';
+                    return;
+                }
 
                 try {
                     var data = await api('rate-vlog', {
