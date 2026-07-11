@@ -4,7 +4,10 @@
    ═══════════════════════════════════════════════════════ */
 
 const APP = {
-    API_BASE: '/.netlify/functions',
+    // In the browser this stays relative ('/.netlify/functions').
+    // Inside the native app, native-bridge.js sets NativeBridge.API_BASE to
+    // the full Netlify origin, so calls hit the live functions over HTTPS.
+    API_BASE: ((window.NativeBridge && window.NativeBridge.API_BASE) || '') + '/.netlify/functions',
     TOKEN_KEY: 'yc_token',
     USER_KEY: 'yc_user',
 };
@@ -23,11 +26,20 @@ const Auth = {
     setSession(token, user) {
         localStorage.setItem(APP.TOKEN_KEY, token);
         localStorage.setItem(APP.USER_KEY, JSON.stringify(user));
+        // Mirror into the shared App Group so home-screen widgets can fetch
+        // on the fan's behalf. No-ops in the browser / when not native.
+        if (window.NativeBridge && NativeBridge.syncWidgetData) {
+            NativeBridge.syncWidgetData(user, token);
+        }
     },
 
     clearSession() {
         localStorage.removeItem(APP.TOKEN_KEY);
         localStorage.removeItem(APP.USER_KEY);
+        // Wipe the shared widget data so widgets fall back to their public state.
+        if (window.NativeBridge && NativeBridge.clearWidgetData) {
+            NativeBridge.clearWidgetData();
+        }
     },
 
     isLoggedIn() {
@@ -678,4 +690,13 @@ document.addEventListener('DOMContentLoaded', () => {
     SiteConfig.load().then(() => {
         SiteConfig.applyToPage();
     });
+
+    // Re-mirror the session into the shared App Group on every launch.
+    // setSession() only runs at the moment of login; an already-logged-in
+    // fan restores their session straight from localStorage and never calls
+    // it again, so without this the widgets would think they're signed out.
+    if (window.NativeBridge && NativeBridge.syncWidgetData && Auth.isLoggedIn()) {
+        NativeBridge.syncWidgetData(Auth.getUser(), Auth.getToken());
+    }
+
 });

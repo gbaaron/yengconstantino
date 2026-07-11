@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FAFAFC">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Music & Content Archive — Yeng Constantino Official</title>
     <meta name="description" content="Browse Yeng Constantino's complete discography and content archive. Studio recordings, live performances, music videos, interviews, and behind the scenes — all in one place.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -408,6 +416,15 @@
         .music-card__thumb-icon {
             font-size: 3rem;
             color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Generated textless vinyl cover (fills the artwork area) */
+        .music-card__cover {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         /* ── Audio Card ── */
@@ -1166,6 +1183,7 @@
     </footer>
 
     <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/native-bridge.js"></script>
     <script src="/js/app.js" defer></script>
     <script>
         /* ═══════════════════════════════════════════════════════
@@ -1259,12 +1277,62 @@
                     ratingDisplay + userRatingHtml + '</span>';
             }
 
+            // ── Premium textless cover art (generated when no real photo exists) ──
+            // Renders a branded vinyl-record cover so thumbnail-less items never
+            // show a broken glyph. Hue shifts per-title so each card looks unique.
+            function hueFromTitle(str) {
+                var h = 0;
+                str = String(str || '');
+                for (var i = 0; i < str.length; i++) {
+                    h = (h * 31 + str.charCodeAt(i)) % 360;
+                }
+                return h;
+            }
+            function buildCoverArt(item) {
+                var hue = hueFromTitle(item.title + item.category);
+                // Concentric vinyl grooves.
+                var grooves = '';
+                for (var r = 33; r >= 15; r -= 3) {
+                    grooves += '<circle r="' + r + '" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.6"/>';
+                }
+                var svg =
+                    '<svg class="music-card__cover" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" ' +
+                        'xmlns="http://www.w3.org/2000/svg" style="filter:hue-rotate(' + hue + 'deg)">' +
+                        '<defs>' +
+                            '<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">' +
+                                '<stop offset="0" stop-color="#2D1B69"/>' +
+                                '<stop offset="0.55" stop-color="#6C2BD9"/>' +
+                                '<stop offset="1" stop-color="#BE185D"/>' +
+                            '</linearGradient>' +
+                            '<radialGradient id="label" cx="0.5" cy="0.5" r="0.5">' +
+                                '<stop offset="0" stop-color="#FFE9A8"/>' +
+                                '<stop offset="1" stop-color="#E5A00D"/>' +
+                            '</radialGradient>' +
+                            '<radialGradient id="glow" cx="0.3" cy="0.25" r="0.8">' +
+                                '<stop offset="0" stop-color="rgba(255,255,255,0.35)"/>' +
+                                '<stop offset="0.5" stop-color="rgba(255,255,255,0)"/>' +
+                            '</radialGradient>' +
+                        '</defs>' +
+                        '<rect width="100" height="100" fill="url(#bg)"/>' +
+                        '<rect width="100" height="100" fill="url(#glow)"/>' +
+                        '<g transform="translate(50,50)">' +
+                            '<circle r="35" fill="#0d0a17"/>' +
+                            grooves +
+                            '<circle r="11" fill="url(#label)"/>' +
+                            '<circle r="2" fill="#0d0a17"/>' +
+                            '<path d="M -35 0 A 35 35 0 0 1 -10 -33" fill="none" ' +
+                                'stroke="rgba(255,255,255,0.18)" stroke-width="1.4" stroke-linecap="round"/>' +
+                        '</g>' +
+                    '</svg>';
+                return svg;
+            }
+
             // ── Build video card ──
             function buildVideoCard(item) {
                 var badgeColor = categoryBadgeMap[item.category] || 'purple';
                 var thumbContent = item.thumbnail
                     ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
-                    : '<div class="music-card__thumb-icon">&#9835;</div>';
+                    : buildCoverArt(item);
 
                 var moodHtml = item.mood.filter(Boolean).map(function(m) {
                     return '<span class="music-card__mood-tag">' + m + '</span>';
@@ -1296,7 +1364,7 @@
             function buildAudioCard(item) {
                 var artContent = item.thumbnail
                     ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
-                    : '<div class="music-card__art-icon">&#9835;</div>';
+                    : buildCoverArt(item);
 
                 var moodHtml = item.mood.filter(Boolean).map(function(m) {
                     return '<span class="music-card__mood-tag">' + m + '</span>';

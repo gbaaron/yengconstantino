@@ -1,0 +1,24 @@
+{
+  "name": "Yeng Constantino Official",
+  "short_name": "Yeng",
+  "description": "The official fan hub of Yeng Constantino. Music, exclusive content, merch, community, and everything Yeng.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#6C2BD9",
+  "theme_color": "#FAFAFC",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

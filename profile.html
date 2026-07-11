@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FAFAFC">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>My Profile — Yeng Constantino Official</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,6 +104,55 @@
         .profile-panels { max-width: 900px; margin: 0 auto; padding: var(--space-xl); }
         .profile-panel { display: none; }
         .profile-panel--active { display: block; }
+
+        /* ── My Cards (collectible viewer) ── */
+        .cards-intro { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #6B5D50; margin-bottom: var(--space-xl); line-height: 1.6; }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-3xl) var(--space-xl);
+            justify-items: center;
+        }
+        .collect-card { width: 300px; display: flex; flex-direction: column; align-items: center; }
+        .collect-card__flip {
+            width: 300px; height: 447px;
+            perspective: 1600px; cursor: pointer; position: relative;
+        }
+        .collect-card__inner {
+            position: relative; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .collect-card__flip.flipped .collect-card__inner { transform: rotateY(180deg); }
+        .collect-card__face {
+            position: absolute; inset: 0;
+            width: 408px; height: 608px;
+            transform-origin: top left;
+            transform: scale(0.7353);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 24px; overflow: hidden; background: transparent;
+        }
+        .collect-card__face--back { transform: scale(0.7353) rotateY(180deg); transform-origin: top left; }
+        .collect-card__catcher { position: absolute; inset: 0; z-index: 10; cursor: pointer; }
+        .collect-card__meta { text-align: center; margin-top: var(--space-md); }
+        .collect-card__name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; color: #27273A; }
+        .collect-card__sub { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #71718A; margin-top: 2px; }
+        .collect-card__rarity {
+            display: inline-block; margin-top: 8px; padding: 3px 12px; border-radius: 999px;
+            font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            background: linear-gradient(135deg, #BB00FF, #E31937); color: #fff;
+        }
+        .collect-card__hint {
+            text-align: center; margin-top: 10px;
+            font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+            color: #A99BC4; font-weight: 600;
+        }
+        .cards-empty { text-align: center; padding: var(--space-3xl) var(--space-xl); }
+        .cards-empty__icon { font-size: 3rem; margin-bottom: var(--space-md); }
+        .cards-empty__title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #27273A; margin-bottom: var(--space-xs); }
+        .cards-empty__desc { font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #71718A; }
 
         .profile-form { max-width: 500px; }
         .profile-form .form-group { margin-bottom: var(--space-lg); }
@@ -233,6 +290,7 @@
             <button class="profile-tab" data-tab="ratings" onclick="switchTab('ratings')">My Ratings</button>
             <button class="profile-tab" data-tab="exclusive" onclick="switchTab('exclusive')">Exclusive Content</button>
             <button class="profile-tab" data-tab="covers" onclick="switchTab('covers')">My Covers</button>
+            <button class="profile-tab" data-tab="cards" onclick="switchTab('cards')">My Cards</button>
         </div>
 
         <div class="profile-panels">
@@ -284,6 +342,13 @@
                 <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-xl);">My Covers</h2>
                 <div id="covers-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading your covers...</span></div></div>
             </div>
+
+            <!-- My Cards Tab -->
+            <div class="profile-panel" id="panel-cards">
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#27273A;margin-bottom:var(--space-sm);">My Cards</h2>
+                <p class="cards-intro">Your collectible Yeng cards. Tap a card to flip it and see the rewards on the back.</p>
+                <div id="cards-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading your cards...</span></div></div>
+            </div>
         </div>
     </div>
 
@@ -312,6 +377,7 @@
         </div>
     </footer>
     <script src="/js/lucide.min.js" defer></script>
+    <script src="/js/native-bridge.js"></script>
     <script src="/js/app.js" defer></script>
     <script>
         let profileData = null;
@@ -320,7 +386,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (!Auth.requireAuth('/profile.html')) return;
             loadProfile();
+            openTabFromHash();
         });
+
+        // Open a tab based on the URL hash (e.g. profile.html#orders from a widget tap).
+        function openTabFromHash() {
+            var tab = (window.location.hash || '').replace('#', '');
+            var validTabs = ['profile', 'orders', 'ratings', 'exclusive', 'covers', 'cards'];
+            if (tab && validTabs.indexOf(tab) !== -1) switchTab(tab);
+        }
+
+        // React when the widget deep-link updates the hash while already on this page.
+        window.addEventListener('hashchange', openTabFromHash);
 
         async function loadProfile() {
             try {
@@ -396,7 +473,49 @@
                 else if (tab === 'ratings') loadRatings();
                 else if (tab === 'exclusive') loadExclusiveContent();
                 else if (tab === 'covers') loadMyCovers();
+                else if (tab === 'cards') loadMyCards();
             }
+        }
+
+        // The fan's collectible cards. No backend/ownership yet — we surface the one
+        // designed card ("Live in Pasay") so the viewing experience can be demoed.
+        // Each entry points at the real bundled card files in /cards/, rendered via
+        // iframe + click-to-flip (same treatment as the pitch deck).
+        var MY_CARDS = [
+            {
+                name: 'Yeng Constantino',
+                title: 'Live in Pasay',
+                rarity: 'Legendary',
+                number: '1',
+                total: '25',
+                front: '/cards/yeng-front.html',
+                back: '/cards/yeng-back.html'
+            }
+        ];
+
+        function loadMyCards() {
+            var container = document.getElementById('cards-list');
+            if (!MY_CARDS.length) {
+                container.innerHTML = '<div class="cards-empty"><div class="cards-empty__icon">&#127183;</div><h3 class="cards-empty__title">No cards yet</h3><p class="cards-empty__desc">Collectible Yeng cards will appear here once you have one.</p></div>';
+                return;
+            }
+            container.innerHTML = '<div class="cards-grid">' + MY_CARDS.map(function(c) {
+                return '<div class="collect-card">' +
+                    '<div class="collect-card__flip" onclick="this.classList.toggle(\'flipped\')">' +
+                        '<div class="collect-card__inner">' +
+                            '<iframe class="collect-card__face collect-card__face--front" src="' + c.front + '" scrolling="no" frameborder="0" title="' + c.title + ' front" loading="lazy"></iframe>' +
+                            '<iframe class="collect-card__face collect-card__face--back" src="' + c.back + '" scrolling="no" frameborder="0" title="' + c.title + ' back" loading="lazy"></iframe>' +
+                            '<div class="collect-card__catcher"></div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="collect-card__meta">' +
+                        '<div class="collect-card__name">' + c.title + '</div>' +
+                        '<div class="collect-card__sub">' + c.name + ' &middot; #' + c.number + ' of ' + c.total + '</div>' +
+                        '<span class="collect-card__rarity">' + c.rarity + '</span>' +
+                    '</div>' +
+                    '<div class="collect-card__hint">Tap to flip</div>' +
+                '</div>';
+            }).join('') + '</div>';
         }
 
         async function loadOrders() {

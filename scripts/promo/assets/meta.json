@@ -1,0 +1,18 @@
+{
+  "canvas_w": 1080,
+  "canvas_h": 1920,
+  "frame_w": 764,
+  "frame_h": 1608,
+  "frame_x": 158,
+  "frame_y": 196,
+  "bezel": 20,
+  "screen_w": 724,
+  "screen_h": 1568,
+  "screen_x": 178,
+  "screen_y": 216,
+  "colors": {
+    "purple": "#6C2BD9",
+    "magenta": "#bb00ff",
+    "dark": "#0F0F1A"
+  }
+}

@@ -47,7 +47,24 @@ exports.handler = async (event) => {
             fetchNextPage();
         });
 
-        const limitedRecords = allRecords.slice(0, limit);
+        // When asking for upcoming events, drop anything whose date has already
+        // passed even if it's still flagged 'Upcoming' in Airtable. Otherwise a
+        // stale past event sorts first and the countdown widget shows "0 days".
+        let workingRecords = allRecords;
+        if (upcoming === 'true') {
+            // Today at 00:00 in Manila (the artist + fanbase timezone).
+            const manilaToday = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' }));
+            manilaToday.setHours(0, 0, 0, 0);
+            workingRecords = allRecords.filter(record => {
+                const raw = record.fields.EndDate || record.fields.Date;
+                if (!raw) return false;
+                const when = new Date(raw);
+                if (isNaN(when.getTime())) return false;
+                return when >= manilaToday;
+            });
+        }
+
+        const limitedRecords = workingRecords.slice(0, limit);
 
         const events = limitedRecords.map(record => {
             const imgField = record.fields.Image || null;

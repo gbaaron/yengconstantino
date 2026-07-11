@@ -3,3 +3,14 @@ node_modules/
 .env
 .DS_Store
 .claude/worktrees/
+
+# Capacitor / iOS build artifacts
+www/
+ios/App/Pods/
+ios/App/build/
+ios/DerivedData/
+*.xcuserstate
+
+# Generated promo video build output (large media)
+scripts/promo/build/
+scripts/promo/clips/

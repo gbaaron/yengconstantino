@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FAFAFC">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Yeng Constantino Official — OPM Icon</title>
     <meta name="description" content="The official fan hub of Yeng Constantino. Music, exclusive content, merch, community, and everything Yeng — all in one place.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -600,37 +608,41 @@
                 <h2 class="section-header__title">Featured Music</h2>
             </div>
             <div class="music-grid" id="featured-music-grid">
-                <!-- Skeleton cards while loading -->
+                <!-- Hardcoded featured songs (self-contained SVG covers, render offline) -->
                 <div class="music-card">
-                    <div class="skeleton" style="height:180px;"></div>
+                    <img class="music-card__image" alt="Ikaw — Yeng Constantino" loading="lazy" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 338'><defs><linearGradient id='ik' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%232A0F52'/><stop offset='0.5' stop-color='%23BE185D'/><stop offset='1' stop-color='%23E5A00D'/></linearGradient><radialGradient id='ikg1' cx='0.25' cy='0.3' r='0.5'><stop offset='0' stop-color='%23ffffff' stop-opacity='0.3'/><stop offset='1' stop-color='%23ffffff' stop-opacity='0'/></radialGradient><radialGradient id='ikg2' cx='0.82' cy='0.78' r='0.55'><stop offset='0' stop-color='%23FFD68C' stop-opacity='0.45'/><stop offset='1' stop-color='%23FFD68C' stop-opacity='0'/></radialGradient></defs><rect width='600' height='338' fill='url(%23ik)'/><rect width='600' height='338' fill='url(%23ikg1)'/><rect width='600' height='338' fill='url(%23ikg2)'/><g fill='%23ffffff'><circle cx='90' cy='250' r='40' opacity='0.05'/><circle cx='500' cy='80' r='55' opacity='0.05'/><circle cx='430' cy='270' r='20' opacity='0.07'/></g><circle cx='278' cy='165' r='50' fill='none' stroke='%23ffffff' stroke-opacity='0.85' stroke-width='4'/><circle cx='330' cy='173' r='50' fill='none' stroke='%23FFE9A8' stroke-opacity='0.9' stroke-width='4'/></svg>">
                     <div class="music-card__body">
-                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                        <span class="music-card__tag">Original</span>
+                        <h3 class="music-card__title">Ikaw</h3>
+                        <p class="music-card__desc">Her timeless wedding anthem and one of OPM's most-requested love songs.</p>
+                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                     </div>
                 </div>
                 <div class="music-card">
-                    <div class="skeleton" style="height:180px;"></div>
+                    <img class="music-card__image" alt="Hawak Kamay — Yeng Constantino" loading="lazy" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 338'><defs><linearGradient id='hk' x1='0' y1='1' x2='0.3' y2='0'><stop offset='0' stop-color='%23E5A00D'/><stop offset='0.45' stop-color='%236C2BD9'/><stop offset='1' stop-color='%232A0F52'/></linearGradient><radialGradient id='hksun' cx='0.5' cy='1' r='0.6'><stop offset='0' stop-color='%23FFE1A8' stop-opacity='0.7'/><stop offset='1' stop-color='%23FFE1A8' stop-opacity='0'/></radialGradient></defs><rect width='600' height='338' fill='url(%23hk)'/><g stroke='%23ffffff' stroke-opacity='0.12' stroke-width='3'><line x1='300' y1='338' x2='120' y2='40'/><line x1='300' y1='338' x2='220' y2='10'/><line x1='300' y1='338' x2='300' y2='0'/><line x1='300' y1='338' x2='380' y2='10'/><line x1='300' y1='338' x2='480' y2='40'/></g><rect width='600' height='338' fill='url(%23hksun)'/></svg>">
                     <div class="music-card__body">
-                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                        <span class="music-card__tag">Original</span>
+                        <h3 class="music-card__title">Hawak Kamay</h3>
+                        <p class="music-card__desc">A soaring reminder that no one walks alone — a Yeng Nation favorite.</p>
+                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                     </div>
                 </div>
                 <div class="music-card">
-                    <div class="skeleton" style="height:180px;"></div>
+                    <img class="music-card__image" alt="Chinita Girl — Yeng Constantino" loading="lazy" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 338'><defs><linearGradient id='cg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23E5A00D'/><stop offset='0.5' stop-color='%23E5486B'/><stop offset='1' stop-color='%236C2BD9'/></linearGradient><radialGradient id='cgglow' cx='0.7' cy='0.3' r='0.6'><stop offset='0' stop-color='%23ffffff' stop-opacity='0.35'/><stop offset='1' stop-color='%23ffffff' stop-opacity='0'/></radialGradient></defs><rect width='600' height='338' fill='url(%23cg)'/><rect width='600' height='338' fill='url(%23cgglow)'/><g fill='%23ffffff'><circle cx='120' cy='90' r='6' opacity='0.8'/><circle cx='480' cy='250' r='5' opacity='0.7'/><circle cx='250' cy='262' r='4' opacity='0.6'/><circle cx='400' cy='70' r='7' opacity='0.85'/><circle cx='90' cy='200' r='3' opacity='0.5'/><circle cx='530' cy='140' r='4' opacity='0.6'/></g><g fill='%23FFE9A8'><path d='M300 118 l7 20 21 2 -16 14 5 21 -17 -12 -17 12 5 -21 -16 -14 21 -2z' opacity='0.9'/><path d='M180 178 l4 11 12 1 -9 8 3 12 -10 -7 -10 7 3 -12 -9 -8 12 -1z' opacity='0.7'/></g></svg>">
                     <div class="music-card__body">
-                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                        <span class="music-card__tag">Original</span>
+                        <h3 class="music-card__title">Chinita Girl</h3>
+                        <p class="music-card__desc">Bright, playful pop that became an instant sing-along classic.</p>
+                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
                     </div>
                 </div>
                 <div class="music-card">
-                    <div class="skeleton" style="height:180px;"></div>
+                    <img class="music-card__image" alt="Jeepney — Yeng Constantino" loading="lazy" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 338'><defs><linearGradient id='jp' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23E5486B'/><stop offset='0.45' stop-color='%236C2BD9'/><stop offset='1' stop-color='%23140A2E'/></linearGradient><radialGradient id='jphz' cx='0.5' cy='0.45' r='0.35'><stop offset='0' stop-color='%23FFD68C' stop-opacity='0.85'/><stop offset='1' stop-color='%23FFD68C' stop-opacity='0'/></radialGradient></defs><rect width='600' height='338' fill='url(%23jp)'/><rect width='600' height='338' fill='url(%23jphz)'/><g fill='%23ffffff' opacity='0.7'><circle cx='120' cy='60' r='2'/><circle cx='200' cy='40' r='1.5'/><circle cx='460' cy='55' r='2'/><circle cx='520' cy='90' r='1.5'/><circle cx='380' cy='45' r='1.5'/></g><path d='M300 152 L150 338 L250 338 Z' fill='%23ffffff' fill-opacity='0.1'/><path d='M300 152 L450 338 L350 338 Z' fill='%23ffffff' fill-opacity='0.1'/><g stroke='%23FFE9A8' stroke-opacity='0.8' stroke-width='4'><line x1='300' y1='190' x2='300' y2='205'/><line x1='300' y1='230' x2='300' y2='255'/><line x1='300' y1='285' x2='300' y2='320'/></g></svg>">
                     <div class="music-card__body">
-                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:20px;width:85%;margin-bottom:8px;"></div>
-                        <div class="skeleton" style="height:14px;width:70%;"></div>
+                        <span class="music-card__tag">Original</span>
+                        <h3 class="music-card__title">Jeepney</h3>
+                        <p class="music-card__desc">The breakout hit from her Star Power win that started it all.</p>
+                        <div class="music-card__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                     </div>
                 </div>
             </div>
@@ -763,6 +775,7 @@
     </footer>
 
     <script src="/js/lucide.min.js"></script>
+    <script src="/js/native-bridge.js"></script>
     <script src="/js/app.js"></script>
     <script>
         /* ═══════════════════════════════════════════════════
@@ -770,53 +783,6 @@
            ═══════════════════════════════════════════════════ */
 
         (function () {
-            /* ── Fetch Featured Music ── */
-            async function loadFeaturedMusic() {
-                const grid = document.getElementById('featured-music-grid');
-                if (!grid) return;
-
-                try {
-                    const data = await api('get-music-content?featured=true&limit=4');
-                    const items = data.content || data.items || [];
-
-                    if (items.length === 0) {
-                        grid.innerHTML = '<p style="text-align:center;color:#71718A;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Featured music coming soon.</p>';
-                        return;
-                    }
-
-                    grid.innerHTML = items.map(function (item) {
-                        var thumb = item.thumbnail || item.Thumbnail || '';
-                        var category = item.category || item.type || item.Type || 'Music';
-                        var title = item.title || item.Title || 'Untitled';
-                        var desc = truncate(item.description || item.Description || '', 90);
-                        var rating = item.rating || item.Rating || 0;
-
-                        var starsHtml = '';
-                        if (rating > 0) {
-                            for (var s = 0; s < 5; s++) {
-                                starsHtml += s < Math.round(rating) ? '&#9733;' : '&#9734;';
-                            }
-                        }
-
-                        return '<div class="music-card">'
-                            + (thumb
-                                ? '<img class="music-card__image" src="' + thumb + '" alt="' + title + '" loading="lazy">'
-                                : '<div class="music-card__image"></div>')
-                            + '<div class="music-card__body">'
-                            + '<span class="music-card__tag">' + category + '</span>'
-                            + '<h3 class="music-card__title">' + title + '</h3>'
-                            + (desc ? '<p class="music-card__desc">' + desc + '</p>' : '')
-                            + (starsHtml ? '<div class="music-card__stars">' + starsHtml + '</div>' : '')
-                            + '</div>'
-                            + '</div>';
-                    }).join('');
-
-                } catch (err) {
-                    console.warn('Featured music load failed:', err.message);
-                    grid.innerHTML = '<p style="text-align:center;color:#71718A;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Could not load featured music right now.</p>';
-                }
-            }
-
             /* ── Fetch Featured Stories ── */
             async function loadFeaturedStories() {
                 var grid = document.getElementById('stories-grid');
@@ -850,7 +816,6 @@
             }
 
             /* ── Initialize ── */
-            loadFeaturedMusic();
             loadFeaturedStories();
         })();
 

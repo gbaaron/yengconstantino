@@ -1,0 +1,48 @@
+{
+  "appId": "com.globalmedia.yeng",
+  "appName": "Yeng",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 2000,
+      "backgroundColor": "#6C2BD9",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#FAFAFC"
+    },
+    "Keyboard": {
+      "resize": "native",
+      "resizeOnFullScreen": true
+    },
+    "Preferences": {
+      "group": "group.com.globalmedia.yeng"
+    }
+  },
+  "ios": {
+    "contentInset": "always",
+    "preferredContentMode": "mobile",
+    "allowsLinkPreview": false,
+    "scrollEnabled": true
+  },
+  "packageClassList": [
+    "AppPlugin",
+    "HapticsPlugin",
+    "KeyboardPlugin",
+    "LocalNotificationsPlugin",
+    "PreferencesPlugin",
+    "SplashScreenPlugin",
+    "StatusBarPlugin",
+    "NativeBiometric",
+    "WidgetBridgePlugin"
+  ]
+}

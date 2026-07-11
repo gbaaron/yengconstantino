@@ -1,0 +1,32 @@
+{
+  "output": "scripts/promo/build/promo-yeng.mp4",
+  "fps": 30,
+  "transition": { "style": "fade", "duration": 0.6 },
+  "music": {
+    "file": "scripts/promo/music.m4a",
+    "startAt": 0,
+    "fadeIn": 1.0,
+    "fadeOut": 1.5,
+    "volume": 1.0
+  },
+  "intro": {
+    "duration": 2.5,
+    "title": "YENG",
+    "subtitle": "The Official App",
+    "logo": "icons/logo-master.png"
+  },
+  "outro": {
+    "duration": 3.0,
+    "title": "Yeng, in your pocket.",
+    "subtitle": "Music \u00b7 Covers \u00b7 Events \u00b7 Widgets",
+    "logo": "icons/logo-master.png"
+  },
+  "scenes": [
+    { "clip": "01-home.mov",     "caption": "Your home for everything Yeng", "duration": 4.0, "trimStart": 0 },
+    { "clip": "02-music.mov",    "caption": "Stream every song & cover",      "duration": 4.5, "trimStart": 0 },
+    { "clip": "03-widget.mov",   "caption": "Live widgets on your home screen", "duration": 4.5, "trimStart": 0 },
+    { "clip": "04-events.mov",   "caption": "Never miss a show",              "duration": 4.0, "trimStart": 0 },
+    { "clip": "05-faceid.mov",   "caption": "Secure Face ID login",           "duration": 3.5, "trimStart": 0 },
+    { "clip": "06-mensahe.mov",  "caption": "Personal messages from Yeng",    "duration": 4.0, "trimStart": 0 }
+  ]
+}
