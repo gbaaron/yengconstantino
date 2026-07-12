@@ -117,7 +117,7 @@
             width: 100%;
             padding: 18px 60px 18px 24px;
             border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             font-size: 1.05rem;
             font-family: var(--font-body);
             color: var(--gray-700);
@@ -227,7 +227,7 @@
             color: var(--gray-400);
             background: none;
             border: none;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all var(--transition-fast);
             white-space: nowrap;
@@ -267,7 +267,7 @@
             color: var(--gray-500);
             background: var(--white);
             border: 1px solid var(--gray-200);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
@@ -335,9 +335,189 @@
 
         /* ── Music Card (shared) ── */
         .music-grid {
+            display: block;
+        }
+
+        /* ══ Spotify-style track list ══ */
+        .track-list {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            padding: 6px;
+        }
+
+        /* Shared column grid for header + rows */
+        .track-row,
+        .track-head {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: var(--space-xl);
+            grid-template-columns: 32px minmax(0, 1fr) 60px 72px 116px 92px 56px;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+        }
+
+        .track-head {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gray-100, #f0f0f3);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--gray-400, #9ca3af);
+        }
+
+        .track-head__col--num { text-align: center; }
+        .track-head__col--center { text-align: center; }
+        .track-head__col--right { text-align: right; }
+
+        .track-row {
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background var(--transition-base);
+        }
+
+        .track-row:hover {
+            background: var(--bg-off-white, #FAFAFC);
+        }
+
+        .track-row:hover .track-row__num-index { display: none; }
+        .track-row:hover .track-row__num-play { display: inline-flex; }
+
+        /* # / play column */
+        .track-row__num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400, #9ca3af);
+            font-size: 0.85rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .track-row__num-play {
+            display: none;
+            color: var(--primary);
+        }
+
+        /* Title cell: cover art + name/meta */
+        .track-row__title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .track-row__art {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .track-row__art img,
+        .track-row__art .music-card__cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .track-row__name-wrap { min-width: 0; }
+
+        .track-row__name {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gray-900, #1c1917);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-row__sub {
+            font-size: 0.78rem;
+            color: var(--gray-400, #9ca3af);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        .track-row__year {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray-500, #6b7280);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Rating cells */
+        .track-rating {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            width: 100%;
+        }
+
+        .track-rating__val {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.95rem;
+            line-height: 1.1;
+        }
+
+        .track-rating__val--yeng { color: var(--primary); }
+        .track-rating__val--avg { color: var(--gold); }
+        .track-rating__val--you { color: var(--burgundy); }
+
+        .track-rating__count {
+            font-size: 0.62rem;
+            color: var(--gray-400, #9ca3af);
+            font-weight: 500;
+        }
+
+        .track-rating__empty {
+            color: var(--gray-300, #d1d5db);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .track-rating__star {
+            color: var(--gold);
+            font-size: 0.72rem;
+            margin-right: 1px;
+        }
+
+        /* "You" cell rate button */
+        .track-rate-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 4px 10px;
+            border-radius: var(--radius-full, 999px);
+            background: rgba(190, 24, 93, 0.10);
+            color: var(--burgundy);
+            font-size: 0.72rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background var(--transition-base);
+        }
+
+        .track-rate-btn:hover { background: rgba(190, 24, 93, 0.20); }
+
+        .track-row__len {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--gray-400, #9ca3af);
+            font-variant-numeric: tabular-nums;
         }
 
         .music-card {
@@ -501,7 +681,7 @@
             font-size: 0.7rem;
             font-weight: 700;
             font-family: var(--font-body);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-sm);
             text-decoration: none;
             transition: all var(--transition-fast);
         }
@@ -623,7 +803,7 @@
             gap: 4px;
             cursor: pointer;
             padding: 3px 8px;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-sm);
             transition: all var(--transition-fast);
             margin-left: auto;
         }
@@ -753,7 +933,7 @@
             font-family: var(--font-body);
             font-weight: 700;
             font-size: 0.95rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             border: 2px solid var(--primary);
             color: var(--primary);
             background: transparent;
@@ -908,7 +1088,7 @@
             font-family: var(--font-body);
             font-weight: 700;
             font-size: 0.9rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             border: none;
             background: var(--gradient-cta);
             color: var(--white);
@@ -954,7 +1134,7 @@
         .pagination__btn {
             min-width: 40px;
             height: 40px;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             border: 2px solid var(--gray-200);
             background: var(--white);
             font-family: var(--font-body);
@@ -991,8 +1171,11 @@
 
         /* ── Responsive ── */
         @media (max-width: 1024px) {
-            .music-grid {
-                grid-template-columns: repeat(2, 1fr);
+            /* Tablet: keep all columns incl. Year, tighten widths */
+            .track-row,
+            .track-head {
+                grid-template-columns: 28px minmax(0, 1fr) 46px 58px 104px 78px 48px;
+                gap: 8px;
             }
         }
 
@@ -1003,13 +1186,25 @@
             .music-hero__title {
                 font-size: 2rem;
             }
-            .music-grid {
-                grid-template-columns: 1fr;
-            }
             .music-card--audio .music-card__art {
                 width: 80px;
                 min-height: 80px;
             }
+            /* Phone: name + Yeng + Avg + You(Rate) + length; drop # and Year */
+            .track-row,
+            .track-head {
+                grid-template-columns: minmax(0, 1fr) 42px 56px 58px 42px;
+                gap: 8px;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .track-head__col--num,
+            .track-row__num,
+            .track-head__col--year,
+            .track-row__year { display: none; }
+            .track-row__art { width: 38px; height: 38px; }
+            .track-row__name { font-size: 0.9rem; }
+            .track-rating__count { font-size: 0.55rem; }
             .filter-group__label {
                 display: none;
             }
@@ -1571,6 +1766,75 @@
                 return isAudioItem(item) ? buildAudioCard(item) : buildVideoCard(item);
             }
 
+            // ── Best external link to open when a track row is clicked ──
+            function primaryLink(item) {
+                return isAudioItem(item)
+                    ? (item.spotifyUrl || item.youtubeUrl || '')
+                    : (item.youtubeUrl || item.spotifyUrl || '');
+            }
+
+            // ── Spotify-style header row (column labels) ──
+            function buildTrackHead() {
+                return '<div class="track-head">' +
+                    '<div class="track-head__col--num">#</div>' +
+                    '<div>Title</div>' +
+                    '<div class="track-head__col--center track-head__col--year">Year</div>' +
+                    '<div class="track-head__col--center">Yeng</div>' +
+                    '<div class="track-head__col--center">Avg&nbsp;&#9733;</div>' +
+                    '<div class="track-head__col--center track-head__col--you">You</div>' +
+                    '<div class="track-head__col--right" title="Length">&#9201;</div>' +
+                '</div>';
+            }
+
+            // ── Build one Spotify-style track row ──
+            function buildTrackRow(item, index) {
+                var artContent = item.thumbnail
+                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    : buildCoverArt(item);
+
+                var sub = [item.category, item.era].filter(Boolean).join(' \u00b7 ');
+                var safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                var rate = 'openRatingModal(\'' + item.id + '\', \'' + safeTitle + '\')';
+
+                // Yeng's own rating
+                var yengCell = item.yengRating > 0
+                    ? '<div class="track-rating"><span class="track-rating__val track-rating__val--yeng">' + item.yengRating.toFixed(1) + '</span></div>'
+                    : '<div class="track-rating"><span class="track-rating__empty">&mdash;</span></div>';
+
+                // Fans average
+                var avgCell = item.ratingCount > 0
+                    ? '<div class="track-rating"><span class="track-rating__val track-rating__val--avg"><span class="track-rating__star">&#9733;</span>' + item.avgRating.toFixed(1) + '</span><span class="track-rating__count">' + formatCount(item.ratingCount) + ' fans</span></div>'
+                    : '<div class="track-rating"><span class="track-rating__count">Be the first</span></div>';
+
+                // User's own rating (or a rate button)
+                var userRating = userRatings[item.id];
+                var youCell = userRating
+                    ? '<div class="track-rating track-rating--you-cell" onclick="event.stopPropagation();' + rate + '"><span class="track-rating__val track-rating__val--you">' + userRating + '</span></div>'
+                    : '<div class="track-rating track-rating--you-cell"><button class="track-rate-btn" onclick="event.stopPropagation();' + rate + '">Rate</button></div>';
+
+                var link = primaryLink(item);
+                var rowClick = link ? ' onclick="window.open(\'' + link.replace(/'/g, "\\'") + '\', \'_blank\')"' : '';
+
+                return '<div class="track-row" data-id="' + item.id + '"' + rowClick + '>' +
+                    '<div class="track-row__num">' +
+                        '<span class="track-row__num-index">' + (index + 1) + '</span>' +
+                        '<span class="track-row__num-play">&#9654;</span>' +
+                    '</div>' +
+                    '<div class="track-row__title">' +
+                        '<div class="track-row__art">' + artContent + '</div>' +
+                        '<div class="track-row__name-wrap">' +
+                            '<div class="track-row__name">' + item.title + '</div>' +
+                            (sub ? '<div class="track-row__sub">' + sub + '</div>' : '') +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="track-row__year">' + (item.year || '&mdash;') + '</div>' +
+                    yengCell +
+                    avgCell +
+                    youCell +
+                    '<div class="track-row__len">' + (item.duration || '&mdash;') + '</div>' +
+                '</div>';
+            }
+
             // ── Load content from API ──
             async function loadContent() {
                 createSkeletonCards(8, '#music-grid');
@@ -1637,7 +1901,10 @@
                 }
 
                 noResults.style.display = 'none';
-                grid.innerHTML = items.map(buildCard).join('');
+                grid.innerHTML = '<div class="track-list">' +
+                    buildTrackHead() +
+                    items.map(buildTrackRow).join('') +
+                '</div>';
                 resultsCount.innerHTML = 'Showing <strong>' + items.length + '</strong>' +
                     (totalResults > items.length ? ' of <strong>' + totalResults + '</strong>' : '') + ' results';
 

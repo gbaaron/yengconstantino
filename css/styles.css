@@ -262,7 +262,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--white) !important;
     -webkit-text-fill-color: var(--white);
     padding: var(--space-sm) var(--space-lg) !important;
-    border-radius: var(--radius-full) !important;
+    border-radius: var(--radius-md) !important;
     font-weight: 700 !important;
     box-shadow: 0 4px 15px rgba(108, 43, 217, 0.3);
     transition: all var(--transition-base) !important;
@@ -308,7 +308,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--gray-400);
     background: var(--gray-50);
     border: 1px solid var(--gray-100);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all var(--transition-fast);
     letter-spacing: 0.03em;
@@ -378,7 +378,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1rem;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     transition: all var(--transition-base);
     position: relative;
     overflow: hidden;
@@ -1210,7 +1210,7 @@ textarea.form-input {
     font-size: 0.95rem;
     color: var(--white);
     background: linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #F77737 100%);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     border: none;
     cursor: pointer;
     text-decoration: none;

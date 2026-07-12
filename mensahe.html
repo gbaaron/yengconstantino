@@ -91,7 +91,7 @@
             width: 100%;
             padding: 14px 28px;
             border: none;
-            border-radius: 9999px;
+            border-radius: var(--radius-md);
             font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 1rem;
@@ -181,7 +181,7 @@
         </div>
         <div class="message-grid" id="message-grid">
             <div class="message-card">
-                <div class="message-card__icon">&#128221;</div>
+                <div class="message-card__icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></div>
                 <h3 class="message-card__type">Written Message</h3>
                 <p class="message-card__desc">A heartfelt handwritten-style note from Yeng, delivered digitally.</p>
                 <div class="message-card__divider message-card__divider--purple"></div>
@@ -192,7 +192,7 @@
             </div>
             <div class="message-card message-card--featured">
                 <div class="message-card__popular">Most Popular</div>
-                <div class="message-card__icon">&#127909;</div>
+                <div class="message-card__icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2" ry="2"/></svg></div>
                 <h3 class="message-card__type">Video Message</h3>
                 <p class="message-card__desc">A personal video message from Yeng, recorded just for you or your loved one.</p>
                 <div class="message-card__divider message-card__divider--burgundy"></div>
@@ -202,7 +202,7 @@
                 <button class="message-card__cta message-card__cta--burgundy" onclick="selectMessageType('Video', 1500)">Request Now</button>
             </div>
             <div class="message-card">
-                <div class="message-card__icon">&#127908;</div>
+                <div class="message-card__icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
                 <h3 class="message-card__type">Voice Message</h3>
                 <p class="message-card__desc">A personal voice recording from Yeng with your special message.</p>
                 <div class="message-card__divider message-card__divider--gold"></div>

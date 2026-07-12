@@ -162,7 +162,7 @@
             color: var(--gray-500);
             background: none;
             border: 2px solid transparent;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             cursor: pointer;
             transition: all var(--transition-fast);
             white-space: nowrap;
@@ -254,7 +254,7 @@
             flex: 1;
             padding: 14px 18px;
             border: 2px solid var(--gray-200);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             font-size: 0.95rem;
             color: var(--gray-400);
             cursor: pointer;
@@ -331,7 +331,7 @@
             color: var(--gray-600);
             background: var(--white);
             border: 2px solid var(--gray-200);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
@@ -352,7 +352,7 @@
             font-family: var(--font-body);
             font-weight: 700;
             font-size: 0.85rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             border: none;
             background: var(--gradient-cta);
             color: var(--white);
@@ -388,7 +388,7 @@
             font-family: var(--font-body);
             font-weight: 700;
             font-size: 0.9rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             border: none;
             background: var(--gradient-cta);
             color: var(--white);
@@ -621,7 +621,7 @@
             font-family: var(--font-body);
             font-weight: 700;
             font-size: 0.95rem;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             border: 2px solid var(--primary);
             color: var(--primary);
             background: transparent;
@@ -928,7 +928,7 @@
                     time: '6 hours ago',
                     content: 'Spent two weeks on this sketch of Yeng during her concert tour! Pencil and charcoal on paper. Tried to capture the energy she brings on stage — that moment when she closes her eyes and just FEELS the music. Hope she sees this someday!',
                     imageUrl: null,
-                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E8D5FF 0%, #FFD5E5 100%)', icon: '&#x1F3A8;', label: 'Pencil & Charcoal Fan Art', color: 'var(--primary)' },
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E8D5FF 0%, #FFD5E5 100%)', icon: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2Z"/></svg>', label: 'Pencil & Charcoal Fan Art', color: 'var(--primary)' },
                     likes: 523,
                     liked: false,
                     featured: false
@@ -955,7 +955,7 @@
                     time: '10 hours ago',
                     content: 'Finally got the courage to share my acoustic cover of "Salamat"! I\'ve been practicing for months. Yeng\'s vocal runs are SO difficult to nail but I gave it my best shot. Feedback welcome, Yeng Nation! Be gentle with me haha. If you guys like it I\'ll do "Chinito" next.',
                     imageUrl: null,
-                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FFF3E0 0%, #F3E5F5 100%)', icon: '&#x1F3B5;', label: 'Acoustic Cover Video', color: '#8B6914' },
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FFF3E0 0%, #F3E5F5 100%)', icon: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>', label: 'Acoustic Cover Video', color: '#8B6914' },
                     likes: 289,
                     liked: false,
                     featured: false
@@ -985,6 +985,140 @@
                     likes: 1204,
                     liked: true,
                     featured: true
+                },
+                {
+                    id: 'demo-7',
+                    username: 'Miguel from Batangas',
+                    avatarInitial: 'M',
+                    avatarBg: avatarBgOptions[6],
+                    type: 'post',
+                    time: '2 hours ago',
+                    content: 'Just found out Yeng started writing songs when she was only in her teens. It\'s so inspiring how she stayed true to herself all these years. From the Star in a Million days to now, she never let the industry change who she is. That authenticity is exactly why we love her. Never change, Yeng!',
+                    imageUrl: null,
+                    likes: 198,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-8',
+                    username: 'Anna from Iloilo',
+                    avatarInitial: 'A',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'post',
+                    time: '5 hours ago',
+                    content: 'Reminder to everyone in Yeng Nation: her music got a lot of us through the pandemic. Let\'s keep spreading that same kindness in this community. Be nice to each other, welcome the new fans, and let\'s make this the most wholesome fandom online. Sending love to all of you today. 💜',
+                    imageUrl: null,
+                    likes: 267,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-9',
+                    username: 'Patricia from Pampanga',
+                    avatarInitial: 'P',
+                    avatarBg: avatarBgOptions[1],
+                    type: 'fanart',
+                    time: '4 hours ago',
+                    content: 'Digital portrait I painted of Yeng inspired by the "Metamorphosis" era! Spent about 20 hours on this in Procreate. The butterfly motif felt perfect for that album. Swipe to see the detail on the eyes — those were the hardest part but also my favorite. Tag Yeng if you know her, I\'d die of happiness if she saw this!',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #D5E8FF 0%, #E8D5FF 100%)', icon: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2Z"/></svg>', label: 'Digital Portrait Fan Art', color: 'var(--primary)' },
+                    likes: 641,
+                    liked: false,
+                    featured: true
+                },
+                {
+                    id: 'demo-10',
+                    username: 'Kevin from Baguio',
+                    avatarInitial: 'K',
+                    avatarBg: avatarBgOptions[2],
+                    type: 'fanart',
+                    time: '9 hours ago',
+                    content: 'Made this hand-lettered typography piece using the lyrics from "Ikaw." Watercolor and ink on cold-press paper. These words have gotten me through so much. Thinking of framing it for my room. What lyric would you want as wall art?',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FFE8D5 0%, #FFD5F0 100%)', icon: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>', label: 'Hand-Lettered Lyric Art', color: '#8B6914' },
+                    likes: 384,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-11',
+                    username: 'Denise from Cavite',
+                    avatarInitial: 'D',
+                    avatarBg: avatarBgOptions[3],
+                    type: 'cover',
+                    time: '7 hours ago',
+                    content: 'My band and I did a full acoustic band arrangement of "Chinita Girl"! We slowed it down and added some jazz chords. My guitarist really went off on the solo. This community inspired me to finally post our stuff. Yeng Nation, be honest — should we record a full EP of Yeng covers?',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #E0F7FA 0%, #F3E5F5 100%)', icon: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>', label: 'Band Cover Video', color: '#8B6914' },
+                    likes: 452,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-12',
+                    username: 'Joyce from Bacolod',
+                    avatarInitial: 'J',
+                    avatarBg: avatarBgOptions[4],
+                    type: 'cover',
+                    time: '11 hours ago',
+                    content: 'First time singing in public since forever! Here\'s my piano cover of "Nasaan Ka Na." My hands were shaking the whole time but I did it. Yeng\'s music gave me the confidence to share my voice again after years of stage fright. Thank you for the encouragement, everyone.',
+                    imageUrl: null,
+                    imagePlaceholder: { bg: 'linear-gradient(135deg, #FCE4EC 0%, #EDE7F6 100%)', icon: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>', label: 'Piano Cover Video', color: '#8B6914' },
+                    likes: 337,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-13',
+                    username: 'Ramon from Laguna',
+                    avatarInitial: 'R',
+                    avatarBg: avatarBgOptions[5],
+                    type: 'memory',
+                    time: '2 days ago',
+                    content: 'Yeng was the first artist I ever saw live. I was 15, saved up my baon for weeks to buy a ticket. When she sang "Hawak Kamay" the whole arena lit up their phones and I got chills I still remember to this day. Now I\'m 28 and bringing my little sister to her next show. Passing the torch to the next generation of Yeng Nation!',
+                    imageUrl: null,
+                    likes: 589,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-14',
+                    username: 'Bea from Bulacan',
+                    avatarInitial: 'B',
+                    avatarBg: avatarBgOptions[6],
+                    type: 'memory',
+                    time: '3 days ago',
+                    content: 'I walked down the aisle to an instrumental of "Ikaw" at my wedding last month. Not a dry eye in the room, including mine. My husband and I had our first dance to "Salamat." Yeng\'s music has been the soundtrack to the most important moments of my life. Someday I hope to thank her in person for scoring my love story.',
+                    imageUrl: null,
+                    likes: 912,
+                    liked: false,
+                    featured: true
+                },
+                {
+                    id: 'demo-15',
+                    username: 'Paolo from Makati',
+                    avatarInitial: 'P',
+                    avatarBg: avatarBgOptions[0],
+                    type: 'question',
+                    time: '6 hours ago',
+                    content: 'Newbie question — I just got into Yeng\'s music last month and I\'m OBSESSED. Where should I start with her discography? I\'ve heard the hits but I want the deep cuts too. Give me your must-listen tracks that aren\'t the obvious singles. Building my ultimate Yeng starter playlist and I trust this community\'s taste!',
+                    imageUrl: null,
+                    likes: 143,
+                    liked: false,
+                    featured: false
+                },
+                {
+                    id: 'demo-16',
+                    username: 'Lianne from Zamboanga',
+                    avatarInitial: 'L',
+                    avatarBg: avatarBgOptions[1],
+                    type: 'question',
+                    time: '1 day ago',
+                    content: 'Does anyone know if Yeng has any songwriting tips she\'s shared in interviews? I\'m an aspiring songwriter and she\'s my biggest inspiration. Would love to learn about her creative process — how she writes such honest, emotional lyrics. If you\'ve seen any interviews or videos where she talks about it, please share the links!',
+                    imageUrl: null,
+                    likes: 121,
+                    liked: false,
+                    featured: false
                 }
             ];
 
@@ -1061,8 +1195,8 @@
                             '<span class="heart-icon">' + heartSymbol + '</span>' +
                             '<span class="like-count">' + post.likes.toLocaleString() + '</span>' +
                         '</button>' +
-                        '<button class="post-card__action-btn">&#x1F4AC; Comment</button>' +
-                        '<button class="post-card__action-btn">&#x2197; Share</button>' +
+                        '<button class="post-card__action-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Comment</button>' +
+                        '<button class="post-card__action-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>' +
                     '</div>' +
                 '</div>';
             }
@@ -1074,7 +1208,7 @@
 
                 if (!posts.length) {
                     feedContainer.innerHTML = '<div class="empty-feed">' +
-                        '<div class="empty-feed__icon">&#x1F3B6;</div>' +
+                        '<div class="empty-feed__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>' +
                         '<h3 class="empty-feed__title">No posts yet</h3>' +
                         '<p>Be the first to share something with the Yeng Nation!</p>' +
                     '</div>';
@@ -1089,7 +1223,7 @@
 
                 if (!filtered.length) {
                     feedContainer.innerHTML = '<div class="empty-feed">' +
-                        '<div class="empty-feed__icon">&#x1F50D;</div>' +
+                        '<div class="empty-feed__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>' +
                         '<h3 class="empty-feed__title">No posts in this category</h3>' +
                         '<p>Try a different filter or share something new!</p>' +
                     '</div>';

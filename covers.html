@@ -440,7 +440,7 @@
         .covers-filters__select {
             padding: 8px 32px 8px 12px;
             border: 2px solid rgba(91, 45, 142, 0.15);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
             color: #27273A;
@@ -465,7 +465,7 @@
             color: #71718A;
             background: none;
             border: 2px solid transparent;
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             cursor: pointer;
             transition: all var(--transition-fast);
             white-space: nowrap;
@@ -627,7 +627,7 @@
             gap: 4px;
             padding: 6px 14px;
             border: 2px solid rgba(91, 45, 142, 0.15);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-sm);
             background: none;
             color: #71718A;
             font-family: var(--yeng-font-body);
@@ -824,7 +824,7 @@
     <section class="hall-of-fame">
         <div class="container">
             <div class="hall-of-fame__header">
-                <span class="hall-of-fame__icon">&#127942;</span>
+                <span class="hall-of-fame__icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
                 <h2 class="hall-of-fame__title">Hall of Fame</h2>
                 <p class="hall-of-fame__subtitle">The most celebrated fan covers &mdash; permanently recognized</p>
             </div>
@@ -841,14 +841,14 @@
                 <!-- Guest View -->
                 <div id="submit-guest" style="display:none;">
                     <div class="submit-panel__guest">
-                        <p>&#127908; Want to share your cover with Yeng Nation?</p>
+                        <p>Want to share your cover with Yeng Nation?</p>
                         <a href="/login.html?redirect=/covers.html" class="btn btn--sm" style="background:var(--yeng-gradient-cta);color:#fff;">Log in to submit your cover</a>
                     </div>
                 </div>
                 <!-- Auth View -->
                 <div id="submit-auth" style="display:none;">
                     <button class="submit-panel__trigger" onclick="toggleSubmitPanel()" aria-expanded="false">
-                        <span>&#127908; Submit Your Cover</span>
+                        <span>Submit Your Cover</span>
                         <span class="submit-panel__trigger-icon">+</span>
                     </button>
                     <div class="submit-panel__form">
@@ -1071,7 +1071,7 @@
 
             if (!items.length) {
                 grid.innerHTML = '<div class="covers-empty">' +
-                    '<div class="covers-empty__icon">&#127908;</div>' +
+                    '<div class="covers-empty__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></div>' +
                     '<h3 class="covers-empty__title">No covers yet</h3>' +
                     '<p class="covers-empty__text">Be the first to submit your cover!</p>' +
                     '</div>';
@@ -1157,7 +1157,7 @@
                 const upvoteCount = cover.upvotes || 0;
 
                 var html = '<div class="hall-of-fame__card">';
-                html += '<span class="hall-of-fame__card-badge">&#127942; Hall of Fame</span>';
+                html += '<span class="hall-of-fame__card-badge"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:4px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>Hall of Fame</span>';
                 html += '<div class="hall-of-fame__card-video">';
                 html += '<img src="' + thumbnail + '" alt="' + escapeHtml(cover.title || '') + '" loading="lazy">';
                 if (cover.contentURL) {

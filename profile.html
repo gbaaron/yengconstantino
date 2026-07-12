@@ -496,7 +496,7 @@
         function loadMyCards() {
             var container = document.getElementById('cards-list');
             if (!MY_CARDS.length) {
-                container.innerHTML = '<div class="cards-empty"><div class="cards-empty__icon">&#127183;</div><h3 class="cards-empty__title">No cards yet</h3><p class="cards-empty__desc">Collectible Yeng cards will appear here once you have one.</p></div>';
+                container.innerHTML = '<div class="cards-empty"><div class="cards-empty__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="18" x="3" y="3" rx="1.5"/><rect width="7" height="18" x="14" y="3" rx="1.5"/></svg></div><h3 class="cards-empty__title">No cards yet</h3><p class="cards-empty__desc">Collectible Yeng cards will appear here once you have one.</p></div>';
                 return;
             }
             container.innerHTML = '<div class="cards-grid">' + MY_CARDS.map(function(c) {
@@ -523,7 +523,7 @@
             try {
                 var data = await api('get-orders');
                 var orders = data.orders || [];
-                if (!orders.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#128230;</div><h3 class="empty-state__title">No orders yet</h3><p class="empty-state__text">Visit the <a href="/merch.html">Merch Store</a> to get official Yeng merch!</p></div>'; return; }
+                if (!orders.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div><h3 class="empty-state__title">No orders yet</h3><p class="empty-state__text">Visit the <a href="/merch.html">Merch Store</a> to get official Yeng merch!</p></div>'; return; }
                 container.innerHTML = orders.map(function(o) {
                     var statusClass = 'order-card__status--' + (o.status || 'pending').toLowerCase();
                     var items = Array.isArray(o.items) ? o.items : [];
@@ -549,13 +549,13 @@
             try {
                 var data = await api('get-exclusive-content');
                 var content = data.content || [];
-                if (!content.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#128274;</div><h3 class="empty-state__title">No exclusive content yet</h3><p class="empty-state__text">Exclusive content will appear here as it is published.</p></div>'; return; }
+                if (!content.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3 class="empty-state__title">No exclusive content yet</h3><p class="empty-state__text">Exclusive content will appear here as it is published.</p></div>'; return; }
                 container.innerHTML = content.map(function(item) {
                     var locked = item.locked;
                     return '<div class="exclusive-card ' + (locked ? 'exclusive-card--locked' : '') + '">' +
                         (item.thumbnail ? '<img class="exclusive-card__thumb" src="' + item.thumbnail + '" alt="' + item.title + '">' : '<div class="exclusive-card__thumb"></div>') +
                         '<div class="exclusive-card__info"><h3 class="exclusive-card__title">' + item.title + '</h3><p class="exclusive-card__desc">' + (item.description || '') + '</p>' +
-                        (locked ? '<span class="exclusive-card__lock">&#128274; Upgrade to ' + item.unlockTier + '</span>' : '<a href="' + (item.contentUrl || '#') + '" target="_blank" class="btn btn--sm btn--primary" style="margin-top:var(--space-sm);">Panoorin</a>') +
+                        (locked ? '<span class="exclusive-card__lock"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:4px;"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Upgrade to ' + item.unlockTier + '</span>' : '<a href="' + (item.contentUrl || '#') + '" target="_blank" class="btn btn--sm btn--primary" style="margin-top:var(--space-sm);">Panoorin</a>') +
                         '</div></div>';
                 }).join('');
             } catch (err) { container.innerHTML = '<p style="color:#BE185D;">Failed to load exclusive content.</p>'; }
@@ -568,7 +568,7 @@
                 var allCovers = data.submissions || [];
                 var userId = Auth.getUser()?.id;
                 var myCovers = allCovers.filter(function(c) { return c.user && c.user.id === userId; });
-                if (!myCovers.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon">&#127908;</div><h3 class="empty-state__title">No covers submitted</h3><p class="empty-state__text">Submit your first cover on the <a href="/covers.html">Yeng Covers</a> page!</p></div>'; return; }
+                if (!myCovers.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div><h3 class="empty-state__title">No covers submitted</h3><p class="empty-state__text">Submit your first cover on the <a href="/covers.html">Yeng Covers</a> page!</p></div>'; return; }
                 var statusColors = { 'Submitted': '#71718A', 'Under Review': '#6C2BD9', 'Featured on Site': '#BE185D', 'Shared by Yeng': '#E5A00D', 'Hall of Fame': '#D97706' };
                 container.innerHTML = myCovers.map(function(c) {
                     var sc = statusColors[c.status] || '#71718A';
