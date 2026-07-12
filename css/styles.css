@@ -191,6 +191,8 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 2px solid var(--purple-glow);
     transition: transform var(--transition-base), box-shadow var(--transition-base);
+    /* Keep nav content clear of the iOS status bar (clock/battery) on notched devices */
+    padding-top: env(safe-area-inset-top);
 }
 
 .nav--scrolled {
@@ -654,7 +656,7 @@ textarea.form-input {
     display: flex;
     align-items: center;
     overflow: hidden;
-    padding-top: 72px;
+    padding-top: calc(72px + env(safe-area-inset-top));
 }
 
 .hero__bg {
@@ -1239,7 +1241,7 @@ textarea.form-input {
         display: flex;
         flex-direction: column;
         position: absolute;
-        top: 72px;
+        top: calc(72px + env(safe-area-inset-top));
         left: 0;
         right: 0;
         background: var(--white);
