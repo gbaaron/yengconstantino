@@ -93,6 +93,29 @@
             z-index: 2;
         }
         .pricing-card--popular:hover { transform: scale(1.05) translateY(-4px); }
+        /* ── Highlight state when arriving from the store 10%-off promo ── */
+        .pricing-card--highlighted {
+            border-color: #E5A00D !important;
+            box-shadow: 0 0 0 3px rgba(229,160,13,0.35), 0 12px 48px rgba(229,160,13,0.35) !important;
+            animation: cardPulse 1.4s ease-in-out 3;
+        }
+        @keyframes cardPulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(229,160,13,0.35), 0 12px 48px rgba(229,160,13,0.35); }
+            50% { box-shadow: 0 0 0 6px rgba(229,160,13,0.55), 0 16px 56px rgba(229,160,13,0.5); }
+        }
+        .pricing-card__feature--highlighted {
+            background: linear-gradient(135deg, rgba(229,160,13,0.16) 0%, rgba(251,191,36,0.16) 100%);
+            border-radius: 10px;
+            padding: 6px 10px;
+            margin: 2px -10px;
+            font-weight: 700;
+            color: #B45309;
+            animation: perkGlow 1.4s ease-in-out 3;
+        }
+        @keyframes perkGlow {
+            0%, 100% { background: linear-gradient(135deg, rgba(229,160,13,0.16) 0%, rgba(251,191,36,0.16) 100%); }
+            50% { background: linear-gradient(135deg, rgba(229,160,13,0.34) 0%, rgba(251,191,36,0.34) 100%); }
+        }
         .pricing-card__popular-badge {
             position: absolute;
             top: -14px;
@@ -296,7 +319,7 @@
                     <li class="pricing-card__feature">Everything in Laging Nandito</li>
                     <li class="pricing-card__feature">Personal voice messages from Yeng</li>
                     <li class="pricing-card__feature">Exclusive acoustic recordings</li>
-                    <li class="pricing-card__feature">Merch discounts (15%)</li>
+                    <li class="pricing-card__feature" id="perk-discount">10% off everything in the store</li>
                     <li class="pricing-card__feature">Exclusive limited drops access</li>
                     <li class="pricing-card__feature">Birthday shoutouts</li>
                 </ul>
@@ -376,7 +399,17 @@
     <script>
         let selectedTier = '';
         let selectedPrice = 0;
-        document.addEventListener('DOMContentLoaded', function() { checkCurrentTier(); });
+        document.addEventListener('DOMContentLoaded', function() { checkCurrentTier(); highlightFromPromo(); });
+        function highlightFromPromo() {
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('highlight') !== 'ikaw-lamang') return;
+            var card = document.querySelector('.pricing-card[data-tier="Ikaw Lamang"]');
+            if (!card) return;
+            card.classList.add('pricing-card--highlighted');
+            var perk = document.getElementById('perk-discount');
+            if (perk) perk.classList.add('pricing-card__feature--highlighted');
+            setTimeout(function() { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 250);
+        }
         function selectTier(tier, price) {
             if (!Auth.isLoggedIn()) { Auth.requireAuth('/membership.html'); return; }
             selectedTier = tier;
