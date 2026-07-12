@@ -8,14 +8,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FAFAFC">
+    <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Log In — Yeng Constantino Official</title>
     <meta name="description" content="Log in to your Yeng Constantino fan account. Access exclusive music content, merch, and the Yeng Nation community.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Login Page Styles ── */
@@ -32,7 +32,7 @@
 
         /* Left side — branding panel */
         .auth-brand {
-            background: linear-gradient(135deg, #E5A00D 0%, #BE185D 50%, #6C2BD9 100%);
+            background: linear-gradient(135deg, #D49A24 0%, #741E27 50%, #A52C32 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,7 +57,7 @@
         }
 
         .auth-brand__heading {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2.8rem;
             font-weight: 900;
             color: #FFFFFF;
@@ -66,9 +66,9 @@
         }
 
         .auth-brand__tagline {
-            font-family: 'Caveat', cursive;
+            font-family: var(--font-accent);
             font-size: 2rem;
-            color: #FBBF24;
+            color: #F0CD79;
             margin: var(--space-lg) 0 var(--space-2xl);
         }
 
@@ -123,14 +123,14 @@
         }
 
         .tier-badge__name {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-weight: 700;
             font-size: 0.9rem;
             color: #FFFFFF;
         }
 
         .tier-badge__desc {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.78rem;
             color: rgba(255, 255, 255, 0.6);
         }
@@ -154,16 +154,16 @@
         }
 
         .auth-form__title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2rem;
             font-weight: 800;
-            color: #1A1A2E;
+            color: #191716;
             margin-bottom: var(--space-sm);
         }
 
         .auth-form__subtitle {
-            font-family: 'Inter', sans-serif;
-            color: #71718A;
+            font-family: var(--font-body);
+            color: #625B55;
             font-size: 0.95rem;
         }
 
@@ -176,33 +176,33 @@
             display: flex;
             align-items: center;
             gap: var(--space-xs);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-weight: 600;
             font-size: 0.9rem;
-            color: #27273A;
+            color: #322E2A;
             margin-bottom: var(--space-sm);
         }
 
         .auth-form .form-input {
             width: 100%;
             padding: 16px 18px;
-            border: 2px solid #E8E0F0;
+            border: 2px solid #EAE2D5;
             border-radius: var(--radius-md);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 1rem;
-            color: #27273A;
+            color: #322E2A;
             background: #FFFFFF;
             transition: all var(--transition-fast);
         }
 
         .auth-form .form-input:focus {
             outline: none;
-            border-color: #6C2BD9;
-            box-shadow: 0 0 0 4px rgba(91, 45, 142, 0.15);
+            border-color: #A52C32;
+            box-shadow: 0 0 0 4px rgba(116, 30, 39, 0.15);
         }
 
         .auth-form .form-input::placeholder {
-            color: #71718A;
+            color: #625B55;
         }
 
         /* Password visibility toggle */
@@ -219,13 +219,13 @@
             border: none;
             cursor: pointer;
             font-size: 1.2rem;
-            color: #71718A;
+            color: #625B55;
             padding: 4px;
             transition: color var(--transition-fast);
         }
 
         .password-toggle:hover {
-            color: #6C2BD9;
+            color: #A52C32;
         }
 
         /* Submit button */
@@ -233,22 +233,22 @@
             width: 100%;
             padding: 16px;
             font-size: 1.05rem;
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-weight: 800;
             color: #FFFFFF;
-            background: linear-gradient(135deg, #6C2BD9 0%, #8B5CF6 100%);
+            background: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
             border: none;
             border-radius: var(--radius-md);
             cursor: pointer;
             transition: all var(--transition-base);
-            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+            box-shadow: 0 4px 20px rgba(116, 30, 39, 0.3);
             position: relative;
             overflow: hidden;
         }
 
         .auth-form__submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(91, 45, 142, 0.4);
+            box-shadow: 0 8px 30px rgba(116, 30, 39, 0.4);
         }
 
         .auth-form__submit:disabled {
@@ -269,12 +269,12 @@
 
         /* Error box */
         .auth-form__error {
-            background: rgba(139, 34, 82, 0.08);
-            border: 1px solid rgba(139, 34, 82, 0.2);
-            color: #BE185D;
+            background: rgba(116, 30, 39, 0.08);
+            border: 1px solid rgba(116, 30, 39, 0.2);
+            color: #741E27;
             padding: 12px 16px;
             border-radius: var(--radius-md);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: var(--space-lg);
@@ -291,19 +291,19 @@
         .auth-form__switch {
             text-align: center;
             margin-top: var(--space-xl);
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.95rem;
             color: #6B5D50;
         }
 
         .auth-form__switch a {
-            color: #6C2BD9;
+            color: #A52C32;
             font-weight: 700;
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
         }
 
         .auth-form__switch a:hover {
-            color: #BE185D;
+            color: #741E27;
         }
 
         /* Responsive */
@@ -498,7 +498,7 @@
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#E5A00D;">Salamat sa suporta! &#9834;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
     </footer>

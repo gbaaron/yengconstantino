@@ -8,18 +8,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FAFAFC">
+    <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Events — Yeng Constantino Official</title>
     <meta name="description" content="Upcoming concerts, meet & greets, and special events. Get tickets and exclusive member perks for Yeng Constantino events.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         .events-hero {
-            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #5B2D8E 100%);
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #741E27 100%);
             padding: 140px 0 80px;
             text-align: center;
             position: relative;
@@ -29,22 +29,22 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212,165,71,0.04)'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212, 154, 36,0.04)'/%3E%3C/svg%3E");
             pointer-events: none;
         }
         .events-hero__content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
         .events-hero__title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 3rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #D4A547 0%, #E8C36B 50%, #FFFFFF 100%);
+            background: linear-gradient(135deg, #D49A24 0%, #F0CD79 50%, #FFFFFF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: var(--space-md);
         }
-        .events-hero__subtitle { font-family: 'Inter', sans-serif; font-size: 1.15rem; color: rgba(255,255,255,0.7); margin-bottom: var(--space-lg); }
-        .events-hero__tagline { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #D4A547; }
+        .events-hero__subtitle { font-family: var(--font-body); font-size: 1.15rem; color: rgba(255,255,255,0.7); margin-bottom: var(--space-lg); }
+        .events-hero__tagline { font-family: var(--font-accent); font-size: 1.6rem; color: #D49A24; }
 
         .events-filters {
             background: #FFF8F0;
@@ -52,7 +52,7 @@
             position: sticky;
             top: 72px;
             z-index: 100;
-            border-bottom: 1px solid rgba(212,165,71,0.15);
+            border-bottom: 1px solid rgba(212, 154, 36,0.15);
         }
         .events-filters__inner {
             max-width: 1200px;
@@ -67,7 +67,7 @@
             border: 2px solid #EDE7DF;
             border-radius: var(--radius-md);
             background: #FFFFFF;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-weight: 600;
             font-size: 0.9rem;
             color: #6B5D50;
@@ -75,9 +75,9 @@
             transition: all 250ms ease;
             white-space: nowrap;
         }
-        .events-filter-tab:hover { border-color: #5B2D8E; color: #5B2D8E; }
+        .events-filter-tab:hover { border-color: #741E27; color: #741E27; }
         .events-filter-tab--active {
-            background: linear-gradient(135deg, #5B2D8E, #7E4FB5);
+            background: linear-gradient(135deg, #741E27, #96313B);
             color: #FFFFFF;
             border-color: transparent;
         }
@@ -93,19 +93,19 @@
             background: #FFFFFF;
             border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 0 4px 24px rgba(212,165,71,0.08);
+            box-shadow: 0 4px 24px rgba(212, 154, 36,0.08);
             transition: all 250ms ease;
         }
-        .event-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(212,165,71,0.18); }
+        .event-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(212, 154, 36,0.18); }
         .event-card__image {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            background: linear-gradient(135deg, rgba(91,45,142,0.08), rgba(212,165,71,0.08));
+            background: linear-gradient(135deg, rgba(116, 30, 39,0.08), rgba(212, 154, 36,0.08));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Caveat', cursive;
+            font-family: var(--font-accent);
             font-size: 1.2rem;
             color: #8E7F70;
         }
@@ -115,23 +115,23 @@
             padding: 4px 12px;
             font-size: 0.72rem;
             font-weight: 700;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             text-transform: uppercase;
             letter-spacing: 0.06em;
             border-radius: 9999px;
         }
-        .event-card__type--concert { background: rgba(91,45,142,0.12); color: #5B2D8E; }
-        .event-card__type--meetandgreet { background: rgba(139,34,82,0.12); color: #8B2252; }
-        .event-card__type--special { background: rgba(212,165,71,0.15); color: #C68B1E; }
+        .event-card__type--concert { background: rgba(116, 30, 39,0.12); color: #741E27; }
+        .event-card__type--meetandgreet { background: rgba(116, 30, 39,0.12); color: #741E27; }
+        .event-card__type--special { background: rgba(212, 154, 36,0.15); color: #B0801E; }
         .event-card__title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.2rem;
             font-weight: 700;
             color: #231A12;
             margin-top: var(--space-sm);
         }
         .event-card__meta {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.85rem;
             color: #6B5D50;
             margin-top: var(--space-sm);
@@ -139,14 +139,14 @@
         }
         .event-card__meta span { display: block; }
         .event-card__price {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.3rem;
             font-weight: 800;
             color: #231A12;
             margin-top: var(--space-md);
         }
         .event-card__price-original {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.85rem;
             color: #8E7F70;
             text-decoration: line-through;
@@ -158,7 +158,7 @@
             padding: 2px 8px;
             font-size: 0.7rem;
             font-weight: 700;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             border-radius: 9999px;
             background: rgba(45,142,126,0.12);
             color: #2D8E7E;
@@ -170,26 +170,26 @@
             padding: 4px 12px;
             font-size: 0.75rem;
             font-weight: 700;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             border-radius: 9999px;
-            background: rgba(212,165,71,0.15);
-            color: #C68B1E;
+            background: rgba(212, 154, 36,0.15);
+            color: #B0801E;
         }
         .event-card__actions { margin-top: var(--space-lg); }
         .event-card__status {
             display: inline-block;
             padding: 8px 24px;
             border-radius: 9999px;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-weight: 700;
             font-size: 0.85rem;
         }
-        .event-card__status--soldout { background: rgba(139,34,82,0.12); color: #8B2252; }
+        .event-card__status--soldout { background: rgba(116, 30, 39,0.12); color: #741E27; }
         .event-card__status--past { background: rgba(107,93,80,0.12); color: #6B5D50; }
 
-        .ticket-modal__event { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-sm); color: #231A12; }
-        .ticket-modal__price { text-align: center; font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
-        .ticket-modal__free-note { text-align: center; font-family: 'Caveat', cursive; font-size: 1.1rem; color: #D4A547; margin-bottom: var(--space-md); }
+        .ticket-modal__event { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-sm); color: #231A12; }
+        .ticket-modal__price { text-align: center; font-family: var(--font-body); font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
+        .ticket-modal__free-note { text-align: center; font-family: var(--font-accent); font-size: 1.1rem; color: #D49A24; margin-bottom: var(--space-md); }
 
         @media (max-width: 768px) {
             .events-hero { padding: 120px 0 60px; }
@@ -264,7 +264,7 @@
                 </select>
             </div>
             <div class="form-group" id="ticket-free-group" style="display:none;">
-                <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:0.9rem;color:#4A3D32;cursor:pointer;">
+                <label style="display:flex;align-items:center;gap:8px;font-family:var(--font-body);font-size:0.9rem;color:#4A3D32;cursor:pointer;">
                     <input type="checkbox" id="ticket-use-free" onchange="updateTicketPrice()">
                     Use free ticket (Ikaw Lamang perk)
                 </label>
@@ -282,7 +282,7 @@
                 <label class="form-label">Payment Reference Number</label>
                 <input type="text" class="form-input" id="ticket-payment-ref" placeholder="Enter your payment reference...">
             </div>
-            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya, then enter your reference number above. Your ticket will be confirmed within 24 hours.</p>
+            <p style="font-family:var(--font-body);font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya, then enter your reference number above. Your ticket will be confirmed within 24 hours.</p>
             <button class="btn btn--primary btn--block" id="ticket-confirm-btn" onclick="purchaseTicket()">Confirm Purchase</button>
         </div>
     </div>
@@ -307,7 +307,7 @@
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D4A547;">Salamat sa suporta! &#9834;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
     </footer>
@@ -401,7 +401,7 @@
                 if (!isConcert && evt.maxTickets) {
                     var remaining = evt.maxTickets - (evt.ticketsSold || 0);
                     if (remaining <= 20 && remaining > 0) {
-                        availHtml = '<div style="font-family:\'Inter\',sans-serif;font-size:0.8rem;color:#8B2252;font-weight:600;margin-top:4px;">Only ' + remaining + ' tickets left!</div>';
+                        availHtml = '<div style="font-family:\'Inter\',sans-serif;font-size:0.8rem;color:#741E27;font-weight:600;margin-top:4px;">Only ' + remaining + ' tickets left!</div>';
                     }
                 }
 
@@ -421,7 +421,7 @@
                     actionHtml = '<a href="' + evt.ticketUrl + '" target="_blank" rel="noopener" class="btn btn--primary btn--sm">Get Tickets &#8599;</a>';
                 } else if (!isConcert) {
                     if (isEarlyAccessPeriod && !Auth.isLoggedIn()) {
-                        actionHtml = '<span style="font-family:\'Inter\',sans-serif;font-size:0.85rem;color:#8B2252;font-weight:600;">Members get early access — <a href="/signup.html">Join now</a></span>';
+                        actionHtml = '<span style="font-family:\'Inter\',sans-serif;font-size:0.85rem;color:#741E27;font-weight:600;">Members get early access — <a href="/signup.html">Join now</a></span>';
                     } else {
                         actionHtml = '<button class="btn btn--primary btn--sm" onclick="openTicketModal(\'' + evt.id + '\')">Buy Tickets</button>';
                     }

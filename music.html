@@ -8,40 +8,40 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FAFAFC">
+    <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Music & Content Archive — Yeng Constantino Official</title>
     <meta name="description" content="Browse Yeng Constantino's complete discography and content archive. Studio recordings, live performances, music videos, interviews, and behind the scenes — all in one place.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Music Page — Color System Overrides ── */
         :root {
-            --primary: #6C2BD9;
-            --primary-light: #8B5CF6;
-            --primary-glow: rgba(91, 45, 142, 0.15);
-            --gold: #E5A00D;
-            --gold-light: #FBBF24;
-            --burgundy: #BE185D;
-            --burgundy-light: #DB2777;
-            --bg-off-white: #FAFAFC;
-            --font-display: 'Playfair Display', serif;
-            --font-body: 'Inter', sans-serif;
-            --font-accent: 'Caveat', cursive;
-            --gradient-primary: linear-gradient(135deg, #6C2BD9 0%, #BE185D 50%, #E5A00D 100%);
-            --gradient-cta: linear-gradient(135deg, #6C2BD9 0%, #8B5CF6 100%);
-            --shadow-warm-sm: 0 2px 8px rgba(212, 165, 71, 0.10);
-            --shadow-warm-md: 0 4px 20px rgba(212, 165, 71, 0.14);
-            --shadow-warm-lg: 0 8px 40px rgba(212, 165, 71, 0.18);
-            --shadow-warm-glow: 0 0 30px rgba(212, 165, 71, 0.25);
+            --primary: #A52C32;
+            --primary-light: #C24048;
+            --primary-glow: rgba(116, 30, 39, 0.15);
+            --gold: #D49A24;
+            --gold-light: #F0CD79;
+            --burgundy: #741E27;
+            --burgundy-light: #96313B;
+            --bg-off-white: #FBF8F2;
+            --font-display: var(--font-display);
+            --font-body: var(--font-body);
+            --font-accent: var(--font-accent);
+            --gradient-primary: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
+            --gradient-cta: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
+            --shadow-warm-sm: 0 2px 8px rgba(212, 154, 36, 0.10);
+            --shadow-warm-md: 0 4px 20px rgba(212, 154, 36, 0.14);
+            --shadow-warm-lg: 0 8px 40px rgba(212, 154, 36, 0.18);
+            --shadow-warm-glow: 0 0 30px rgba(212, 154, 36, 0.25);
         }
 
         /* ── Music Hero ── */
         .music-hero {
-            background: linear-gradient(135deg, #1a0a2e 0%, #2D1B69 40%, #3d1a3d 70%, #2a1535 100%);
+            background: linear-gradient(135deg, #161010 0%, #2A1512 40%, #2E1B18 70%, #221812 100%);
             padding: 140px 0 60px;
             text-align: center;
             position: relative;
@@ -158,7 +158,7 @@
 
         .music-search__btn:hover {
             transform: translateY(-50%) scale(1.08);
-            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
+            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.4);
         }
 
         /* ── Filter Bar ── */
@@ -360,12 +360,12 @@
         .track-head {
             padding-top: 10px;
             padding-bottom: 10px;
-            border-bottom: 1px solid var(--gray-100, #f0f0f3);
+            border-bottom: 1px solid var(--gray-100, #EAE2D5);
             font-size: 0.68rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--gray-400, #9ca3af);
+            color: var(--gray-400, #8C8175);
         }
 
         .track-head__col--num { text-align: center; }
@@ -379,7 +379,7 @@
         }
 
         .track-row:hover {
-            background: var(--bg-off-white, #FAFAFC);
+            background: var(--bg-off-white, #FBF8F2);
         }
 
         .track-row:hover .track-row__num-index { display: none; }
@@ -390,7 +390,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--gray-400, #9ca3af);
+            color: var(--gray-400, #8C8175);
             font-size: 0.85rem;
             font-variant-numeric: tabular-nums;
         }
@@ -440,7 +440,7 @@
 
         .track-row__sub {
             font-size: 0.78rem;
-            color: var(--gray-400, #9ca3af);
+            color: var(--gray-400, #8C8175);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -450,7 +450,7 @@
         .track-row__year {
             text-align: center;
             font-size: 0.85rem;
-            color: var(--gray-500, #6b7280);
+            color: var(--gray-500, #625B55);
             font-variant-numeric: tabular-nums;
         }
 
@@ -477,12 +477,12 @@
 
         .track-rating__count {
             font-size: 0.62rem;
-            color: var(--gray-400, #9ca3af);
+            color: var(--gray-400, #8C8175);
             font-weight: 500;
         }
 
         .track-rating__empty {
-            color: var(--gray-300, #d1d5db);
+            color: var(--gray-300, #CFC3B4);
             font-size: 1rem;
             line-height: 1;
         }
@@ -501,7 +501,7 @@
             gap: 3px;
             padding: 4px 10px;
             border-radius: var(--radius-sm);
-            background: rgba(190, 24, 93, 0.10);
+            background: rgba(116, 30, 39, 0.10);
             color: var(--burgundy);
             font-size: 0.72rem;
             font-weight: 700;
@@ -511,12 +511,12 @@
             transition: background var(--transition-base);
         }
 
-        .track-rate-btn:hover { background: rgba(190, 24, 93, 0.20); }
+        .track-rate-btn:hover { background: rgba(116, 30, 39, 0.20); }
 
         .track-row__len {
             text-align: right;
             font-size: 0.85rem;
-            color: var(--gray-400, #9ca3af);
+            color: var(--gray-400, #8C8175);
             font-variant-numeric: tabular-nums;
         }
 
@@ -538,7 +538,7 @@
         .music-card--video .music-card__thumb {
             position: relative;
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #2D1B69 0%, #6C2BD9 50%, #BE185D 100%);
+            background: linear-gradient(135deg, #2A1512 0%, #A52C32 50%, #741E27 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -622,7 +622,7 @@
             width: 100px;
             min-height: 100px;
             flex-shrink: 0;
-            background: linear-gradient(135deg, #2D1B69 0%, #6C2BD9 50%, #BE185D 100%);
+            background: linear-gradient(135deg, #2A1512 0%, #A52C32 50%, #741E27 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -721,7 +721,7 @@
         }
 
         .music-card__badge--purple { background: var(--primary); }
-        .music-card__badge--gold { background: var(--gold); color: #2D1B69; }
+        .music-card__badge--gold { background: var(--gold); color: #2A1512; }
         .music-card__badge--burgundy { background: var(--burgundy); }
         .music-card__badge--green { background: #22c55e; }
 
@@ -733,8 +733,8 @@
             font-family: var(--font-accent);
             font-size: 0.85rem;
             border-radius: var(--radius-full);
-            background: rgba(212, 165, 71, 0.9);
-            color: #2D1B69;
+            background: rgba(212, 154, 36, 0.9);
+            color: #2A1512;
             font-weight: 700;
         }
 
@@ -809,7 +809,7 @@
         }
 
         .music-card__rating:hover {
-            background: rgba(212, 165, 71, 0.12);
+            background: rgba(212, 154, 36, 0.12);
         }
 
         .music-card__rating-star {
@@ -875,19 +875,19 @@
 
         .rating-chip--yeng {
             background: rgba(108, 43, 217, 0.12);
-            color: var(--yc-purple, #6C2BD9);
+            color: var(--yc-purple, #A52C32);
         }
 
         .rating-chip--fans {
-            background: rgba(212, 165, 71, 0.12);
+            background: rgba(212, 154, 36, 0.12);
             color: var(--gold);
         }
 
         .rating-chip--fans .rating-chip__val { color: var(--gold); }
 
         .rating-chip--you {
-            background: rgba(190, 24, 93, 0.12);
-            color: var(--yc-burgundy, #BE185D);
+            background: rgba(116, 30, 39, 0.12);
+            color: var(--yc-burgundy, #741E27);
         }
 
         .rating-chip--rate {
@@ -1064,7 +1064,7 @@
         .rating-btn--selected[data-value="3"] { background: var(--burgundy); }
         .rating-btn--selected[data-value="4"],
         .rating-btn--selected[data-value="5"],
-        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2D1B69; }
+        .rating-btn--selected[data-value="6"] { background: var(--gold); color: #2A1512; }
         .rating-btn--selected[data-value="7"],
         .rating-btn--selected[data-value="8"] { background: #22c55e; }
         .rating-btn--selected[data-value="9"],
@@ -1097,7 +1097,7 @@
         }
 
         .rating-modal__submit:hover {
-            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.4);
+            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.4);
             transform: translateY(-2px);
         }
 
@@ -1661,13 +1661,13 @@
                         'xmlns="http://www.w3.org/2000/svg" style="filter:hue-rotate(' + hue + 'deg)">' +
                         '<defs>' +
                             '<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">' +
-                                '<stop offset="0" stop-color="#2D1B69"/>' +
-                                '<stop offset="0.55" stop-color="#6C2BD9"/>' +
-                                '<stop offset="1" stop-color="#BE185D"/>' +
+                                '<stop offset="0" stop-color="#2A1512"/>' +
+                                '<stop offset="0.55" stop-color="#A52C32"/>' +
+                                '<stop offset="1" stop-color="#741E27"/>' +
                             '</linearGradient>' +
                             '<radialGradient id="label" cx="0.5" cy="0.5" r="0.5">' +
                                 '<stop offset="0" stop-color="#FFE9A8"/>' +
-                                '<stop offset="1" stop-color="#E5A00D"/>' +
+                                '<stop offset="1" stop-color="#D49A24"/>' +
                             '</radialGradient>' +
                             '<radialGradient id="glow" cx="0.3" cy="0.25" r="0.8">' +
                                 '<stop offset="0" stop-color="rgba(255,255,255,0.35)"/>' +
@@ -1677,10 +1677,10 @@
                         '<rect width="100" height="100" fill="url(#bg)"/>' +
                         '<rect width="100" height="100" fill="url(#glow)"/>' +
                         '<g transform="translate(50,50)">' +
-                            '<circle r="35" fill="#0d0a17"/>' +
+                            '<circle r="35" fill="#100F0E"/>' +
                             grooves +
                             '<circle r="11" fill="url(#label)"/>' +
-                            '<circle r="2" fill="#0d0a17"/>' +
+                            '<circle r="2" fill="#100F0E"/>' +
                             '<path d="M -35 0 A 35 35 0 0 1 -10 -33" fill="none" ' +
                                 'stroke="rgba(255,255,255,0.18)" stroke-width="1.4" stroke-linecap="round"/>' +
                         '</g>' +

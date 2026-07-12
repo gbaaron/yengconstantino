@@ -8,33 +8,33 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FAFAFC">
+    <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Official Merch — Yeng Constantino</title>
     <meta name="description" content="Shop official Yeng Constantino merchandise. Limited drops, OPM-inspired apparel, accessories, and more. Wear your love for Yeng!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Yeng Merch Page — Custom Properties ── */
         :root {
-            --yc-purple: #6C2BD9;
-            --yc-purple-light: #8B5CF6;
-            --yc-purple-glow: rgba(91, 45, 142, 0.15);
-            --yc-gold: #E5A00D;
-            --yc-gold-light: #FBBF24;
-            --yc-burgundy: #BE185D;
-            --yc-bg: #FAFAFC;
-            --yc-font-display: 'Playfair Display', serif;
-            --yc-font-body: 'Inter', sans-serif;
-            --yc-font-accent: 'Caveat', cursive;
-            --yc-gradient-primary: linear-gradient(135deg, #6C2BD9 0%, #BE185D 50%, #E5A00D 100%);
-            --yc-gradient-cta: linear-gradient(135deg, #6C2BD9 0%, #8B5CF6 100%);
-            --yc-gradient-gold: linear-gradient(135deg, #E5A00D 0%, #D97706 100%);
-            --yc-gradient-warm: linear-gradient(135deg, #E5A00D 0%, #BE185D 50%, #6C2BD9 100%);
-            --yc-gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #27273A 100%);
+            --yc-purple: #A52C32;
+            --yc-purple-light: #C24048;
+            --yc-purple-glow: rgba(116, 30, 39, 0.15);
+            --yc-gold: #D49A24;
+            --yc-gold-light: #F0CD79;
+            --yc-burgundy: #741E27;
+            --yc-bg: #FBF8F2;
+            --yc-font-display: var(--font-display);
+            --yc-font-body: var(--font-body);
+            --yc-font-accent: var(--font-accent);
+            --yc-gradient-primary: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
+            --yc-gradient-cta: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
+            --yc-gradient-gold: linear-gradient(135deg, #D49A24 0%, #B0801E 100%);
+            --yc-gradient-warm: linear-gradient(135deg, #D49A24 0%, #741E27 50%, #A52C32 100%);
+            --yc-gradient-dark: linear-gradient(135deg, #191716 0%, #322E2A 100%);
         }
 
         body {
@@ -73,10 +73,10 @@
         }
         .nav__cta {
             background: var(--yc-gradient-cta) !important;
-            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.3);
+            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.3);
         }
         .nav__cta:hover {
-            box-shadow: 0 6px 25px rgba(91, 45, 142, 0.4) !important;
+            box-shadow: 0 6px 25px rgba(116, 30, 39, 0.4) !important;
             background: var(--yc-gradient-cta) !important;
         }
 
@@ -94,8 +94,8 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(91, 45, 142, 0.25) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 70%, rgba(212, 165, 71, 0.15) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, rgba(116, 30, 39, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(212, 154, 36, 0.15) 0%, transparent 60%);
             pointer-events: none;
         }
 
@@ -145,7 +145,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 24px rgba(91, 45, 142, 0.4);
+            box-shadow: 0 6px 24px rgba(116, 30, 39, 0.4);
             cursor: pointer;
             border: none;
             transition: all 0.25s ease;
@@ -153,7 +153,7 @@
 
         .cart-fab:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 32px rgba(91, 45, 142, 0.5);
+            box-shadow: 0 10px 32px rgba(116, 30, 39, 0.5);
         }
 
         .cart-fab__badge {
@@ -161,7 +161,7 @@
             top: -4px;
             right: -4px;
             background: var(--yc-gold);
-            color: #1A1A2E;
+            color: #191716;
             font-family: var(--yc-font-body);
             font-weight: 700;
             font-size: 0.75rem;
@@ -189,8 +189,8 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 20% 50%, rgba(212, 165, 71, 0.2) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(91, 45, 142, 0.2) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 50%, rgba(212, 154, 36, 0.2) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(116, 30, 39, 0.2) 0%, transparent 60%);
             animation: pulseBg 4s ease-in-out infinite alternate;
         }
 
@@ -220,8 +220,8 @@
         }
 
         @keyframes badgePulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(139, 34, 82, 0.5); }
-            50% { box-shadow: 0 0 20px 6px rgba(139, 34, 82, 0.3); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(116, 30, 39, 0.5); }
+            50% { box-shadow: 0 0 20px 6px rgba(116, 30, 39, 0.3); }
         }
 
         .limited-drop-banner__title {
@@ -259,7 +259,7 @@
             gap: var(--space-md);
             padding: 16px 22px;
             border-radius: var(--radius-xl, 18px);
-            background: linear-gradient(135deg, #6C2BD9 0%, #BE185D 55%, #E5A00D 100%);
+            background: linear-gradient(135deg, #A52C32 0%, #741E27 55%, #D49A24 100%);
             box-shadow: 0 10px 30px rgba(108,43,217,0.28);
             text-decoration: none;
             transition: transform var(--transition-base, 0.2s ease), box-shadow var(--transition-base, 0.2s ease);
@@ -270,10 +270,10 @@
         }
         .store-promo__text { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
         .store-promo__badge {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-weight: 800;
             font-size: 1.1rem;
-            color: #6C2BD9;
+            color: #A52C32;
             background: #fff;
             padding: 6px 12px;
             border-radius: 999px;
@@ -281,7 +281,7 @@
             white-space: nowrap;
         }
         .store-promo__msg { color: #fff; font-size: 1.02rem; }
-        .store-promo__msg strong { color: #FBBF24; }
+        .store-promo__msg strong { color: #F0CD79; }
         .store-promo__cta {
             display: inline-flex;
             align-items: center;
@@ -297,7 +297,7 @@
 
         .merch-toolbar {
             background: #fff;
-            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+            border-bottom: 1px solid rgba(116, 30, 39, 0.08);
             padding: var(--space-lg) 0;
             position: sticky;
             top: 72px;
@@ -322,7 +322,7 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             -webkit-overflow-scrolling: touch;
-            border-bottom: 1px solid rgba(91, 45, 142, 0.1);
+            border-bottom: 1px solid rgba(116, 30, 39, 0.1);
         }
 
         .filter-pills::-webkit-scrollbar {
@@ -435,7 +435,7 @@
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 36px rgba(91, 45, 142, 0.15);
+            box-shadow: 0 12px 36px rgba(116, 30, 39, 0.15);
         }
 
         .product-card__image-wrap {
@@ -532,7 +532,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: #1A1A2E;
+            color: #191716;
             margin-bottom: var(--space-sm);
             line-height: 1.3;
         }
@@ -589,12 +589,12 @@
             border-radius: var(--radius-md);
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 3px 12px rgba(91, 45, 142, 0.25);
+            box-shadow: 0 3px 12px rgba(116, 30, 39, 0.25);
         }
 
         .product-card__cart-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(91, 45, 142, 0.35);
+            box-shadow: 0 6px 20px rgba(116, 30, 39, 0.35);
         }
 
         .product-card__cart-btn:disabled {
@@ -654,7 +654,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.4rem;
             font-weight: 700;
-            color: #1A1A2E;
+            color: #191716;
         }
 
         .cart-sidebar__close {
@@ -714,7 +714,7 @@
             font-family: var(--yc-font-display);
             font-size: 0.9rem;
             font-weight: 600;
-            color: #1A1A2E;
+            color: #191716;
             margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
@@ -767,7 +767,7 @@
             font-family: var(--yc-font-body);
             font-weight: 600;
             font-size: 0.85rem;
-            color: #1A1A2E;
+            color: #191716;
         }
 
         .cart-item__price {
@@ -829,13 +829,13 @@
             border: none;
             border-radius: var(--radius-md);
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+            box-shadow: 0 4px 20px rgba(116, 30, 39, 0.3);
             transition: all 0.25s ease;
         }
 
         .cart-checkout-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(91, 45, 142, 0.4);
+            box-shadow: 0 8px 28px rgba(116, 30, 39, 0.4);
         }
 
         .cart-checkout-btn:disabled {
@@ -891,7 +891,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.5rem;
             font-weight: 700;
-            color: #1A1A2E;
+            color: #191716;
         }
 
         .checkout-modal__close {
@@ -942,7 +942,7 @@
             font-family: var(--yc-font-display);
             font-size: 1rem;
             font-weight: 700;
-            color: #1A1A2E;
+            color: #191716;
             margin-bottom: var(--space-md);
         }
 
@@ -970,20 +970,20 @@
             width: 100%;
             padding: 16px 24px;
             background: var(--yc-gradient-gold);
-            color: #1A1A2E;
+            color: #191716;
             font-family: var(--yc-font-body);
             font-weight: 700;
             font-size: 1rem;
             border: none;
             border-radius: var(--radius-md);
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(212, 165, 71, 0.35);
+            box-shadow: 0 4px 20px rgba(212, 154, 36, 0.35);
             transition: all 0.25s ease;
         }
 
         .checkout-place-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(212, 165, 71, 0.45);
+            box-shadow: 0 8px 28px rgba(212, 154, 36, 0.45);
         }
 
         .checkout-place-btn:disabled {
@@ -1009,7 +1009,7 @@
             font-family: var(--yc-font-display);
             font-size: 1.5rem;
             font-weight: 700;
-            color: #1A1A2E;
+            color: #191716;
             margin-bottom: var(--space-sm);
         }
 
@@ -1322,15 +1322,15 @@ function productArt(type, c1, c2) {
 
 /* ── Seeded catalog (shown when the store API is empty or offline) ── */
 const FALLBACK_PRODUCTS = [
-    { id: 'yc-tee-nation', name: 'Yeng Nation Classic Tee', category: 'Apparel', price: 650, sizes: ['S', 'M', 'L', 'XL'], status: 'Active', image: productArt('tee', '#6C2BD9', '#8B5CF6') },
-    { id: 'yc-hoodie-hawak', name: 'Hawak Kamay Pullover Hoodie', category: 'Apparel', price: 1250, comparePrice: 1500, sizes: ['S', 'M', 'L', 'XL'], badge: 'BESTSELLER', status: 'Active', image: productArt('hoodie', '#BE185D', '#8B5CF6') },
-    { id: 'yc-print-ikaw', name: 'Ikaw Lyric Art Print (A3)', category: 'Prints', price: 350, status: 'Active', image: productArt('print', '#E5A00D', '#FBBF24') },
-    { id: 'yc-poster-tour', name: 'Yeng Live Tour Poster', category: 'Prints', price: 400, status: 'Active', image: productArt('poster', '#6C2BD9', '#BE185D') },
-    { id: 'yc-tote-nation', name: 'Yeng Nation Canvas Tote', category: 'Accessories', price: 450, status: 'Active', image: productArt('tote', '#E5A00D', '#6C2BD9') },
-    { id: 'yc-cap-yabo', name: 'Yabo Records Dad Cap', category: 'Accessories', price: 550, status: 'Active', image: productArt('cap', '#8B5CF6', '#BE185D') },
-    { id: 'yc-stickers-pack', name: 'Yeng Sticker Pack (6 pcs)', category: 'Stickers', price: 180, status: 'Active', image: productArt('stickers', '#FBBF24', '#E5A00D') },
-    { id: 'yc-sticker-notes', name: 'Musical Notes Vinyl Stickers', category: 'Stickers', price: 150, status: 'Active', image: productArt('stickers', '#8B5CF6', '#6C2BD9') },
-    { id: 'yc-vinyl-salamat', name: 'Salamat 15th Anniversary Vinyl', category: 'Limited Drops', price: 1800, badge: 'LIMITED', isLimitedDrop: true, status: 'Active', image: productArt('vinyl', '#E5A00D', '#BE185D') }
+    { id: 'yc-tee-nation', name: 'Yeng Nation Classic Tee', category: 'Apparel', price: 650, sizes: ['S', 'M', 'L', 'XL'], status: 'Active', image: productArt('tee', '#A52C32', '#C24048') },
+    { id: 'yc-hoodie-hawak', name: 'Hawak Kamay Pullover Hoodie', category: 'Apparel', price: 1250, comparePrice: 1500, sizes: ['S', 'M', 'L', 'XL'], badge: 'BESTSELLER', status: 'Active', image: productArt('hoodie', '#741E27', '#C24048') },
+    { id: 'yc-print-ikaw', name: 'Ikaw Lyric Art Print (A3)', category: 'Prints', price: 350, status: 'Active', image: productArt('print', '#D49A24', '#F0CD79') },
+    { id: 'yc-poster-tour', name: 'Yeng Live Tour Poster', category: 'Prints', price: 400, status: 'Active', image: productArt('poster', '#A52C32', '#741E27') },
+    { id: 'yc-tote-nation', name: 'Yeng Nation Canvas Tote', category: 'Accessories', price: 450, status: 'Active', image: productArt('tote', '#D49A24', '#A52C32') },
+    { id: 'yc-cap-yabo', name: 'Yabo Records Dad Cap', category: 'Accessories', price: 550, status: 'Active', image: productArt('cap', '#C24048', '#741E27') },
+    { id: 'yc-stickers-pack', name: 'Yeng Sticker Pack (6 pcs)', category: 'Stickers', price: 180, status: 'Active', image: productArt('stickers', '#F0CD79', '#D49A24') },
+    { id: 'yc-sticker-notes', name: 'Musical Notes Vinyl Stickers', category: 'Stickers', price: 150, status: 'Active', image: productArt('stickers', '#C24048', '#A52C32') },
+    { id: 'yc-vinyl-salamat', name: 'Salamat 15th Anniversary Vinyl', category: 'Limited Drops', price: 1800, badge: 'LIMITED', isLimitedDrop: true, status: 'Active', image: productArt('vinyl', '#D49A24', '#741E27') }
 ];
 
 function renderFallbackProducts() {

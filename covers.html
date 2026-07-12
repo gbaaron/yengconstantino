@@ -8,29 +8,29 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FAFAFC">
+    <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Yeng Covers — Yeng Constantino Official</title>
     <meta name="description" content="Share your cover of a Yeng Constantino song with the world. Submit your version, get upvotes, and earn a spot in the Hall of Fame.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Yeng Covers Page — Custom Properties ── */
         :root {
-            --yeng-purple: #6C2BD9;
-            --yeng-gold: #E5A00D;
-            --yeng-burgundy: #BE185D;
-            --yeng-offwhite: #FAFAFC;
-            --yeng-font-display: 'Playfair Display', serif;
-            --yeng-font-body: 'Inter', sans-serif;
-            --yeng-font-accent: 'Caveat', cursive;
-            --yeng-gradient-primary: linear-gradient(135deg, #6C2BD9, #BE185D, #E5A00D);
-            --yeng-gradient-cta: linear-gradient(135deg, #6C2BD9, #8B5CF6);
-            --yeng-gradient-warm: linear-gradient(135deg, #E5A00D, #BE185D, #6C2BD9);
-            --yeng-gradient-dark: linear-gradient(135deg, #1A1A2E, #27273A);
+            --yeng-purple: #A52C32;
+            --yeng-gold: #D49A24;
+            --yeng-burgundy: #741E27;
+            --yeng-offwhite: #FBF8F2;
+            --yeng-font-display: var(--font-display);
+            --yeng-font-body: var(--font-body);
+            --yeng-font-accent: var(--font-accent);
+            --yeng-gradient-primary: linear-gradient(135deg, #A52C32, #741E27, #D49A24);
+            --yeng-gradient-cta: linear-gradient(135deg, #A52C32, #C24048);
+            --yeng-gradient-warm: linear-gradient(135deg, #D49A24, #741E27, #A52C32);
+            --yeng-gradient-dark: linear-gradient(135deg, #191716, #322E2A);
         }
 
         /* ── Hero ── */
@@ -46,7 +46,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(229,160,13,0.04)'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212, 154, 36,0.04)'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -125,14 +125,14 @@
             font-family: var(--yeng-font-display);
             font-size: 2.2rem;
             font-weight: 800;
-            color: #27273A;
+            color: #322E2A;
             margin-bottom: var(--space-sm);
         }
 
         .hall-of-fame__subtitle {
             font-family: var(--yeng-font-body);
             font-size: 1rem;
-            color: #71718A;
+            color: #625B55;
             max-width: 500px;
             margin: 0 auto;
         }
@@ -147,15 +147,15 @@
             background: #FFFFFF;
             border-radius: var(--radius-lg);
             overflow: hidden;
-            border: 2px solid rgba(212, 165, 71, 0.3);
-            box-shadow: 0 4px 24px rgba(212, 165, 71, 0.1);
+            border: 2px solid rgba(212, 154, 36, 0.3);
+            box-shadow: 0 4px 24px rgba(212, 154, 36, 0.1);
             transition: all var(--transition-base);
             position: relative;
         }
 
         .hall-of-fame__card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 40px rgba(212, 165, 71, 0.2);
+            box-shadow: 0 8px 40px rgba(212, 154, 36, 0.2);
             border-color: var(--yeng-gold);
         }
 
@@ -163,7 +163,7 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: linear-gradient(135deg, #E5A00D, #D97706);
+            background: linear-gradient(135deg, #D49A24, #B0801E);
             color: #FFFFFF;
             padding: 4px 12px;
             border-radius: var(--radius-full);
@@ -212,7 +212,7 @@
         .hall-of-fame__card-song {
             display: inline-block;
             padding: 3px 10px;
-            background: rgba(91, 45, 142, 0.1);
+            background: rgba(116, 30, 39, 0.1);
             color: var(--yeng-purple);
             border-radius: var(--radius-full);
             font-family: var(--yeng-font-display);
@@ -227,14 +227,14 @@
             font-family: var(--yeng-font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: #27273A;
+            color: #322E2A;
             margin-bottom: 4px;
         }
 
         .hall-of-fame__card-performer {
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
-            color: #71718A;
+            color: #625B55;
             margin-bottom: var(--space-sm);
         }
 
@@ -248,7 +248,7 @@
         .hall-of-fame__empty {
             text-align: center;
             padding: var(--space-3xl);
-            color: #71718A;
+            color: #625B55;
             font-family: var(--yeng-font-body);
         }
 
@@ -256,7 +256,7 @@
         .submit-section {
             background: #FFFFFF;
             padding: var(--space-3xl) 0;
-            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+            border-bottom: 1px solid rgba(116, 30, 39, 0.08);
         }
 
         .submit-panel {
@@ -265,7 +265,7 @@
             background: var(--yeng-offwhite);
             border-radius: var(--radius-xl);
             overflow: hidden;
-            border: 2px solid rgba(91, 45, 142, 0.1);
+            border: 2px solid rgba(116, 30, 39, 0.1);
         }
 
         .submit-panel__trigger {
@@ -285,7 +285,7 @@
         }
 
         .submit-panel__trigger:hover {
-            background: rgba(91, 45, 142, 0.05);
+            background: rgba(116, 30, 39, 0.05);
         }
 
         .submit-panel__trigger-icon {
@@ -315,7 +315,7 @@
         .submit-panel__note {
             font-family: var(--yeng-font-body);
             font-size: 0.8rem;
-            color: #71718A;
+            color: #625B55;
             margin-top: var(--space-md);
             text-align: center;
         }
@@ -327,38 +327,38 @@
 
         .submit-panel__guest p {
             font-family: var(--yeng-font-body);
-            color: #71718A;
+            color: #625B55;
             margin-bottom: var(--space-md);
         }
 
         /* Form override colors for Yeng theme */
         .covers-form .form-label {
             font-family: var(--yeng-font-display);
-            color: #27273A;
+            color: #322E2A;
         }
 
         .covers-form .form-input:focus,
         .covers-form .form-select:focus {
             border-color: var(--yeng-purple);
-            box-shadow: 0 0 0 4px rgba(91, 45, 142, 0.12);
+            box-shadow: 0 0 0 4px rgba(116, 30, 39, 0.12);
         }
 
         .covers-form .btn--submit {
             background: var(--yeng-gradient-cta);
             color: #FFFFFF;
-            box-shadow: 0 4px 20px rgba(91, 45, 142, 0.3);
+            box-shadow: 0 4px 20px rgba(116, 30, 39, 0.3);
         }
 
         .covers-form .btn--submit:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(91, 45, 142, 0.4);
+            box-shadow: 0 8px 30px rgba(116, 30, 39, 0.4);
         }
 
         /* ── Status Pipeline ── */
         .status-pipeline {
             background: var(--yeng-offwhite);
             padding: var(--space-lg) 0;
-            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+            border-bottom: 1px solid rgba(116, 30, 39, 0.08);
         }
 
         .status-pipeline__inner {
@@ -376,7 +376,7 @@
             font-family: var(--yeng-font-body);
             font-size: 0.75rem;
             font-weight: 600;
-            color: #71718A;
+            color: #625B55;
             white-space: nowrap;
         }
 
@@ -387,11 +387,11 @@
             flex-shrink: 0;
         }
 
-        .status-dot--submitted { background: #71718A; }
+        .status-dot--submitted { background: #625B55; }
         .status-dot--review { background: var(--yeng-purple); }
         .status-dot--featured { background: var(--yeng-burgundy); }
         .status-dot--shared { background: var(--yeng-gold); }
-        .status-dot--hof { background: linear-gradient(135deg, #E5A00D, #D97706); }
+        .status-dot--hof { background: linear-gradient(135deg, #D49A24, #B0801E); }
 
         .status-pipeline__arrow {
             color: #C4B8AA;
@@ -401,7 +401,7 @@
         /* ── Filter & Sort Row ── */
         .covers-filters {
             background: #FFFFFF;
-            border-bottom: 1px solid rgba(91, 45, 142, 0.08);
+            border-bottom: 1px solid rgba(116, 30, 39, 0.08);
             padding: var(--space-md) 0;
             position: sticky;
             top: 72px;
@@ -433,17 +433,17 @@
             font-family: var(--yeng-font-display);
             font-weight: 700;
             font-size: 0.8rem;
-            color: #71718A;
+            color: #625B55;
             white-space: nowrap;
         }
 
         .covers-filters__select {
             padding: 8px 32px 8px 12px;
-            border: 2px solid rgba(91, 45, 142, 0.15);
+            border: 2px solid rgba(116, 30, 39, 0.15);
             border-radius: var(--radius-md);
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
-            color: #27273A;
+            color: #322E2A;
             background: #FFFFFF;
             cursor: pointer;
             appearance: none;
@@ -462,7 +462,7 @@
             font-family: var(--yeng-font-body);
             font-weight: 600;
             font-size: 0.8rem;
-            color: #71718A;
+            color: #625B55;
             background: none;
             border: 2px solid transparent;
             border-radius: var(--radius-md);
@@ -473,7 +473,7 @@
 
         .style-tab:hover {
             color: var(--yeng-purple);
-            background: rgba(91, 45, 142, 0.06);
+            background: rgba(116, 30, 39, 0.06);
         }
 
         .style-tab--active {
@@ -514,14 +514,14 @@
 
         .cover-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 40px rgba(91, 45, 142, 0.12);
+            box-shadow: 0 8px 40px rgba(116, 30, 39, 0.12);
         }
 
         .cover-card__video {
             position: relative;
             aspect-ratio: 16/9;
             overflow: hidden;
-            background: #1A1A2E;
+            background: #191716;
         }
 
         .cover-card__video img {
@@ -562,7 +562,7 @@
         .cover-card__song {
             display: inline-block;
             padding: 3px 10px;
-            background: rgba(91, 45, 142, 0.1);
+            background: rgba(116, 30, 39, 0.1);
             color: var(--yeng-purple);
             border-radius: var(--radius-full);
             font-family: var(--yeng-font-display);
@@ -587,14 +587,14 @@
             font-family: var(--yeng-font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: #27273A;
+            color: #322E2A;
             margin-bottom: 4px;
         }
 
         .cover-card__meta-text {
             font-family: var(--yeng-font-body);
             font-size: 0.85rem;
-            color: #71718A;
+            color: #625B55;
             margin-bottom: var(--space-sm);
         }
 
@@ -605,7 +605,7 @@
             line-height: 1.4;
             margin-bottom: var(--space-md);
             padding: var(--space-sm) var(--space-md);
-            background: rgba(212, 165, 71, 0.06);
+            background: rgba(212, 154, 36, 0.06);
             border-radius: var(--radius-sm);
             border-left: 3px solid var(--yeng-gold);
         }
@@ -616,7 +616,7 @@
             justify-content: space-between;
             margin-top: var(--space-md);
             padding-top: var(--space-md);
-            border-top: 1px solid rgba(91, 45, 142, 0.06);
+            border-top: 1px solid rgba(116, 30, 39, 0.06);
             font-size: 0.8rem;
             color: #A89B8C;
         }
@@ -626,10 +626,10 @@
             align-items: center;
             gap: 4px;
             padding: 6px 14px;
-            border: 2px solid rgba(91, 45, 142, 0.15);
+            border: 2px solid rgba(116, 30, 39, 0.15);
             border-radius: var(--radius-sm);
             background: none;
-            color: #71718A;
+            color: #625B55;
             font-family: var(--yeng-font-body);
             font-weight: 600;
             font-size: 0.85rem;
@@ -640,12 +640,12 @@
         .cover-card__upvote:hover {
             border-color: var(--yeng-burgundy);
             color: var(--yeng-burgundy);
-            background: rgba(139, 34, 82, 0.06);
+            background: rgba(116, 30, 39, 0.06);
         }
 
         .cover-card__upvote--voted {
             border-color: var(--yeng-burgundy);
-            background: rgba(139, 34, 82, 0.1);
+            background: rgba(116, 30, 39, 0.1);
             color: var(--yeng-burgundy);
         }
 
@@ -670,7 +670,7 @@
 
         .covers-empty__text {
             font-family: var(--yeng-font-body);
-            color: #71718A;
+            color: #625B55;
             max-width: 400px;
             margin: 0 auto;
         }
@@ -678,7 +678,7 @@
         /* ── Yeng Nav/Footer Overrides ── */
         .nav {
             background: rgba(251, 247, 242, 0.97);
-            border-bottom: 2px solid rgba(91, 45, 142, 0.08);
+            border-bottom: 2px solid rgba(116, 30, 39, 0.08);
         }
 
         .nav__logo {
@@ -701,16 +701,16 @@
 
         .nav__link:hover {
             color: var(--yeng-purple);
-            background: rgba(91, 45, 142, 0.06);
+            background: rgba(116, 30, 39, 0.06);
         }
 
         .nav__cta {
             background: var(--yeng-gradient-cta) !important;
-            box-shadow: 0 4px 15px rgba(91, 45, 142, 0.3) !important;
+            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.3) !important;
         }
 
         .nav__cta:hover {
-            box-shadow: 0 6px 25px rgba(91, 45, 142, 0.4) !important;
+            box-shadow: 0 6px 25px rgba(116, 30, 39, 0.4) !important;
         }
 
         .footer {
@@ -987,7 +987,7 @@
             </div>
             <div class="footer__bottom">
                 <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#E5A00D;">Salamat sa suporta! &#9835;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9835;</span>
             </div>
         </div>
     </footer>
@@ -1079,11 +1079,11 @@
             }
 
             const statusColors = {
-                'Submitted': '#71718A',
-                'Under Review': '#6C2BD9',
-                'Featured on Site': '#BE185D',
-                'Shared by Yeng': '#E5A00D',
-                'Hall of Fame': '#D97706'
+                'Submitted': '#625B55',
+                'Under Review': '#A52C32',
+                'Featured on Site': '#741E27',
+                'Shared by Yeng': '#D49A24',
+                'Hall of Fame': '#B0801E'
             };
 
             const userId = Auth.isLoggedIn() ? (Auth.getUser() || {}).id : null;
@@ -1095,7 +1095,7 @@
                     : 'https://placehold.co/640x360/5B2D8E/D4A547?text=%E2%99%AA+Cover';
                 const upvotedBy = Array.isArray(cover.upvotedBy) ? cover.upvotedBy : [];
                 const hasVoted = userId && upvotedBy.indexOf(userId) !== -1;
-                const statusColor = statusColors[cover.status] || '#71718A';
+                const statusColor = statusColors[cover.status] || '#625B55';
                 const performer = (cover.user && cover.user.name) ? cover.user.name : 'Anonymous';
                 const songTitle = cover.songTitle || 'Yeng Song';
                 const styleText = cover.arrangementStyle || '';
