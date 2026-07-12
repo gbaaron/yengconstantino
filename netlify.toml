@@ -5,6 +5,10 @@
 [functions]
   node_bundler = "esbuild"
 
+# Rebuild the Fan Score leaderboard cache every hour.
+[functions."compute-leaderboard"]
+  schedule = "@hourly"
+
 [[headers]]
   for = "/*"
   [headers.values]

@@ -130,6 +130,33 @@ async function api(endpoint, options = {}) {
     return data;
 }
 
+/* ── Fan Score Activity Tracking ──
+   Fire-and-forget signals into the ActivityEvents log. Points are assigned
+   SERVER-SIDE in track-activity.js (the client can't award itself points),
+   so these calls only name the signal + optional metadata. Silently no-ops
+   for signed-out visitors and never blocks the UI on a failed request. */
+const Activity = {
+    track(type, metadata) {
+        if (!Auth.isLoggedIn()) return;
+        api('track-activity', {
+            method: 'POST',
+            body: { type: type, metadata: metadata || {} },
+        }).catch(() => {});
+    },
+
+    // Once-per-day-per-page site visit. The server also enforces the daily
+    // cap, but throttling here avoids pointless requests on every navigation.
+    siteVisit() {
+        if (!Auth.isLoggedIn()) return;
+        var today = new Date().toISOString().slice(0, 10);
+        var key = 'yc_visit_' + today;
+        if (localStorage.getItem(key)) return;
+        localStorage.setItem(key, '1');
+        this.track('site_visit', { path: window.location.pathname });
+    },
+};
+window.Activity = Activity;
+
 /* ── Toast Notifications ── */
 function showToast(message, type = 'info', duration = 3500) {
     const existing = document.querySelector('.toast');
@@ -698,5 +725,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.NativeBridge && NativeBridge.syncWidgetData && Auth.isLoggedIn()) {
         NativeBridge.syncWidgetData(Auth.getUser(), Auth.getToken());
     }
+
+    // Log a daily site visit toward the fan's engagement score.
+    Activity.siteVisit();
 
 });

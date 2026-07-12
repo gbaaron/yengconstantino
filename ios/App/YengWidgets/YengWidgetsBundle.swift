@@ -20,6 +20,9 @@ struct YengWidgetsBundle: WidgetBundle {
         PastOrdersWidget()
         MyCardsWidget()
         AdminDashboardWidget()
+        FanScoreWidget()
+        ActivityFeedWidget()
+        NearbyEventsWidget()
         NextShowLockWidget()
         FanTierLockWidget()
         if #available(iOS 17.0, *) {

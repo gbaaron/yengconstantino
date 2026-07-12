@@ -1223,6 +1223,7 @@
             })
             .then(function() {
                 showToast('Cover submitted! It will be reviewed soon.', 'success');
+                if (window.Activity) Activity.track('cover_submit', { songTitle: songTitle });
                 document.getElementById('cover-form').reset();
                 document.getElementById('submit-panel').classList.remove('submit-panel--open');
                 loadCovers();
@@ -1255,6 +1256,7 @@
                 body: { coverId: coverId }
             })
             .then(function() {
+                if (window.Activity) Activity.track('vote', { coverId: coverId });
                 loadCovers();
             })
             .catch(function(err) {

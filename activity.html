@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FBF8F2">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <title>Yeng's Activity — Yeng Constantino Official</title>
+    <meta name="description" content="See what Yeng has been posting and the fan questions she's answered.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Yeng Activity Feed — Custom Properties ── */
+        :root {
+            --yeng-purple: #A52C32;
+            --yeng-gold: #D49A24;
+            --yeng-burgundy: #741E27;
+            --yeng-offwhite: #FBF8F2;
+            --yeng-font-display: var(--font-display);
+            --yeng-font-body: var(--font-body);
+            --yeng-font-accent: var(--font-accent);
+            --yeng-gradient-primary: linear-gradient(135deg, #A52C32, #741E27, #D49A24);
+            --yeng-gradient-dark: linear-gradient(135deg, #191716, #322E2A);
+        }
+
+        /* ── Hero ── */
+        .af-hero {
+            background: var(--yeng-gradient-dark);
+            padding: 140px 0 70px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .af-hero::after {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: var(--yeng-gold);
+            opacity: 0.16;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        .af-hero__content { position: relative; z-index: 1; }
+
+        .af-hero__title {
+            font-family: var(--yeng-font-display);
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #fff;
+            margin: 0 0 12px;
+            line-height: 1.05;
+        }
+
+        .af-hero__subtitle {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.15rem;
+            margin: 0;
+        }
+
+        /* ── Toggle ── */
+        .af-toggle {
+            max-width: 720px;
+            margin: -30px auto 0;
+            position: relative;
+            z-index: 5;
+            padding: 0 var(--space-lg);
+            display: flex;
+            justify-content: center;
+        }
+
+        .af-toggle__inner {
+            display: inline-flex;
+            background: #fff;
+            border-radius: var(--radius-full);
+            padding: 5px;
+            box-shadow: 0 12px 30px rgba(25,23,22,0.14);
+            border: 1px solid rgba(212,154,36,0.25);
+        }
+
+        .af-toggle__btn {
+            border: none;
+            background: transparent;
+            font-family: var(--yeng-font-body);
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #918A83;
+            padding: 10px 22px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .af-toggle__btn--active {
+            background: var(--yeng-gradient-primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(165,44,50,0.3);
+        }
+
+        /* ── Feed ── */
+        .af-section {
+            max-width: 720px;
+            margin: var(--space-xl) auto var(--space-3xl);
+            padding: 0 var(--space-lg);
+        }
+
+        .af-feed { display: flex; flex-direction: column; gap: var(--space-md); }
+
+        .af-post {
+            background: #fff;
+            border: 1px solid rgba(25,23,22,0.06);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .af-post:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(25,23,22,0.08);
+        }
+
+        .af-post__head {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .af-post__avatar {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--yeng-gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: var(--yeng-font-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            overflow: hidden;
+        }
+
+        .af-post__meta { flex: 1; min-width: 0; }
+
+        .af-post__name {
+            font-weight: 700;
+            color: var(--yeng-burgundy);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .af-post__verified {
+            color: var(--yeng-gold);
+            font-size: 0.95rem;
+        }
+
+        .af-post__time {
+            font-size: 0.78rem;
+            color: #918A83;
+        }
+
+        .af-post__type {
+            flex-shrink: 0;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            background: rgba(212,154,36,0.14);
+            color: var(--yeng-burgundy);
+            font-weight: 600;
+        }
+
+        .af-post__content {
+            color: #2E2A27;
+            font-size: 1.02rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .af-post__image {
+            margin-top: var(--space-md);
+            width: 100%;
+            border-radius: var(--radius-md);
+            display: block;
+        }
+
+        .af-post__footer {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid rgba(25,23,22,0.06);
+            font-size: 0.82rem;
+            color: #918A83;
+        }
+
+        .af-empty {
+            text-align: center;
+            padding: var(--space-3xl) var(--space-lg);
+            color: #918A83;
+        }
+
+        .af-empty__title {
+            font-family: var(--yeng-font-display);
+            font-size: 1.4rem;
+            color: var(--yeng-burgundy);
+            margin: 0 0 6px;
+        }
+
+        @media (max-width: 640px) {
+            .af-hero__title { font-size: 2rem; }
+            .af-toggle__btn { padding: 9px 16px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/activity.html" class="nav__link nav__link--active">Yeng's Activity</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/leaderboard.html" class="nav__link">Leaderboard</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link" style="color:var(--burgundy);font-weight:800;">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="af-hero">
+        <div class="container af-hero__content">
+            <h1 class="af-hero__title">Yeng's Activity</h1>
+            <p class="af-hero__subtitle">Straight from Yeng — her posts and the questions she's answered</p>
+        </div>
+    </section>
+
+    <!-- ── Toggle ── -->
+    <div class="af-toggle">
+        <div class="af-toggle__inner">
+            <button class="af-toggle__btn af-toggle__btn--active" data-filter="all" id="btn-all">All Activity</button>
+            <button class="af-toggle__btn" data-filter="answered" id="btn-answered">Q&amp;A Answers</button>
+        </div>
+    </div>
+
+    <!-- ── Feed ── -->
+    <section class="af-section">
+        <div class="af-feed" id="af-feed">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/activity.html">Yeng's Activity</a></li><li><a href="/leaderboard.html">Leaderboard</a></li><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9835;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/native-bridge.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           YENG'S ACTIVITY FEED — Page Logic (public)
+           ═══════════════════════════════════════════════════════ */
+
+        let currentFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btn-all').addEventListener('click', () => setFilter('all'));
+            document.getElementById('btn-answered').addEventListener('click', () => setFilter('answered'));
+            loadActivity();
+        });
+
+        function setFilter(filter) {
+            if (filter === currentFilter) return;
+            currentFilter = filter;
+            document.getElementById('btn-all').classList.toggle('af-toggle__btn--active', filter === 'all');
+            document.getElementById('btn-answered').classList.toggle('af-toggle__btn--active', filter === 'answered');
+            loadActivity();
+        }
+
+        function initials(name) {
+            return (name || 'Y').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, c => (
+                { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+            ));
+        }
+
+        async function loadActivity() {
+            const feed = document.getElementById('af-feed');
+            createSkeletonCards(4, '#af-feed');
+            try {
+                const endpoint = 'get-artist-activity' + (currentFilter === 'answered' ? '?filter=answered' : '');
+                const data = await api(endpoint);
+                renderFeed(data.activity || []);
+            } catch (err) {
+                console.error('Failed to load activity:', err);
+                feed.innerHTML = '<div class="af-empty"><h3 class="af-empty__title">Activity unavailable</h3><p>Check back soon.</p></div>';
+            }
+        }
+
+        function renderFeed(posts) {
+            const feed = document.getElementById('af-feed');
+
+            if (!posts.length) {
+                const msg = currentFilter === 'answered'
+                    ? 'Yeng hasn\'t answered any fan questions yet — check back soon!'
+                    : 'No activity from Yeng yet. She\'ll be posting here soon!';
+                feed.innerHTML = '<div class="af-empty"><h3 class="af-empty__title">Nothing here yet</h3><p>' + msg + '</p></div>';
+                return;
+            }
+
+            feed.innerHTML = posts.map(p => {
+                const author = p.author || {};
+                const avatar = author.avatar
+                    ? '<img class="af-post__avatar" src="' + escapeHtml(author.avatar) + '" alt="">'
+                    : '<div class="af-post__avatar">' + initials(author.name) + '</div>';
+                const typeLabel = p.type === 'question' ? 'Q&amp;A' : escapeHtml(p.type || 'post');
+                const image = p.image
+                    ? '<img class="af-post__image" src="' + escapeHtml(p.image) + '" alt="" loading="lazy">'
+                    : '';
+                const time = p.createdAt ? formatDate(p.createdAt) : '';
+
+                return '<article class="af-post">' +
+                    '<div class="af-post__head">' +
+                        avatar +
+                        '<div class="af-post__meta">' +
+                            '<div class="af-post__name">' + escapeHtml(author.name || 'Yeng') + '<span class="af-post__verified" title="Official">&#10004;</span></div>' +
+                            '<div class="af-post__time">' + time + '</div>' +
+                        '</div>' +
+                        '<span class="af-post__type">' + typeLabel + '</span>' +
+                    '</div>' +
+                    '<div class="af-post__content">' + escapeHtml(p.content) + '</div>' +
+                    image +
+                    (p.likes ? '<div class="af-post__footer">&#9829; ' + p.likes.toLocaleString() + ' fans love this</div>' : '') +
+                '</article>';
+            }).join('');
+        }
+    </script>
+</body>
+</html>

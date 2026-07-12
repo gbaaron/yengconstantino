@@ -82,6 +82,68 @@
             border-color: transparent;
         }
 
+        /* "Near me" location controls */
+        .events-location {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-md) var(--space-xl) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        .events-near-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 20px;
+            border: 2px solid #EDE7DF;
+            border-radius: var(--radius-md);
+            background: #FFFFFF;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #6B5D50;
+            cursor: pointer;
+            transition: all 250ms ease;
+            white-space: nowrap;
+        }
+        .events-near-btn:hover { border-color: #741E27; color: #741E27; }
+        .events-near-btn--active {
+            background: linear-gradient(135deg, #D49A24, #E7B84D);
+            color: #FFFFFF;
+            border-color: transparent;
+        }
+        .events-radius {
+            padding: 9px 16px;
+            border: 2px solid #EDE7DF;
+            border-radius: var(--radius-md);
+            background: #FFFFFF;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #6B5D50;
+            cursor: pointer;
+        }
+        .events-location__note {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: #8E7F70;
+        }
+        .event-card__distance {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: var(--space-sm);
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: var(--font-body);
+            border-radius: 9999px;
+            background: rgba(212, 154, 36,0.15);
+            color: #B0801E;
+        }
+
         .events-section { padding: var(--space-4xl) 0; background: #FBF7F2; }
         .events-grid {
             display: grid;
@@ -237,6 +299,20 @@
             <button class="events-filter-tab" data-type="MeetAndGreet">Meet &amp; Greets</button>
             <button class="events-filter-tab" data-type="Special">Special Events</button>
         </div>
+        <div class="events-location">
+            <button class="events-near-btn" id="near-me-btn" onclick="toggleNearMe()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span id="near-me-label">Events Near Me</span>
+            </button>
+            <select class="events-radius" id="near-me-radius" onchange="applyFilters()" style="display:none;">
+                <option value="50">Within 50 km</option>
+                <option value="100" selected>Within 100 km</option>
+                <option value="250">Within 250 km</option>
+                <option value="500">Within 500 km</option>
+                <option value="99999">Anywhere</option>
+            </select>
+            <span class="events-location__note" id="near-me-note"></span>
+        </div>
     </div>
 
     <section class="events-section">
@@ -320,6 +396,8 @@
         var currentFilter = '';
         var selectedEvent = null;
         var freeTicketsRemaining = 0;
+        var userLocation = null;
+        var nearMeActive = false;
 
         var TIER_DISCOUNTS = { 'Sariwang Simula': 5, 'Laging Nandito': 10, 'Ikaw Lamang': 15 };
 
@@ -356,10 +434,95 @@
                     currentFilter = this.dataset.type || '';
                     document.querySelectorAll('.events-filter-tab').forEach(function(t) { t.classList.remove('events-filter-tab--active'); });
                     this.classList.add('events-filter-tab--active');
-                    var filtered = currentFilter ? allEvents.filter(function(e) { return e.type === currentFilter; }) : allEvents;
-                    renderEvents(filtered);
+                    applyFilters();
                 });
             });
+        }
+
+        // Great-circle distance in km between two lat/lng points.
+        function haversine(lat1, lng1, lat2, lng2) {
+            var toRad = function(d) { return d * Math.PI / 180; };
+            var R = 6371; // Earth radius (km)
+            var dLat = toRad(lat2 - lat1);
+            var dLng = toRad(lng2 - lng1);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function toggleNearMe() {
+            var btn = document.getElementById('near-me-btn');
+            var radiusSel = document.getElementById('near-me-radius');
+            var note = document.getElementById('near-me-note');
+            var label = document.getElementById('near-me-label');
+
+            // Turning OFF
+            if (nearMeActive) {
+                nearMeActive = false;
+                userLocation = null;
+                btn.classList.remove('events-near-btn--active');
+                radiusSel.style.display = 'none';
+                note.textContent = '';
+                label.textContent = 'Events Near Me';
+                applyFilters();
+                return;
+            }
+
+            // Turning ON
+            if (!navigator.geolocation) {
+                showToast('Location isn\'t supported on this device', 'error');
+                return;
+            }
+            label.textContent = 'Locating...';
+            note.textContent = 'Finding your location\u2026';
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                nearMeActive = true;
+                btn.classList.add('events-near-btn--active');
+                radiusSel.style.display = '';
+                label.textContent = 'Near Me: On';
+                note.textContent = 'Showing events closest to you first.';
+                applyFilters();
+            }, function(err) {
+                label.textContent = 'Events Near Me';
+                if (err.code === 1) {
+                    note.textContent = 'Location access denied.';
+                    showToast('Enable location access to see events near you', 'error');
+                } else {
+                    note.textContent = 'Couldn\'t get your location.';
+                    showToast('Couldn\'t get your location. Please try again.', 'error');
+                }
+            }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+        }
+
+        // Combine the type-tab filter with the optional "near me" radius filter/sort.
+        function applyFilters() {
+            var list = currentFilter ? allEvents.filter(function(e) { return e.type === currentFilter; }) : allEvents.slice();
+
+            if (nearMeActive && userLocation) {
+                var radius = parseInt(document.getElementById('near-me-radius').value) || 99999;
+                list = list.map(function(evt) {
+                    var copy = Object.assign({}, evt);
+                    if (evt.lat != null && evt.lng != null) {
+                        copy._distanceKm = haversine(userLocation.lat, userLocation.lng, evt.lat, evt.lng);
+                    } else {
+                        copy._distanceKm = null;
+                    }
+                    return copy;
+                }).filter(function(evt) {
+                    // Keep events within radius; events with no coordinates are dropped
+                    // when a real radius is set, but kept for the "Anywhere" option.
+                    if (evt._distanceKm == null) return radius >= 99999;
+                    return evt._distanceKm <= radius;
+                }).sort(function(a, b) {
+                    var da = a._distanceKm == null ? Infinity : a._distanceKm;
+                    var db = b._distanceKm == null ? Infinity : b._distanceKm;
+                    return da - db;
+                });
+            }
+
+            renderEvents(list);
         }
 
         function renderEvents(events) {
@@ -379,6 +542,13 @@
                 var typeClass = isConcert ? 'concert' : evt.type === 'MeetAndGreet' ? 'meetandgreet' : 'special';
                 var typeLabel = isConcert ? 'Concert' : evt.type === 'MeetAndGreet' ? 'Meet & Greet' : 'Special Event';
                 var eventDate = evt.date ? new Date(evt.date).toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'TBA';
+
+                // Distance badge (only when "Near Me" is active and coords resolved)
+                var distanceHtml = '';
+                if (evt._distanceKm != null) {
+                    var km = evt._distanceKm < 1 ? '<1' : Math.round(evt._distanceKm);
+                    distanceHtml = '<span class="event-card__distance"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>' + km + ' km away</span>';
+                }
 
                 // Early access check
                 var now = new Date();
@@ -433,6 +603,7 @@
                     '<span class="event-card__type event-card__type--' + typeClass + '">' + typeLabel + '</span>' +
                     '<h3 class="event-card__title">' + evt.title + '</h3>' +
                     '<div class="event-card__meta"><span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>' + eventDate + '</span><span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>' + evt.venue + ', ' + evt.city + '</span></div>' +
+                    distanceHtml +
                     priceHtml + availHtml + earlyHtml +
                     '<div class="event-card__actions">' + actionHtml + '</div>' +
                     '</div></div>';

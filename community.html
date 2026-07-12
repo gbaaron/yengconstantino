@@ -1524,6 +1524,12 @@
                     method: 'POST',
                     body: { postId: postId, liked: !isLiked }
                 }).catch(function() { /* silent fail */ });
+
+                // Count a like toward the fan's engagement score (only on the
+                // "like" direction, never on un-liking).
+                if (!isLiked && window.Activity) {
+                    Activity.track('vote', { postId: postId });
+                }
             }
 
             // ── Bump handling (tier perk: prioritize a question to Yeng) ──
@@ -1673,6 +1679,16 @@
                             } else {
                                 // Fallback: add locally
                                 addLocalPost(text, selectedType, imageUrl);
+                            }
+
+                            // Count this toward the fan's engagement score. A
+                            // "question" post is the Q&A signal; anything else
+                            // counts as a comment.
+                            if (window.Activity) {
+                                Activity.track(
+                                    selectedType === 'question' ? 'qa_question' : 'comment',
+                                    { type: selectedType }
+                                );
                             }
 
                             showToast('Post shared with Yeng Nation!', 'success');

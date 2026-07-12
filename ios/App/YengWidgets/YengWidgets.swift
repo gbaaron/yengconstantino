@@ -2699,3 +2699,603 @@ struct YengRSVPControl: ControlWidget {
         .description("Mark yourself going to Yeng's next show.")
     }
 }
+
+// =====================================================================
+// MARK: - FAN SCORE
+// =====================================================================
+//
+// Auth-gated. Calls /.netlify/functions/get-fan-score (Bearer JWT) and shows
+// the fan's engagement score, leaderboard rank, tier and a points breakdown.
+// Score reflects real interaction signals (events attended, site visits,
+// comments, votes, Q&A) — merch spend is deliberately excluded so it's never
+// pay-to-win. Deep-links into the full leaderboard page.
+
+private struct FanScoreResponse: Decodable {
+    let score: Int?
+    let rank: Int?
+    let totalFans: Int?
+    let tier: String?
+    let breakdown: FanScoreBreakdown?
+}
+
+private struct FanScoreBreakdown: Decodable {
+    let eventsAttended: Int?
+    let comments: Int?
+    let votes: Int?
+    let qaQuestions: Int?
+}
+
+struct FanScoreEntry: TimelineEntry {
+    let date: Date
+    let loggedIn: Bool
+    let score: Int
+    let rank: Int
+    let totalFans: Int
+    let tier: String
+    let eventsAttended: Int
+    let comments: Int
+    let votes: Int
+    let qaQuestions: Int
+}
+
+struct FanScoreProvider: TimelineProvider {
+    private var sample: FanScoreEntry {
+        FanScoreEntry(date: Date(), loggedIn: true, score: 1240, rank: 8, totalFans: 512,
+                      tier: "Laging Nandito", eventsAttended: 3, comments: 42, votes: 18, qaQuestions: 6)
+    }
+
+    private var signedOut: FanScoreEntry {
+        FanScoreEntry(date: Date(), loggedIn: false, score: 0, rank: 0, totalFans: 0,
+                      tier: "", eventsAttended: 0, comments: 0, votes: 0, qaQuestions: 0)
+    }
+
+    func placeholder(in context: Context) -> FanScoreEntry { sample }
+    func getSnapshot(in context: Context, completion: @escaping (FanScoreEntry) -> Void) {
+        completion(YengShared.isLoggedIn ? sample : signedOut)
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<FanScoreEntry>) -> Void) {
+        guard YengShared.isLoggedIn else {
+            completion(Timeline(entries: [signedOut], policy: .after(YengAPI.nextRefresh)))
+            return
+        }
+        YengAPI.fetch("/.netlify/functions/get-fan-score", authed: true, as: FanScoreResponse.self) { response in
+            var entry = FanScoreEntry(date: Date(), loggedIn: true, score: 0, rank: 0, totalFans: 0,
+                                      tier: YengShared.tier, eventsAttended: 0, comments: 0, votes: 0, qaQuestions: 0)
+            if let r = response {
+                let b = r.breakdown
+                entry = FanScoreEntry(
+                    date: Date(), loggedIn: true,
+                    score: r.score ?? 0,
+                    rank: r.rank ?? 0,
+                    totalFans: r.totalFans ?? 0,
+                    tier: (r.tier?.isEmpty == false ? r.tier! : YengShared.tier),
+                    eventsAttended: b?.eventsAttended ?? 0,
+                    comments: b?.comments ?? 0,
+                    votes: b?.votes ?? 0,
+                    qaQuestions: b?.qaQuestions ?? 0
+                )
+            }
+            completion(Timeline(entries: [entry], policy: .after(YengAPI.nextRefresh)))
+        }
+    }
+}
+
+struct FanScoreWidgetView: View {
+    @Environment(\.widgetFamily) var family
+    let entry: FanScoreEntry
+
+    var body: some View {
+        Group {
+            if entry.loggedIn { content } else { signIn }
+        }
+        .foregroundColor(.white)
+    }
+
+    private var eyebrow: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "flame.fill").font(.system(size: 9))
+            Text("FAN SCORE").font(.system(size: 10, weight: .bold)).tracking(1.4)
+        }
+        .foregroundColor(.white.opacity(0.85))
+    }
+
+    private var rankLine: some View {
+        Group {
+            if entry.rank > 0 {
+                Text(entry.totalFans > 0 ? "Rank \(entry.rank) of \(entry.totalFans)" : "Rank \(entry.rank)")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.85))
+            } else {
+                Text("Keep engaging to rank up")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(.white.opacity(0.8))
+            }
+        }
+    }
+
+    private func stat(_ value: Int, _ label: String, _ icon: String) -> some View {
+        HStack(spacing: 5) {
+            Image(systemName: icon).font(.system(size: 10)).foregroundColor(.yengMagenta)
+            Text("\(value)").font(.system(size: 13, weight: .bold))
+            Text(label).font(.system(size: 11, weight: .medium)).foregroundColor(.white.opacity(0.75))
+        }
+    }
+
+    private var content: some View {
+        Group {
+            switch family {
+            case .systemSmall:
+                VStack(alignment: .leading, spacing: 6) {
+                    eyebrow
+                    Spacer()
+                    Text("\(entry.score)")
+                        .font(.system(size: 40, weight: .heavy, design: .rounded))
+                        .lineLimit(1).minimumScaleFactor(0.6)
+                    Text("points").font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.75))
+                    rankLine
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            case .systemLarge:
+                VStack(alignment: .leading, spacing: 14) {
+                    eyebrow
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("\(entry.score)")
+                            .font(.system(size: 52, weight: .heavy, design: .rounded))
+                            .lineLimit(1).minimumScaleFactor(0.6)
+                        Text("pts").font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    rankLine
+                    if !entry.tier.isEmpty {
+                        Label(entry.tier, systemImage: "heart.fill")
+                            .font(.system(size: 14, weight: .semibold, design: .serif))
+                            .foregroundColor(.white.opacity(0.9))
+                    }
+                    Divider().overlay(Color.white.opacity(0.2))
+                    Text("HOW YOU EARNED IT")
+                        .font(.system(size: 10, weight: .bold)).tracking(1.2)
+                        .foregroundColor(.white.opacity(0.6))
+                    VStack(alignment: .leading, spacing: 8) {
+                        stat(entry.eventsAttended, "shows attended", "music.mic")
+                        stat(entry.comments, "comments", "bubble.left.fill")
+                        stat(entry.votes, "votes & reactions", "hand.thumbsup.fill")
+                        stat(entry.qaQuestions, "Q&A asks", "questionmark.circle.fill")
+                    }
+                    Spacer()
+                    Text("Tap to see the leaderboard")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.9))
+                }
+                .padding(22)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            default:
+                HStack(spacing: 16) {
+                    VStack(spacing: 2) {
+                        Text("\(entry.score)")
+                            .font(.system(size: 42, weight: .heavy, design: .rounded))
+                            .lineLimit(1).minimumScaleFactor(0.5)
+                        Text("POINTS").font(.system(size: 9, weight: .bold)).tracking(1)
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    .frame(width: 96)
+                    Rectangle().fill(Color.white.opacity(0.15)).frame(width: 1)
+                    VStack(alignment: .leading, spacing: 6) {
+                        eyebrow
+                        rankLine
+                        if !entry.tier.isEmpty {
+                            Label(entry.tier, systemImage: "heart.fill")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.9))
+                        }
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(18)
+            }
+        }
+    }
+
+    private var signIn: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "flame.circle").font(.system(size: 30))
+            Text("Sign in to see\nyour fan score")
+                .font(.system(size: 14, weight: .semibold, design: .serif))
+                .multilineTextAlignment(.center)
+        }
+        .foregroundColor(.white)
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct FanScoreWidget: Widget {
+    let kind = "YengFanScore"
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: FanScoreProvider()) { entry in
+            widgetContainer(background: { YengBackdrop() }) { FanScoreWidgetView(entry: entry) }
+                .widgetURL(URL(string: "yengapp://open?page=leaderboard.html"))
+        }
+        .configurationDisplayName("Fan Score")
+        .description("Your Yeng Nation fan score and leaderboard rank.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+    }
+}
+
+// =====================================================================
+// MARK: - ACTIVITY FEED
+// =====================================================================
+//
+// Public. Calls /.netlify/functions/get-artist-activity and shows Yeng's most
+// recent community activity (her posts and answered questions). No auth needed
+// — it's her public feed. Deep-links into the full activity page.
+
+private struct ArtistActivityResponse: Decodable { let activity: [ArtistActivityItem] }
+private struct ArtistActivityItem: Decodable {
+    let content: String?
+    let type: String?
+    let likes: Int?
+    let createdAt: String?
+    let author: ArtistActivityAuthor?
+}
+private struct ArtistActivityAuthor: Decodable {
+    let name: String?
+}
+
+/// Short relative time like "2h" / "3d" for a widget-friendly stamp.
+private func shortRelative(_ string: String?) -> String {
+    guard let date = parseISO(string) else { return "" }
+    let seconds = Date().timeIntervalSince(date)
+    if seconds < 60 { return "now" }
+    let minutes = Int(seconds / 60)
+    if minutes < 60 { return "\(minutes)m" }
+    let hours = minutes / 60
+    if hours < 24 { return "\(hours)h" }
+    let days = hours / 24
+    if days < 7 { return "\(days)d" }
+    return "\(days / 7)w"
+}
+
+struct ActivityFeedEntry: TimelineEntry {
+    let date: Date
+    let items: [ActivityFeedItem]
+}
+
+struct ActivityFeedItem {
+    let content: String
+    let type: String
+    let likes: Int
+    let stamp: String
+    let author: String
+}
+
+struct ActivityFeedProvider: TimelineProvider {
+    private var sample: ActivityFeedEntry {
+        ActivityFeedEntry(date: Date(), items: [
+            ActivityFeedItem(content: "Thank you Yeng Nation for an unforgettable night in Cebu 💛",
+                             type: "general", likes: 214, stamp: "2h", author: "Yeng"),
+            ActivityFeedItem(content: "Answered: Yes, a new acoustic version is coming very soon!",
+                             type: "question", likes: 98, stamp: "1d", author: "Yeng")
+        ])
+    }
+
+    func placeholder(in context: Context) -> ActivityFeedEntry { sample }
+    func getSnapshot(in context: Context, completion: @escaping (ActivityFeedEntry) -> Void) {
+        completion(sample)
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<ActivityFeedEntry>) -> Void) {
+        YengAPI.fetch("/.netlify/functions/get-artist-activity?limit=6", as: ArtistActivityResponse.self) { response in
+            let items: [ActivityFeedItem] = (response?.activity ?? []).prefix(6).map { raw in
+                ActivityFeedItem(
+                    content: (raw.content?.isEmpty == false ? raw.content! : "New post from Yeng"),
+                    type: raw.type ?? "general",
+                    likes: raw.likes ?? 0,
+                    stamp: shortRelative(raw.createdAt),
+                    author: raw.author?.name ?? "Yeng"
+                )
+            }
+            let entry = ActivityFeedEntry(date: Date(), items: items)
+            completion(Timeline(entries: [entry], policy: .after(YengAPI.nextRefresh)))
+        }
+    }
+}
+
+struct ActivityFeedWidgetView: View {
+    @Environment(\.widgetFamily) var family
+    let entry: ActivityFeedEntry
+
+    var body: some View {
+        Group {
+            if entry.items.isEmpty { empty } else { content }
+        }
+    }
+
+    private var eyebrow: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "waveform").font(.system(size: 9))
+            Text("YENG'S ACTIVITY").font(.system(size: 10, weight: .bold)).tracking(1.3)
+        }
+        .foregroundColor(.yengPurple)
+    }
+
+    private func typeIcon(_ type: String) -> String {
+        type.lowercased() == "question" ? "questionmark.bubble.fill" : "quote.bubble.fill"
+    }
+
+    private func row(_ item: ActivityFeedItem, lines: Int) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 6) {
+                Image(systemName: typeIcon(item.type)).font(.system(size: 10)).foregroundColor(.yengPurple)
+                Text(item.type.lowercased() == "question" ? "Answered a fan" : "Posted")
+                    .font(.system(size: 10, weight: .bold)).tracking(0.4)
+                    .foregroundColor(.yengInk.opacity(0.55))
+                Spacer(minLength: 0)
+                if !item.stamp.isEmpty {
+                    Text(item.stamp).font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(.yengInk.opacity(0.45))
+                }
+            }
+            Text(item.content)
+                .font(.system(size: 13, weight: .medium, design: .serif))
+                .foregroundColor(.yengInk)
+                .lineLimit(lines).minimumScaleFactor(0.9)
+        }
+    }
+
+    private var content: some View {
+        Group {
+            switch family {
+            case .systemSmall:
+                VStack(alignment: .leading, spacing: 8) {
+                    eyebrow
+                    if let first = entry.items.first { row(first, lines: 4) }
+                    Spacer(minLength: 0)
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            case .systemLarge:
+                VStack(alignment: .leading, spacing: 12) {
+                    eyebrow
+                    ForEach(Array(entry.items.prefix(4).enumerated()), id: \.offset) { idx, item in
+                        if idx > 0 { Divider() }
+                        row(item, lines: 3)
+                    }
+                    Spacer(minLength: 0)
+                    Text("Tap to see all of Yeng's activity")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.yengPurple)
+                }
+                .padding(20)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            default:
+                VStack(alignment: .leading, spacing: 10) {
+                    eyebrow
+                    ForEach(Array(entry.items.prefix(2).enumerated()), id: \.offset) { idx, item in
+                        if idx > 0 { Divider() }
+                        row(item, lines: 2)
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            }
+        }
+    }
+
+    private var empty: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "waveform.slash").font(.system(size: 26)).foregroundColor(.yengPurple)
+            Text("No activity yet")
+                .font(.system(size: 15, weight: .bold, design: .serif))
+                .foregroundColor(.yengInk)
+            Text("Check back for Yeng's latest posts")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.yengInk.opacity(0.6))
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct ActivityFeedWidget: Widget {
+    let kind = "YengActivityFeed"
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: ActivityFeedProvider()) { entry in
+            widgetContainer(background: { YengLightBackdrop() }) { ActivityFeedWidgetView(entry: entry) }
+                .widgetURL(URL(string: "yengapp://open?page=activity.html"))
+        }
+        .configurationDisplayName("Yeng's Activity")
+        .description("Yeng's latest posts and answered questions.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+    }
+}
+
+// =====================================================================
+// MARK: - EVENTS NEAR YOU
+// =====================================================================
+//
+// Public. Calls /.netlify/functions/get-events?upcoming=true and lists Yeng's
+// upcoming shows (title / date / venue / city). A home-screen widget can't read
+// live device location, so it shows the soonest upcoming shows; the events page
+// it deep-links into runs the browser "near me" radius filter.
+
+struct NearbyEventsEntry: TimelineEntry {
+    let date: Date
+    let items: [NearbyEventItem]
+}
+
+struct NearbyEventItem {
+    let title: String
+    let dateLabel: String
+    let venue: String
+    let city: String
+}
+
+/// Compact date like "Aug 14" for a widget row.
+private func shortDate(_ string: String?) -> String {
+    guard let date = parseISO(string) else { return "" }
+    let f = DateFormatter()
+    f.dateFormat = "MMM d"
+    return f.string(from: date)
+}
+
+struct NearbyEventsProvider: TimelineProvider {
+    private var sample: NearbyEventsEntry {
+        NearbyEventsEntry(date: Date(), items: [
+            NearbyEventItem(title: "Yeng Live", dateLabel: "Aug 14", venue: "Araneta Coliseum", city: "Quezon City"),
+            NearbyEventItem(title: "Acoustic Night", dateLabel: "Sep 2", venue: "Waterfront", city: "Cebu")
+        ])
+    }
+
+    func placeholder(in context: Context) -> NearbyEventsEntry { sample }
+    func getSnapshot(in context: Context, completion: @escaping (NearbyEventsEntry) -> Void) {
+        completion(sample)
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<NearbyEventsEntry>) -> Void) {
+        YengAPI.fetch("/.netlify/functions/get-events?upcoming=true&limit=6", as: EventsResponse.self) { response in
+            let items: [NearbyEventItem] = (response?.events ?? []).prefix(6).map { raw in
+                NearbyEventItem(
+                    title: (raw.title?.isEmpty == false ? raw.title! : "Yeng Show"),
+                    dateLabel: shortDate(raw.date),
+                    venue: raw.venue ?? "",
+                    city: raw.city ?? ""
+                )
+            }
+            let entry = NearbyEventsEntry(date: Date(), items: items)
+            completion(Timeline(entries: [entry], policy: .after(YengAPI.nextRefresh)))
+        }
+    }
+}
+
+struct NearbyEventsWidgetView: View {
+    @Environment(\.widgetFamily) var family
+    let entry: NearbyEventsEntry
+
+    var body: some View {
+        Group {
+            if entry.items.isEmpty { empty } else { content }
+        }
+        .foregroundColor(.white)
+    }
+
+    private var eyebrow: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "mappin.and.ellipse").font(.system(size: 9))
+            Text("SHOWS NEAR YOU").font(.system(size: 10, weight: .bold)).tracking(1.3)
+        }
+        .foregroundColor(.white.opacity(0.85))
+    }
+
+    private func dateChip(_ label: String) -> some View {
+        Text(label.isEmpty ? "TBA" : label)
+            .font(.system(size: 11, weight: .bold))
+            .padding(.horizontal, 8).padding(.vertical, 4)
+            .background(Color.white.opacity(0.15))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+    }
+
+    private func row(_ item: NearbyEventItem) -> some View {
+        HStack(spacing: 10) {
+            dateChip(item.dateLabel)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(item.title)
+                    .font(.system(size: 14, weight: .bold, design: .serif))
+                    .lineLimit(1)
+                let place = [item.venue, item.city].filter { !$0.isEmpty }.joined(separator: " · ")
+                if !place.isEmpty {
+                    Text(place)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.white.opacity(0.8))
+                        .lineLimit(1)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+    }
+
+    private var content: some View {
+        Group {
+            switch family {
+            case .systemSmall:
+                VStack(alignment: .leading, spacing: 8) {
+                    eyebrow
+                    if let first = entry.items.first {
+                        Spacer(minLength: 0)
+                        dateChip(first.dateLabel)
+                        Text(first.title)
+                            .font(.system(size: 16, weight: .bold, design: .serif))
+                            .lineLimit(2).minimumScaleFactor(0.8)
+                        let place = [first.venue, first.city].filter { !$0.isEmpty }.joined(separator: ", ")
+                        if !place.isEmpty {
+                            Text(place)
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundColor(.white.opacity(0.8))
+                                .lineLimit(2)
+                        }
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            case .systemLarge:
+                VStack(alignment: .leading, spacing: 12) {
+                    eyebrow
+                    ForEach(Array(entry.items.prefix(5).enumerated()), id: \.offset) { idx, item in
+                        if idx > 0 { Divider().overlay(Color.white.opacity(0.2)) }
+                        row(item)
+                    }
+                    Spacer(minLength: 0)
+                    Text("Tap to find shows near you")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.9))
+                }
+                .padding(20)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            default:
+                VStack(alignment: .leading, spacing: 10) {
+                    eyebrow
+                    ForEach(Array(entry.items.prefix(2).enumerated()), id: \.offset) { idx, item in
+                        if idx > 0 { Divider().overlay(Color.white.opacity(0.2)) }
+                        row(item)
+                    }
+                    Spacer(minLength: 0)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            }
+        }
+    }
+
+    private var empty: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "calendar.badge.exclamationmark").font(.system(size: 26))
+            Text("No upcoming shows")
+                .font(.system(size: 15, weight: .bold, design: .serif))
+            Text("Check back soon for new dates")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.white.opacity(0.8))
+                .multilineTextAlignment(.center)
+        }
+        .foregroundColor(.white)
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct NearbyEventsWidget: Widget {
+    let kind = "YengNearbyEvents"
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: NearbyEventsProvider()) { entry in
+            widgetContainer(background: { YengBackdrop() }) { NearbyEventsWidgetView(entry: entry) }
+                .widgetURL(URL(string: "yengapp://open?page=events.html"))
+        }
+        .configurationDisplayName("Shows Near You")
+        .description("Yeng's upcoming shows — tap to filter by distance.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+    }
+}

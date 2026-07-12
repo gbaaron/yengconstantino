@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FBF8F2">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <title>Fan Leaderboard — Yeng Constantino Official</title>
+    <meta name="description" content="See where you rank among Yeng Nation. Earn points by attending events, commenting, voting, and engaging — no purchases required.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* ── Fan Leaderboard Page — Custom Properties ── */
+        :root {
+            --yeng-purple: #A52C32;
+            --yeng-gold: #D49A24;
+            --yeng-burgundy: #741E27;
+            --yeng-offwhite: #FBF8F2;
+            --yeng-font-display: var(--font-display);
+            --yeng-font-body: var(--font-body);
+            --yeng-font-accent: var(--font-accent);
+            --yeng-gradient-primary: linear-gradient(135deg, #A52C32, #741E27, #D49A24);
+            --yeng-gradient-cta: linear-gradient(135deg, #A52C32, #C24048);
+            --yeng-gradient-warm: linear-gradient(135deg, #D49A24, #741E27, #A52C32);
+            --yeng-gradient-dark: linear-gradient(135deg, #191716, #322E2A);
+        }
+
+        /* ── Hero ── */
+        .lb-hero {
+            background: var(--yeng-gradient-dark);
+            padding: 140px 0 70px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lb-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212, 154, 36,0.04)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .lb-hero::after {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: var(--yeng-purple);
+            opacity: 0.18;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        .lb-hero__content { position: relative; z-index: 1; }
+
+        .lb-hero__title {
+            font-family: var(--yeng-font-display);
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #fff;
+            margin: 0 0 12px;
+            line-height: 1.05;
+        }
+
+        .lb-hero__subtitle {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.15rem;
+            margin: 0 0 6px;
+        }
+
+        .lb-hero__tagline {
+            font-family: var(--yeng-font-accent);
+            font-size: 1.3rem;
+            color: var(--yeng-gold);
+            margin: 0;
+        }
+
+        /* ── My Score Card ── */
+        .my-score {
+            max-width: 760px;
+            margin: -46px auto 0;
+            position: relative;
+            z-index: 5;
+            padding: 0 var(--space-lg);
+        }
+
+        .my-score__card {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 18px 50px rgba(25,23,22,0.16);
+            padding: var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            flex-wrap: wrap;
+            border: 1px solid rgba(212,154,36,0.25);
+        }
+
+        .my-score__rank {
+            flex-shrink: 0;
+            text-align: center;
+            min-width: 96px;
+        }
+
+        .my-score__rank-num {
+            font-family: var(--yeng-font-display);
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1;
+            background: var(--yeng-gradient-warm);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .my-score__rank-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #918A83;
+            margin-top: 4px;
+        }
+
+        .my-score__body { flex: 1; min-width: 200px; }
+
+        .my-score__hello {
+            font-family: var(--yeng-font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--yeng-burgundy);
+            margin: 0 0 4px;
+        }
+
+        .my-score__points {
+            font-size: 1.05rem;
+            color: #4A443F;
+            margin: 0 0 12px;
+        }
+
+        .my-score__points strong {
+            font-size: 1.5rem;
+            color: var(--yeng-purple);
+        }
+
+        .my-score__breakdown {
+            display: flex;
+            gap: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .my-score__stat {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            color: #918A83;
+        }
+
+        .my-score__stat b {
+            font-size: 1.1rem;
+            color: var(--yeng-burgundy);
+            font-family: var(--yeng-font-display);
+        }
+
+        /* ── How points work ── */
+        .lb-info {
+            max-width: 900px;
+            margin: var(--space-2xl) auto 0;
+            padding: 0 var(--space-lg);
+        }
+
+        .lb-info__title {
+            text-align: center;
+            font-family: var(--yeng-font-display);
+            font-size: 1.5rem;
+            color: var(--yeng-burgundy);
+            margin: 0 0 6px;
+        }
+
+        .lb-info__note {
+            text-align: center;
+            color: #918A83;
+            font-size: 0.9rem;
+            margin: 0 0 var(--space-lg);
+        }
+
+        .lb-info__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .lb-info__item {
+            background: #fff;
+            border: 1px solid rgba(212,154,36,0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .lb-info__pts {
+            font-family: var(--yeng-font-display);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--yeng-gold);
+        }
+
+        .lb-info__label {
+            font-size: 0.82rem;
+            color: #4A443F;
+            margin-top: 2px;
+        }
+
+        /* ── Leaderboard List ── */
+        .lb-section {
+            max-width: 860px;
+            margin: var(--space-2xl) auto var(--space-3xl);
+            padding: 0 var(--space-lg);
+        }
+
+        .lb-section__header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .lb-section__title {
+            font-family: var(--yeng-font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--yeng-burgundy);
+            margin: 0;
+        }
+
+        .lb-section__updated {
+            font-size: 0.78rem;
+            color: #918A83;
+        }
+
+        .lb-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .lb-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: #fff;
+            border: 1px solid rgba(25,23,22,0.06);
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-lg);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .lb-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(25,23,22,0.08);
+        }
+
+        .lb-row--me {
+            border-color: var(--yeng-gold);
+            background: linear-gradient(135deg, #fff, #FDF6E8);
+            box-shadow: 0 6px 18px rgba(212,154,36,0.18);
+        }
+
+        .lb-row__rank {
+            flex-shrink: 0;
+            width: 40px;
+            text-align: center;
+            font-family: var(--yeng-font-display);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #918A83;
+        }
+
+        .lb-row--top .lb-row__rank { color: var(--yeng-gold); font-size: 1.6rem; }
+
+        .lb-row__medal { font-size: 1.5rem; }
+
+        .lb-row__avatar {
+            flex-shrink: 0;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--yeng-gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: var(--yeng-font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            overflow: hidden;
+        }
+
+        .lb-row__info { flex: 1; min-width: 0; }
+
+        .lb-row__name {
+            font-weight: 700;
+            color: var(--yeng-burgundy);
+            font-size: 1.02rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lb-row__tier {
+            font-size: 0.75rem;
+            color: #918A83;
+        }
+
+        .lb-row__you-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: var(--yeng-gold);
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: var(--radius-full);
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .lb-row__score {
+            flex-shrink: 0;
+            text-align: right;
+        }
+
+        .lb-row__score-num {
+            font-family: var(--yeng-font-display);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--yeng-purple);
+        }
+
+        .lb-row__score-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #918A83;
+        }
+
+        .lb-empty {
+            text-align: center;
+            padding: var(--space-3xl) var(--space-lg);
+            color: #918A83;
+        }
+
+        .lb-empty__title {
+            font-family: var(--yeng-font-display);
+            font-size: 1.4rem;
+            color: var(--yeng-burgundy);
+            margin: 0 0 6px;
+        }
+
+        @media (max-width: 640px) {
+            .lb-hero__title { font-size: 2rem; }
+            .my-score__card { padding: var(--space-lg); gap: var(--space-lg); }
+            .lb-row__tier { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Navigation ── -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="/" class="nav__logo">Yeng Constantino<span>OPM Icon</span></a>
+            <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav__links">
+                <li><a href="/" class="nav__link">Home</a></li>
+                <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/community.html" class="nav__link">Community</a></li>
+                <li><a href="/merch.html" class="nav__link">Merch</a></li>
+                <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
+                <li><a href="/leaderboard.html" class="nav__link nav__link--active">Leaderboard</a></li>
+                <li><a href="/membership.html" class="nav__link">Membership</a></li>
+                <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+                <li data-guest><a href="/signup.html" class="nav__link nav__cta">Sign Up</a></li>
+                <li data-auth style="display:none"><a href="/profile.html" class="nav__link"><span data-user-name>Fan</span></a></li>
+                <li data-auth style="display:none"><a href="#" class="nav__link" onclick="Auth.clearSession();window.location.reload();">Log Out</a></li>
+                <li data-admin style="display:none"><a href="/admin.html" class="nav__link" style="color:var(--burgundy);font-weight:800;">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="lb-hero">
+        <div class="container lb-hero__content">
+            <h1 class="lb-hero__title">Fan Leaderboard</h1>
+            <p class="lb-hero__subtitle">The most dedicated members of Yeng Nation</p>
+            <p class="lb-hero__tagline">Engagement, not spending, earns your rank</p>
+        </div>
+    </section>
+
+    <!-- ── My Score ── -->
+    <div class="my-score">
+        <div class="my-score__card" id="my-score-card">
+            <div class="my-score__rank">
+                <div class="my-score__rank-num" id="my-rank">—</div>
+                <div class="my-score__rank-label" id="my-rank-label">Your Rank</div>
+            </div>
+            <div class="my-score__body">
+                <h2 class="my-score__hello" id="my-hello">Loading your score…</h2>
+                <p class="my-score__points"><strong id="my-points">0</strong> Fan Points</p>
+                <div class="my-score__breakdown">
+                    <span class="my-score__stat"><b id="stat-events">0</b> Events</span>
+                    <span class="my-score__stat"><b id="stat-comments">0</b> Comments</span>
+                    <span class="my-score__stat"><b id="stat-votes">0</b> Votes</span>
+                    <span class="my-score__stat"><b id="stat-qa">0</b> Q&amp;A</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── How Points Work ── -->
+    <section class="lb-info">
+        <h3 class="lb-info__title">How to climb the ranks</h3>
+        <p class="lb-info__note">Purchases never earn points — only genuine fan engagement counts.</p>
+        <div class="lb-info__grid">
+            <div class="lb-info__item"><div class="lb-info__pts">+50</div><div class="lb-info__label">Attend an event</div></div>
+            <div class="lb-info__item"><div class="lb-info__pts">+15</div><div class="lb-info__label">Submit a cover</div></div>
+            <div class="lb-info__item"><div class="lb-info__pts">+8</div><div class="lb-info__label">Ask Yeng a question</div></div>
+            <div class="lb-info__item"><div class="lb-info__pts">+5</div><div class="lb-info__label">Post a comment</div></div>
+            <div class="lb-info__item"><div class="lb-info__pts">+2</div><div class="lb-info__label">Vote or react</div></div>
+            <div class="lb-info__item"><div class="lb-info__pts">+1</div><div class="lb-info__label">Daily visit</div></div>
+        </div>
+    </section>
+
+    <!-- ── Leaderboard List ── -->
+    <section class="lb-section">
+        <div class="lb-section__header">
+            <h2 class="lb-section__title">Top Fans</h2>
+            <span class="lb-section__updated" id="lb-updated"></span>
+        </div>
+        <div class="lb-list" id="lb-list">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">Yeng Constantino<span class="footer__brand-sub">OPM Icon</span></div>
+                    <p class="footer__desc" data-config="footer_tagline">Made with love for Yeng Nation</p>
+                    <div class="footer__socials">
+                        <a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" class="footer__social" data-config-href="social_youtube">YT</a>
+                        <a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="footer__social" data-config-href="social_instagram">IG</a>
+                        <a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_facebook">FB</a>
+                        <a href="https://www.tiktok.com/@yengconstantinoofficial" target="_blank" rel="noopener" class="footer__social" data-config-href="social_tiktok">TK</a>
+                        <a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" class="footer__social" data-config-href="social_spotify">SP</a>
+                    </div>
+                </div>
+                <div><h4 class="footer__heading">Explore</h4><ul class="footer__list"><li><a href="/music.html">Music Archive</a></li><li><a href="/covers.html">Yeng Covers</a></li><li><a href="/community.html">Community</a></li><li><a href="/merch.html">Merch Store</a></li></ul></div>
+                <div><h4 class="footer__heading">Fan Hub</h4><ul class="footer__list"><li><a href="/leaderboard.html">Leaderboard</a></li><li><a href="/membership.html">Membership</a></li><li><a href="/profile.html">My Profile</a></li><li><a href="/signup.html">Join Yeng Nation</a></li></ul></div>
+                <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
+            </div>
+            <div class="footer__bottom">
+                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9835;</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/native-bridge.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           FAN LEADERBOARD — Page Logic (login required)
+           ═══════════════════════════════════════════════════════ */
+
+        const TIER_LABELS = {
+            'Free': 'Free Fan',
+            'Sariwang Simula': 'Sariwang Simula',
+            'Laging Nandito': 'Laging Nandito',
+            'Ikaw Lamang': 'Ikaw Lamang'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Semi-public: must be logged in to view the leaderboard.
+            if (!Auth.requireAuth('/leaderboard.html')) return;
+            loadMyScore();
+            loadLeaderboard();
+        });
+
+        function initials(name) {
+            return (name || 'F').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, c => (
+                { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+            ));
+        }
+
+        /* ── My Score card ── */
+        async function loadMyScore() {
+            try {
+                const data = await api('get-fan-score');
+                const user = Auth.getUser() || {};
+                document.getElementById('my-hello').textContent = 'Kumusta, ' + (user.name || user.username || 'Fan') + '!';
+                document.getElementById('my-points').textContent = (data.score || 0).toLocaleString();
+
+                const rankEl = document.getElementById('my-rank');
+                const labelEl = document.getElementById('my-rank-label');
+                if (data.rank) {
+                    rankEl.textContent = '#' + data.rank;
+                    labelEl.textContent = data.totalFans ? ('of ' + data.totalFans.toLocaleString()) : 'Your Rank';
+                } else {
+                    rankEl.textContent = '—';
+                    labelEl.textContent = data.pending ? 'Updating…' : 'Unranked';
+                }
+
+                const b = data.breakdown || {};
+                document.getElementById('stat-events').textContent = b.eventsAttended || 0;
+                document.getElementById('stat-comments').textContent = b.comments || 0;
+                document.getElementById('stat-votes').textContent = b.votes || 0;
+                document.getElementById('stat-qa').textContent = b.qaQuestions || 0;
+            } catch (err) {
+                console.error('Failed to load fan score:', err);
+                document.getElementById('my-hello').textContent = 'Could not load your score';
+            }
+        }
+
+        /* ── Leaderboard list ── */
+        async function loadLeaderboard() {
+            const list = document.getElementById('lb-list');
+            createSkeletonCards(8, '#lb-list');
+            try {
+                const data = await api('get-leaderboard?limit=50');
+                renderLeaderboard(data);
+            } catch (err) {
+                console.error('Failed to load leaderboard:', err);
+                list.innerHTML = '<div class="lb-empty"><h3 class="lb-empty__title">Leaderboard unavailable</h3><p>Check back soon — rankings refresh every hour.</p></div>';
+            }
+        }
+
+        function renderLeaderboard(data) {
+            const list = document.getElementById('lb-list');
+            const leaders = data.leaders || [];
+            const me = Auth.getUser() || {};
+            const myId = me.id || me.userId;
+
+            if (data.updatedAt) {
+                document.getElementById('lb-updated').textContent = 'Updated ' + formatDate(data.updatedAt);
+            }
+
+            if (!leaders.length) {
+                list.innerHTML = '<div class="lb-empty"><h3 class="lb-empty__title">No rankings yet</h3><p>Be the first to earn Fan Points — attend an event, post a comment, or ask Yeng a question!</p></div>';
+                return;
+            }
+
+            const medals = { 1: '&#129351;', 2: '&#129352;', 3: '&#129353;' };
+
+            list.innerHTML = leaders.map(row => {
+                const isMe = row.userId === myId;
+                const isTop = row.rank <= 3;
+                const rankCell = medals[row.rank]
+                    ? '<span class="lb-row__medal">' + medals[row.rank] + '</span>'
+                    : '#' + row.rank;
+                const avatar = row.avatar
+                    ? '<img class="lb-row__avatar" src="' + escapeHtml(row.avatar) + '" alt="">'
+                    : '<div class="lb-row__avatar">' + initials(row.name) + '</div>';
+                const tier = TIER_LABELS[row.tier] || row.tier || 'Free Fan';
+
+                return '<div class="lb-row' + (isMe ? ' lb-row--me' : '') + (isTop ? ' lb-row--top' : '') + '">' +
+                    '<div class="lb-row__rank">' + rankCell + '</div>' +
+                    avatar +
+                    '<div class="lb-row__info">' +
+                        '<div class="lb-row__name">' + escapeHtml(row.name) + (isMe ? '<span class="lb-row__you-badge">You</span>' : '') + '</div>' +
+                        '<div class="lb-row__tier">' + escapeHtml(tier) + '</div>' +
+                    '</div>' +
+                    '<div class="lb-row__score">' +
+                        '<div class="lb-row__score-num">' + (row.score || 0).toLocaleString() + '</div>' +
+                        '<div class="lb-row__score-label">pts</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            // If the fan ranks below the visible cutoff, pin their row at the bottom.
+            const inList = leaders.some(r => r.userId === myId);
+            if (!inList && data.myRank) {
+                const row = data.myRank;
+                const avatar = row.avatar
+                    ? '<img class="lb-row__avatar" src="' + escapeHtml(row.avatar) + '" alt="">'
+                    : '<div class="lb-row__avatar">' + initials(row.name) + '</div>';
+                const tier = TIER_LABELS[row.tier] || row.tier || 'Free Fan';
+                list.insertAdjacentHTML('beforeend',
+                    '<div class="lb-row lb-row--me" style="margin-top:12px;">' +
+                        '<div class="lb-row__rank">#' + (row.rank || '—') + '</div>' +
+                        avatar +
+                        '<div class="lb-row__info">' +
+                            '<div class="lb-row__name">' + escapeHtml(row.name) + '<span class="lb-row__you-badge">You</span></div>' +
+                            '<div class="lb-row__tier">' + escapeHtml(tier) + '</div>' +
+                        '</div>' +
+                        '<div class="lb-row__score">' +
+                            '<div class="lb-row__score-num">' + (row.score || 0).toLocaleString() + '</div>' +
+                            '<div class="lb-row__score-label">pts</div>' +
+                        '</div>' +
+                    '</div>');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const Airtable = require('airtable');
+const { geocodeCity } = require('./lib/geocode');
 
 exports.handler = async (event) => {
     const headers = {
@@ -66,13 +67,31 @@ exports.handler = async (event) => {
 
         const limitedRecords = workingRecords.slice(0, limit);
 
-        const events = limitedRecords.map(record => {
+        const events = await Promise.all(limitedRecords.map(async record => {
             const imgField = record.fields.Image || null;
             let image = null;
             if (Array.isArray(imgField) && imgField.length > 0) {
                 image = imgField[0].url || imgField[0];
             } else if (typeof imgField === 'string') {
                 image = imgField;
+            }
+
+            // Coordinates for the "near me" location filter. Prefer any Latitude /
+            // Longitude already stored on the record; otherwise auto-derive them
+            // from the City (per the product decision — no manual lat/lng entry).
+            let lat = null;
+            let lng = null;
+            const storedLat = parseFloat(record.fields.Latitude);
+            const storedLng = parseFloat(record.fields.Longitude);
+            if (!isNaN(storedLat) && !isNaN(storedLng)) {
+                lat = storedLat;
+                lng = storedLng;
+            } else if (record.fields.City) {
+                const geo = await geocodeCity(record.fields.City, record.fields.Country);
+                if (geo) {
+                    lat = geo.lat;
+                    lng = geo.lng;
+                }
             }
 
             return {
@@ -83,6 +102,8 @@ exports.handler = async (event) => {
                 venue: record.fields.Venue || '',
                 city: record.fields.City || '',
                 country: record.fields.Country || 'Philippines',
+                lat,
+                lng,
                 type: record.fields.Type || 'Concert',
                 description: record.fields.Description || '',
                 image,
@@ -95,7 +116,7 @@ exports.handler = async (event) => {
                 status: record.fields.Status || 'Upcoming',
                 featured: !!record.fields.Featured
             };
-        });
+        }));
 
         return {
             statusCode: 200,
