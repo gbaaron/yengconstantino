@@ -19,5 +19,22 @@ struct YengWidgetsBundle: WidgetBundle {
         FanTierWidget()
         PastOrdersWidget()
         MyCardsWidget()
+        AdminDashboardWidget()
+        NextShowLockWidget()
+        FanTierLockWidget()
+        if #available(iOS 17.0, *) {
+            NextShowRSVPWidget()
+            FeaturedSongLikeWidget()
+        }
+        if #available(iOS 16.1, *) {
+            ConcertLiveActivity()
+            TicketDropLiveActivity()
+        }
+        if #available(iOS 18.0, *) {
+            YengMusicControl()
+            YengEventsControl()
+            YengCardControl()
+            YengRSVPControl()
+        }
     }
 }

@@ -28,7 +28,8 @@ public class WidgetBridgePlugin: CAPPlugin, CAPBridgedPlugin {
         "yc_widget_token",
         "yc_widget_tier",
         "yc_widget_name",
-        "yc_widget_username"
+        "yc_widget_username",
+        "yc_widget_role"
     ]
 
     @objc func sync(_ call: CAPPluginCall) {
@@ -41,7 +42,8 @@ public class WidgetBridgePlugin: CAPPlugin, CAPBridgedPlugin {
             "yc_widget_token": call.getString("token") ?? "",
             "yc_widget_tier": call.getString("tier") ?? "Free",
             "yc_widget_name": call.getString("name") ?? "",
-            "yc_widget_username": call.getString("username") ?? ""
+            "yc_widget_username": call.getString("username") ?? "",
+            "yc_widget_role": call.getString("role") ?? "User"
         ]
 
         for (key, value) in values {

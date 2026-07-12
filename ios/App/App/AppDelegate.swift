@@ -35,6 +35,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+        // Control Center controls can't carry a widgetURL, so when the fan taps
+        // one we stash the destination page in the shared App Group and open the
+        // app. Consume that pending page here and fire the matching yengapp://
+        // deep link so the web layer navigates to the right screen.
+        consumePendingControlPage(application)
+    }
+
+    /// Reads (and clears) the pending control-widget page from the shared App
+    /// Group, then routes it through the Capacitor URL pipeline as a deep link.
+    private func consumePendingControlPage(_ application: UIApplication) {
+        let suiteName = "group.com.globalmedia.yeng"
+        let pendingKey = "CapacitorStorage.yc_widget_pending_page"
+        guard let defaults = UserDefaults(suiteName: suiteName),
+              let page = defaults.string(forKey: pendingKey),
+              !page.isEmpty else {
+            return
+        }
+        // Clear it first so we don't re-navigate on every activation.
+        defaults.removeObject(forKey: pendingKey)
+
+        guard let encoded = page.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "yengapp://open?page=\(encoded)") else {
+            return
+        }
+        // Give the webview a moment to be ready before routing the deep link.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            _ = ApplicationDelegateProxy.shared.application(application, open: url, options: [:])
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

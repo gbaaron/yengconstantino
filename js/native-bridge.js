@@ -331,7 +331,8 @@
       token: String(token || ''),
       tier: String(user.membershipTier || 'Free'),
       name: String(user.name || ''),
-      username: String(user.username || '')
+      username: String(user.username || ''),
+      role: String(user.role || 'User')
     });
     // The plugin also calls WidgetCenter.reloadAllTimelines() after writing,
     // and AppDelegate reloads again on background, so the widget refreshes
@@ -341,6 +342,73 @@
   /** Wipe the shared widget data on logout so widgets fall back to public state. */
   function clearWidgetData() {
     return callWidgetBridge('clear', {});
+  }
+
+  // ---- Live Activities (Lock Screen + Dynamic Island, iOS 16.1+) ----
+  // Bridges the web layer to LiveActivityPlugin.swift (App target), which drives
+  // ActivityKit. Same call path as callWidgetBridge: the raw
+  // Capacitor.nativePromise primitive, since @capacitor/core is never bundled.
+  // Unlike the widget bridge, these resolve with the native result object
+  // (e.g. { supported } or { success, id }) so callers can read it back.
+  function callLiveActivity(method, options) {
+    if (!isNative || !global.Capacitor ||
+        typeof global.Capacitor.nativePromise !== 'function') {
+      return Promise.resolve(null);
+    }
+    return global.Capacitor
+      .nativePromise('LiveActivity', method, options || {})
+      .then(function (res) { return res || { success: true }; })
+      .catch(function () { return null; });
+  }
+
+  /** Resolves to true if Live Activities are supported + enabled on this device. */
+  function liveActivitySupported() {
+    return callLiveActivity('isSupported', {}).then(function (res) {
+      return !!(res && res.supported);
+    });
+  }
+
+  /**
+   * Start a Concert Live Activity counting down to showtime.
+   * opts: { id, title, venue, showDate, statusLine, phase }
+   *   - id         a stable key you pick, used later to update/end this one
+   *   - title      concert name, e.g. "Yeng Live in Manila"
+   *   - venue      e.g. "Araneta Coliseum"
+   *   - showDate   ISO-8601 string or epoch (drives the relative timer)
+   *   - statusLine short phrase, e.g. "Doors open 6:00 PM"
+   *   - phase      "countdown" | "soon" | "live" | "ended"
+   */
+  function startConcertActivity(opts) {
+    return callLiveActivity('startConcert', opts || {});
+  }
+
+  /** Update a running Concert activity. opts: { id, statusLine, showDate, phase } */
+  function updateConcertActivity(opts) {
+    return callLiveActivity('updateConcert', opts || {});
+  }
+
+  /**
+   * Start a Ticket Drop Live Activity.
+   * opts: { id, eventTitle, dropDate, remaining, statusLine, phase }
+   *   - phase "waiting" | "live" | "soldout"; remaining < 0 means unknown
+   */
+  function startTicketDropActivity(opts) {
+    return callLiveActivity('startTicketDrop', opts || {});
+  }
+
+  /** Update a running Ticket Drop activity. opts: { id, remaining, statusLine, dropDate, phase } */
+  function updateTicketDropActivity(opts) {
+    return callLiveActivity('updateTicketDrop', opts || {});
+  }
+
+  /** End one Live Activity by the id you started it with. opts: { id } */
+  function endLiveActivity(id) {
+    return callLiveActivity('end', { id: String(id || '') });
+  }
+
+  /** End every Yeng Live Activity currently on the Lock Screen / Dynamic Island. */
+  function endAllLiveActivities() {
+    return callLiveActivity('endAll', {});
   }
 
   // ---- Export ----
@@ -369,6 +437,14 @@
     // Widget data sharing (App Group)
     syncWidgetData: syncWidgetData,
     clearWidgetData: clearWidgetData,
+    // Live Activities (ActivityKit, iOS 16.1+)
+    liveActivitySupported: liveActivitySupported,
+    startConcertActivity: startConcertActivity,
+    updateConcertActivity: updateConcertActivity,
+    startTicketDropActivity: startTicketDropActivity,
+    updateTicketDropActivity: updateTicketDropActivity,
+    endLiveActivity: endLiveActivity,
+    endAllLiveActivities: endAllLiveActivities,
   };
 
 })(window);
