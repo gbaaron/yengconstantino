@@ -371,6 +371,7 @@
         <div class="admin-tabs">
             <button class="admin-tab admin-tab--active" data-tab="overview" onclick="switchAdminTab('overview')">Overview</button>
             <button class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')">Posts <span class="admin-tab__badge" id="badge-posts" style="display:none;">0</span></button>
+            <button class="admin-tab" data-tab="questions" onclick="switchAdminTab('questions')">Ask Yeng <span class="admin-tab__badge" id="badge-questions" style="display:none;">0</span></button>
             <button class="admin-tab" data-tab="covers" onclick="switchAdminTab('covers')">Covers <span class="admin-tab__badge" id="badge-covers" style="display:none;">0</span></button>
             <button class="admin-tab" data-tab="orders" onclick="switchAdminTab('orders')">Orders</button>
             <button class="admin-tab" data-tab="tickets" onclick="switchAdminTab('tickets')">Tickets</button>
@@ -492,6 +493,18 @@
             <div class="admin-panel" id="admin-panel-posts">
                 <h2 class="admin-panel__title">Pending Posts</h2>
                 <div id="admin-posts-list"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+            </div>
+
+            <!-- Ask Yeng Questions Panel -->
+            <div class="admin-panel" id="admin-panel-questions">
+                <h2 class="admin-panel__title">Ask Yeng</h2>
+                <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:var(--gray-500);margin-bottom:var(--space-xl);line-height:1.6;">Questions fans have asked you directly. <strong>Bumped questions</strong> (from Laging Nandito &amp; Ikaw Lamang members) show up first. Below them are the most-liked questions &mdash; the ones the most fans want answered. Post an answer and it gets highlighted on the community page.</p>
+
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);">&#9650; Bumped Questions</h3>
+                <div id="admin-bumped-questions" style="margin-bottom:var(--space-2xl);"><div class="loading-overlay"><div class="spinner"></div><span>Loading...</span></div></div>
+
+                <h3 style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;color:#6B5D50;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:var(--space-md);">&#9829; Most-Liked Questions</h3>
+                <div id="admin-liked-questions"></div>
             </div>
 
             <!-- Covers Panel -->
@@ -668,6 +681,7 @@
         if (!adminTabsLoaded[tab]) {
             adminTabsLoaded[tab] = true;
             if (tab === 'posts') loadPendingPosts();
+            else if (tab === 'questions') loadAskYengQuestions();
             else if (tab === 'covers') loadPendingCovers();
             else if (tab === 'orders') loadAllOrders();
             else if (tab === 'tickets') loadPendingTickets();
@@ -702,6 +716,77 @@
             showToast('Post ' + status.toLowerCase(), status === 'Approved' ? 'success' : 'info');
             var el = document.getElementById('mod-post-' + postId);
             if (el) el.remove();
+        } catch (err) { showToast('Failed: ' + err.message, 'error'); }
+    }
+
+    /* ── Ask Yeng Questions ── */
+    var askYengCache = [];
+    function isQuestionPost(p) {
+        var t = (p.Type || p.type || '').toLowerCase();
+        return t === 'question' || t === 'ask yeng';
+    }
+    function qLikes(p) { return Number(p.Likes || p.likes || 0) || 0; }
+    function qBumped(p) { return !!(p.Bumped || p.bumped); }
+    function qAnswer(p) { return p.Answer || p.answer || p.YengAnswer || p.yengAnswer || ''; }
+
+    function renderQuestionCard(p) {
+        var answered = qAnswer(p);
+        var bumpTag = qBumped(p) ? '<span class="status-badge" style="background:linear-gradient(135deg,#7A1F3D,#6C2BD9);color:#fff;">&#9650; Bumped</span>' : '';
+        var likeTag = '<span class="mod-card__meta" style="margin:0;">&#9829; ' + qLikes(p) + ' likes</span>';
+        var answerBlock = answered
+            ? '<div class="mod-card__content" style="background:linear-gradient(135deg,rgba(201,139,30,0.08),rgba(108,43,217,0.08));border-left:3px solid var(--gold);padding:var(--space-md);border-radius:var(--radius-sm);margin-top:var(--space-sm);"><strong style="color:var(--gold);">Yeng answered:</strong><br><span style="font-style:italic;">' + truncate(answered, 300) + '</span></div>'
+            : '';
+        var actionLabel = answered ? 'Edit Answer' : 'Answer';
+        return '<div class="mod-card" id="mod-question-' + p.id + '">'
+            + '<div class="mod-card__header"><span class="mod-card__user">' + (p.UserName || p.username || 'Unknown') + '</span>' + bumpTag + '</div>'
+            + '<div class="mod-card__meta">' + likeTag + ' &middot; ' + (p.CreatedAt ? formatDate(p.CreatedAt) : '') + '</div>'
+            + '<div class="mod-card__content">' + truncate(p.Content || p.content || '', 300) + '</div>'
+            + answerBlock
+            + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="answerQuestion(\'' + p.id + '\')">' + actionLabel + '</button></div>'
+            + '</div>';
+    }
+
+    async function loadAskYengQuestions() {
+        var bumpedContainer = document.getElementById('admin-bumped-questions');
+        var likedContainer = document.getElementById('admin-liked-questions');
+        try {
+            var data = await api('get-admin-content?type=posts&status=Approved');
+            var items = (data.items || []).filter(isQuestionPost);
+            askYengCache = items;
+            var badge = document.getElementById('badge-questions');
+            if (badge) { if (items.length) { badge.textContent = items.length; badge.style.display = ''; } else { badge.style.display = 'none'; } }
+
+            var bumped = items.filter(qBumped).sort(function(a, b) { return qLikes(b) - qLikes(a); });
+            var liked = items.slice().sort(function(a, b) { return qLikes(b) - qLikes(a); });
+
+            bumpedContainer.innerHTML = bumped.length
+                ? bumped.map(renderQuestionCard).join('')
+                : '<div class="empty-state"><div class="empty-state__icon">&#9650;</div><h3 class="empty-state__title">No bumped questions</h3><p class="empty-state__text">When Laging Nandito or Ikaw Lamang members bump a question, it appears here first.</p></div>';
+
+            likedContainer.innerHTML = liked.length
+                ? liked.map(renderQuestionCard).join('')
+                : '<div class="empty-state"><div class="empty-state__icon">&#9829;</div><h3 class="empty-state__title">No questions yet</h3><p class="empty-state__text">Fan questions for you will show up here, most-liked first.</p></div>';
+        } catch (err) {
+            bumpedContainer.innerHTML = '<p style="color:#BE185D;">Failed to load questions.</p>';
+            likedContainer.innerHTML = '';
+        }
+    }
+
+    async function answerQuestion(postId) {
+        var existing = '';
+        for (var i = 0; i < askYengCache.length; i++) { if (askYengCache[i].id === postId) { existing = qAnswer(askYengCache[i]); break; } }
+        var answer = prompt('Your answer (this will be highlighted on the community page):', existing || '');
+        if (answer === null) return;
+        answer = answer.trim();
+        if (!answer) { showToast('Answer cannot be empty', 'error'); return; }
+        try {
+            await api('answer-question', { method: 'POST', body: { postId: postId, answer: answer } });
+            showToast('Answer posted', 'success');
+            for (var j = 0; j < askYengCache.length; j++) { if (askYengCache[j].id === postId) { askYengCache[j].Answer = answer; break; } }
+            var card = document.getElementById('mod-question-' + postId);
+            var updated = null;
+            for (var k = 0; k < askYengCache.length; k++) { if (askYengCache[k].id === postId) { updated = askYengCache[k]; break; } }
+            if (card && updated) card.outerHTML = renderQuestionCard(updated);
         } catch (err) { showToast('Failed: ' + err.message, 'error'); }
     }
 

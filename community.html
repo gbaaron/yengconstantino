@@ -496,6 +496,111 @@
             letter-spacing: 0.03em;
         }
 
+        .post-card__bumped-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--burgundy) 0%, var(--primary) 100%);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Yeng's Answer highlight block ── */
+        .post-card__answer {
+            margin: var(--space-md) 0 0;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(212, 165, 71, 0.12) 0%, rgba(91, 45, 142, 0.08) 100%);
+            border: 1px solid rgba(212, 165, 71, 0.35);
+            border-left: 4px solid var(--gold);
+        }
+
+        .post-card__answer-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .post-card__answer-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--primary) 100%);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .post-card__answer-name {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-card__answer-verified {
+            color: var(--gold);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .post-card__answer-body {
+            font-family: var(--font-body);
+            font-size: 0.92rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        /* ── Bump button ── */
+        .post-card__bump-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--burgundy);
+            cursor: pointer;
+            transition: color var(--transition-fast), opacity var(--transition-fast);
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+            font-weight: 600;
+            padding: 4px 0;
+            margin-left: auto;
+        }
+
+        .post-card__bump-btn:hover { color: var(--primary); }
+        .post-card__bump-btn:disabled { opacity: 0.45; cursor: default; }
+
+        /* ── Ask Yeng intro banner ── */
+        .ask-yeng-note {
+            background: linear-gradient(135deg, rgba(212, 165, 71, 0.1) 0%, rgba(91, 45, 142, 0.06) 100%);
+            border: 1px solid rgba(212, 165, 71, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        .ask-yeng-note strong { color: var(--primary); }
+
         .post-card__content {
             font-family: var(--font-body);
             font-size: 0.95rem;
@@ -735,7 +840,7 @@
                 <button class="filter-tab" data-filter="fanart">Fan Art</button>
                 <button class="filter-tab" data-filter="cover">Cover Video</button>
                 <button class="filter-tab" data-filter="memory">Memory</button>
-                <button class="filter-tab" data-filter="question">Question</button>
+                <button class="filter-tab" data-filter="question">Ask Yeng</button>
                 <button class="filter-tab" data-filter="edit">Edit</button>
             </div>
         </div>
@@ -768,7 +873,7 @@
                             <option value="fanart">Fan Art</option>
                             <option value="cover">Cover Video</option>
                             <option value="memory">Memory</option>
-                            <option value="question">Question</option>
+                            <option value="question">Ask Yeng</option>
                             <option value="edit">Edit</option>
                         </select>
                         <button class="post-creator__submit" id="postSubmitBtn">Share Post</button>
@@ -890,7 +995,7 @@
                 fanart:   { label: 'Fan Art',     cssClass: 'post-card__type-badge--fanart' },
                 cover:    { label: 'Cover Video', cssClass: 'post-card__type-badge--cover' },
                 memory:   { label: 'Memory',      cssClass: 'post-card__type-badge--memory' },
-                question: { label: 'Question',    cssClass: 'post-card__type-badge--question' },
+                question: { label: 'Ask Yeng',    cssClass: 'post-card__type-badge--question' },
                 edit:     { label: 'Edit',        cssClass: 'post-card__type-badge--edit' }
             };
 
@@ -967,11 +1072,13 @@
                     avatarBg: avatarBgOptions[4],
                     type: 'question',
                     time: '12 hours ago',
-                    content: 'What\'s everyone\'s favorite Yeng album? I\'m trying to decide between "Metamorphosis" and "All About Love" for my road trip playlist. Both are absolute masterpieces but I can only fit one on my USB. Help me decide, Yeng Nation! Also, which album has the best deep cuts that casual fans might not know about?',
+                    content: 'Yeng, out of all the songs you\'ve released, which one is closest to your heart and why? I always wonder if the ones we love most as fans are the same ones that mean the most to you. Would love to know the story behind your personal favorite. 💜',
                     imageUrl: null,
                     likes: 176,
                     liked: false,
-                    featured: false
+                    featured: false,
+                    answer: 'Such a hard question, Rina! 💜 If I really had to choose, it would be "Ikaw." I wrote it during a season when I finally understood what it meant to love without holding back, and every time I sing it live I feel that all over again. Funny enough, the songs closest to my heart are usually the ones that were the scariest to release — but those are the ones you all end up holding closest too. Salamat for asking with so much heart. — Yeng',
+                    answerTime: '8 hours ago'
                 },
                 {
                     id: 'demo-6',
@@ -1101,7 +1208,7 @@
                     avatarBg: avatarBgOptions[0],
                     type: 'question',
                     time: '6 hours ago',
-                    content: 'Newbie question — I just got into Yeng\'s music last month and I\'m OBSESSED. Where should I start with her discography? I\'ve heard the hits but I want the deep cuts too. Give me your must-listen tracks that aren\'t the obvious singles. Building my ultimate Yeng starter playlist and I trust this community\'s taste!',
+                    content: 'Yeng, when you\'re writing a song, what usually comes first for you — the melody or the lyrics? I\'m an aspiring musician and I\'m so curious about how your creative process works. Do you write when you\'re feeling something strongly, or do you sit down and make it happen?',
                     imageUrl: null,
                     likes: 143,
                     liked: false,
@@ -1114,7 +1221,7 @@
                     avatarBg: avatarBgOptions[1],
                     type: 'question',
                     time: '1 day ago',
-                    content: 'Does anyone know if Yeng has any songwriting tips she\'s shared in interviews? I\'m an aspiring songwriter and she\'s my biggest inspiration. Would love to learn about her creative process — how she writes such honest, emotional lyrics. If you\'ve seen any interviews or videos where she talks about it, please share the links!',
+                    content: 'Yeng, how do you stay so honest and vulnerable in your lyrics? Your songs feel like you\'re reading pages from a diary, and it helps so many of us feel less alone. Is it ever scary to share something that personal with the world? Thank you for always being real with us. 🙏',
                     imageUrl: null,
                     likes: 121,
                     liked: false,
@@ -1148,7 +1255,10 @@
                     imagePlaceholder: null,
                     likes: parseInt(f.likes || f.Likes || 0, 10),
                     liked: !!(f.liked || f.Liked),
-                    featured: !!(f.featured || f.Featured)
+                    featured: !!(f.featured || f.Featured),
+                    answer: f.answer || f.Answer || f.yengAnswer || f.YengAnswer || null,
+                    answerTime: f.answerTime || f.AnswerTime || null,
+                    bumped: !!(f.bumped || f.Bumped)
                 };
             }
 
@@ -1158,6 +1268,7 @@
                 var featuredClass = post.featured ? ' post-card--featured' : '';
                 var likedClass = post.liked ? ' post-card__like--liked' : '';
                 var heartSymbol = post.liked ? '&#9829;' : '&#9825;';
+                var isQuestion = post.type === 'question';
 
                 var imageHtml = '';
                 if (post.imageUrl) {
@@ -1176,6 +1287,34 @@
                     ? '<span class="post-card__featured-badge">&#9733; Featured</span>'
                     : '';
 
+                var bumpedBadge = post.bumped
+                    ? '<span class="post-card__bumped-badge"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><path d="m18 15-6-6-6 6"/></svg>Bumped</span>'
+                    : '';
+
+                // Highlighted "Yeng's Answer" block for answered questions
+                var answerHtml = '';
+                if (post.answer) {
+                    answerHtml = '<div class="post-card__answer">' +
+                        '<div class="post-card__answer-header">' +
+                            '<div class="post-card__answer-avatar">Y</div>' +
+                            '<span class="post-card__answer-name">Yeng answered' +
+                                '<span class="post-card__answer-verified" title="Verified answer from Yeng"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></span>' +
+                            '</span>' +
+                            (post.answerTime ? '<span class="post-card__time" style="margin-left:auto;">' + post.answerTime + '</span>' : '') +
+                        '</div>' +
+                        '<div class="post-card__answer-body">' + post.answer + '</div>' +
+                    '</div>';
+                }
+
+                // Bump button (question posts only)
+                var bumpBtnHtml = '';
+                if (isQuestion) {
+                    bumpBtnHtml = '<button class="post-card__bump-btn" data-bump-btn data-post-id="' + post.id + '"' + (post.bumped ? ' disabled' : '') + '>' +
+                        '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>' +
+                        (post.bumped ? 'Bumped' : 'Bump') +
+                    '</button>';
+                }
+
                 return '<div class="post-card' + featuredClass + '" data-type="' + post.type + '" data-post-id="' + post.id + '">' +
                     '<div class="post-card__header">' +
                         '<div class="post-card__avatar" style="background:' + (post.avatarBg || avatarBgOptions[0]) + ';">' + post.avatarInitial + '</div>' +
@@ -1184,12 +1323,14 @@
                             '<div class="post-card__meta">' +
                                 '<span class="post-card__type-badge ' + bInfo.cssClass + '">' + bInfo.label + '</span>' +
                                 '<span class="post-card__time">' + post.time + '</span>' +
+                                bumpedBadge +
                                 featuredBadge +
                             '</div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="post-card__content">' + post.content + '</div>' +
                     imageHtml +
+                    answerHtml +
                     '<div class="post-card__actions">' +
                         '<button class="post-card__like' + likedClass + '" data-like-btn data-post-id="' + post.id + '">' +
                             '<span class="heart-icon">' + heartSymbol + '</span>' +
@@ -1197,6 +1338,7 @@
                         '</button>' +
                         '<button class="post-card__action-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Comment</button>' +
                         '<button class="post-card__action-btn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>' +
+                        bumpBtnHtml +
                     '</div>' +
                 '</div>';
             }
@@ -1221,6 +1363,21 @@
                     filtered = posts.filter(function(p) { return p.type === currentFilter; });
                 }
 
+                // On the Ask Yeng tab, prioritize by likes (and bumped questions first)
+                // so the questions the community most wants answered rise to the top.
+                var noteHtml = '';
+                if (currentFilter === 'question') {
+                    filtered = filtered.slice().sort(function(a, b) {
+                        if (!!b.bumped !== !!a.bumped) return (b.bumped ? 1 : 0) - (a.bumped ? 1 : 0);
+                        return (b.likes || 0) - (a.likes || 0);
+                    });
+                    noteHtml = '<div class="ask-yeng-note">' +
+                        '<strong>Ask Yeng</strong> &mdash; these are questions for Yeng herself. ' +
+                        'Like the ones you want answered first &mdash; the most-liked questions rise to the top. ' +
+                        'Laging Nandito and Ikaw Lamang members can also <strong>bump</strong> their question to Yeng\'s priority list.' +
+                    '</div>';
+                }
+
                 if (!filtered.length) {
                     feedContainer.innerHTML = '<div class="empty-feed">' +
                         '<div class="empty-feed__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>' +
@@ -1230,10 +1387,11 @@
                     return;
                 }
 
-                feedContainer.innerHTML = filtered.map(renderPostCard).join('');
+                feedContainer.innerHTML = noteHtml + filtered.map(renderPostCard).join('');
 
-                // Attach like listeners
+                // Attach interaction listeners
                 attachLikeListeners();
+                attachBumpListeners();
             }
 
             // ── Render memory highlight section ──
@@ -1365,6 +1523,95 @@
                 api('like-post', {
                     method: 'POST',
                     body: { postId: postId, liked: !isLiked }
+                }).catch(function() { /* silent fail */ });
+            }
+
+            // ── Bump handling (tier perk: prioritize a question to Yeng) ──
+            // Laging Nandito members get 1 bump/week, Ikaw Lamang members get 2 bumps/week.
+            var BUMP_LIMITS = { 'Laging Nandito': 1, 'Ikaw Lamang': 2 };
+
+            function getBumpWeekKey() {
+                // ISO-ish week bucket so limits reset weekly
+                var now = new Date();
+                var oneJan = new Date(now.getFullYear(), 0, 1);
+                var week = Math.ceil((((now - oneJan) / 86400000) + oneJan.getDay() + 1) / 7);
+                return now.getFullYear() + '-W' + week;
+            }
+
+            function getBumpUsage() {
+                try {
+                    var raw = localStorage.getItem('yeng_bump_usage');
+                    var data = raw ? JSON.parse(raw) : null;
+                    if (!data || data.week !== getBumpWeekKey()) {
+                        return { week: getBumpWeekKey(), count: 0, postIds: [] };
+                    }
+                    return data;
+                } catch (e) {
+                    return { week: getBumpWeekKey(), count: 0, postIds: [] };
+                }
+            }
+
+            function saveBumpUsage(usage) {
+                try { localStorage.setItem('yeng_bump_usage', JSON.stringify(usage)); } catch (e) {}
+            }
+
+            function attachBumpListeners() {
+                var bumpBtns = document.querySelectorAll('[data-bump-btn]');
+                bumpBtns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        handleBump(btn);
+                    });
+                });
+            }
+
+            function handleBump(btn) {
+                if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
+                    showToast('Log in to bump a question', 'error');
+                    return;
+                }
+
+                var tier = (typeof Auth.getUserTier === 'function' ? Auth.getUserTier() : '') || '';
+                var limit = BUMP_LIMITS[tier] || 0;
+                if (limit === 0) {
+                    showToast('Bumping is a Laging Nandito & Ikaw Lamang perk. Upgrade to prioritize your questions!', 'error');
+                    return;
+                }
+
+                var usage = getBumpUsage();
+                if (usage.count >= limit) {
+                    showToast('You\'ve used all ' + limit + ' of your bumps this week. They reset next week!', 'error');
+                    return;
+                }
+
+                var postId = btn.getAttribute('data-post-id');
+                if (usage.postIds.indexOf(postId) !== -1) {
+                    showToast('You\'ve already bumped this question.', 'error');
+                    return;
+                }
+
+                // Apply bump locally
+                usage.count += 1;
+                usage.postIds.push(postId);
+                saveBumpUsage(usage);
+
+                var post = communityPosts.find(function(p) { return p.id === postId; });
+                if (post) post.bumped = true;
+
+                btn.disabled = true;
+                btn.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>Bumped';
+
+                var remaining = limit - usage.count;
+                showToast('Question bumped to Yeng\'s priority list! ' + remaining + ' bump' + (remaining === 1 ? '' : 's') + ' left this week.', 'success');
+
+                // Re-render so the bumped question jumps to the top of the Ask Yeng feed
+                if (currentFilter === 'question') {
+                    renderPosts(communityPosts);
+                }
+
+                // Fire-and-forget API call
+                api('bump-question', {
+                    method: 'POST',
+                    body: { postId: postId }
                 }).catch(function() { /* silent fail */ });
             }
 

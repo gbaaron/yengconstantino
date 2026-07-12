@@ -83,6 +83,8 @@
         .message-card__price { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800; color: #231A12; margin-bottom: var(--space-xs); }
         .message-card__price-note { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #8E7F70; margin-bottom: var(--space-lg); }
         .message-card__discount { font-family: 'Caveat', cursive; font-size: 1.1rem; color: #2D8E7E; margin-bottom: var(--space-lg); }
+        .message-card__discount--free { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.15rem; color: #C68B1E; letter-spacing: 0.02em; }
+        .message-card__price--free { color: #C68B1E; }
         .message-card__divider { width: 60px; height: 3px; border-radius: 2px; margin: var(--space-lg) auto; }
         .message-card__divider--purple { background: linear-gradient(135deg, #5B2D8E, #7E4FB5); }
         .message-card__divider--burgundy { background: linear-gradient(135deg, #8B2252, #A83B6B); }
@@ -196,8 +198,8 @@
                 <h3 class="message-card__type">Video Message</h3>
                 <p class="message-card__desc">A personal video message from Yeng, recorded just for you or your loved one.</p>
                 <div class="message-card__divider message-card__divider--burgundy"></div>
-                <div class="message-card__price">&#8369;1,500</div>
-                <div class="message-card__price-note">One-time fee</div>
+                <div class="message-card__price" id="price-video">&#8369;1,500</div>
+                <div class="message-card__price-note" id="price-note-video">One-time fee</div>
                 <div class="message-card__discount" id="discount-video"></div>
                 <button class="message-card__cta message-card__cta--burgundy" onclick="selectMessageType('Video', 1500)">Request Now</button>
             </div>
@@ -268,20 +270,23 @@
                 <label class="form-label">Personal Instructions</label>
                 <textarea class="form-input" id="msg-instructions" rows="3" placeholder="Any special requests or details you'd like Yeng to include..."></textarea>
             </div>
-            <div class="form-group">
-                <label class="form-label">Payment Method *</label>
-                <select class="form-select" id="msg-payment-method">
-                    <option value="">Select payment method...</option>
-                    <option value="GCash">GCash</option>
-                    <option value="Maya">Maya</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                </select>
+            <div id="msg-payment-section">
+                <div class="form-group">
+                    <label class="form-label">Payment Method *</label>
+                    <select class="form-select" id="msg-payment-method">
+                        <option value="">Select payment method...</option>
+                        <option value="GCash">GCash</option>
+                        <option value="Maya">Maya</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Payment Reference Number *</label>
+                    <input type="text" class="form-input" id="msg-payment-ref" placeholder="Enter your payment reference...">
+                </div>
+                <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya, then enter your reference number. Your message will be delivered to your profile within 7 days.</p>
             </div>
-            <div class="form-group">
-                <label class="form-label">Payment Reference Number *</label>
-                <input type="text" class="form-input" id="msg-payment-ref" placeholder="Enter your payment reference...">
-            </div>
-            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#8E7F70;margin-bottom:var(--space-lg);line-height:1.6;">Pay via GCash or Maya, then enter your reference number. Your message will be delivered to your profile within 7 days.</p>
+            <p id="msg-free-note" style="display:none;font-family:'Inter',sans-serif;font-size:0.85rem;color:#2D8E7E;margin-bottom:var(--space-lg);line-height:1.6;">This greeting video is included free with your Ikaw Lamang membership. No payment needed &mdash; just fill in the details and submit! Your message will be delivered to your profile within 7 days.</p>
             <button class="btn btn--primary btn--block" id="msg-confirm-btn" onclick="submitMessageRequest()">Submit Request</button>
         </div>
     </div>
@@ -295,6 +300,7 @@
             <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">How long does delivery take? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Most messages are delivered within 7 days. Video messages may take slightly longer during busy periods. You'll be notified in your profile when your message is ready!</div></div></div>
             <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Can I request a specific song or melody? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">You can mention song preferences in your instructions! While we can't guarantee specific performances, Yeng will do her best to incorporate your requests into the message.</div></div></div>
             <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Do members get a discount? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Yes! Sariwang Simula members get 5% off, Laging Nandito members get 10% off, and Ikaw Lamang members get 15% off all message types.</div></div></div>
+            <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Is the greeting video really free for Ikaw Lamang members? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Yes! As an Ikaw Lamang member, you get a personalized video greeting from Yeng included free with your membership. Just choose the Video Message, fill in the details, and submit &mdash; no payment needed. It's our way of saying salamat for being part of the inner circle.</div></div></div>
             <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Can I get a refund? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Refunds are available if your request is cancelled before recording begins. Once Yeng has started recording, refunds are no longer possible. Contact support for any issues.</div></div></div>
             <div class="faq-item"><button class="faq-question" onclick="toggleFAQ(this)">Where do I view my message? <span class="faq-question__icon">+</span></button><div class="faq-answer"><div class="faq-answer__inner">Once delivered, your message will appear in the "My Messages" tab on your Profile page. You'll also receive a notification when it's ready.</div></div></div>
         </div>
@@ -331,7 +337,9 @@
     <script>
         var selectedMsgType = '';
         var selectedMsgPrice = 0;
+        var selectedMsgIsFree = false;
         var TIER_DISCOUNTS = { 'Sariwang Simula': 5, 'Laging Nandito': 10, 'Ikaw Lamang': 15 };
+        var FREE_VIDEO_TIER = 'Ikaw Lamang';
 
         document.addEventListener('DOMContentLoaded', function() {
             updateDiscountDisplay();
@@ -340,6 +348,7 @@
         function updateDiscountDisplay() {
             var tier = Auth.getUserTier();
             var discount = TIER_DISCOUNTS[tier] || 0;
+            var freeVideo = (tier === FREE_VIDEO_TIER);
             if (discount > 0) {
                 var types = { written: 300, video: 1500, voice: 800 };
                 for (var key in types) {
@@ -350,6 +359,21 @@
                     }
                 }
             }
+            // Highest tier (Ikaw Lamang) gets the video greeting free
+            var videoDiscount = document.getElementById('discount-video');
+            var videoPrice = document.getElementById('price-video');
+            var videoPriceNote = document.getElementById('price-note-video');
+            if (freeVideo) {
+                if (videoDiscount) {
+                    videoDiscount.textContent = 'FREE with your Ikaw Lamang membership';
+                    videoDiscount.classList.add('message-card__discount--free');
+                }
+                if (videoPrice) {
+                    videoPrice.innerHTML = 'FREE';
+                    videoPrice.classList.add('message-card__price--free');
+                }
+                if (videoPriceNote) videoPriceNote.textContent = 'Included with your membership';
+            }
         }
 
         function selectMessageType(type, basePrice) {
@@ -358,10 +382,30 @@
 
             var tier = Auth.getUserTier();
             var discount = TIER_DISCOUNTS[tier] || 0;
-            selectedMsgPrice = discount > 0 ? Math.round(basePrice * (1 - discount / 100)) : basePrice;
+            selectedMsgIsFree = (tier === FREE_VIDEO_TIER && type === 'Video');
+            selectedMsgPrice = selectedMsgIsFree ? 0 : (discount > 0 ? Math.round(basePrice * (1 - discount / 100)) : basePrice);
 
             document.getElementById('modal-msg-type').textContent = type + ' Message';
-            document.getElementById('modal-msg-price').textContent = formatPrice(selectedMsgPrice) + (discount > 0 ? ' (' + discount + '% member discount)' : '');
+            if (selectedMsgIsFree) {
+                document.getElementById('modal-msg-price').textContent = 'FREE with your Ikaw Lamang membership';
+            } else {
+                document.getElementById('modal-msg-price').textContent = formatPrice(selectedMsgPrice) + (discount > 0 ? ' (' + discount + '% member discount)' : '');
+            }
+
+            // Show/hide payment fields based on whether this request is free
+            var paySection = document.getElementById('msg-payment-section');
+            var freeNote = document.getElementById('msg-free-note');
+            var confirmBtn = document.getElementById('msg-confirm-btn');
+            if (selectedMsgIsFree) {
+                if (paySection) paySection.style.display = 'none';
+                if (freeNote) freeNote.style.display = 'block';
+                if (confirmBtn) confirmBtn.textContent = 'Request My Free Greeting';
+            } else {
+                if (paySection) paySection.style.display = 'block';
+                if (freeNote) freeNote.style.display = 'none';
+                if (confirmBtn) confirmBtn.textContent = 'Submit Request';
+            }
+
             document.getElementById('msg-occasion').value = '';
             document.getElementById('msg-recipient').value = '';
             document.getElementById('msg-instructions').value = '';
@@ -383,10 +427,13 @@
 
             if (!occasion) { showToast('Please select an occasion', 'error'); return; }
             if (!recipient) { showToast('Please enter the recipient name', 'error'); return; }
-            if (!pm) { showToast('Please select a payment method', 'error'); return; }
-            if (!pr) { showToast('Please enter your payment reference', 'error'); return; }
+            if (!selectedMsgIsFree) {
+                if (!pm) { showToast('Please select a payment method', 'error'); return; }
+                if (!pr) { showToast('Please enter your payment reference', 'error'); return; }
+            }
 
             var btn = document.getElementById('msg-confirm-btn');
+            var defaultLabel = selectedMsgIsFree ? 'Request My Free Greeting' : 'Submit Request';
             btn.disabled = true; btn.textContent = 'Submitting...';
 
             try {
@@ -397,16 +444,16 @@
                         occasion: occasion,
                         recipientName: recipient,
                         instructions: instructions,
-                        paymentMethod: pm,
-                        paymentReference: pr
+                        paymentMethod: selectedMsgIsFree ? 'Membership Perk' : pm,
+                        paymentReference: selectedMsgIsFree ? 'IKAW-LAMANG-FREE' : pr
                     }
                 });
-                showToast('Message request submitted! Check your profile for updates.', 'success');
+                showToast(selectedMsgIsFree ? 'Your free greeting video is on its way! Check your profile for updates.' : 'Message request submitted! Check your profile for updates.', 'success');
                 closeMensaheModal();
             } catch (err) {
                 showToast(err.message || 'Failed to submit request', 'error');
             }
-            btn.disabled = false; btn.textContent = 'Submit Request';
+            btn.disabled = false; btn.textContent = defaultLabel;
         }
 
         function toggleFAQ(btn) {
