@@ -54,7 +54,12 @@
     /* Typography */
     --font-display: 'Fraunces', 'Playfair Display', serif;
     --font-body: 'Instrument Sans', system-ui, sans-serif;
-    --font-accent: 'Kalam', cursive;
+    /* Kalam retired. A handwriting face used as generic decoration appeared
+       as the identical eyebrow on 23 pages — the most template-shaped thing
+       left in the build. Its job passes to the display serif in italic,
+       which is what ask/archive/tour already do, so this also unifies the
+       two aesthetics that were coexisting. One fewer font request too. */
+    --font-accent: 'Fraunces', 'Playfair Display', serif;
 
     /* Spacing */
     --space-xs: 0.25rem;
@@ -226,6 +231,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav__logo span {
     font-family: var(--font-accent);
+    font-style: italic;
     font-size: 1.1rem;
     display: block;
     background: none;
@@ -636,7 +642,9 @@ textarea.form-input {
 }
 
 .section-header__eyebrow {
-    font-family: var(--font-accent);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
     font-size: 1.3rem;
     color: var(--purple);
     display: block;
@@ -795,6 +803,7 @@ textarea.form-input {
 
 .footer__brand-sub {
     font-family: var(--font-accent);
+    font-style: italic;
     font-size: 1rem;
     color: var(--gray-400);
     display: block;
@@ -1144,6 +1153,7 @@ textarea.form-input {
 
 .page-loader__tagline {
     font-family: var(--font-accent);
+    font-style: italic;
     font-size: 1.3rem;
     color: var(--gray-400);
     margin-top: var(--space-md);
@@ -1357,78 +1367,69 @@ html.is-phone-frame .hdr { padding-top: calc(var(--space-lg) + 46px); }
     --ink-flame: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
 }
 
+/* The ember hero is gone.
+
+   Six pages ran a near-black gradient behind two 80-100px blurred orbs and
+   a gradient-clipped title. That is a permanent compositing cost on the
+   first screen of the most playful pages on the site, and it is why
+   games.html read as a different product from ask.html. Worse, it meant the
+   two surfaces that should be the most fun were the darkest and the driest.
+
+   Same component, same markup, paper ground. */
 .page-hero {
     position: relative;
-    overflow: hidden;
-    background: var(--ember);
-    padding: calc(var(--nav-height, 68px) + 72px) 0 60px;
-    text-align: center;
+    overflow: visible;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: calc(var(--nav-height, 68px) + 44px) 0 clamp(26px, 5vw, 44px);
+    text-align: left;
 }
-
-/* The two orbs. Low opacity and heavily blurred, so they read as warmth in
-   the room rather than as decoration. */
 .page-hero::before,
-.page-hero::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-}
-.page-hero::before {
-    top: -200px; right: -150px;
-    width: 500px; height: 500px;
-    background: var(--purple);
-    opacity: 0.09;
-    filter: blur(100px);
-}
-.page-hero::after {
-    bottom: -150px; left: -100px;
-    width: 400px; height: 400px;
-    background: var(--gold);
-    opacity: 0.07;
-    filter: blur(80px);
-}
+.page-hero::after { content: none; }
 
 .page-hero__inner { position: relative; z-index: 1; }
 .page-hero--left { text-align: left; }
 
 .page-hero__eyebrow {
     display: block;
-    font-family: var(--font-accent);
-    font-size: 1.4rem;
-    color: var(--gold);
-    margin-bottom: var(--space-xs);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1rem, 2.4vw, 1.14rem);
+    letter-spacing: -0.008em;
+    color: var(--yeng-red);
+    margin-bottom: 0.35rem;
     line-height: 1.2;
 }
 
 .page-hero__title {
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 5.5vw, 3.1rem);
-    font-weight: 800;
-    line-height: 1.05;
-    margin-bottom: var(--space-sm);
-    background: var(--ink-flame);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    font-size: clamp(2.3rem, 7.5vw, 4.1rem);
+    font-weight: 700;
+    line-height: 0.96;
+    letter-spacing: -0.028em;
+    margin-bottom: 0.6rem;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--ink);
 }
 
 .page-hero__sub {
     font-family: var(--font-body);
-    font-size: 1.08rem;
-    line-height: 1.65;
-    color: rgba(251, 248, 242, 0.66);
-    max-width: 54ch;
-    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 0;
 }
 .page-hero--left .page-hero__sub { margin: 0; }
 
 /* Kalam line under the subtitle — the "Suportahan natin ang OPM!" slot. */
 .page-hero__accent {
-    font-family: var(--font-accent);
-    font-size: 1.3rem;
-    color: var(--gold);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--yeng-red);
     margin-top: var(--space-sm);
 }
 
@@ -1443,13 +1444,14 @@ html.is-phone-frame .hdr { padding-top: calc(var(--space-lg) + 46px); }
 .page-hero:not(.page-hero--left) .page-hero__stats { justify-content: center; }
 
 .hstat__num {
-    font-family: var(--font-display);
-    font-size: 1.9rem; font-weight: 700; line-height: 1;
-    color: var(--gold);
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+    font-size: 2rem; font-weight: 700; line-height: 1;
+    color: var(--ink);
 }
 .hstat__label {
-    font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase;
-    color: rgba(251, 248, 242, 0.55);
+    font-size: 0.78rem; letter-spacing: 0; text-transform: none;
+    color: var(--ink-faint);
     margin-top: 0.3rem;
 }
 
@@ -1553,6 +1555,33 @@ html.is-phone-frame .page-hero { padding-top: calc(var(--nav-height, 68px) + 44p
 .ev--red { color: var(--yeng-red-dark); font-weight: 700; }
 .ev--gold { color: var(--ticket-gold-dark); font-weight: 700; }
 
+/* ── The one rule ──────────────────────────────────────────────
+   Monospace is a chain-of-custody typeface. If deleting the line would
+   weaken a claim about who said something and when, it is mono (.ev).
+   Otherwise it is the body face with tabular figures (.fig).
+
+   Mono that is on every count signals nothing. Mono that is rare is
+   evidence. .fig exists so the evidence layer can afford to be scarce —
+   before this, a party size, a character counter and a signature hash
+   were all typeset identically, so the whole site read as an exhibit.
+
+   Second rule: on the sober surfaces colour is a data channel. Spending
+   it on mood makes the handler's charts lie.
+   ───────────────────────────────────────────────────────────── */
+.fig {
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink-soft);
+}
+.fig--lg   { font-size: 1.08rem; }
+.fig--red  { color: var(--yeng-red-dark); font-weight: 700; }
+.fig--gold { color: var(--ticket-gold-dark); font-weight: 700; }
+.fig b, .fig strong { color: var(--ink); font-weight: 700; }
+
 /* Verified mark. Deliberately boring — a stamp, not a badge. */
 .verified-source {
     display: inline-flex; align-items: center; gap: 0.4rem;
@@ -1625,10 +1654,10 @@ html.is-phone-frame .page-intro { padding-top: calc(var(--nav-height, 68px) + 44
    16px minimum so mobile Safari does not zoom on focus. */
 .rec-label {
     display: block; margin-bottom: 0.45rem;
-    font-family: var(--font-evidence);
-    font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--ink-faint);
+    font-family: var(--font-body);
+    font-size: 0.76rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: none;
+    color: var(--ink-soft);
 }
 .rec-field {
     width: 100%; min-height: var(--tap);
@@ -1802,8 +1831,9 @@ textarea.rec-field { min-height: 132px; resize: vertical; }
 a.qrow:hover { background: var(--paper-aged); }
 .qrow__top { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
 .qrow__count {
-    font-family: var(--font-evidence);
-    font-size: 0.78rem; font-weight: 700; color: var(--yeng-red-dark);
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.92rem; font-weight: 700; color: var(--yeng-red-dark);
 }
 .qrow__q {
     font-family: var(--font-display);
@@ -1889,8 +1919,8 @@ a.qrow:hover { background: var(--paper-aged); }
 .arc-filters { display: flex; gap: 1.1rem; flex-wrap: wrap; padding: 0.2rem 0 0.9rem; }
 .arc-filters button {
     appearance: none; border: 0; background: none; cursor: pointer; padding: 0.2rem 0;
-    font-family: var(--font-evidence);
-    font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: var(--font-body);
+    font-size: 0.86rem; font-weight: 600; letter-spacing: 0; text-transform: none;
     color: var(--ink-faint);
     border-bottom: 2px solid transparent;
 }
@@ -1980,11 +2010,21 @@ a.qrow:hover { background: var(--paper-aged); }
     padding: clamp(18px, 4vw, 26px);
 }
 .city-record[hidden] { display: none; }
-.city-record__name { margin-bottom: 0.7rem; }
-.city-record__count {
+/* The city you just committed to is a place, not a record id. */
+.city-record__name {
+    margin-bottom: 0.7rem;
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 7vw, 3.2rem);
-    font-weight: 700; line-height: 0.95; color: var(--ink);
+    font-style: italic; font-weight: 600;
+    font-size: clamp(1.15rem, 4vw, 1.5rem);
+    letter-spacing: 0; text-transform: none;
+    color: var(--ink);
+}
+.city-record__count {
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(2.4rem, 9vw, 3.8rem);
+    font-weight: 700; line-height: 0.92; letter-spacing: -0.03em;
+    color: var(--ink);
     margin: 0;
 }
 .city-record__sub { margin-top: 0.45rem; color: var(--ink-soft); font-size: 0.95rem; }
@@ -2005,15 +2045,15 @@ a.qrow:hover { background: var(--paper-aged); }
     border-bottom: 1px solid var(--rule);
 }
 .ledger__rank {
-    font-family: var(--font-evidence);
-    font-size: 0.78rem; color: var(--ink-faint);
+    font-family: var(--font-body);
+    font-size: 0.85rem; color: var(--ink-faint);
     font-variant-numeric: tabular-nums;
 }
 .ledger__city { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; color: var(--ink); }
 .ledger__where { display: block; margin-top: 0.1rem; }
 .ledger__num {
-    font-family: var(--font-evidence);
-    font-size: 0.92rem; font-weight: 700; color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.02rem; font-weight: 700; color: var(--ink);
     text-align: right; font-variant-numeric: tabular-nums;
 }
 .ledger__bar { grid-column: 2 / -1; height: 3px; background: var(--paper-aged); margin-top: 0.4rem; }
@@ -2034,8 +2074,8 @@ a.qrow:hover { background: var(--paper-aged); }
 .map-scope { display: flex; gap: 1rem; }
 .map-scope button {
     appearance: none; border: 0; background: none; cursor: pointer; padding: 0.25rem 0;
-    font-family: var(--font-evidence);
-    font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: var(--font-body);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0; text-transform: none;
     color: var(--ink-faint); border-bottom: 2px solid transparent;
 }
 .map-scope button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 700; }
@@ -2101,4 +2141,89 @@ a.qrow:hover { background: var(--paper-aged); }
     .commit__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
     /* A full-bleed 1180px primary button reads as a banner, not a control. */
     .commit .btn--block { width: auto; max-width: 320px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   ERA PIGMENTS
+   ═══════════════════════════════════════════════════════
+
+   A display map, not a claim about her catalogue. Keys are the Airtable
+   `Era` values verbatim; anything unmapped falls to grey rather than
+   inventing a period for a song.
+
+   Two tokens per era on purpose. --era is AA-safe on paper and is the only
+   one allowed to carry type. --era-bright is fill-only -- bars, blocks,
+   marks -- and never carries text. That split is what stops the set
+   collapsing into one muted brown family on a mid-range LCD in daylight,
+   which is what happens when every ink is forced into a single lightness
+   band so it can double as body colour.
+
+   Rules: never gradient-filled, never glowing, never a coloured shadow.
+   No component shows more than one era at a time except the era rail,
+   where multiplicity is the information. A seventh era replaces a
+   pigment; it does not add one.
+
+   NOT allowed on archive entries. Era is a catalogue attribute of songs;
+   tagging a 2011 interview clip with an era is an editorial assertion laid
+   on top of testimony, and the Archive is the one surface where that must
+   not happen.
+   ─────────────────────────────────────────────────────── */
+
+:root { --era: #A99B89; --era-bright: #A99B89; --era-wash: #EAE2D5; }
+
+[data-era="Philippine Idol Era"] { --era:#A52C32; --era-bright:#D93B32; --era-wash:#F5DEDC; }
+[data-era="Early Career"]        { --era:#1B5A4B; --era-bright:#14876B; --era-wash:#DBEAE4; }
+[data-era="Mature Sound"]        { --era:#8F5206; --era-bright:#E0821A; --era-wash:#F8E6C8; }
+[data-era="Recent Releases"]     { --era:#2C4E86; --era-bright:#3D7CC9; --era-wash:#DDE6F2; }
+
+/* Contrast of --era on --paper-raised #FBF8F2:
+   6.49 / 7.46 / 5.77 / 7.67 — all clear AA for normal text. */
+
+/* A small era mark. Carries the pigment without ever being the only signal:
+   the era name is always spelled out next to it. */
+.eratag {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--era);
+}
+.eratag::before {
+    content: ''; width: 9px; height: 9px; flex: none;
+    background: var(--era-bright);
+}
+
+/* The era rail: filter and bar chart at once. Block widths are proportional
+   to how many releases each era holds, because her career is uneven and a
+   row of equal tabs would be a lie about it. */
+.erarail { display: flex; gap: 2px; margin: 1rem 0 0.5rem; }
+.erarail button {
+    flex: var(--w, 1) 1 0; min-width: 0; min-height: 54px;
+    padding: 0.45rem 0.5rem; text-align: left; cursor: pointer;
+    border: 0; border-top: 4px solid var(--era);
+    background: var(--era-wash); color: var(--ink);
+    font-family: var(--font-body); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+.erarail button[aria-pressed="true"] { background: var(--era); color: var(--paper-raised); }
+/* Selection is never carried by colour alone. */
+.erarail button[aria-pressed="true"]::after { content: '\00a0\2713'; }
+.erarail__n {
+    display: block; margin-top: 0.18rem;
+    font-weight: 500; text-transform: none; letter-spacing: 0; opacity: 0.8;
+    font-variant-numeric: tabular-nums;
+}
+.erarail button:focus-visible { outline: 2px solid var(--ticket-gold); outline-offset: 2px; }
+
+@media (max-width: 520px) {
+    .erarail button { min-height: 46px; font-size: 0; padding: 0; }
+    .erarail button::after { content: none; }
+    .erarail__n { display: none; }
+}
+
+/* Era pigment on the existing music filter tabs, so the vocabulary is
+   visible before you tap anything. */
+.filter-tab[data-era]:not([data-era="all"]) { border-left: 3px solid var(--era); }
+.filter-tab[data-era]:not([data-era="all"]).filter-tab--active {
+    background: var(--era); border-color: var(--era); color: var(--paper-raised);
 }

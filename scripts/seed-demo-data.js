@@ -115,8 +115,8 @@ const QUESTION_SETS = [
         'Any plans for a stripped-back record?',
     ],
     [
-        'What is the story behind Chinita Girl?',
-        'Chinita Girl po — ano ang inspiration?',
+        'What is the story behind Chinito?',
+        'Chinito po — ano ang inspiration?',
     ],
 ];
 

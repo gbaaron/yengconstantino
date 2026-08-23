@@ -8,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="rec-page">
@@ -39,7 +39,7 @@
             Tell the team where you are &mdash; and how many people you&rsquo;d actually bring.
         </p>
         <div class="page-intro__meta">
-            <span class="ev" data-i18n="tour.notAnnouncement">This is fan demand, not a concert announcement</span>
+            <span class="fig" data-i18n="tour.notAnnouncement">This is fan demand, not a concert announcement</span>
         </div>
     </div>
 </header>
@@ -98,12 +98,12 @@
     <!-- ── Map: one representation of the data, never the only one ── -->
     <section class="map-panel" id="map-panel">
         <div class="map-panel__bar">
-            <span class="ev">Demand map</span>
-            <span class="ev" id="map-legend"></span>
+            <span class="fig">Demand map</span>
+            <span class="fig" id="map-legend"></span>
         </div>
         <div class="map-stage" id="map-stage">
             <div class="map-open" id="map-open">
-                <p class="ev ev--plain" style="max-width:34ch">The ranked list above has the same numbers. The map is optional.</p>
+                <p class="fig" style="max-width:34ch">The ranked list above has the same numbers. The map is optional.</p>
                 <button class="btn btn--secondary btn--sm" id="map-open-btn">Open the map</button>
             </div>
         </div>
@@ -256,7 +256,7 @@
             return '<div class="ledger__row' + (isMine ? ' ledger__row--mine' : '') + '">'
                 + '<span class="ledger__rank">' + (i + 1) + '</span>'
                 + '<span><span class="ledger__city">' + esc(c.city) + '</span>'
-                + '<span class="ev ledger__where">' + esc(c.country) + ' &middot; ' + Number(c.pledges).toLocaleString() + ' '
+                + '<span class="fig ledger__where">' + esc(c.country) + ' &middot; ' + Number(c.pledges).toLocaleString() + ' '
                 + plural(c.pledges, 'commitment')
                 + (c.avgPartySize > 1 ? ' &middot; avg party ' + c.avgPartySize : '')
                 + (isMine ? ' &middot; you' : '')
@@ -303,7 +303,7 @@
             + '<p class="city-record__you">'
             + (party > 1 ? 'You + ' + (party - 1) + ' are included.' : 'You are included.') + '</p>'
             + '<div class="city-record__rank">'
-            + (rank > 0 ? '<span class="ev ev--gold">#' + rank + ' in ' + esc(entry.country || 'the list') + '</span>' : '')
+            + (rank > 0 ? '<span class="fig fig--gold fig--lg">#' + rank + ' in ' + esc(entry.country || 'the list') + '</span>' : '')
             + (rank > 1 ? '<button class="cue-link" type="button" id="see-ahead">See the cities ahead of '
                 + esc(entry.city) + '</button>' : '')
             + '</div>';
@@ -379,7 +379,7 @@
             + paths + dots + '</svg>';
 
         document.getElementById('map-legend').innerHTML =
-            'Circle size = people &middot; <span class="ev--gold">gold = your city</span>';
+            'Circle size = people &middot; <span class="fig--gold">gold = your city</span>';
 
         wireTooltips();
     }

@@ -15,7 +15,7 @@
     <meta name="description" content="Browse Yeng Constantino's complete discography and content archive. Studio recordings, live performances, music videos, interviews, and behind the scenes — all in one place.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Music Page — Color System Overrides ── */
@@ -34,7 +34,7 @@
                whole page fell back to Times. See AUDIT.md §1.5. */
             --font-display: 'Fraunces', 'Playfair Display', serif;
             --font-body: 'Instrument Sans', system-ui, sans-serif;
-            --font-accent: 'Kalam', cursive;
+            --font-accent: 'Fraunces', 'Playfair Display', serif;
             --gradient-primary: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
             --gradient-cta: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
             --shadow-warm-sm: 0 2px 8px rgba(212, 154, 36, 0.10);
@@ -352,14 +352,55 @@
         }
 
         /* Shared column grid for header + rows */
+        /* Three columns on a phone: play, title, figures. The old grid asked
+           for 428px of fixed columns and every title truncated to "Jeep…".
+           The full table comes back at 860px where it fits. */
         .track-row,
         .track-head {
             display: grid;
-            grid-template-columns: 32px minmax(0, 1fr) 60px 72px 116px 92px 56px;
+            grid-template-columns: 46px minmax(0, 1fr) auto;
             align-items: center;
             gap: 10px;
             padding: 8px 14px;
         }
+
+        /* The head row is a table header — it only makes sense with the table. */
+        .track-head { display: none; }
+
+        .track-row__figs {
+            display: flex; align-items: center; justify-content: flex-end;
+            gap: 12px; flex: none;
+        }
+        /* On a phone, keep what a fan acts on: the crowd rating and their own.
+           Year, Yeng's rating and the runtime are in the row's subtitle or a
+           tap away, and none of them is worth a truncated song title. */
+        .track-row__figs .track-row__year,
+        .track-row__figs .track-row__len,
+        .track-row__figs .track-rating--yeng { display: none; }
+
+        @media (min-width: 860px) {
+            .track-head { display: grid; }
+            .track-row,
+            .track-head {
+                grid-template-columns: 46px minmax(0, 1fr) auto;
+            }
+            .track-row__figs { display: grid; grid-template-columns: 60px 72px 116px 92px 56px; gap: 10px; }
+            .track-row__figs .track-row__year,
+            .track-row__figs .track-row__len,
+            .track-row__figs .track-rating--yeng { display: block; }
+        }
+
+        /* A real control, not an index that swaps glyph on hover — hover does
+           not exist on the device most of this audience is holding. */
+        .track-row__play {
+            width: 40px; height: 40px; flex: none;
+            display: grid; place-items: center;
+            border: 0; border-radius: 50%;
+            background: var(--era, var(--purple)); color: var(--paper-raised, #FBF8F2);
+            cursor: pointer;
+        }
+        .track-row__play svg { width: 14px; height: 14px; }
+        .track-row__play:focus-visible { outline: 2px solid var(--ticket-gold); outline-offset: 2px; }
 
         .track-head {
             padding-top: 10px;
@@ -377,17 +418,16 @@
         .track-head__col--right { text-align: right; }
 
         .track-row {
-            border-radius: 10px;
+            border-radius: 0;
+            border-left: 4px solid var(--era);
+            border-bottom: 1px solid var(--rule);
+            background: var(--paper-raised);
             cursor: pointer;
-            transition: background var(--transition-base);
+            transition: background-color 140ms ease, transform 120ms ease;
         }
 
-        .track-row:hover {
-            background: var(--bg-off-white, #FBF8F2);
-        }
-
-        .track-row:hover .track-row__num-index { display: none; }
-        .track-row:hover .track-row__num-play { display: inline-flex; }
+        .track-row:hover  { background: var(--era-wash); }
+        .track-row:active { transform: translate(1px, 1px); }
 
         /* # / play column */
         .track-row__num {
@@ -433,21 +473,23 @@
         .track-row__name-wrap { min-width: 0; }
 
         .track-row__name {
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--gray-900, #1c1917);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-family: var(--font-display);
+            font-style: italic;
+            font-weight: 700;
+            font-size: clamp(1.02rem, 3.6vw, 1.28rem);
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            /* No ellipsis. A song title is the point of the row; if it needs
+               two lines it gets two lines. */
+            white-space: normal;
+            overflow-wrap: break-word;
         }
 
         .track-row__sub {
             font-size: 0.78rem;
-            color: var(--gray-400, #8C8175);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: var(--ink-faint);
+            white-space: normal;
             margin-top: 1px;
         }
 
@@ -1175,12 +1217,10 @@
 
         /* ── Responsive ── */
         @media (max-width: 1024px) {
-            /* Tablet: keep all columns incl. Year, tighten widths */
+            /* The row has three children now — play, title, figures. The
+               figures block manages its own internal columns. */
             .track-row,
-            .track-head {
-                grid-template-columns: 28px minmax(0, 1fr) 46px 58px 104px 78px 48px;
-                gap: 8px;
-            }
+            .track-head { gap: 8px; }
         }
 
         @media (max-width: 768px) {
@@ -1194,10 +1234,8 @@
                 width: 80px;
                 min-height: 80px;
             }
-            /* Phone: name + Yeng + Avg + You(Rate) + length; drop # and Year */
             .track-row,
             .track-head {
-                grid-template-columns: minmax(0, 1fr) 42px 56px 58px 42px;
                 gap: 8px;
                 padding-left: 10px;
                 padding-right: 10px;
@@ -1207,7 +1245,6 @@
             .track-head__col--year,
             .track-row__year { display: none; }
             .track-row__art { width: 38px; height: 38px; }
-            .track-row__name { font-size: 0.9rem; }
             .track-rating__count { font-size: 0.55rem; }
             .filter-group__label {
                 display: none;
@@ -1303,15 +1340,10 @@
                 <!-- Era Filters -->
                 <div class="filter-group">
                     <span class="filter-group__label">Era</span>
-                    <div class="filter-group__pills" id="eraFilters">
-                        <button class="filter-tab filter-tab--active" data-era="all">All</button>
-                        <!-- data-era must match the Airtable Era field value; only the label is corrected here.
-                             She won Pinoy Dream Academy (2006), not Philippine Idol. -->
-                        <button class="filter-tab" data-era="Philippine Idol Era">Pinoy Dream Academy Era</button>
-                        <button class="filter-tab" data-era="Early Career">Early Career</button>
-                        <button class="filter-tab" data-era="Mature Sound">Mature Sound</button>
-                        <button class="filter-tab" data-era="Recent Releases">Recent Releases</button>
-                    </div>
+                    <!-- Populated from the ERAS vocabulary in JS. See the comment there:
+                         two era vocabularies used to coexist in this file and the
+                         fallback path was silently broken by it. -->
+                    <div class="filter-group__pills" id="eraFilters"></div>
                 </div>
 
                 <!-- Category Filters -->
@@ -1460,6 +1492,37 @@
             // ── State ──
             let allContent = [];
             let userRatings = {};
+            /* ── Era vocabulary ──────────────────────────────────────────
+               Declared once. `key` must match the Airtable MusicContent.Era
+               value exactly; `label` is display only.
+
+               Two vocabularies used to live in this file. The tabs emitted
+               "Early Career" while FALLBACK_CONTENT tagged its songs with
+               ALBUM names -- 'Treal', 'Reserba', 'Bakit Ganito', 'Salamat' --
+               and filterFallback compares with strict equality. So every era
+               tap returned zero results whenever the API was empty or down,
+               which is exactly when the fallback is supposed to save you.
+
+               Label note: she won Pinoy Dream Academy in 2006, not Philippine
+               Idol. The key stays as the Airtable value until that field is
+               renamed in the base; only the label is corrected here.
+               ────────────────────────────────────────────────────────────── */
+            const ERAS = [
+                { key: 'Philippine Idol Era', label: 'Pinoy Dream Academy' },
+                { key: 'Early Career',        label: 'Early Career' },
+                { key: 'Mature Sound',        label: 'Mature Sound' },
+                { key: 'Recent Releases',     label: 'Recent Releases' },
+            ];
+
+            (function renderEraTabs() {
+                var el = document.getElementById('eraFilters');
+                if (!el) return;
+                el.innerHTML = '<button class="filter-tab filter-tab--active" data-era="all">All</button>'
+                    + ERAS.map(function (e) {
+                        return '<button class="filter-tab" data-era="' + e.key + '">' + e.label + '</button>';
+                      }).join('');
+            })();
+
             let currentFilters = { era: 'all', category: 'all', mood: '', search: '', sort: 'newest' };
 
             // ── Hardcoded fallback catalog ──
@@ -1472,7 +1535,7 @@
                     title: 'Ikaw',
                     description: "Her timeless wedding anthem and one of OPM's most-requested love songs.",
                     category: 'Studio Recording',
-                    era: 'Treal', year: '2013', duration: '4:08',
+                    era: 'Mature Sound', year: '2013', duration: '4:08',
                     mood: ['Romantic'],
                     avgRating: 9.8, ratingCount: 3200, yengRating: 10,
                     spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Ikaw',
@@ -1483,7 +1546,7 @@
                     title: 'Hawak Kamay',
                     description: 'A soaring reminder that no one walks alone — a Yeng Nation favorite.',
                     category: 'Studio Recording',
-                    era: 'Bakit Ganito', year: '2009', duration: '4:31',
+                    era: 'Early Career', year: '2009', duration: '4:31',
                     mood: ['Inspirational'],
                     avgRating: 9.6, ratingCount: 2700, yengRating: 10,
                     spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Hawak%20Kamay',
@@ -1494,7 +1557,7 @@
                     title: 'Chinita Girl',
                     description: 'Bright, playful pop that became an instant sing-along classic.',
                     category: 'Studio Recording',
-                    era: 'Reserba', year: '2012', duration: '3:39',
+                    era: 'Mature Sound', year: '2012', duration: '3:39',
                     mood: ['Upbeat'],
                     avgRating: 9.2, ratingCount: 1900, yengRating: 8,
                     spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Chinita%20Girl',
@@ -1505,7 +1568,7 @@
                     title: 'Jeepney',
                     description: 'The breakout hit from her Star Power win that started it all.',
                     category: 'Studio Recording',
-                    era: 'Salamat', year: '2008', duration: '3:52',
+                    era: 'Early Career', year: '2008', duration: '3:52',
                     mood: ['Upbeat'],
                     avgRating: 9.4, ratingCount: 2400, yengRating: 10,
                     spotifyUrl: 'https://open.spotify.com/search/Yeng%20Constantino%20Jeepney',
@@ -1808,8 +1871,8 @@
 
                 // Yeng's own rating
                 var yengCell = item.yengRating > 0
-                    ? '<div class="track-rating"><span class="track-rating__val track-rating__val--yeng">' + item.yengRating.toFixed(1) + '</span></div>'
-                    : '<div class="track-rating"><span class="track-rating__empty">&mdash;</span></div>';
+                    ? '<div class="track-rating track-rating--yeng"><span class="track-rating__val track-rating__val--yeng">' + item.yengRating.toFixed(1) + '</span></div>'
+                    : '<div class="track-rating track-rating--yeng"><span class="track-rating__empty">&mdash;</span></div>';
 
                 // Fans average
                 var avgCell = item.ratingCount > 0
@@ -1825,11 +1888,14 @@
                 var link = primaryLink(item);
                 var rowClick = link ? ' onclick="window.open(\'' + link.replace(/'/g, "\\'") + '\', \'_blank\')"' : '';
 
-                return '<div class="track-row" data-id="' + item.id + '"' + rowClick + '>' +
-                    '<div class="track-row__num">' +
-                        '<span class="track-row__num-index">' + (index + 1) + '</span>' +
-                        '<span class="track-row__num-play">&#9654;</span>' +
-                    '</div>' +
+                // data-era carries the pigment. The figures are grouped so the
+                // whole numeric block can collapse on a phone instead of the
+                // title truncating to "Jeep…" — the old grid demanded 428px of
+                // fixed columns, which does not exist on a 390px screen.
+                var PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+                return '<div class="track-row" data-id="' + item.id + '"'
+                    + ' data-era="' + String(item.era || '').replace(/"/g, '&quot;') + '"' + rowClick + '>' +
+                    '<button class="track-row__play" type="button" aria-label="Play ' + safeTitle + '">' + PLAY + '</button>' +
                     '<div class="track-row__title">' +
                         '<div class="track-row__art">' + artContent + '</div>' +
                         '<div class="track-row__name-wrap">' +
@@ -1837,11 +1903,13 @@
                             (sub ? '<div class="track-row__sub">' + sub + '</div>' : '') +
                         '</div>' +
                     '</div>' +
-                    '<div class="track-row__year">' + (item.year || '&mdash;') + '</div>' +
-                    yengCell +
-                    avgCell +
-                    youCell +
-                    '<div class="track-row__len">' + (item.duration || '&mdash;') + '</div>' +
+                    '<div class="track-row__figs">' +
+                        '<div class="track-row__year">' + (item.year || '&mdash;') + '</div>' +
+                        yengCell +
+                        avgCell +
+                        youCell +
+                        '<div class="track-row__len">' + (item.duration || '&mdash;') + '</div>' +
+                    '</div>' +
                 '</div>';
             }
 

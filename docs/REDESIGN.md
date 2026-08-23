@@ -120,6 +120,91 @@ them were visible while every table was missing.
   lands at the end, so it now takes the last two: "Hawak Kamay", "Chinita
   Girl", "Acoustic Album".
 
+## Second pass — putting the joy back
+
+The first pass optimised hard for *evidence over decoration, restraint, calm,
+boring enough to trust*. That is right for the Archive. Applied to the whole
+fan experience it produced a court exhibit for a pop star. Client's words:
+*"still far too rigid… lacks a ton of fun that a site and app for Yeng should
+have."* He was right.
+
+Four independent design directions were generated and scored by three lenses
+each — a fan in Cebu, an AI-look sceptic, and the person pitching to
+management. Three tied at 22/30. The diagnosis they converged on:
+
+### The one rule, now written into the stylesheet
+
+> **Monospace is a chain-of-custody typeface. If deleting the line would
+> weaken a claim about who said something and when, it is mono. Otherwise it
+> is the body face with tabular figures.**
+
+`--font-evidence` was spent **15 times** in the stylesheet plus ~20 more
+inline, so a party size, a character counter and a signature hash were
+typeset identically. Mono that is on every number signals nothing. It is now
+down to **8 uses**, all genuinely custody: cue timestamps, source lines,
+signatures, the verified stamp, submission dates. Everything else moved to a
+new `.fig` class — body face, tabular figures, larger, warmer.
+
+That single change did most of the warming and touched no layout.
+
+### The ember hero is gone
+
+Six pages — games, cards and all four game screens — ran a near-black
+gradient behind two 80–100px blurred orbs with a gradient-clipped title. So
+the two most playful surfaces on the site were also the darkest and the
+driest, and `games.html` read as a different product from `ask.html`.
+`.page-hero` now sits on paper with an ink title. Same component, same
+markup, six pages converted.
+
+### Kalam is retired
+
+A handwriting face used as the identical eyebrow on 23 pages was the most
+template-shaped thing left in the build. Its job passes to the display serif
+in italic — which is what the redesigned pages already did, so this also
+unified the two aesthetics that were coexisting. **Note:** only three pages
+were loading Fraunces' italic axis, so all 26 font links were normalised;
+without that the other 23 would have rendered a fake browser-slanted oblique.
+
+### Era pigments
+
+Colour comes back through the catalogue, not through gradients. Four eras,
+each with two tokens: `--era` is AA-safe on paper and is the only one allowed
+to carry type; `--era-bright` is fill-only. That split stops the set
+collapsing into one muted brown family on a mid-range LCD in daylight.
+
+Era pigment is **not** allowed on Archive entries. Era is a catalogue
+attribute of songs; tagging an interview clip with one is an editorial
+assertion laid on top of testimony.
+
+### Bugs this pass surfaced
+
+- **The era filter was silently broken.** The tabs emitted `Early Career`
+  while the fallback catalogue tagged its songs with *album* names —
+  `Treal`, `Reserba`, `Bakit Ganito`, `Salamat` — and `filterFallback`
+  compares with strict equality. Every era tap returned zero results whenever
+  the API was empty, which is exactly when a fallback is supposed to save
+  you. One vocabulary now drives both.
+- **The music table demanded 428px of fixed columns.** On a 390px phone every
+  title truncated to `Jeep…`. Restructured to three columns with the figures
+  grouped so they collapse instead of the title.
+- **YouTube `hqdefault` has letterbox bars baked into the pixels** — 45px top
+  and bottom of 360, exactly 12.5%. A square crop keeps them; a 16:9
+  cover-crop removes precisely that much. `maxresdefault` is the obvious
+  upgrade but 404s across this 2006–2016 catalogue.
+- **The seeded song list was guessed and one title was wrong** — "Chinita
+  Girl" for what is actually *Chinito*. The seed now reads the real catalogue
+  from `MusicContent` rather than from memory.
+- **A `demo-` prefix on `SongId` broke the join** in `get-song-pairs`, which
+  matches on the raw MusicContent record id — so the standings rendered empty
+  with 180 votes in the table.
+
+### What deliberately stayed sober
+
+The Archive entries, the Ask arithmetic (`.qrecord__banner`, the grouping
+labels, `.answer__math`), her recorded answer, the handler dashboard, and
+Studio. Colour on those surfaces is a data channel; spending it on mood would
+make the handler's charts lie.
+
 ## Files changed
 
 `css/styles.css` (appended) · `ask.html` · `archive.html` · `tour.html` ·

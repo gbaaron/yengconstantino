@@ -175,6 +175,31 @@
         return d.toLocaleDateString('en-PH', opts || { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
+    /** Normalise a YouTube thumbnail URL to hqdefault.
+
+        hqdefault.jpg is 480x360 — a 4:3 canvas with black bars baked into
+        the pixels, 45px top and bottom, leaving 480x270 of real content.
+        45/360 is exactly 12.5%.
+
+        maxresdefault (1280x720, no bars) is the obvious upgrade but it is
+        only generated for videos uploaded at 720p or better, and this
+        catalogue is 2006-2016 — it 404s on most of them. mqdefault is
+        bar-free but only 320x180, too soft once it fills a card.
+
+        So: keep hqdefault, and let CSS remove the bars. Rendering it in a
+        16:9 box with object-fit:cover scales the image to fill the width and
+        crops (0.75 - 0.5625)/2 / 0.75 = 12.5% off the top and bottom — the
+        bars exactly. Use ytArtBox() for that box.                          */
+    function ytArt(url) {
+        if (!url) return url;
+        return String(url).replace(/\/(maxres|sd|mq|)default\.jpg/, '/hqdefault.jpg');
+    }
+
+    /** The 16:9 crop box that removes hqdefault's letterbox bars. */
+    function ytArtBox() {
+        return 'aspect-ratio:16/9;width:100%;height:auto;object-fit:cover;display:block';
+    }
+
     function fmtSeconds(total) {
         var t = Math.max(0, Math.floor(total || 0));
         var m = Math.floor(t / 60);
@@ -237,6 +262,8 @@
         plural: plural,
         timeAgo: timeAgo,
         fmtDate: fmtDate,
+        ytArt: ytArt,
+        ytArtBox: ytArtBox,
         fmtSeconds: fmtSeconds,
         emptyState: emptyState,
         errorState: errorState,

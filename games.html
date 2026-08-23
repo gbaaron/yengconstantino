@@ -8,22 +8,28 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
         /* Hero uses the shared .page-hero component. */
 
+        /* A near-black balance strip on the most playful page was the most
+           agency-looking thing in the repo. Paper, with gold carrying the
+           one number that matters. */
         .pointsbar {
             display: flex; align-items: center; gap: var(--space-lg);
-            background: var(--gray-900); color: var(--cream);
+            background: var(--paper-raised); color: var(--ink);
+            border: 1px solid var(--rule-strong); border-top: 3px solid var(--ticket-gold);
             padding: var(--space-md) var(--space-lg); margin-top: var(--space-lg);
             flex-wrap: wrap;
-            border: 1px solid rgba(212,154,36,.28);
         }
-        .pointsbar__num { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--gold); line-height: 1; }
-        .pointsbar__label { font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; color: rgba(251,248,242,.6); }
-        .pointsbar__note { font-size: .8rem; color: rgba(251,248,242,.6); margin-left: auto; }
+        .pointsbar__num {
+            font-family: var(--font-body); font-variant-numeric: tabular-nums;
+            font-size: 1.8rem; font-weight: 700; color: var(--ticket-gold-dark); line-height: 1;
+        }
+        .pointsbar__label { font-size: .78rem; letter-spacing: 0; text-transform: none; color: var(--ink-faint); }
+        .pointsbar__note { font-size: .84rem; color: var(--ink-soft); margin-left: auto; }
 
         .gcards { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: var(--space-md); }
         .gcard {
@@ -85,11 +91,11 @@
 
 <header class="page-hero page-hero--left">
     <div class="container page-hero__inner">
-        <span class="page-hero__eyebrow">Maglaro tayo</span>
-        <h1 class="page-hero__title" data-i18n="nav.games">Games</h1>
+        <span class="page-hero__eyebrow">Kanta-kanta, laro-laro</span>
+        <h1 class="page-hero__title" data-i18n="games.title">Play the catalogue</h1>
         <p class="page-hero__sub">
-            Four ways to spend five minutes. Everything you play earns Yeng Points,
-            and points are what get a question in front of her.
+            Twenty years of songs and four ways to argue about them. Everything you
+            play earns points, and points are what push a question to the top of her pile.
         </p>
         <div class="pointsbar">
             <div>
@@ -108,9 +114,9 @@
                 <span class="gcard__badge">Unlimited</span>
                 <div class="gcard__title" data-i18n="games.ranking">Song Ranking</div>
                 <p class="gcard__sub">
-                    Two songs, pick one. Winner stays on. It's a survey you'll actually
-                    enjoy filling in &mdash; and the aggregate tells her team which songs
-                    matter in Cebu versus Chicago.
+                    Two records, keep one. The one you keep faces the next.
+                    Cebu and Chicago do not agree about this catalogue, and that
+                    argument is the whole point.
                 </p>
                 <div class="gcard__foot"><span class="gcard__pts">+6</span><span>per finished session</span></div>
             </a>

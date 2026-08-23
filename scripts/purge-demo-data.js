@@ -8,6 +8,7 @@
    Only touches rows this project marked as demo:
      TourDemand      → IsDemo = true
      Questions       → UserId = 'demo'
+     showcase tables → UserId starts 'demo-', or a per-table marker
      QuestionClusters→ clusters whose every question is a demo row
    Real fan data is never matched by any of these filters.
    ═══════════════════════════════════════════════════════ */
@@ -79,16 +80,45 @@ async function destroy(table, records) {
     console.log(`  QuestionClusters: ${toDelete.length}`);
     total += await destroy('QuestionClusters', toDelete);
 
-    // 4. Demo point ledger rows, if any were written.
-    const points = await all('YengPoints', { filterByFormula: "{UserId} = 'demo'" });
-    if (points.length) {
-        console.log(`  YengPoints: ${points.length}`);
-        total += await destroy('YengPoints', points);
+    // 4. Everything seed-showcase-data.js wrote.
+    //    Fan-scoped tables key off a UserId of 'demo' or 'demo-NN'. The
+    //    tables that are not user-scoped each carry their own marker,
+    //    chosen when they were seeded.
+    const SHOWCASE = [
+        ['YengPoints',     "OR({UserId} = 'demo', FIND('demo-', {UserId}) = 1)"],
+        ['ActivityEvents', "FIND('demo-', {UserId}) = 1"],
+        ['Leaderboard',    "FIND('demo-', {UserId}) = 1"],
+        ['SongVotes',      "FIND('demo-', {UserId}) = 1"],
+        ['GameSessions',   "FIND('demo-', {UserId}) = 1"],
+        ['CardOwnership',  "FIND('demo-', {UserId}) = 1"],
+        ['CardDrops',      "FIND('demo-', {UserId}) = 1"],
+        ['Notifications',  "FIND('demo-', {UserId}) = 1"],
+        // SongRankings is a derived cache keyed to real MusicContent record
+        // ids -- it cannot carry a demo marker without breaking the join in
+        // get-song-pairs. Clearing it wholesale is correct: it rebuilds from
+        // whatever votes remain.
+        ['SongRankings',   null],
+        ['Archive',        "{ApprovedBy} = 'demo'"],
+        ['Lyrics',         "FIND('Demo round', {SongTitle}) = 1"],
+    ];
+
+    for (const [table, formula] of SHOWCASE) {
+        let rows;
+        try {
+            rows = await all(table, formula ? { filterByFormula: formula } : {});
+        } catch (err) {
+            // A table that does not exist yet is not an error here.
+            console.log(`  ${table}: skipped (${err.message})`);
+            continue;
+        }
+        if (!rows.length) continue;
+        console.log(`  ${table}: ${rows.length}`);
+        total += await destroy(table, rows);
     }
 
     console.log(`\n${DRY ? 'Would remove' : 'Removed'} ${total} record(s).`);
     if (DRY) console.log('Nothing was deleted. Re-run without --dry to purge.\n');
-    else console.log('The tour map and question clusters now show only real fan data.\n');
+    else console.log('Every surface now shows only real fan data.\n');
 })().catch((err) => {
     console.error('\nPurge failed:', err.message);
     process.exit(1);

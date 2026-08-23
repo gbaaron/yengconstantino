@@ -8,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
@@ -111,7 +111,7 @@
                    placeholder="A topic, a lyric, a memory…" autocomplete="off">
         </div>
         <div class="arc-search__try">
-            <span class="ev">Try</span>
+            <span class="fig">Try</span>
             <button type="button" data-try="being scared before performing">&ldquo;being scared before performing&rdquo;</button>
             <button type="button" data-try="songwriting">&ldquo;songwriting&rdquo;</button>
         </div>
@@ -245,7 +245,7 @@
         });
         var keys = Object.keys(years).sort();
         if (keys.length < 2) { els.rail.innerHTML = ''; return; }
-        els.rail.innerHTML = '<span class="ev" style="align-self:center">Year</span>'
+        els.rail.innerHTML = '<span class="fig" style="align-self:center">Year</span>'
             + '<button data-year="" aria-selected="' + (year === '' ? 'true' : 'false') + '">All</button>'
             + keys.map(function (y) {
                 return '<button data-year="' + y + '" aria-selected="' + (String(year) === y ? 'true' : 'false') + '">'
@@ -321,7 +321,7 @@
                 + (!spans.length && r.audioUrl
                     ? '<a class="cue-link" href="#" data-item="' + esc(r.id) + '" data-t="0">' + PLAY + ' Play</a>'
                     : '')
-                + (r.clusterSize ? '<span class="ev">' + Number(r.clusterSize).toLocaleString() + ' fans asked this</span>' : '')
+                + (r.clusterSize ? '<span class="fig">' + Number(r.clusterSize).toLocaleString() + ' fans asked this</span>' : '')
                 + '<span class="ev">' + esc(langName(r.language)) + '</span>'
                 + (r.sourceUrl ? '<a class="cue-link" href="' + esc(r.sourceUrl) + '" target="_blank" rel="noopener">Original source</a>' : '')
                 + '</div>'

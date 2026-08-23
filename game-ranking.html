@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
@@ -34,7 +34,9 @@
         .pick:active { transform: translateY(-1px) scale(.99); }
         .pick.is-won { border-color: var(--success); }
         .pick.is-lost { opacity: .35; }
-        .pick__art { aspect-ratio: 1; width: 100%; display: block; background: var(--gray-100); object-fit: cover; }
+        /* 16:9, not square. hqdefault has 12.5% letterbox bars top and bottom;
+           a 16:9 cover-crop removes exactly that much. A square crop keeps them. */
+        .pick__art { aspect-ratio: 16/9; width: 100%; display: block; background: var(--gray-100); object-fit: cover; }
         .pick__body { padding: var(--space-md); flex: 1; display: flex; flex-direction: column; }
         .pick__title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; line-height: 1.3; }
         .pick__meta { font-size: .78rem; color: var(--gray-400); margin-top: .25rem; }
@@ -102,9 +104,9 @@
 
 <header class="page-hero">
     <div class="container page-hero__inner">
-        <span class="page-hero__eyebrow">Alin ang mas gusto mo?</span>
-        <h1 class="page-hero__title">Which one?</h1>
-        <p class="page-hero__sub">Pick the one you'd rather hear. Winner stays on.</p>
+        <span class="page-hero__eyebrow">Alin ang itatago mo?</span>
+        <h1 class="page-hero__title">Which one stays?</h1>
+        <p class="page-hero__sub">Two records. Keep one. The one you keep faces the next.</p>
         <div class="rk-progress">
             <span>This session <strong id="session-count">0</strong></span>
             <span>Points <strong data-points-balance>—</strong></span>
@@ -152,7 +154,7 @@
     var busy = false;
 
     function art(title, url) {
-        if (url) return url;
+        if (url) return Yeng.ytArt(url);
         var hue = 0;
         for (var i = 0; i < title.length; i++) hue = (hue * 31 + title.charCodeAt(i)) % 360;
         var svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>"
@@ -185,7 +187,7 @@
     function card(s) {
         var isChamp = champion === s.id;
         return '<button class="pick" data-id="' + s.id + '">'
-            + '<img class="pick__art" alt="" src="' + art(s.title, s.thumbnail) + '">'
+            + '<img class="pick__art" alt="" loading="lazy" src="' + art(s.title, s.thumbnail) + '">'
             + '<div class="pick__body">'
             + '<span class="pick__title">' + esc(s.title) + '</span>'
             + '<span class="pick__meta">' + esc([s.year, s.era].filter(Boolean).join(' · ')) + '</span>'
