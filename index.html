@@ -41,46 +41,10 @@
             pointer-events: none;
         }
 
-        .hero__blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.10;
-            animation: blobFloat 14s ease-in-out infinite;
-        }
-
-        .hero__blob--1 {
-            width: 520px;
-            height: 520px;
-            background: var(--burgundy);
-            top: -120px;
-            right: -80px;
-            animation-delay: 0s;
-        }
-
-        .hero__blob--2 {
-            width: 420px;
-            height: 420px;
-            background: var(--gold);
-            bottom: -80px;
-            left: -60px;
-            animation-delay: -4.5s;
-        }
-
-        .hero__blob--3 {
-            width: 340px;
-            height: 340px;
-            background: var(--teal);
-            top: 45%;
-            left: 35%;
-            animation-delay: -8s;
-        }
-
-        @keyframes blobFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(24px, -18px) scale(1.04); }
-            66% { transform: translate(-16px, 14px) scale(0.96); }
-        }
+        /* Three 340-520px circles under a 120px blur, each animating
+           forever, on the first screen of the site. On a mid-range Android
+           that is a permanent compositing cost paid for an effect nobody
+           can name. Removed with the markup below. */
 
         .hero__content {
             position: relative;
@@ -661,11 +625,6 @@
 
     <!-- ── Hero ── -->
     <section class="hero--home">
-        <div class="hero__bg">
-            <div class="hero__blob hero__blob--1"></div>
-            <div class="hero__blob hero__blob--2"></div>
-            <div class="hero__blob hero__blob--3"></div>
-        </div>
         <div class="hero__content">
             <h1 class="hero__title">Yeng Constantino</h1>
             <p class="hero__subtitle" data-config="hero_subtitle">The Philippines' OPM Icon. Music, community, and everything Yeng — a concept pitch for what a fan hub could be.</p>

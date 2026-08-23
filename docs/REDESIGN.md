@@ -205,6 +205,30 @@ labels, `.answer__math`), her recorded answer, the handler dashboard, and
 Studio. Colour on those surfaces is a data channel; spending it on mood would
 make the handler's charts lie.
 
+## Bug sweep
+
+Fixes found by auditing what the redesign had disturbed, plus what it exposed.
+
+| Bug | Effect | Fix |
+|---|---|---|
+| `prefers-reduced-motion` covered a single 6px dot | A user who asked the OS to stop animating still got three infinite blob animations and every card transition | Global stop for animation, transition and scroll-behaviour |
+| Three `.hero__blob` circles, 340–520px under a 120px blur, animating forever on the first screen | Permanent compositing cost for an audience on mid-range Androids | Deleted, CSS and markup |
+| `.track-head` emitted 7 children after `.track-row` was restructured to 3 | Every column label sat over the wrong column above 860px | Head mirrors the row; figures header carries its own sub-columns |
+| Track head had no left border | 4px misalignment against the row's era stripe | Transparent 4px border to match |
+| Three thumbnail sites rendered `hqdefault` into a square box | Baked-in letterbox bars showed on every music row | `.yt-crop` — image at 133.34% of the box, centred, cropping exactly the 12.5% bars |
+| `Yeng.ytArt` called on `music.html`, which does not load `yeng.js` | Would have thrown a `ReferenceError` and broken the page — caught before commit | Canonical implementation moved to `js/app.js`, which every page loads; `yeng.js` delegates |
+| Two-line nav wordmark measured 101px inside a 73px bar | "OPM Icon" hung below the nav and was clipped, on 14 pages | Explicit tight leading on both lines |
+| `covers.html` fetched two placeholders from `placehold.co` | Third-party image host on a client-facing page, and generic-placeholder styling | Inline SVG data URIs, fully percent-encoded so neither quote character survives into the JS string or the HTML attribute |
+| `#5B2D8E` — a purple from the scrapped palette — survived inside URL-encoded inline SVGs | Invisible to a plain colour sweep | Replaced with the concert red in `styles.css`, `covers.html`, `merch.html` |
+| `music.html` kept its own hand-rolled ember hero | Once `.page-hero` moved to paper this was the only fan surface still near-black | Converted to match |
+
+### Known, not fixed
+
+`deck.html` still carries 15 Unsplash background images and three instances of
+the scrapped purple. It is the stale pitch deck, already `noindex, nofollow`
+in `netlify.toml`, and superseded by `demo.html`. Rewriting it is a separate
+piece of work — flagging rather than half-doing it.
+
 ## Files changed
 
 `css/styles.css` (appended) · `ask.html` · `archive.html` · `tour.html` ·

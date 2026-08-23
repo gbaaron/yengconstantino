@@ -44,39 +44,20 @@
         }
 
         /* ── Music Hero ── */
+        /* This page kept its own copy of the ember hero. Once .page-hero
+           moved to paper it was the only fan surface still on near-black.
+           Same treatment: paper ground, ink title, no blurred orbs. */
         .music-hero {
-            background: linear-gradient(135deg, #161010 0%, #2A1512 40%, #2E1B18 70%, #221812 100%);
-            padding: 140px 0 60px;
-            text-align: center;
+            background: var(--paper);
+            border-bottom: 1px solid var(--rule);
+            padding: calc(var(--nav-height, 68px) + 44px) 0 clamp(26px, 5vw, 44px);
+            text-align: left;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
-        .music-hero::before {
-            content: '';
-            position: absolute;
-            top: -200px;
-            right: -150px;
-            width: 500px;
-            height: 500px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.08;
-            filter: blur(100px);
-        }
-
-        .music-hero::after {
-            content: '';
-            position: absolute;
-            bottom: -150px;
-            left: -100px;
-            width: 400px;
-            height: 400px;
-            background: var(--gold);
-            border-radius: 50%;
-            opacity: 0.06;
-            filter: blur(80px);
-        }
+        .music-hero::before,
+        .music-hero::after { content: none; }
 
         .music-hero__content {
             position: relative;
@@ -84,43 +65,46 @@
         }
 
         .music-hero__eyebrow {
-            font-family: var(--font-accent);
-            font-size: 1.4rem;
-            color: var(--gold);
+            font-family: var(--font-display);
+            font-style: italic;
+            font-weight: 500;
+            font-size: clamp(1rem, 2.4vw, 1.14rem);
+            color: var(--yeng-red);
             display: block;
-            margin-bottom: var(--space-xs);
+            margin-bottom: 0.35rem;
         }
 
         .music-hero__title {
             font-family: var(--font-display);
-            font-size: 3rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: var(--space-sm);
+            font-size: clamp(2.3rem, 7.5vw, 4.1rem);
+            font-weight: 700;
+            line-height: 0.96;
+            letter-spacing: -0.028em;
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            color: var(--ink);
+            margin-bottom: 0.6rem;
         }
 
         .music-hero__subtitle {
             font-family: var(--font-body);
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 550px;
-            margin: 0 auto var(--space-2xl);
+            font-size: 1.05rem;
+            color: var(--ink-soft);
+            max-width: 56ch;
+            margin: 0 0 var(--space-xl);
         }
 
         /* ── Search Bar ── */
         .music-search {
             max-width: 640px;
-            margin: 0 auto;
+            margin: 0;
             position: relative;
         }
 
         .music-search__input {
             width: 100%;
             padding: 18px 60px 18px 24px;
-            border: 2px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid var(--rule-strong);
             border-radius: var(--radius-md);
             font-size: 1.05rem;
             font-family: var(--font-body);
@@ -364,8 +348,10 @@
             padding: 8px 14px;
         }
 
-        /* The head row is a table header — it only makes sense with the table. */
-        .track-head { display: none; }
+        /* The head row is a table header — it only makes sense with the table.
+           The transparent left border matches the row's era stripe so the
+           column labels line up with the columns. */
+        .track-head { display: none; border-left: 4px solid transparent; }
 
         .track-row__figs {
             display: flex; align-items: center; justify-content: flex-end;
@@ -1765,7 +1751,7 @@
             function buildVideoCard(item) {
                 var badgeColor = categoryBadgeMap[item.category] || 'purple';
                 var thumbContent = item.thumbnail
-                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    ? '<img src="' + (window.ytArt ? window.ytArt(item.thumbnail) : item.thumbnail) + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
                     : buildCoverArt(item);
 
                 var moodHtml = item.mood.filter(Boolean).map(function(m) {
@@ -1797,7 +1783,7 @@
             // ── Build audio card ──
             function buildAudioCard(item) {
                 var artContent = item.thumbnail
-                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    ? '<img src="' + (window.ytArt ? window.ytArt(item.thumbnail) : item.thumbnail) + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
                     : buildCoverArt(item);
 
                 var moodHtml = item.mood.filter(Boolean).map(function(m) {
@@ -1848,21 +1834,26 @@
 
             // ── Spotify-style header row (column labels) ──
             function buildTrackHead() {
+                // Must mirror the row's three children exactly -- play spacer,
+                // title, figures -- or every label sits over the wrong column.
+                // The figures header carries its own five sub-columns.
                 return '<div class="track-head">' +
-                    '<div class="track-head__col--num">#</div>' +
+                    '<div></div>' +
                     '<div>Title</div>' +
-                    '<div class="track-head__col--center track-head__col--year">Year</div>' +
-                    '<div class="track-head__col--center">Yeng</div>' +
-                    '<div class="track-head__col--center">Avg&nbsp;&#9733;</div>' +
-                    '<div class="track-head__col--center track-head__col--you">You</div>' +
-                    '<div class="track-head__col--right" title="Length">&#9201;</div>' +
+                    '<div class="track-row__figs">' +
+                        '<div class="track-head__col--center track-head__col--year">Year</div>' +
+                        '<div class="track-head__col--center track-rating--yeng">Yeng</div>' +
+                        '<div class="track-head__col--center">Avg&nbsp;&#9733;</div>' +
+                        '<div class="track-head__col--center track-head__col--you">You</div>' +
+                        '<div class="track-head__col--right track-row__len" title="Length">&#9201;</div>' +
+                    '</div>' +
                 '</div>';
             }
 
             // ── Build one Spotify-style track row ──
             function buildTrackRow(item, index) {
                 var artContent = item.thumbnail
-                    ? '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                    ? '<img src="' + (window.ytArt ? window.ytArt(item.thumbnail) : item.thumbnail) + '" alt="' + item.title.replace(/"/g, '&quot;') + '" loading="lazy">'
                     : buildCoverArt(item);
 
                 var sub = [item.category, item.era].filter(Boolean).join(' \u00b7 ');
@@ -1897,7 +1888,7 @@
                     + ' data-era="' + String(item.era || '').replace(/"/g, '&quot;') + '"' + rowClick + '>' +
                     '<button class="track-row__play" type="button" aria-label="Play ' + safeTitle + '">' + PLAY + '</button>' +
                     '<div class="track-row__title">' +
-                        '<div class="track-row__art">' + artContent + '</div>' +
+                        '<div class="track-row__art' + (item.thumbnail ? ' yt-crop' : '') + '">' + artContent + '</div>' +
                         '<div class="track-row__name-wrap">' +
                             '<div class="track-row__name">' + item.title + '</div>' +
                             (sub ? '<div class="track-row__sub">' + sub + '</div>' : '') +

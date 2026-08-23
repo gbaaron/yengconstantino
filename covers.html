@@ -447,7 +447,7 @@
             background: #FFFFFF;
             cursor: pointer;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235B2D8E' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A52C32' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 10px center;
         }
@@ -1114,7 +1114,7 @@
                 const ytId = extractYouTubeId(cover.contentURL);
                 const thumbnail = ytId
                     ? 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg'
-                    : 'https://placehold.co/640x360/5B2D8E/D4A547?text=%E2%99%AA+Cover';
+                    : 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20640%20360%22%3E%3Crect%20width=%22640%22%20height=%22360%22%20fill=%22%232A1512%22/%3E%3Cg%20fill=%22none%22%20stroke=%22%23D49A24%22%20stroke-opacity=%22.28%22%20stroke-width=%222%22%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2296%22/%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2272%22/%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2248%22/%3E%3C/g%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2216%22%20fill=%22%23D49A24%22/%3E%3Ctext%20x=%22320%22%20y=%22322%22%20text-anchor=%22middle%22%20fill=%22%23D49A24%22%20fill-opacity=%22.7%22%20font-family=%22Georgia,serif%22%20font-style=%22italic%22%20font-size=%2226%22%3ECover%3C/text%3E%3C/svg%3E';
                 const upvotedBy = Array.isArray(cover.upvotedBy) ? cover.upvotedBy : [];
                 const hasVoted = userId && upvotedBy.indexOf(userId) !== -1;
                 const statusColor = statusColors[cover.status] || '#625B55';
@@ -1173,7 +1173,7 @@
                 const ytId = extractYouTubeId(cover.contentURL);
                 const thumbnail = ytId
                     ? 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg'
-                    : 'https://placehold.co/640x360/D4A547/FFFFFF?text=%E2%99%AA+Hall+of+Fame';
+                    : 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20640%20360%22%3E%3Crect%20width=%22640%22%20height=%22360%22%20fill=%22%23741E27%22/%3E%3Cg%20fill=%22none%22%20stroke=%22%23FBF8F2%22%20stroke-opacity=%22.28%22%20stroke-width=%222%22%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2296%22/%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2272%22/%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2248%22/%3E%3C/g%3E%3Ccircle%20cx=%22320%22%20cy=%22180%22%20r=%2216%22%20fill=%22%23FBF8F2%22/%3E%3Ctext%20x=%22320%22%20y=%22322%22%20text-anchor=%22middle%22%20fill=%22%23FBF8F2%22%20fill-opacity=%22.7%22%20font-family=%22Georgia,serif%22%20font-style=%22italic%22%20font-size=%2226%22%3EHall%20of%20Fame%3C/text%3E%3C/svg%3E';
                 const performer = (cover.user && cover.user.name) ? cover.user.name : 'Anonymous';
                 const songTitle = cover.songTitle || 'Yeng Song';
                 const upvoteCount = cover.upvotes || 0;

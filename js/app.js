@@ -177,6 +177,24 @@ const Activity = {
 };
 window.Activity = Activity;
 
+/* ── YouTube thumbnail source ────────────────────────────────────────
+   Lives here rather than in js/yeng.js because music.html and covers.html
+   load app.js but not yeng.js, and they render thumbnails too.
+
+   hqdefault.jpg is 480x360: a 4:3 canvas with 45px of black baked into the
+   pixels above and below the 16:9 content — exactly 12.5% each side. Any
+   crop of it keeps the bars, so the fix is CSS, not the URL (see .yt-crop
+   in styles.css). maxresdefault has no bars but is only generated for
+   uploads of 720p or better, and this catalogue is 2006-2016, so it 404s
+   on most of it. mqdefault is bar-free but only 320x180.
+
+   So: normalise to hqdefault and let .yt-crop remove the bars.
+   ──────────────────────────────────────────────────────────────────── */
+window.ytArt = function (url) {
+    if (!url) return url;
+    return String(url).replace(/\/(maxres|sd|mq|)default\.jpg/, '/hqdefault.jpg');
+};
+
 /* ── Toast Notifications ── */
 function showToast(message, type = 'info', duration = 3500) {
     const existing = document.querySelector('.toast');

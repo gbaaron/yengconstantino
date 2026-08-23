@@ -227,16 +227,23 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
     color: var(--gray-800);
     letter-spacing: -0.01em;
+    /* The two-line wordmark has to fit inside --nav-height. With the
+       inherited 1.6 line-height it measured 101px in a 73px bar and the
+       second line hung below, clipped by the page beneath it. */
+    line-height: 1.02;
+    display: block;
 }
 
 .nav__logo span {
     font-family: var(--font-accent);
     font-style: italic;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.1;
     display: block;
     background: none;
     -webkit-text-fill-color: var(--gray-400);
-    margin-top: -4px;
+    margin-top: 1px;
 }
 
 .nav__links {
@@ -682,46 +689,9 @@ textarea.form-input {
     z-index: 0;
 }
 
-.hero__blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.12;
-    animation: blobFloat 8s ease-in-out infinite;
-}
-
-.hero__blob--1 {
-    width: 500px;
-    height: 500px;
-    background: var(--purple);
-    top: -100px;
-    right: -100px;
-    animation-delay: 0s;
-}
-
-.hero__blob--2 {
-    width: 400px;
-    height: 400px;
-    background: var(--gold);
-    bottom: -50px;
-    left: -50px;
-    animation-delay: -3s;
-}
-
-.hero__blob--3 {
-    width: 300px;
-    height: 300px;
-    background: var(--burgundy);
-    top: 40%;
-    left: 30%;
-    animation-delay: -5s;
-}
-
-@keyframes blobFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -30px) scale(1.05); }
-    66% { transform: translate(-20px, 20px) scale(0.95); }
-}
+/* .hero__blob and @keyframes blobFloat removed — see the reduced-motion
+   note above. Three infinite blurred-circle animations on the first screen
+   is a compositing cost this audience should not pay. */
 
 .hero__content {
     position: relative;
@@ -1069,7 +1039,7 @@ textarea.form-input {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%235B2D8E' stroke-width='0.5'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3Ccircle cx='30' cy='30' r='22'/%3E%3Ccircle cx='30' cy='30' r='16'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Cline x1='0' y1='15' x2='60' y2='15'/%3E%3Cline x1='0' y1='30' x2='60' y2='30'/%3E%3Cline x1='0' y1='45' x2='60' y2='45'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23A52C32' stroke-width='0.5'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3Ccircle cx='30' cy='30' r='22'/%3E%3Ccircle cx='30' cy='30' r='16'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Cline x1='0' y1='15' x2='60' y2='15'/%3E%3Cline x1='0' y1='30' x2='60' y2='30'/%3E%3Cline x1='0' y1='45' x2='60' y2='45'/%3E%3C/g%3E%3C/svg%3E") repeat;
     opacity: 0.03;
     pointer-events: none;
     z-index: 0;
@@ -1822,6 +1792,39 @@ textarea.rec-field { min-height: 132px; resize: vertical; }
 }
 @keyframes livePulse { 0%,100% { opacity: 1 } 50% { opacity: 0.3 } }
 @media (prefers-reduced-motion: reduce) { .live__dot { animation: none } }
+
+/* ── Global reduced-motion stop ──────────────────────────────────────
+   The only prefers-reduced-motion rule in this file used to be the one
+   above, for a single 6px dot. Meanwhile the index hero ran three infinite
+   blob animations and every card carried a transform transition. A user
+   who has asked the OS to stop animating things was still getting all of
+   it. Scoped to leave the marquee ticker's own opt-out intact.
+   ──────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ── YouTube thumbnail crop ──────────────────────────────────────────
+   hqdefault.jpg is 480x360 with 45px of black baked in above and below
+   the 16:9 content — exactly 12.5% each side. In a square box, a plain
+   object-fit:cover keeps both bars. Scaling the image to 133.34% of the
+   box height and centring it makes the 270px content region fill the box
+   precisely, cropping the bars and nothing else.
+
+   Apply only to real YouTube thumbnails. The generated SVG cover art is
+   already square and would be cropped wrongly.
+   ──────────────────────────────────────────────────────────────────── */
+.yt-crop { position: relative; overflow: hidden; }
+.yt-crop img {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto; height: 133.34%; max-width: none;
+}
 
 /* ── Open questions, as ruled entries ── */
 .qrow {
