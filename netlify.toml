@@ -9,17 +9,87 @@
 [functions."compute-leaderboard"]
   schedule = "@hourly"
 
+# Re-cluster open Ask Yeng questions every hour so cluster counts stay live.
+[functions."recluster-questions"]
+  schedule = "@hourly"
+
+# ── Not web content ──────────────────────────────────────────────────────
+# publish = "." means the repository root IS the web root, so anything sitting
+# beside index.html is fetchable. Confirmed live: /package.json returned 200.
+# These rules 404 the things that are source, not site. They must come BEFORE
+# the /api/* rule is irrelevant (order only matters among matching paths), but
+# they are placed first for readability.
+[[redirects]]
+  from = "/docs/*"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/design-refs/*"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/scripts/*"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/capacitor.config.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/index.html"
+  status = 404
+  force = true
+
+# Clean API URLs: /api/foo -> /.netlify/functions/foo
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# SAMEORIGIN (not DENY) so demo.html can frame the real pages inside the
+# six-view shell. Third-party framing is still blocked, which is the actual
+# clickjacking threat. DENY blocks same-origin framing too — that was the
+# blocker documented in AUDIT.md §2 (six-view demo shell).
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
+    X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Allow the card files to be embedded in the deck via iframe (same-origin)
+# Card files are framed by demo.html, profile.html and the deck.
 [[headers]]
   for = "/cards/*"
   [headers.values]
     X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# The stale pitch deck must never be indexed.
+[[headers]]
+  for = "/deck.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Yeng — Yeng Constantino (Spec Preview)</title>
+    <meta name="description" content="Ask in your own words. If other fans asked the same thing, the questions travel together — and your wording stays exactly as you sent it.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="rec-page">
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/music.html" class="nav__link">Music</a></li>
+            <li><a href="/ask.html" class="nav__link nav__link--active" data-i18n="nav.ask">Ask Yeng</a></li>
+            <li><a href="/archive.html" class="nav__link" data-i18n="nav.archive">Archive</a></li>
+            <li><a href="/tour.html" class="nav__link" data-i18n="nav.tour">Tour Map</a></li>
+            <li><a href="/games.html" class="nav__link" data-i18n="nav.games">Games</a></li>
+            <li><a href="/community.html" class="nav__link">Community</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+            <li data-admin style="display:none"><a href="/handler.html" class="nav__link">Dashboard</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-intro">
+    <div class="reading page-intro__inner">
+        <span class="page-intro__kicker">Tanong mo. Totoong sagot.</span>
+        <h1 class="page-intro__title" data-i18n="ask.title">May tanong ka kay Yeng?</h1>
+        <p class="page-intro__copy" data-i18n="ask.subtitle">
+            Ask it in your own words. If other fans are wondering the same thing,
+            your questions travel together &mdash; and she answers the group by voice.
+        </p>
+        <div class="page-intro__meta" id="intro-meta"></div>
+    </div>
+</header>
+
+<main>
+    <!-- ── The composer. First thing on the page, deliberately. ── -->
+    <section class="reading compose">
+        <label class="compose__prompt" for="question-input">What do you want to ask?</label>
+        <textarea class="rec-field" id="question-input" maxlength="500"
+                  data-i18n-placeholder="ask.placeholder"
+                  placeholder="Write it the way you'd actually ask her."></textarea>
+
+        <div class="compose__foot">
+            <span class="ev ev--plain" id="char-count">0 / 500</span>
+        </div>
+
+        <div style="margin-top:1.1rem">
+            <span class="rec-label" id="lang-label" data-i18n="ask.langLabel">Ask in</span>
+            <div class="choice" id="lang-choice" role="group" aria-labelledby="lang-label">
+                <button type="button" data-lang="en"  aria-pressed="true">English</button>
+                <button type="button" data-lang="tl"  aria-pressed="false">Tagalog</button>
+                <button type="button" data-lang="ceb" aria-pressed="false">Bisaya</button>
+                <button type="button" data-lang="ilo" aria-pressed="false">Ilokano</button>
+            </div>
+        </div>
+
+        <div style="margin-top:1.1rem">
+            <button class="btn btn--primary btn--block" id="submit-btn" data-i18n="ask.submit">Send my question</button>
+        </div>
+
+        <div class="aside-note">
+            <strong data-i18n="ask.grouping">How grouping works</strong>.
+            Yeng can&rsquo;t answer every question one by one. When many fans ask the same
+            thing in different words or languages, we group them into one shared question.
+            <strong data-i18n="ask.preserved">Your wording stays here exactly as you sent it.</strong>
+            It stays attached to the group.
+        </div>
+    </section>
+
+    <!-- ── The question record. Replaces the page's centre of gravity on submit. ── -->
+    <section class="reading" id="record-slot" aria-live="polite">
+        <article class="qrecord" id="record" hidden></article>
+    </section>
+
+    <!-- ── Index of what everyone is asking ── -->
+    <section class="reading" style="padding:clamp(34px,6vw,60px) 0 clamp(48px,8vw,80px)">
+        <div class="rec-head">
+            <h2 class="rec-head__title">What Yeng Nation is asking</h2>
+            <span class="ev" id="list-count"></span>
+        </div>
+        <div class="index-tabs" role="tablist" style="padding:0.8rem 0 0.2rem">
+            <button role="tab" data-status="Open" aria-selected="true">Open</button>
+            <button role="tab" data-status="Answered" aria-selected="false">Answered</button>
+            <button role="tab" data-status="mine" aria-selected="false">Your questions</button>
+        </div>
+        <div id="cluster-list" class="ruled">
+            <div class="loading-line ev">Loading&hellip;</div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__bottom">
+            <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   ASK YENG — fan side
+
+   The transparency payload is the feature, not a confirmation of it. On
+   submit the page does not toast and reset; it becomes a record showing
+   three layers in this order:
+
+     1. the merged question that actually reaches Yeng   (largest)
+     2. how many people it carries                       (stated, not celebrated)
+     3. the fan's own wording, preserved verbatim        (kept, and said so)
+
+   Nothing here is written in her voice. The count comes from the cluster
+   endpoint, and is never shown before the data exists.
+   ═══════════════════════════════════════════════════════ */
+(function () {
+    'use strict';
+    var esc = Yeng.esc, plural = Yeng.plural, fmtDate = Yeng.fmtDate;
+
+    var TICK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" '
+        + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>';
+
+    var els = {
+        input: document.getElementById('question-input'),
+        submit: document.getElementById('submit-btn'),
+        count: document.getElementById('char-count'),
+        record: document.getElementById('record'),
+        list: document.getElementById('cluster-list'),
+        listCount: document.getElementById('list-count'),
+        meta: document.getElementById('intro-meta')
+    };
+
+    var currentTab = 'Open';
+    var lang = Yeng.I18N.lang() || 'en';
+    var liveTimer = null;
+    var watchingClusterId = null;
+
+    /* ── Composer ── */
+    els.input.addEventListener('input', function () {
+        els.count.textContent = els.input.value.length + ' / 500';
+    });
+
+    /* Four languages as four equal targets. A dropdown with English at the
+       top quietly makes English the default worldview. */
+    document.querySelectorAll('#lang-choice button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+        b.addEventListener('click', function () {
+            document.querySelectorAll('#lang-choice button').forEach(function (x) {
+                x.setAttribute('aria-pressed', 'false');
+            });
+            b.setAttribute('aria-pressed', 'true');
+            lang = b.dataset.lang;
+            Yeng.I18N.setLanguage(lang);
+        });
+    });
+
+    els.submit.addEventListener('click', submitQuestion);
+
+    async function submitQuestion() {
+        var text = els.input.value.trim();
+        if (text.length < 8) { showToast('Add a bit more detail to your question.', 'error'); return; }
+
+        if (!Auth.isLoggedIn()) {
+            sessionStorage.setItem('yc_pending_question', text);
+            window.location.href = '/login.html?redirect=' + encodeURIComponent('/ask.html');
+            return;
+        }
+
+        els.submit.disabled = true;
+        els.submit.textContent = 'Sending…';
+
+        try {
+            var res = await api('submit-question', {
+                method: 'POST',
+                body: { question: text, language: lang }
+            });
+
+            if (!res.accepted) {
+                /* System voice, never hers. Deliberately plain, and the text
+                   the fan typed is left in the box. */
+                els.record.hidden = false;
+                els.record.innerHTML = '<div class="qrecord__banner">Not published</div>'
+                    + '<div class="qrecord__body"><p style="margin:0;color:var(--ink-soft)">'
+                    + esc(res.message || "This one didn't clear review.") + '</p></div>';
+                els.record.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+
+            els.input.value = '';
+            els.count.textContent = '0 / 500';
+            renderRecord(res.cluster);
+            if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+            loadClusters();
+            loadMeta();
+        } catch (err) {
+            showToast(err.message || 'Could not send that right now.', 'error');
+        } finally {
+            els.submit.disabled = false;
+            els.submit.textContent = Yeng.I18N.t('ask.submit', 'Send my question');
+        }
+    }
+
+    /* ── The record ── */
+    function renderRecord(c) {
+        watchingClusterId = c.id;
+        var n = Number(c.count) || 1;
+        var others = Math.max(0, n - 1);
+
+        var banner = c.isNew || others === 0
+            ? 'You asked this first'
+            : 'Your question joined ' + others.toLocaleString() + ' ' + plural(others, 'other');
+
+        var weight = c.isNew || others === 0
+            ? '<span class="ev ev--plain">Nobody has asked this yet. When others ask something '
+              + 'similar, they join your question and this number climbs.</span>'
+            : '<span class="live"><span class="live__dot"></span>'
+              + '<span class="ev ev--red" id="live-count-text">' + n.toLocaleString() + ' '
+              + plural(n, 'fan') + ' asking</span></span>'
+              + '<span class="ev ev--plain">Across the languages they asked it in</span>';
+
+        els.record.hidden = false;
+        els.record.innerHTML =
+            '<div class="qrecord__banner">' + banner + '</div>'
+
+            /* Layer 1 — what is carried to her. */
+            + '<div class="qrecord__body">'
+            + '<div class="qrecord__label" data-i18n="ask.mergedLabel">The question Yeng sees</div>'
+            + '<p class="qrecord__question">&ldquo;' + esc(c.mergedQuestion) + '&rdquo;</p>'
+            + '<div class="qrecord__people">' + weight + '</div>'
+            + '</div>'
+
+            /* Layer 3 — the fan's own words, kept and said to be kept. */
+            + '<div class="qrecord__yours">'
+            + '<div class="qrecord__label" data-i18n="ask.yoursLabel">Your words</div>'
+            + '<blockquote>&ldquo;' + esc(c.yourQuestion) + '&rdquo;</blockquote>'
+            + '<div class="ev">Submitted ' + new Date().toLocaleDateString('en-PH', { day: 'numeric', month: 'short' })
+            + ' &middot; ' + esc(langName(lang)) + '</div>'
+            + '<p class="qrecord__preserved" style="margin-top:.7rem" data-i18n="ask.preserved">Your wording stays here exactly as you sent it.</p>'
+            + '</div>'
+
+            + (c.id ? promoteBlock(c) : '');
+
+        Yeng.I18N.apply(els.record);
+        wirePromote(c.id);
+        startLivePolling();
+        els.record.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function langName(code) {
+        return { en: 'English', tl: 'Tagalog', ceb: 'Bisaya', ilo: 'Ilokano' }[code] || 'English';
+    }
+
+    function promoteBlock(c) {
+        var price = (Yeng.Points._state && Yeng.Points._state.prices)
+            ? Yeng.Points._state.prices.promoteQuestion : 250;
+        return '<div class="qrecord__promote">'
+            + '<div class="qrecord__promote-row">'
+            + '<button class="btn btn--gold btn--sm" id="promote-btn">Promote for ' + price + ' Yeng Points</button>'
+            + '<span class="ev ev--plain">You have <strong data-points-balance>&mdash;</strong> points</span>'
+            + '</div>'
+            + '<p class="qrecord__promote-note">'
+            + 'Promoting puts this question into the shortlist Yeng personally reviews. '
+            + '<strong>It guarantees she reads it. It does not guarantee she answers it.</strong> '
+            + 'If she passes, every point comes straight back to you &mdash; in full, automatically.'
+            + '</p></div>';
+    }
+
+    function wirePromote(clusterId) {
+        var btn = document.getElementById('promote-btn');
+        if (!btn) return;
+        btn.addEventListener('click', async function () {
+            btn.disabled = true;
+            var original = btn.textContent;
+            btn.textContent = 'Promoting…';
+            try {
+                var res = await api('promote-question', { method: 'POST', body: { clusterId: clusterId } });
+                Yeng.Points.set(res.balance);
+                btn.outerHTML = '<span class="tag tag--promoted">In her shortlist</span>';
+                showToast(res.message, 'success', 7000);
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = original;
+                showToast(err.message || 'Could not promote that.', 'error', 6000);
+            }
+        });
+        Yeng.Points.renderChip();
+    }
+
+    /* ── Live count: the number that moves without the fan doing anything ── */
+    function startLivePolling() {
+        if (liveTimer) clearInterval(liveTimer);
+        if (!watchingClusterId) return;
+        liveTimer = setInterval(async function () {
+            if (document.hidden) return;
+            try {
+                var data = await api('get-clusters?id=' + encodeURIComponent(watchingClusterId));
+                var el = document.getElementById('live-count-text');
+                if (el && data.cluster) {
+                    el.textContent = Number(data.cluster.count).toLocaleString() + ' '
+                        + plural(data.cluster.count, 'fan') + ' asking';
+                }
+            } catch (e) { /* silent */ }
+        }, 25000);
+    }
+
+    /* ── Tabs ── */
+    document.querySelectorAll('.index-tabs button').forEach(function (t) {
+        t.addEventListener('click', function () {
+            document.querySelectorAll('.index-tabs button').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+            t.setAttribute('aria-selected', 'true');
+            currentTab = t.dataset.status;
+            loadClusters();
+        });
+    });
+
+    /* ── Lists ── */
+    async function loadClusters() {
+        els.list.innerHTML = '<div class="loading-line ev">Loading…</div>';
+        els.listCount.textContent = '';
+
+        if (currentTab === 'mine') {
+            if (!Yeng.requireLogin(els.list, {
+                title: 'Your questions live here',
+                text: 'Log in to see which shared questions you joined, and when Yeng answers one.'
+            })) return;
+            try {
+                var mine = await api('get-my-questions');
+                renderMine(mine.questions || []);
+            } catch (err) {
+                els.list.innerHTML = Yeng.errorState(err.message, loadClusters);
+            }
+            return;
+        }
+
+        try {
+            var data = await api('get-clusters?status=' + encodeURIComponent(currentTab) + '&limit=25');
+            renderClusters(data.clusters || []);
+        } catch (err) {
+            els.list.innerHTML = Yeng.errorState(err.message, loadClusters);
+        }
+    }
+
+    /* Quiet empty states. A zero is never the biggest thing on the screen. */
+    function quiet(line, sub) {
+        return '<div class="quiet"><strong>' + esc(line) + '</strong>'
+            + (sub ? '<span class="quiet__sub">' + esc(sub) + '</span>' : '') + '</div>';
+    }
+
+    function renderClusters(list) {
+        if (!list.length) {
+            els.list.innerHTML = currentTab === 'Answered'
+                ? quiet('No answers recorded yet.', 'When Yeng records her first voice answers, they appear here with the original audio.')
+                : quiet('No open community questions yet. Ask the first one.');
+            return;
+        }
+        els.listCount.textContent = list.length + ' shared ' + plural(list.length, 'question');
+        els.list.innerHTML = list.map(function (c) {
+            var n = Number(c.count) || 0;
+            return '<a class="qrow" href="?cluster=' + encodeURIComponent(c.id) + '">'
+                + '<div class="qrow__top">'
+                + '<span class="qrow__count">' + n.toLocaleString() + ' ' + plural(n, 'fan') + '</span>'
+                + '<span class="ev">' + esc(c.topic || 'General') + '</span>'
+                + '</div>'
+                + '<div class="qrow__q">' + esc(c.mergedQuestion) + '</div>'
+                + '<div class="qrow__meta">'
+                + (c.promoted ? '<span class="tag tag--promoted">Promoted</span>' : '')
+                + (c.status === 'Answered' ? '<span class="tag tag--answered">Answered</span>' : '')
+                + '</div></a>';
+        }).join('');
+    }
+
+    function renderMine(list) {
+        if (!list.length) {
+            els.list.innerHTML = quiet('You have not asked anything yet.',
+                'Your questions, and the shared question each one joined, show up here.');
+            return;
+        }
+        els.listCount.textContent = list.length + ' ' + plural(list.length, 'question');
+        els.list.innerHTML = list.map(function (q) {
+            var c = q.cluster;
+            var answered = c && c.status === 'Answered';
+            var n = c ? (Number(c.count) || 0) : 0;
+            return '<div class="qrow">'
+                + '<div class="qrecord__label">You asked</div>'
+                + '<blockquote style="margin:.3rem 0 .6rem;font-family:var(--font-display);font-size:1.02rem;line-height:1.4">&ldquo;'
+                + esc(q.yourQuestion) + '&rdquo;</blockquote>'
+                + (c
+                    ? '<div class="qrow__meta">'
+                      + '<span class="qrow__count">' + n.toLocaleString() + ' ' + plural(n, 'fan') + ' asking this</span>'
+                      + (answered ? '<span class="tag tag--answered">Answered</span>' : '<span class="ev">Waiting</span>')
+                      + (q.promotion ? (q.promotion.refunded
+                            ? '<span class="tag tag--refunded">' + q.promotion.pointsSpent + ' points refunded</span>'
+                            : '<span class="tag tag--promoted">Promoted</span>') : '')
+                      + '</div>'
+                      + (answered ? answerBlock(c) : '')
+                    : '<div class="qrow__meta"><span class="ev">Submitted</span></div>')
+                + '</div>';
+        }).join('');
+    }
+
+    /* Her actual recording. Never a summary presented as her answer. */
+    function answerBlock(c) {
+        var n = Number(c.count) || 0;
+        return '<div class="answer">'
+            + '<div class="answer__head">'
+            + '<span class="verified-source">' + TICK + ' Original recording &middot; Verified archive</span>'
+            + (c.answeredAt ? '<span class="ev">' + esc(fmtDate(c.answeredAt)) + '</span>' : '')
+            + '</div>'
+            + (c.answerAudioUrl ? '<audio controls preload="none" src="' + esc(c.answerAudioUrl) + '"></audio>' : '')
+            + (c.answerTranscript ? '<div class="answer__transcript">' + esc(c.answerTranscript) + '</div>' : '')
+            + '<div class="answer__math ev">' + n.toLocaleString() + ' fan ' + plural(n, 'question')
+            + ' &rarr; 1 recorded answer</div>'
+            + '</div>';
+    }
+
+    /* ── Intro meta ──
+       Only rendered when the numbers are real. Empty tables show nothing
+       rather than a row of zeros. */
+    async function loadMeta() {
+        try {
+            var open = (await api('get-clusters?status=Open&limit=100')).clusters || [];
+            var answered = (await api('get-clusters?status=Answered&limit=100')).clusters || [];
+            var waiting = open.reduce(function (s, c) { return s + (c.count || 0); }, 0);
+            var bits = [];
+            if (waiting)         bits.push(waiting.toLocaleString() + ' fans waiting');
+            if (open.length)     bits.push(open.length + ' open ' + plural(open.length, 'question'));
+            if (answered.length) bits.push(answered.length + ' answered');
+            bits.push('English · Tagalog · Bisaya · Ilokano');
+            els.meta.innerHTML = bits.map(function (b) { return '<span class="ev">' + esc(b) + '</span>'; }).join('');
+        } catch (e) {
+            els.meta.innerHTML = '<span class="ev">English · Tagalog · Bisaya · Ilokano</span>';
+        }
+    }
+
+    /* ── Deep link to a single shared question ── */
+    async function openDeepLink() {
+        var id = new URLSearchParams(location.search).get('cluster');
+        if (!id) return false;
+        try {
+            var data = await api('get-clusters?id=' + encodeURIComponent(id));
+            var c = data.cluster;
+            renderRecord({
+                id: c.id,
+                mergedQuestion: c.mergedQuestion,
+                yourQuestion: c.yourQuestion || c.mergedQuestion,
+                count: c.count,
+                isNew: false,
+                topic: c.topic
+            });
+            if (c.status === 'Answered') {
+                els.record.insertAdjacentHTML('beforeend',
+                    '<div style="padding:0 clamp(20px,4.5vw,34px) clamp(22px,4.5vw,30px)">' + answerBlock(c) + '</div>');
+            }
+            return true;
+        } catch (e) { return false; }
+    }
+
+    /* ── Boot ── */
+    (async function () {
+        var pending = sessionStorage.getItem('yc_pending_question');
+        if (pending && Auth.isLoggedIn()) {
+            els.input.value = pending;
+            els.count.textContent = pending.length + ' / 500';
+            sessionStorage.removeItem('yc_pending_question');
+        }
+        await Yeng.Points.load();
+        openDeepLink();
+        loadClusters();
+        loadMeta();
+    })();
+})();
+</script>
+</body>
+</html>

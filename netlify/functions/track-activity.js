@@ -26,6 +26,22 @@ const POINTS = {
 // Types that may only score once per calendar day per user (anti-farming).
 const DAILY_CAPPED = new Set(['site_visit']);
 
+
+/* Missing-table guard.
+   `Leaderboard` and `ActivityEvents` do not exist in the base — the commit
+   that shipped these functions never created them, so every request 500'd and
+   every point "earned" went nowhere (AUDIT.md §0). Until
+   `node scripts/setup-airtable.js` runs, return an honest empty state rather
+   than a server error. */
+function isMissingTable(err) {
+    if (!err) return false;
+    const code = err.error || err.type || '';
+    return code === 'NOT_FOUND' || code === 'NOT_AUTHORIZED' ||
+        code === 'TABLE_NOT_FOUND' || code === 'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND' ||
+        err.statusCode === 404 ||
+        (err.statusCode === 403 && /INVALID_PERMISSIONS|MODEL_NOT_FOUND|NOT_AUTHORIZED|not authorized/i.test((err.message || '') + code));
+}
+
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -99,6 +115,11 @@ exports.handler = async (event) => {
             body: JSON.stringify({ recorded: true, type, points })
         };
     } catch (error) {
+        if (isMissingTable(error)) {
+            // The client fires this and forgets, so a 200 keeps the console
+            // quiet while the table is missing instead of erroring per page load.
+            return { statusCode: 200, headers, body: JSON.stringify({ tracked: false, notConfigured: true }) };
+        }
         console.error('Track activity error:', error);
         return { statusCode: 500, headers, body: JSON.stringify({ error: 'Failed to track activity' }) };
     }

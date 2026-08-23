@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finish the Lyric — Yeng Constantino (Spec Preview)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body { background: var(--off-white); }
+        /* Hero uses the shared .page-hero component. */
+        .ly-stats { display: flex; justify-content: center; gap: 1.75rem; margin-top: var(--space-lg); font-size: .82rem; color: rgba(251,248,242,.6); }
+        .ly-stats strong { font-family: var(--font-display); color: var(--gold); font-size: 1.15rem; }
+
+        .round {
+            background: var(--white); border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-card); padding: var(--space-xl);
+            max-width: 640px; margin: 0 auto;
+        }
+        .round__song {
+            font-size: .72rem; text-transform: uppercase; letter-spacing: .09em;
+            color: var(--gray-400); font-weight: 700; text-align: center; margin-bottom: var(--space-md);
+        }
+        .round__prompt {
+            font-family: var(--font-display); font-size: clamp(1.2rem,3.4vw,1.7rem);
+            line-height: 1.5; text-align: center; margin-bottom: var(--space-lg);
+            color: var(--gray-800);
+        }
+        .round__prompt::after { content: ' …'; color: var(--gray-300); }
+
+        .playbtn {
+            appearance: none; border: 0; cursor: pointer;
+            display: block; margin: 0 auto var(--space-lg);
+            width: 72px; height: 72px; border-radius: 50%;
+            background: var(--purple); color: #fff;
+            box-shadow: 0 6px 20px rgba(165,44,50,.28);
+            transition: transform var(--transition-fast);
+        }
+        .playbtn:active { transform: scale(.93); }
+        .playbtn svg { width: 28px; height: 28px; }
+        .playbtn[data-state="playing"] { animation: ring 1.2s ease-in-out infinite; }
+        @keyframes ring { 0%,100% { box-shadow: 0 6px 20px rgba(165,44,50,.28); } 50% { box-shadow: 0 6px 32px rgba(165,44,50,.55); } }
+
+        .answerbar { display: flex; gap: .5rem; }
+        .answerbar input {
+            flex: 1; padding: .9rem 1rem;
+            border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+            font-family: var(--font-body); font-size: 1rem; background: var(--off-white);
+        }
+        .answerbar input:focus { outline: none; border-color: var(--purple); box-shadow: var(--shadow-glow); }
+
+        .clock {
+            height: 4px; background: var(--gray-100); border-radius: 2px;
+            overflow: hidden; margin-bottom: var(--space-md);
+        }
+        .clock__fill { height: 100%; background: var(--gold); width: 100%; transition: width .1s linear; }
+        .clock--low .clock__fill { background: var(--purple); }
+        .clock__num {
+            text-align: center; font-family: var(--font-display);
+            font-weight: 700; font-size: 1.1rem; margin-bottom: .35rem;
+        }
+
+        .verdict { text-align: center; padding: var(--space-lg) 0; }
+        .verdict__head { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; }
+        .verdict__head--yes { color: var(--success); }
+        .verdict__head--no { color: var(--purple); }
+        .verdict__actual {
+            font-family: var(--font-display); font-size: 1.1rem;
+            color: var(--gray-700); margin: .6rem 0;
+            padding: var(--space-md); background: var(--off-white);
+            border-left: 3px solid var(--gray-300); text-align: left;
+        }
+        .verdict__meta { font-size: .84rem; color: var(--gray-500); }
+        .verdict__pts { font-family: var(--font-display); font-weight: 700; color: var(--burgundy); }
+
+        .speed-note {
+            font-size: .78rem; color: var(--gray-400); text-align: center;
+            margin-top: var(--space-lg); line-height: 1.6; max-width: 46ch; margin-left: auto; margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/games.html" class="nav__link">&larr; Games</a></li>
+            <li><a href="/ask.html" class="nav__link">Ask Yeng</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-hero">
+    <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Kabisado mo ba?</span>
+        <h1 class="page-hero__title">Finish the Lyric</h1>
+        <p class="page-hero__sub">Hear a few seconds. Type what comes next. Fast is worth more.</p>
+        <div class="ly-stats">
+            <span>Streak <strong id="streak">0</strong></span>
+            <span>Points <strong data-points-balance>—</strong></span>
+        </div>
+    </div>
+</header>
+
+<main class="section section--compact">
+    <div class="container">
+        <div id="stage"><div class="skeleton" style="height:280px;max-width:640px;margin:0 auto"></div></div>
+        <p class="speed-note">
+            Rounds are scored on how fast you answer, not just whether you're right.
+            That's deliberate &mdash; it makes a detour through a screenshot and an AI
+            cost more time than the points are worth.
+        </p>
+    </div>
+</main>
+
+<audio id="clip" preload="auto"></audio>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+(function () {
+    'use strict';
+    var esc = Yeng.esc;
+
+    var round = null;
+    var clockTimer = null;
+    var streak = 0;
+    var stage = document.getElementById('stage');
+    var clip = document.getElementById('clip');
+
+    async function next() {
+        stage.innerHTML = '<div class="skeleton" style="height:280px;max-width:640px;margin:0 auto"></div>';
+        try {
+            var data = await api('play-lyric', { method: 'POST', body: { action: 'start' } });
+            round = data.round;
+            render();
+        } catch (err) {
+            if (/log in/i.test(err.message || '')) {
+                stage.innerHTML = Yeng.emptyState('Log in to play',
+                    'Rounds are unlimited, and your points need somewhere to land.',
+                    '<a class="btn btn--primary btn--sm" href="/login.html?redirect=%2Fgame-lyric.html">Log in</a>');
+                return;
+            }
+            if (/not available|lyrics_empty/i.test(err.message || '')) {
+                stage.innerHTML = Yeng.emptyState('No rounds yet',
+                    'Lyric lines are entered by the team from cleared material — nothing is scraped or generated. Check back once the library is seeded.');
+                return;
+            }
+            stage.innerHTML = Yeng.errorState(err.message, next);
+        }
+    }
+
+    function render() {
+        stage.innerHTML = '<div class="round">'
+            + '<div class="round__song">' + esc(round.songTitle) + '</div>'
+            + (round.audioUrl
+                ? '<button class="playbtn" id="play" data-state="idle" aria-label="Play the clip">'
+                  + '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>'
+                : '')
+            + (round.promptLine ? '<div class="round__prompt">' + esc(round.promptLine) + '</div>' : '')
+            + '<div class="clock__num" id="cnum">' + round.seconds + '</div>'
+            + '<div class="clock" id="clock"><div class="clock__fill" id="cfill"></div></div>'
+            + '<div class="answerbar">'
+            + '<input id="ans" placeholder="Type the next line" autocomplete="off" autocapitalize="off" spellcheck="false">'
+            + '<button class="btn btn--primary" id="submit">Go</button>'
+            + '</div></div>';
+
+        var play = document.getElementById('play');
+        if (play) play.addEventListener('click', playClip);
+
+        document.getElementById('submit').addEventListener('click', submit);
+        document.getElementById('ans').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') submit();
+        });
+        document.getElementById('ans').focus();
+
+        startClock();
+        if (round.audioUrl) playClip();
+    }
+
+    function playClip() {
+        if (!round.audioUrl) return;
+        var btn = document.getElementById('play');
+        clip.src = round.audioUrl;
+        clip.currentTime = round.audioStart || 0;
+        clip.play().then(function () {
+            if (btn) btn.dataset.state = 'playing';
+            setTimeout(function () {
+                clip.pause();
+                if (btn) btn.dataset.state = 'idle';
+            }, (round.audioSeconds || 6) * 1000);
+        }).catch(function () { /* autoplay blocked; the button is there */ });
+    }
+
+    function startClock() {
+        clearInterval(clockTimer);
+        var total = round.seconds;
+        var left = total;
+        var num = document.getElementById('cnum');
+        var fill = document.getElementById('cfill');
+        var wrap = document.getElementById('clock');
+        clockTimer = setInterval(function () {
+            left -= 0.1;
+            if (num) num.textContent = Math.max(0, left).toFixed(1);
+            if (fill) fill.style.width = Math.max(0, (left / total) * 100) + '%';
+            if (wrap) wrap.classList.toggle('clock--low', left <= 4);
+            if (left <= 0) { clearInterval(clockTimer); submit(true); }
+        }, 100);
+    }
+
+    async function submit(timedOut) {
+        if (!round) return;
+        clearInterval(clockTimer);
+        clip.pause();
+        var input = document.getElementById('ans');
+        var value = input ? input.value : '';
+        var r = round;
+        round = null;
+
+        try {
+            var res = await api('play-lyric', {
+                method: 'POST',
+                body: {
+                    action: 'answer',
+                    lineId: r.lineId, startedAt: r.startedAt, token: r.token,
+                    answer: timedOut === true ? '' : value
+                }
+            });
+            if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+            streak = res.correct ? streak + 1 : 0;
+            document.getElementById('streak').textContent = streak;
+            renderVerdict(res, r);
+        } catch (err) {
+            showToast(err.message || 'Could not score that.', 'error');
+            next();
+        }
+    }
+
+    function renderVerdict(res, r) {
+        stage.innerHTML = '<div class="round"><div class="verdict">'
+            + '<div class="verdict__head verdict__head--' + (res.correct ? 'yes' : 'no') + '">'
+            + esc(res.message) + '</div>'
+            + '<div class="verdict__actual">' + esc(res.expectedLine) + '</div>'
+            + '<div class="verdict__meta">'
+            + (res.correct
+                ? '<span class="verdict__pts">+' + res.pointsEarned + ' points</span> in ' + res.elapsed + 's'
+                : (res.closeness ? res.closeness + '% of the way there' : 'From &ldquo;' + esc(r.songTitle) + '&rdquo;'))
+            + (res.capped ? ' &middot; daily cap reached, still fun though' : '')
+            + '</div>'
+            + '<div class="flex flex-center gap-2 mt-3">'
+            + '<button class="btn btn--primary btn--sm" id="again">Next round</button>'
+            + '<a class="btn btn--ghost btn--sm" href="/games.html">Stop here</a>'
+            + '</div></div></div>';
+        document.getElementById('again').addEventListener('click', next);
+    }
+
+    Yeng.Points.load().then(next);
+})();
+</script>
+</body>
+</html>

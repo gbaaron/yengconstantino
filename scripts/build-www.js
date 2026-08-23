@@ -23,6 +23,8 @@ const DEST = path.join(ROOT, 'www');
 // Directories and files to EXCLUDE from copy
 const EXCLUDE = new Set([
   'node_modules',
+  'design-refs',   // external design-review handover, not app content
+  'docs',          // internal documentation, not app content
   '.git',
   '.netlify',
   '.claude',
@@ -40,6 +42,10 @@ const EXCLUDE = new Set([
   '.gitignore',
   '.DS_Store',
   'AIRTABLE_SCHEMA.md',
+    // The sales deck must not ship inside the App Store binary.
+    'deck.html',
+    'AUDIT.md',
+    'yeng-constantino_yengcard (1)',
   'IOS_APP.md',
   'README.md',
 ]);

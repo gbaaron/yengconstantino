@@ -9,6 +9,22 @@ function verifyToken(event) {
     } catch { return null; }
 }
 
+
+/* Missing-table guard.
+   `Leaderboard` and `ActivityEvents` do not exist in the base — the commit
+   that shipped these functions never created them, so every request 500'd and
+   every point "earned" went nowhere (AUDIT.md §0). Until
+   `node scripts/setup-airtable.js` runs, return an honest empty state rather
+   than a server error. */
+function isMissingTable(err) {
+    if (!err) return false;
+    const code = err.error || err.type || '';
+    return code === 'NOT_FOUND' || code === 'NOT_AUTHORIZED' ||
+        code === 'TABLE_NOT_FOUND' || code === 'INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND' ||
+        err.statusCode === 404 ||
+        (err.statusCode === 403 && /INVALID_PERMISSIONS|MODEL_NOT_FOUND|NOT_AUTHORIZED|not authorized/i.test((err.message || '') + code));
+}
+
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -101,6 +117,16 @@ exports.handler = async (event) => {
             })
         };
     } catch (error) {
+        if (isMissingTable(error)) {
+            // Not configured yet — the page shows its "rankings refresh hourly" state.
+            return {
+                statusCode: 200, headers,
+                body: JSON.stringify({
+                    score: 0, rank: null, tier: null, pending: true, notConfigured: true,
+                    breakdown: { eventsAttended: 0, comments: 0, votes: 0, qaCount: 0 },
+                }),
+            };
+        }
         console.error('Get fan score error:', error);
         return { statusCode: 500, headers, body: JSON.stringify({ error: 'Failed to fetch fan score' }) };
     }

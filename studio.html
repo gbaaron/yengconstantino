@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Studio — Yeng Constantino (Spec Preview)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════
+           STUDIO — the artist's surface
+           Designed for fifteen minutes, in a car, on a phone. Big targets,
+           one decision per screen, nothing that needs a keyboard.
+           ═══════════════════════════════════════════════════════ */
+        body { background: var(--off-white); padding-bottom: 5rem; }
+
+        .studio-top {
+            position: sticky; top: 0; z-index: 20;
+            background: var(--ember); color: var(--cream);
+            padding: calc(env(safe-area-inset-top) + 0.85rem) var(--space-lg) 0.85rem;
+        }
+        .studio-top__row { display: flex; align-items: center; gap: var(--space-md); }
+        .studio-top__title {
+            font-family: var(--font-display); font-size: 1.35rem; font-weight: 800;
+            background: var(--ink-flame); -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .studio-top__sub { font-family: var(--font-accent); font-size: 1rem; color: var(--gold); margin-top: .05rem; }
+        .studio-top__spacer { flex: 1; }
+        .studio-exit { color: rgba(251,248,242,.7); text-decoration: none; font-size: .8rem; }
+        .studio-exit:hover { color: var(--cream); }
+
+        .studio-tabs {
+            position: sticky; top: 0; z-index: 19;
+            display: flex; background: var(--cream);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .studio-tab {
+            flex: 1; appearance: none; border: 0; cursor: pointer;
+            background: transparent; color: var(--gray-500);
+            font-family: var(--font-body); font-weight: 600; font-size: .82rem;
+            padding: .85rem .5rem; position: relative;
+        }
+        .studio-tab[aria-selected="true"] { color: var(--purple); }
+        .studio-tab[aria-selected="true"]::after {
+            content: ''; position: absolute; left: 15%; right: 15%; bottom: 0;
+            height: 2px; background: var(--purple);
+        }
+        .studio-tab__badge {
+            display: inline-block; min-width: 18px; padding: 0 5px;
+            background: var(--purple); color: #fff; border-radius: var(--radius-full);
+            font-size: .66rem; line-height: 18px; margin-left: .3rem;
+        }
+
+        .panel { display: none; padding: var(--space-lg); }
+        .panel.is-active { display: block; }
+
+        /* ── Question card ── */
+        .qcard {
+            background: var(--white); border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-card); padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+        .qcard--promoted { border-color: var(--gold); border-width: 2px; }
+        .qcard__head {
+            display: flex; align-items: center; gap: .6rem;
+            margin-bottom: .75rem; flex-wrap: wrap;
+        }
+        .qcard__count {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 1.6rem; color: var(--burgundy); line-height: 1;
+        }
+        .qcard__count-label { font-size: .78rem; color: var(--gray-500); }
+        .qcard__q {
+            font-family: var(--font-display); font-size: 1.25rem; color: var(--burgundy);
+            line-height: 1.4; margin-bottom: .75rem;
+        }
+        .qcard__samples {
+            font-size: .82rem; color: var(--gray-500); line-height: 1.6;
+            border-left: 2px solid var(--gray-200); padding-left: .8rem;
+            margin-bottom: var(--space-lg);
+        }
+        .qcard__samples strong { color: var(--gray-600); font-weight: 600; }
+
+        .flag {
+            display: inline-flex; align-items: center; gap: .3rem;
+            padding: .15rem .55rem; border-radius: var(--radius-full);
+            font-size: .68rem; font-weight: 700; letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .flag--promoted { background: var(--gold); color: var(--gray-900); }
+
+        /* ── Recorder ── */
+        .rec {
+            background: var(--off-white); border: 1px dashed var(--gray-300);
+            padding: var(--space-lg); text-align: center;
+        }
+        .rec__button {
+            appearance: none; border: 0; cursor: pointer;
+            width: 84px; height: 84px; border-radius: 50%;
+            background: var(--purple); color: #fff;
+            display: inline-flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 20px rgba(165,44,50,.3);
+            transition: transform var(--transition-fast), background var(--transition-fast);
+        }
+        .rec__button:active { transform: scale(.94); }
+        .rec__button[data-state="recording"] { background: var(--burgundy); animation: recpulse 1.6s ease-in-out infinite; }
+        @keyframes recpulse { 0%,100% { box-shadow: 0 6px 20px rgba(116,30,39,.35); } 50% { box-shadow: 0 6px 34px rgba(116,30,39,.6); } }
+        .rec__button svg { width: 32px; height: 32px; }
+        .rec__timer {
+            font-family: var(--font-display); font-size: 1.6rem; font-weight: 600;
+            margin-top: .75rem; color: var(--gray-800);
+        }
+        .rec__hint { font-size: .8rem; color: var(--gray-500); margin-top: .35rem; }
+        .rec__playback { margin-top: var(--space-md); }
+        .rec__playback audio { width: 100%; }
+        .rec__actions { display: flex; gap: .6rem; justify-content: center; margin-top: var(--space-md); flex-wrap: wrap; }
+
+        .card-actions { display: flex; gap: .6rem; margin-top: var(--space-lg); flex-wrap: wrap; }
+        .card-actions .btn { flex: 1; min-width: 130px; }
+
+        /* ── Archive review: one at a time, swipeable ── */
+        .review-card {
+            background: var(--white); border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-md); padding: var(--space-xl);
+            text-align: center;
+        }
+        .review-card__kind {
+            font-size: .7rem; text-transform: uppercase; letter-spacing: .09em;
+            color: var(--gray-400); font-weight: 700; margin-bottom: .5rem;
+        }
+        .review-card__title {
+            font-family: var(--font-display); font-size: 1.35rem;
+            line-height: 1.35; margin-bottom: .5rem;
+        }
+        .review-card__source { font-size: .85rem; color: var(--gray-500); margin-bottom: var(--space-md); }
+        .review-card__excerpt {
+            font-size: .9rem; line-height: 1.7; color: var(--gray-600);
+            text-align: left; border-left: 2px solid var(--gray-200);
+            padding-left: var(--space-md); margin-bottom: var(--space-lg);
+        }
+        .review-actions { display: flex; gap: .75rem; }
+        .review-actions .btn { flex: 1; padding: 1rem; font-size: 1rem; }
+
+        .progress-line {
+            display: flex; gap: 1.25rem; justify-content: center;
+            font-size: .78rem; color: var(--gray-500);
+            margin-top: var(--space-lg);
+        }
+        .progress-line strong { color: var(--gray-800); }
+
+        /* ── Cameo with fan context ── */
+        .cameo-card {
+            background: var(--white); border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-card); margin-bottom: var(--space-lg);
+        }
+        .cameo-card__ctx {
+            background: var(--burgundy); color: var(--cream);
+            padding: var(--space-md) var(--space-lg);
+        }
+        .cameo-card__headline {
+            font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+            margin-bottom: .5rem;
+        }
+        .ctx-grid { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: .78rem; }
+        .ctx-grid div span { display: block; opacity: .65; font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; }
+        .ctx-grid div strong { font-size: .95rem; font-weight: 600; }
+        .cameo-card__body { padding: var(--space-lg); }
+        .cameo-card__for {
+            font-family: var(--font-display); font-size: 1.15rem; margin-bottom: .3rem;
+        }
+        .cameo-card__brief {
+            font-size: .9rem; line-height: 1.65; color: var(--gray-600);
+            background: var(--off-white); padding: var(--space-md);
+            border-left: 2px solid var(--gray-300); margin: var(--space-md) 0;
+        }
+        .cameo-card__asked {
+            font-size: .82rem; color: var(--gray-500); line-height: 1.6;
+            margin-top: .6rem;
+        }
+
+        .done-state { text-align: center; padding: var(--space-3xl) var(--space-lg); }
+        .done-state__mark { font-family: var(--font-accent); font-size: 2.2rem; color: var(--gold); }
+        .done-state__title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--burgundy); margin: .5rem 0; }
+        .done-state__text { color: var(--gray-500); line-height: 1.65; max-width: 40ch; margin: 0 auto; }
+
+        @media (min-width: 780px) {
+            .panel { max-width: 720px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="studio-top">
+    <div class="studio-top__row">
+        <div>
+            <div class="studio-top__title">Studio</div>
+            <div class="studio-top__sub" id="studio-sub">Fifteen minutes, that's it</div>
+        </div>
+        <div class="studio-top__spacer"></div>
+        <a class="studio-exit" href="/">Exit</a>
+    </div>
+</div>
+
+<div class="studio-tabs" role="tablist">
+    <button class="studio-tab" role="tab" data-panel="queue" aria-selected="true">Questions<span class="studio-tab__badge" id="badge-queue" style="display:none">0</span></button>
+    <button class="studio-tab" role="tab" data-panel="archive" aria-selected="false">Archive<span class="studio-tab__badge" id="badge-archive" style="display:none">0</span></button>
+    <button class="studio-tab" role="tab" data-panel="cameo" aria-selected="false">Videos<span class="studio-tab__badge" id="badge-cameo" style="display:none">0</span></button>
+</div>
+
+<main>
+    <section class="panel is-active" id="panel-queue">
+        <div id="queue-body"><div class="skeleton" style="height:220px"></div></div>
+    </section>
+
+    <section class="panel" id="panel-archive">
+        <div id="archive-body"><div class="skeleton" style="height:220px"></div></div>
+    </section>
+
+    <section class="panel" id="panel-cameo">
+        <div id="cameo-body"><div class="skeleton" style="height:220px"></div></div>
+    </section>
+</main>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   STUDIO
+   Three jobs, one tap each: answer a question by voice, keep or skip an
+   archive candidate, record a personalised video.
+   ═══════════════════════════════════════════════════════ */
+(function () {
+    'use strict';
+    var esc = Yeng.esc, plural = Yeng.plural, fmt = Yeng.fmtSeconds;
+
+    if (!Auth.requireAdmin('/studio.html')) return;
+
+    /* ── Tabs (hash-addressable so demo.html can deep-link) ── */
+    function showPanel(name) {
+        document.querySelectorAll('.studio-tab').forEach(function (t) {
+            t.setAttribute('aria-selected', t.dataset.panel === name ? 'true' : 'false');
+        });
+        document.querySelectorAll('.panel').forEach(function (p) {
+            p.classList.toggle('is-active', p.id === 'panel-' + name);
+        });
+        if (location.hash !== '#' + name) history.replaceState(null, '', '#' + name);
+        if (name === 'queue') loadQueue();
+        if (name === 'archive') loadArchive();
+        if (name === 'cameo') loadCameo();
+    }
+    document.querySelectorAll('.studio-tab').forEach(function (t) {
+        t.addEventListener('click', function () { showPanel(t.dataset.panel); });
+    });
+
+    /* ═══════════ 1. ANSWER QUEUE ═══════════ */
+    var queue = [];
+    var queueIndex = 0;
+
+    async function loadQueue() {
+        var body = document.getElementById('queue-body');
+        try {
+            var data = await api('get-answer-queue');
+            queue = data.shortlist || [];
+            queueIndex = 0;
+            document.getElementById('badge-queue').textContent = queue.length;
+            document.getElementById('badge-queue').style.display = queue.length ? '' : 'none';
+            document.getElementById('studio-sub').textContent =
+                data.fansWaiting ? Number(data.fansWaiting).toLocaleString() + ' fans waiting' : 'Fifteen minutes, that\'s it';
+            renderQueueCard();
+        } catch (err) {
+            body.innerHTML = Yeng.errorState(err.message, loadQueue);
+        }
+    }
+
+    function renderQueueCard() {
+        var body = document.getElementById('queue-body');
+        if (queueIndex >= queue.length) {
+            body.innerHTML = '<div class="done-state">'
+                + '<div class="done-state__mark">Salamat</div>'
+                + '<div class="done-state__title">Queue clear</div>'
+                + '<p class="done-state__text">Nothing else is waiting. New questions cluster as fans ask them &mdash; check back whenever.</p>'
+                + '</div>';
+            return;
+        }
+
+        var q = queue[queueIndex];
+        body.innerHTML =
+            '<div class="qcard' + (q.promoted ? ' qcard--promoted' : '') + '">'
+            + '<div class="qcard__head">'
+            + '<span class="qcard__count">' + Number(q.count).toLocaleString() + '</span>'
+            + '<span class="qcard__count-label">' + plural(q.count, 'person', 'people') + ' asked this</span>'
+            + (q.promoted ? '<span class="flag flag--promoted">Promoted &mdash; ' + q.promotionCount + '</span>' : '')
+            + '</div>'
+            + '<div class="qcard__q">' + esc(q.mergedQuestion) + '</div>'
+            + (q.samples && q.samples.length
+                ? '<div class="qcard__samples">' + q.samples.map(function (s) {
+                    return '<div><strong>' + esc(s.userName) + ':</strong> ' + esc(s.text) + '</div>';
+                  }).join('') + '</div>'
+                : '')
+            + recorderHtml()
+            + '<div class="card-actions">'
+            + '<button class="btn btn--ghost" id="pass-btn">Pass on this</button>'
+            + '<button class="btn btn--primary" id="send-btn" disabled>Send answer</button>'
+            + '</div>'
+            + '<p style="font-size:.76rem;color:var(--gray-400);margin-top:.6rem;text-align:center">'
+            + 'Question ' + (queueIndex + 1) + ' of ' + queue.length
+            + (q.promoted ? ' &middot; passing refunds every promoter in full' : '')
+            + '</p>'
+            + '</div>';
+
+        wireRecorder();
+        document.getElementById('pass-btn').addEventListener('click', function () { passQuestion(q); });
+        document.getElementById('send-btn').addEventListener('click', function () { sendAnswer(q); });
+    }
+
+    /* ── Recorder: record, listen, re-record, send ── */
+    var media = { recorder: null, chunks: [], blob: null, stream: null, startedAt: 0, timer: null, seconds: 0 };
+
+    function recorderHtml() {
+        return '<div class="rec" id="rec">'
+            + '<button class="rec__button" id="rec-btn" data-state="idle" aria-label="Record">'
+            + '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 12a7 7 0 0 1-14 0H3a9 9 0 0 0 8 8.94V23h2v-2.06A9 9 0 0 0 21 12z"/></svg>'
+            + '</button>'
+            + '<div class="rec__timer" id="rec-timer">0:00</div>'
+            + '<div class="rec__hint" id="rec-hint">Tap to record your answer</div>'
+            + '<div class="rec__playback" id="rec-playback" hidden></div>'
+            + '<div class="rec__actions" id="rec-actions" hidden>'
+            + '<button class="btn btn--ghost btn--sm" id="rec-again">Record again</button>'
+            + '</div></div>';
+    }
+
+    function wireRecorder() {
+        var btn = document.getElementById('rec-btn');
+        if (!btn) return;
+        media.blob = null;
+        btn.addEventListener('click', toggleRecord);
+        var again = document.getElementById('rec-again');
+        if (again) again.addEventListener('click', resetRecorder);
+    }
+
+    function resetRecorder() {
+        media.blob = null;
+        media.seconds = 0;
+        document.getElementById('rec-timer').textContent = '0:00';
+        document.getElementById('rec-hint').textContent = 'Tap to record your answer';
+        document.getElementById('rec-playback').hidden = true;
+        document.getElementById('rec-playback').innerHTML = '';
+        document.getElementById('rec-actions').hidden = true;
+        document.getElementById('rec-btn').dataset.state = 'idle';
+        document.getElementById('send-btn').disabled = true;
+    }
+
+    async function toggleRecord() {
+        var btn = document.getElementById('rec-btn');
+        if (btn.dataset.state === 'recording') { stopRecording(); return; }
+
+        if (!navigator.mediaDevices || !window.MediaRecorder) {
+            showToast('This browser cannot record audio. Try Safari or Chrome.', 'error');
+            return;
+        }
+
+        try {
+            media.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (e) {
+            showToast('Microphone access is needed to record an answer.', 'error');
+            return;
+        }
+
+        media.chunks = [];
+        var mime = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
+                 : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+        media.recorder = new MediaRecorder(media.stream, mime ? { mimeType: mime } : undefined);
+        media.recorder.ondataavailable = function (e) { if (e.data.size) media.chunks.push(e.data); };
+        media.recorder.onstop = function () {
+            media.blob = new Blob(media.chunks, { type: media.recorder.mimeType || 'audio/webm' });
+            var url = URL.createObjectURL(media.blob);
+            var pb = document.getElementById('rec-playback');
+            pb.hidden = false;
+            pb.innerHTML = '<audio controls src="' + url + '"></audio>';
+            document.getElementById('rec-actions').hidden = false;
+            document.getElementById('rec-hint').textContent = 'Have a listen. Send it, or record again.';
+            document.getElementById('send-btn').disabled = false;
+            if (media.stream) media.stream.getTracks().forEach(function (t) { t.stop(); });
+        };
+
+        media.recorder.start();
+        media.seconds = 0;
+        btn.dataset.state = 'recording';
+        document.getElementById('rec-hint').textContent = 'Recording — tap again to stop';
+        document.getElementById('rec-playback').hidden = true;
+        media.timer = setInterval(function () {
+            media.seconds++;
+            document.getElementById('rec-timer').textContent = fmt(media.seconds);
+            if (media.seconds >= 300) stopRecording(); // 5-minute ceiling
+        }, 1000);
+
+        if (window.NativeBridge && NativeBridge.haptic) { try { NativeBridge.haptic('medium'); } catch (e) {} }
+    }
+
+    function stopRecording() {
+        if (media.recorder && media.recorder.state !== 'inactive') media.recorder.stop();
+        clearInterval(media.timer);
+        document.getElementById('rec-btn').dataset.state = 'idle';
+    }
+
+    async function uploadRecording(blob, kind) {
+        var sig = await api('sign-upload', { method: 'POST', body: { kind: kind || 'answer' } });
+        var form = new FormData();
+        var ext = (blob.type.indexOf('mp4') !== -1) ? 'm4a' : 'webm';
+        form.append('file', blob, 'answer.' + ext);
+        form.append('api_key', sig.apiKey);
+        form.append('timestamp', sig.timestamp);
+        form.append('folder', sig.folder);
+        form.append('signature', sig.signature);
+
+        var res = await fetch(sig.uploadUrl, { method: 'POST', body: form });
+        if (!res.ok) throw new Error('Upload failed');
+        var data = await res.json();
+        return { url: data.secure_url, duration: data.duration || media.seconds };
+    }
+
+    async function sendAnswer(q) {
+        if (!media.blob) { showToast('Record something first.', 'error'); return; }
+        var btn = document.getElementById('send-btn');
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+
+        try {
+            var up = await uploadRecording(media.blob, 'answer');
+            var res = await api('submit-answer', {
+                method: 'POST',
+                body: { clusterId: q.id, audioUrl: up.url, durationSeconds: up.duration }
+            });
+            showToast(res.message, 'success', 6000);
+            queueIndex++;
+            resetRecorder();
+            renderQueueCard();
+        } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Send answer';
+            showToast(err.message || 'Could not send that answer.', 'error', 6000);
+        }
+    }
+
+    async function passQuestion(q) {
+        try {
+            var res = await api('pass-question', { method: 'POST', body: { clusterId: q.id } });
+            showToast(res.message, 'info', 6000);
+            queueIndex++;
+            resetRecorder();
+            renderQueueCard();
+        } catch (err) {
+            showToast(err.message || 'Could not pass on that.', 'error');
+        }
+    }
+
+    /* ═══════════ 2. ARCHIVE REVIEW ═══════════
+       Taste, not fact-checking. "Good one? Add it." — ten seconds each. */
+    var reviewQueue = [];
+    var reviewCounts = {};
+
+    async function loadArchive() {
+        var body = document.getElementById('archive-body');
+        try {
+            var data = await api('review-archive-item?limit=10');
+            reviewQueue = data.queue || [];
+            reviewCounts = data.counts || {};
+            document.getElementById('badge-archive').textContent = reviewCounts.pending || 0;
+            document.getElementById('badge-archive').style.display = reviewCounts.pending ? '' : 'none';
+            renderReviewCard();
+        } catch (err) {
+            body.innerHTML = Yeng.errorState(err.message, loadArchive);
+        }
+    }
+
+    function renderReviewCard() {
+        var body = document.getElementById('archive-body');
+        if (!reviewQueue.length) {
+            body.innerHTML = '<div class="done-state">'
+                + '<div class="done-state__mark">Tapos</div>'
+                + '<div class="done-state__title">Nothing to review</div>'
+                + '<p class="done-state__text">'
+                + (reviewCounts.approved || 0) + ' items are in your archive. '
+                + 'New candidates appear here as the team adds them.</p></div>';
+            return;
+        }
+
+        var item = reviewQueue[0];
+        body.innerHTML =
+            '<div class="review-card">'
+            + '<div class="review-card__kind">' + esc(item.kind) + '</div>'
+            + '<h2 class="review-card__title">' + esc(item.title) + '</h2>'
+            + '<div class="review-card__source">' + esc(item.source)
+            + (item.publishedAt ? ' &middot; ' + new Date(item.publishedAt).getFullYear() : '') + '</div>'
+            + (item.audioUrl ? '<audio controls preload="none" style="width:100%;margin-bottom:1rem" src="' + esc(item.audioUrl) + '"></audio>' : '')
+            + (item.excerpt ? '<div class="review-card__excerpt">' + esc(item.excerpt) + '</div>' : '')
+            + '<div class="review-actions">'
+            + '<button class="btn btn--ghost" id="skip-btn">Skip</button>'
+            + '<button class="btn btn--primary" id="keep-btn">Good one &mdash; add it</button>'
+            + '</div>'
+            + (item.sourceUrl ? '<p style="margin-top:.9rem"><a href="' + esc(item.sourceUrl) + '" target="_blank" rel="noopener" style="font-size:.8rem;color:var(--gray-500)">Open the source</a></p>' : '')
+            + '</div>'
+            + '<div class="progress-line">'
+            + '<span><strong>' + (reviewCounts.pending || 0) + '</strong> to review</span>'
+            + '<span><strong>' + (reviewCounts.approved || 0) + '</strong> in the archive</span>'
+            + '<span><strong>' + (reviewCounts.skipped || 0) + '</strong> skipped</span>'
+            + '</div>';
+
+        document.getElementById('keep-btn').addEventListener('click', function () { decide(item, 'keep'); });
+        document.getElementById('skip-btn').addEventListener('click', function () { decide(item, 'skip'); });
+    }
+
+    async function decide(item, decision) {
+        try {
+            var res = await api('review-archive-item', { method: 'POST', body: { itemId: item.id, decision: decision } });
+            showToast(res.message, decision === 'keep' ? 'success' : 'info');
+            reviewQueue.shift();
+            reviewCounts.pending = Math.max(0, (reviewCounts.pending || 1) - 1);
+            if (decision === 'keep') reviewCounts.approved = (reviewCounts.approved || 0) + 1;
+            else reviewCounts.skipped = (reviewCounts.skipped || 0) + 1;
+            document.getElementById('badge-archive').textContent = reviewCounts.pending || 0;
+            document.getElementById('badge-archive').style.display = reviewCounts.pending ? '' : 'none';
+            renderReviewCard();
+            if (window.NativeBridge && NativeBridge.haptic) { try { NativeBridge.haptic('light'); } catch (e) {} }
+        } catch (err) {
+            showToast(err.message || 'Could not save that.', 'error');
+        }
+    }
+
+    /* ═══════════ 3. CAMEO — with fan context ═══════════ */
+    async function loadCameo() {
+        var body = document.getElementById('cameo-body');
+        try {
+            var data = await api('get-cameo-queue?status=Pending');
+            var reqs = data.requests || [];
+            document.getElementById('badge-cameo').textContent = reqs.length;
+            document.getElementById('badge-cameo').style.display = reqs.length ? '' : 'none';
+
+            if (!reqs.length) {
+                body.innerHTML = '<div class="done-state">'
+                    + '<div class="done-state__mark">Wala pa</div>'
+                    + '<div class="done-state__title">No requests waiting</div>'
+                    + '<p class="done-state__text">Personalised video requests land here with everything you need to know about who asked.</p></div>';
+                return;
+            }
+
+            body.innerHTML = reqs.map(cameoCard).join('');
+        } catch (err) {
+            body.innerHTML = Yeng.errorState(err.message, loadCameo);
+        }
+    }
+
+    function cameoCard(r) {
+        var f = r.fan || {};
+        var ctx = '';
+        if (f.available) {
+            ctx = '<div class="ctx-grid">'
+                + (f.leaderboardRank ? '<div><span>Standing</span><strong>#' + f.leaderboardRank + ' of ' + Number(f.totalFans).toLocaleString() + '</strong></div>' : '')
+                + (f.tenureMonths != null ? '<div><span>With you</span><strong>' + (f.tenureMonths >= 12 ? Math.floor(f.tenureMonths / 12) + 'y' : f.tenureMonths + 'mo') + '</strong></div>' : '')
+                + (f.tier ? '<div><span>Tier</span><strong>' + esc(f.tier) + '</strong></div>' : '')
+                + (f.questionsAsked ? '<div><span>Asked</span><strong>' + f.questionsAsked + '</strong></div>' : '')
+                + (f.showsRegistered ? '<div><span>Shows</span><strong>' + f.showsRegistered + '</strong></div>' : '')
+                + '</div>';
+        }
+
+        return '<div class="cameo-card">'
+            + '<div class="cameo-card__ctx">'
+            + '<div class="cameo-card__headline">' + esc(f.headline || ('From ' + (f.name || 'a fan'))) + '</div>'
+            + ctx + '</div>'
+            + '<div class="cameo-card__body">'
+            + '<div class="cameo-card__for">For ' + esc(r.recipientName) + (r.occasion ? ' &middot; ' + esc(r.occasion) : '') + '</div>'
+            + '<div class="cameo-card__brief">' + esc(r.instructions || 'No extra notes.') + '</div>'
+            + (f.recentQuestions && f.recentQuestions.length
+                ? '<div class="cameo-card__asked"><strong>They\'ve asked you:</strong><br>&ldquo;'
+                  + f.recentQuestions.map(esc).join('&rdquo;<br>&ldquo;') + '&rdquo;</div>'
+                : '')
+            + '<div class="card-actions">'
+            + '<button class="btn btn--secondary btn--sm" onclick="window.open(\'/admin.html#messages\',\'_blank\')">Open in admin</button>'
+            + '</div></div></div>';
+    }
+
+    /* ── Boot ── */
+    var initial = (location.hash || '#queue').replace('#', '');
+    showPanel(['queue', 'archive', 'cameo'].indexOf(initial) !== -1 ? initial : 'queue');
+})();
+</script>
+</body>
+</html>

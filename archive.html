@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archive — Yeng Constantino (Spec Preview)</title>
+    <meta name="description" content="Search what Yeng has actually said. Verified recordings, cued to the second, with nothing paraphrased or generated.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        /* ── Player: ink chrome against the paper page ── */
+        .player {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+            background: var(--ink); color: var(--paper-raised);
+            padding: 0.8rem var(--page-x) calc(0.8rem + env(safe-area-inset-bottom));
+            transform: translateY(110%); transition: transform var(--transition-base);
+        }
+        .player.is-on { transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) { .player { transition: none } }
+        .player__row {
+            display: flex; align-items: center; gap: 0.9rem;
+            max-width: 1180px; margin: 0 auto;
+        }
+        .player__title {
+            font-family: var(--font-display); font-size: 0.95rem;
+            flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .player audio { flex: 2; min-width: 180px; max-width: 460px; }
+        .player__close {
+            appearance: none; border: 0; background: transparent; cursor: pointer;
+            color: rgba(251,248,242,.6); font-size: 1.4rem; line-height: 1;
+            min-width: 44px; min-height: 44px;
+        }
+        .player__close:hover { color: var(--paper-raised); }
+
+        .transcript {
+            max-height: 38vh; overflow-y: auto;
+            margin: 0.8rem auto 0; padding-top: 0.8rem;
+            border-top: 1px solid rgba(251,248,242,.14);
+            max-width: 1180px;
+        }
+        .cue {
+            display: flex; gap: 0.9rem; padding: 0.3rem 0;
+            font-size: 0.88rem; line-height: 1.6; cursor: pointer;
+            color: rgba(251,248,242,.6);
+            background: none; border: 0; text-align: left; width: 100%;
+            font-family: var(--font-body);
+        }
+        .cue:hover { color: var(--paper-raised); }
+        .cue.is-current { color: var(--ticket-gold); }
+        .cue.is-current .cue__t { opacity: 1; }
+        .cue__t {
+            flex: none; font-family: var(--font-evidence); font-size: 0.72rem;
+            opacity: 0.55; padding-top: 0.15rem; font-variant-numeric: tabular-nums;
+        }
+
+        /* Chronology rail — only rendered when real records span real years. */
+        .year-rail { display: flex; flex-wrap: wrap; gap: 0.15rem 0.9rem; padding: 0.3rem 0 1rem; }
+        .year-rail button {
+            appearance: none; border: 0; background: none; cursor: pointer; padding: 0.25rem 0;
+            font-family: var(--font-evidence); font-size: 0.72rem;
+            color: var(--ink-faint); border-bottom: 2px solid transparent;
+            font-variant-numeric: tabular-nums;
+        }
+        .year-rail button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--yeng-red); font-weight: 700; }
+
+        body { padding-bottom: 4rem; }
+    </style>
+</head>
+<body class="rec-page">
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/music.html" class="nav__link">Music</a></li>
+            <li><a href="/ask.html" class="nav__link" data-i18n="nav.ask">Ask Yeng</a></li>
+            <li><a href="/archive.html" class="nav__link nav__link--active" data-i18n="nav.archive">Archive</a></li>
+            <li><a href="/tour.html" class="nav__link" data-i18n="nav.tour">Tour Map</a></li>
+            <li><a href="/games.html" class="nav__link" data-i18n="nav.games">Games</a></li>
+            <li><a href="/community.html" class="nav__link">Community</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+            <li data-admin style="display:none"><a href="/handler.html" class="nav__link">Dashboard</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-intro">
+    <div class="wide page-intro__inner">
+        <span class="page-intro__kicker">Totoong salita. Totoong source.</span>
+        <h1 class="page-intro__title" data-i18n="archive.title">Sinabi niya. Nandito.</h1>
+        <p class="page-intro__copy" data-i18n="archive.subtitle">
+            Search Yeng&rsquo;s real recordings, interviews and answers &mdash; and play the
+            source from the exact second she said it.
+        </p>
+    </div>
+</header>
+
+<main class="wide">
+    <!-- ── Search. The dominant first action. ── -->
+    <section class="arc-search">
+        <label class="rec-label" for="q">Search the archive</label>
+        <div class="arc-search__field">
+            <input id="q" type="search" data-i18n-placeholder="archive.search"
+                   placeholder="A topic, a lyric, a memory…" autocomplete="off">
+        </div>
+        <div class="arc-search__try">
+            <span class="ev">Try</span>
+            <button type="button" data-try="being scared before performing">&ldquo;being scared before performing&rdquo;</button>
+            <button type="button" data-try="songwriting">&ldquo;songwriting&rdquo;</button>
+        </div>
+    </section>
+
+    <p class="notice notice--green" data-i18n="archive.retrievalNote">
+        Search returns her real recordings. Nothing here is paraphrased, summarised or
+        generated, and her voice is never synthesised. This archive only grows when she
+        approves an item herself.
+    </p>
+
+    <div class="arc-filters" role="group" aria-label="Filter by source" style="margin-top:1.4rem">
+        <button data-kind="" aria-selected="true">Everything</button>
+        <button data-kind="Answer" aria-selected="false">Voice answers</button>
+        <button data-kind="Interview" aria-selected="false">Interviews</button>
+        <button data-kind="Performance" aria-selected="false">Performances</button>
+    </div>
+    <div class="year-rail" id="year-rail" role="group" aria-label="Filter by year"></div>
+
+    <div class="arc-count ev" id="arc-count"></div>
+    <div id="results" class="ruled">
+        <div class="loading-line ev">Searching the archive…</div>
+    </div>
+    <div style="height:clamp(48px,8vw,80px)"></div>
+</main>
+
+<div class="player" id="player">
+    <div class="player__row">
+        <span class="player__title" id="player-title"></span>
+        <audio id="audio" controls preload="none"></audio>
+        <button class="player__close" id="player-close" aria-label="Close player">&times;</button>
+    </div>
+    <div class="transcript" id="transcript"></div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__bottom">
+            <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   THE ARCHIVE
+
+   Retrieval, never synthesis. Every result is a source moment: what kind of
+   record it is, when it was recorded, the second the match occurs, whether
+   it is verified, and then her words verbatim. No summary is ever produced,
+   and the UI never places generated text where her words would go.
+
+   Source lines, timestamps and signatures are monospace; her words are the
+   display serif. That split is the whole visual argument.
+   ═══════════════════════════════════════════════════════ */
+(function () {
+    'use strict';
+    var esc = Yeng.esc, fmt = Yeng.fmtSeconds, plural = Yeng.plural, fmtDate = Yeng.fmtDate;
+
+    var TICK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" '
+        + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>';
+    var PLAY = '<svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+
+    var kind = '';
+    var year = '';
+    var lastResults = [];
+    var debounce = null;
+
+    var els = {
+        q: document.getElementById('q'),
+        results: document.getElementById('results'),
+        count: document.getElementById('arc-count'),
+        rail: document.getElementById('year-rail'),
+        player: document.getElementById('player'),
+        audio: document.getElementById('audio'),
+        title: document.getElementById('player-title'),
+        transcript: document.getElementById('transcript')
+    };
+
+    els.q.addEventListener('input', function () {
+        clearTimeout(debounce);
+        debounce = setTimeout(search, 320);
+    });
+    els.q.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { clearTimeout(debounce); search(); }
+    });
+
+    document.querySelectorAll('[data-try]').forEach(function (b) {
+        b.addEventListener('click', function () { els.q.value = b.dataset.try; search(); });
+    });
+
+    document.querySelectorAll('.arc-filters button').forEach(function (c) {
+        c.addEventListener('click', function () {
+            document.querySelectorAll('.arc-filters button').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+            c.setAttribute('aria-selected', 'true');
+            kind = c.dataset.kind;
+            search();
+        });
+    });
+
+    async function search() {
+        var q = els.q.value.trim();
+        els.results.innerHTML = '<div class="loading-line ev">Searching the archive…</div>';
+        els.count.textContent = '';
+        try {
+            var url = 'get-archive?limit=25'
+                + (q ? '&q=' + encodeURIComponent(q) : '')
+                + (kind ? '&kind=' + encodeURIComponent(kind) : '');
+            var data = await api(url);
+            lastResults = data.results || [];
+            renderYears(lastResults);
+            render(data);
+            var next = location.pathname + (q ? '?q=' + encodeURIComponent(q) : '');
+            history.replaceState(null, '', next);
+        } catch (err) {
+            els.results.innerHTML = Yeng.errorState(err.message, search);
+        }
+    }
+
+    /* The twenty-year dimension, but only when the data actually spans it. */
+    function renderYears(list) {
+        var years = {};
+        list.forEach(function (r) {
+            if (r.recordedAt) {
+                var y = new Date(r.recordedAt).getFullYear();
+                if (!isNaN(y)) years[y] = (years[y] || 0) + 1;
+            }
+        });
+        var keys = Object.keys(years).sort();
+        if (keys.length < 2) { els.rail.innerHTML = ''; return; }
+        els.rail.innerHTML = '<span class="ev" style="align-self:center">Year</span>'
+            + '<button data-year="" aria-selected="' + (year === '' ? 'true' : 'false') + '">All</button>'
+            + keys.map(function (y) {
+                return '<button data-year="' + y + '" aria-selected="' + (String(year) === y ? 'true' : 'false') + '">'
+                    + y + '</button>';
+            }).join('');
+        els.rail.querySelectorAll('button').forEach(function (b) {
+            b.addEventListener('click', function () {
+                year = b.dataset.year;
+                els.rail.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+                b.setAttribute('aria-selected', 'true');
+                render({ results: lastResults, total: lastResults.length, query: els.q.value.trim() });
+            });
+        });
+    }
+
+    function render(data) {
+        var list = (data.results || []).filter(function (r) {
+            if (!year) return true;
+            return r.recordedAt && String(new Date(r.recordedAt).getFullYear()) === String(year);
+        });
+
+        if (!list.length) {
+            els.count.textContent = '';
+            els.results.innerHTML = data.query
+                ? '<div class="quiet"><strong>No verified archive moment matched that search.</strong>'
+                  + '<span class="quiet__sub">The archive only contains what Yeng has approved. If she has not '
+                  + 'said this on record, it is not here &mdash; and nothing will be made up to fill the gap. '
+                  + 'Try a broader word, or clear the filters.</span></div>'
+                : '<div class="quiet"><strong>The archive is still being built.</strong>'
+                  + '<span class="quiet__sub">As Yeng records answers and approves interviews, they land here '
+                  + '&mdash; transcribed, timestamped and searchable.</span></div>';
+            return;
+        }
+
+        /* "3 exact archive moments" — retrieval language, never "AI found". */
+        var moments = list.reduce(function (s, r) { return s + Math.max(1, (r.spans || []).length); }, 0);
+        els.count.textContent = data.query
+            ? moments.toLocaleString() + ' exact archive ' + plural(moments, 'moment')
+            : list.length.toLocaleString() + ' ' + plural(list.length, 'item') + ' in the archive';
+
+        els.results.innerHTML = list.map(function (r) {
+            var spans = r.spans || [];
+            var firstT = spans.length ? spans[0].t : 0;
+            var date = fmtDate(r.recordedAt);
+
+            return '<article class="arc-entry">'
+                /* Left rail: the tape log. */
+                + '<div class="arc-entry__rail">'
+                + (spans.length ? '<span class="arc-entry__time">' + fmt(firstT) + '</span>' : '')
+                + (r.durationSeconds ? '<span class="ev">' + fmt(r.durationSeconds) + ' long</span>' : '')
+                + '</div>'
+
+                + '<div class="arc-entry__body">'
+                + '<div class="arc-entry__source">'
+                + '<span class="ev">' + esc(r.kind) + (r.source ? ' &middot; ' + esc(r.source) : '')
+                + (date ? ' &middot; ' + esc(date) : '') + '</span>'
+                + (r.verified ? '<span class="verified-source">' + TICK + ' Verified</span>' : '')
+                + '</div>'
+
+                /* Her words. */
+                + (spans.length
+                    ? spans.map(function (s) {
+                        return '<blockquote class="arc-entry__quote">&ldquo;' + esc(s.text) + '&rdquo;</blockquote>'
+                            + '<div class="arc-entry__actions">'
+                            + '<a class="cue-link" href="#" data-item="' + esc(r.id) + '" data-t="' + s.t + '">'
+                            + PLAY + ' Play from ' + fmt(s.t) + '</a></div>';
+                      }).join('')
+                    : '')
+
+                + '<p class="arc-entry__title">' + esc(r.title) + '</p>'
+
+                + '<div class="arc-entry__actions">'
+                + (!spans.length && r.audioUrl
+                    ? '<a class="cue-link" href="#" data-item="' + esc(r.id) + '" data-t="0">' + PLAY + ' Play</a>'
+                    : '')
+                + (r.clusterSize ? '<span class="ev">' + Number(r.clusterSize).toLocaleString() + ' fans asked this</span>' : '')
+                + '<span class="ev">' + esc(langName(r.language)) + '</span>'
+                + (r.sourceUrl ? '<a class="cue-link" href="' + esc(r.sourceUrl) + '" target="_blank" rel="noopener">Original source</a>' : '')
+                + '</div>'
+
+                + (r.signature ? '<div class="arc-sig">signature ' + esc(r.signature.slice(0, 32)) + '…</div>' : '')
+                + '</div></article>';
+        }).join('');
+
+        els.results.querySelectorAll('.cue-link[data-item]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                openItem(a.dataset.item, parseFloat(a.dataset.t) || 0);
+            });
+        });
+    }
+
+    function langName(code) {
+        return { en: 'English', tl: 'Tagalog', ceb: 'Bisaya', ilo: 'Ilokano' }[code] || 'English';
+    }
+
+    /* ── Player, cued to the second ── */
+    async function openItem(id, seconds) {
+        try {
+            var data = await api('get-archive?item=' + encodeURIComponent(id));
+            var item = data.item;
+            els.title.textContent = item.title;
+            els.audio.src = item.audioUrl || '';
+            els.player.classList.add('is-on');
+
+            els.transcript.innerHTML = (item.cues || []).map(function (c) {
+                return '<button class="cue" type="button" data-t="' + c.t + '">'
+                    + '<span class="cue__t">' + fmt(c.t) + '</span>'
+                    + '<span>' + esc(c.text) + '</span></button>';
+            }).join('');
+
+            els.transcript.querySelectorAll('.cue').forEach(function (c) {
+                c.addEventListener('click', function () {
+                    els.audio.currentTime = parseFloat(c.dataset.t) || 0;
+                    els.audio.play();
+                });
+            });
+
+            els.audio.currentTime = seconds || 0;
+            els.audio.play().catch(function () { /* autoplay may be blocked; controls are visible */ });
+
+            history.replaceState(null, '', '?item=' + encodeURIComponent(id) + '&t=' + Math.floor(seconds || 0));
+        } catch (err) {
+            showToast(err.message || 'Could not open that recording.', 'error');
+        }
+    }
+
+    els.audio.addEventListener('timeupdate', function () {
+        var t = els.audio.currentTime;
+        var active = null;
+        els.transcript.querySelectorAll('.cue').forEach(function (c) {
+            c.classList.remove('is-current');
+            if (parseFloat(c.dataset.t) <= t) active = c;
+        });
+        if (active) active.classList.add('is-current');
+    });
+
+    document.getElementById('player-close').addEventListener('click', function () {
+        els.player.classList.remove('is-on');
+        els.audio.pause();
+    });
+
+    /* ── Deep link ── */
+    (function () {
+        var p = new URLSearchParams(location.search);
+        if (p.get('q')) els.q.value = p.get('q');
+        if (p.get('item')) openItem(p.get('item'), parseFloat(p.get('t')) || 0);
+        search();
+    })();
+})();
+</script>
+</body>
+</html>

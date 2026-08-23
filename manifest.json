@@ -1,7 +1,7 @@
 {
-  "name": "Yeng Constantino Official",
-  "short_name": "Yeng",
-  "description": "The official fan hub of Yeng Constantino. Music, exclusive content, merch, community, and everything Yeng.",
+  "name": "Yeng Constantino \u2014 Spec Preview",
+  "short_name": "Yeng (Spec)",
+  "description": "A spec concept for a Yeng Constantino fan platform, built by Global Media for review. Not an official app.",
   "start_url": "/index.html",
   "display": "standalone",
   "orientation": "portrait",

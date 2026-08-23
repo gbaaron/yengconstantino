@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dashboard — Yeng Constantino (Spec Preview)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════
+           HANDLER DASHBOARD
+           Organised by JOB, not by database table. The old admin panel had ten
+           tabs named after Airtable tables; a handler's morning is
+           "what needs me today", so that is what opens first.
+
+           Every number here is computed. Where data does not exist the panel
+           says so rather than filling the gap — this person is drowning in
+           DMs across five platforms, and the value proposition is shape,
+           not more inbox.
+           ═══════════════════════════════════════════════════════ */
+        body { background: var(--off-white); }
+
+        .hdr {
+            background: var(--ember); color: var(--cream);
+            padding: var(--space-xl) 0 var(--space-lg);
+            position: relative; overflow: hidden;
+        }
+        .hdr::after {
+            content: ''; position: absolute; bottom: -120px; right: -80px;
+            width: 340px; height: 340px; border-radius: 50%;
+            background: var(--gold); opacity: .06; filter: blur(80px); pointer-events: none;
+        }
+        .hdr__row { position: relative; z-index: 1; }
+        .hdr__eyebrow {
+            font-family: var(--font-accent); font-size: 1.15rem;
+            color: var(--gold); margin-bottom: .1rem;
+        }
+        .hdr__row { display: flex; align-items: flex-end; gap: var(--space-lg); flex-wrap: wrap; }
+        .hdr__title {
+            font-family: var(--font-display); font-size: 1.9rem; font-weight: 800;
+            background: var(--ink-flame); -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .hdr__sub { font-size: .82rem; color: rgba(251,248,242,.6); margin-top: .2rem; }
+        .hdr__spacer { flex: 1; }
+        .hdr__stamp { font-size: .74rem; color: rgba(251,248,242,.45); }
+
+        .navstrip {
+            position: sticky; top: 0; z-index: 20;
+            background: var(--cream); border-bottom: 1px solid var(--gray-200);
+            overflow-x: auto;
+        }
+        .navstrip__inner { display: flex; gap: .2rem; }
+        .navlink {
+            appearance: none; border: 0; cursor: pointer; background: transparent;
+            color: var(--gray-500); font-family: var(--font-body);
+            font-weight: 600; font-size: .84rem;
+            padding: .9rem 1rem; white-space: nowrap; position: relative;
+        }
+        .navlink:hover { color: var(--gray-800); }
+        .navlink[aria-selected="true"] { color: var(--purple); }
+        .navlink[aria-selected="true"]::after {
+            content: ''; position: absolute; left: .8rem; right: .8rem; bottom: 0;
+            height: 2px; background: var(--purple);
+        }
+
+        .view { display: none; padding: var(--space-2xl) 0 var(--space-4xl); }
+        .view.is-active { display: block; }
+
+        .vhead { margin-bottom: var(--space-lg); }
+        .vhead__title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--burgundy); }
+        .vhead__sub { color: var(--gray-500); font-size: .9rem; margin-top: .25rem; max-width: 62ch; line-height: 1.6; }
+
+        /* ── Today: the unified queue ── */
+        .todo {
+            display: flex; align-items: center; gap: var(--space-lg);
+            background: var(--white); border: 1px solid var(--gray-200);
+            border-left: 3px solid var(--purple);
+            padding: var(--space-lg); margin-bottom: .6rem;
+            text-decoration: none; color: inherit;
+            transition: all var(--transition-fast);
+        }
+        .todo:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-md); }
+        .todo__count {
+            font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+            color: var(--burgundy); line-height: 1; min-width: 2.5ch;
+        }
+        .todo__label { font-weight: 600; font-size: 1rem; }
+        .todo__note { font-size: .82rem; color: var(--gray-500); margin-top: .2rem; }
+        .todo__go { margin-left: auto; color: var(--purple); font-size: 1.2rem; }
+
+        /* ── Metric tiles ── */
+        .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: .75rem; margin-bottom: var(--space-xl); }
+        .tile {
+            background: var(--white); border: 1px solid var(--gray-200);
+            padding: var(--space-lg);
+        }
+        .tile__num {
+            font-family: var(--font-display); font-size: 1.9rem; font-weight: 700;
+            color: var(--burgundy); line-height: 1;
+        }
+        .tile__label {
+            font-size: .74rem; color: var(--gray-500); margin-top: .35rem;
+            text-transform: uppercase; letter-spacing: .06em;
+        }
+        .tile__foot { font-size: .78rem; color: var(--gray-400); margin-top: .4rem; }
+
+        /* ── Ranked bars ── */
+        .rank { margin-bottom: .55rem; }
+        .rank__top { display: flex; align-items: baseline; gap: .6rem; margin-bottom: .25rem; }
+        .rank__label { font-weight: 600; font-size: .92rem; }
+        .rank__value { margin-left: auto; font-family: var(--font-display); font-weight: 600; color: var(--burgundy); }
+        .rank__sub { font-size: .76rem; color: var(--gray-400); }
+        .rank__track { height: 7px; background: var(--gray-100); border-radius: 4px; overflow: hidden; }
+        .rank__fill { height: 100%; background: var(--purple); border-radius: 4px; transition: width .5s var(--transition-base); }
+        .rank__fill--gold { background: var(--gold); }
+        .rank__fill--demo { background: repeating-linear-gradient(45deg, var(--gray-300) 0 6px, var(--gray-200) 6px 12px); }
+
+        /* ── Sentiment chart ── */
+        .senti { display: flex; align-items: flex-end; gap: 4px; height: 130px; margin-top: var(--space-md); }
+        .senti__col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 1px; min-width: 0; }
+        .senti__seg { border-radius: 1px; }
+        .senti__seg--pos { background: var(--success); }
+        .senti__seg--neu { background: var(--gray-200); }
+        .senti__seg--neg { background: var(--purple); }
+        .senti__label { font-size: .6rem; color: var(--gray-400); text-align: center; margin-top: .3rem; overflow: hidden; }
+        .legend { display: flex; gap: 1rem; font-size: .76rem; color: var(--gray-500); margin-top: var(--space-md); flex-wrap: wrap; }
+        .legend__dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .3rem; }
+
+        /* ── Tables ── */
+        .tbl { width: 100%; border-collapse: collapse; font-size: .88rem; background: var(--white); }
+        .tbl th {
+            text-align: left; font-size: .7rem; text-transform: uppercase;
+            letter-spacing: .07em; color: var(--gray-400); font-weight: 700;
+            padding: .7rem var(--space-md); border-bottom: 1px solid var(--gray-200);
+        }
+        .tbl td { padding: .75rem var(--space-md); border-bottom: 1px solid var(--gray-100); }
+        .tbl tr:last-child td { border-bottom: 0; }
+        .tbl-wrap { border: 1px solid var(--gray-200); overflow-x: auto; }
+
+        .tag {
+            display: inline-block; padding: .1rem .5rem; border-radius: var(--radius-full);
+            font-size: .68rem; font-weight: 700; letter-spacing: .04em;
+        }
+        .tag--t2 { background: rgba(212,154,36,.2); color: #8a6410; }
+        .tag--t3 { background: rgba(165,44,50,.15); color: var(--purple); }
+        .tag--demo { background: var(--gray-100); color: var(--gray-500); }
+
+        .callout {
+            background: rgba(212,154,36,.1); border-left: 3px solid var(--gold);
+            padding: var(--space-md) var(--space-lg); font-size: .85rem;
+            color: var(--gray-600); line-height: 1.6; margin-bottom: var(--space-lg);
+        }
+        .unavailable {
+            background: var(--white); border: 1px dashed var(--gray-300);
+            padding: var(--space-2xl); text-align: center; color: var(--gray-500);
+        }
+        .unavailable strong { display: block; font-family: var(--font-display); font-size: 1.05rem; color: var(--gray-700); margin-bottom: .35rem; }
+
+        .card { background: var(--white); border: 1px solid var(--gray-200); padding: var(--space-lg); margin-bottom: var(--space-lg); }
+        .card__title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin-bottom: var(--space-md); color: var(--burgundy); }
+    </style>
+</head>
+<body>
+
+<header class="hdr">
+    <div class="container hdr__row">
+        <div>
+            <div class="hdr__eyebrow">Ang buong larawan</div>
+            <div class="hdr__title">Yeng Constantino</div>
+            <div class="hdr__sub">Management dashboard &mdash; spec preview</div>
+        </div>
+        <div class="hdr__spacer"></div>
+        <div class="hdr__stamp" id="stamp"></div>
+    </div>
+</header>
+
+<nav class="navstrip">
+    <div class="container navstrip__inner" role="tablist">
+        <button class="navlink" role="tab" data-view="today" aria-selected="true">Today</button>
+        <button class="navlink" role="tab" data-view="questions" aria-selected="false">Questions</button>
+        <button class="navlink" role="tab" data-view="tour" aria-selected="false">Tour demand</button>
+        <button class="navlink" role="tab" data-view="sentiment" aria-selected="false">Sentiment</button>
+        <button class="navlink" role="tab" data-view="archive" aria-selected="false">Archive</button>
+        <button class="navlink" role="tab" data-view="moderation" aria-selected="false">Moderation</button>
+        <button class="navlink" role="tab" data-view="economy" aria-selected="false">Revenue</button>
+    </div>
+</nav>
+
+<main class="container">
+    <section class="view is-active" id="view-today"><div class="skeleton" style="height:300px"></div></section>
+    <section class="view" id="view-questions"></section>
+    <section class="view" id="view-tour"></section>
+    <section class="view" id="view-sentiment"></section>
+    <section class="view" id="view-archive"></section>
+    <section class="view" id="view-moderation"></section>
+    <section class="view" id="view-economy"></section>
+</main>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+(function () {
+    'use strict';
+    var esc = Yeng.esc, plural = Yeng.plural;
+
+    if (!Auth.requireAdmin('/handler.html')) return;
+
+    var D = null;
+
+    function num(n) { return Number(n || 0).toLocaleString(); }
+    function peso(n) { return '₱' + Number(n || 0).toLocaleString(); }
+
+    function tile(value, label, foot) {
+        return '<div class="tile"><div class="tile__num">' + value + '</div>'
+            + '<div class="tile__label">' + esc(label) + '</div>'
+            + (foot ? '<div class="tile__foot">' + esc(foot) + '</div>' : '') + '</div>';
+    }
+
+    function unavailable(title, why) {
+        return '<div class="unavailable"><strong>' + esc(title) + '</strong>' + esc(why) + '</div>';
+    }
+
+    function rankBar(label, value, max, sub, mod) {
+        var pct = max > 0 ? Math.round((value / max) * 100) : 0;
+        return '<div class="rank">'
+            + '<div class="rank__top"><span class="rank__label">' + esc(label) + '</span>'
+            + (sub ? '<span class="rank__sub">' + esc(sub) + '</span>' : '')
+            + '<span class="rank__value">' + num(value) + '</span></div>'
+            + '<div class="rank__track"><div class="rank__fill' + (mod ? ' rank__fill--' + mod : '')
+            + '" style="width:' + pct + '%"></div></div></div>';
+    }
+
+    /* ── Views ── */
+    var render = {
+        today: function () {
+            var inbox = D.inbox || [];
+            var h = '<div class="vhead"><h1 class="vhead__title">What needs you today</h1>'
+                + '<p class="vhead__sub">Everything waiting on a human, in one list, ordered by what matters. '
+                + 'Nothing here is a guess &mdash; each row is a live count.</p></div>';
+
+            if (!inbox.length) {
+                h += '<div class="unavailable"><strong>Nothing is waiting</strong>'
+                   + 'No questions, reviews or requests need attention right now.</div>';
+            } else {
+                h += inbox.map(function (i) {
+                    return '<a class="todo" href="' + esc(i.link) + '">'
+                        + '<span class="todo__count">' + num(i.count) + '</span>'
+                        + '<span><span class="todo__label">' + esc(i.label) + '</span>'
+                        + (i.note ? '<span class="todo__note">' + esc(i.note) + '</span>' : '') + '</span>'
+                        + '<span class="todo__go">&rarr;</span></a>';
+                }).join('');
+            }
+
+            var q = D.questions || {}, e = D.economy || {};
+            h += '<div class="tiles mt-3">'
+                + tile(num(q.fansWaiting), 'fans waiting on an answer')
+                + tile(num(q.openClusters), 'open question clusters')
+                + tile(num((D.tour || {}).totalPeople), 'people want a show')
+                + tile(num((e.members || {}).total), 'members')
+                + '</div>';
+            return h;
+        },
+
+        questions: function () {
+            var q = D.questions || {};
+            var h = '<div class="vhead"><h1 class="vhead__title">What the fanbase is actually asking</h1>'
+                + '<p class="vhead__sub">Questions are clustered automatically, so forty ways of asking the same '
+                + 'thing count as one question with forty people behind it.</p></div>';
+
+            if (!q.available) return h + unavailable('No questions yet', 'Themes and cluster sizes appear once fans start asking.');
+
+            h += '<div class="tiles">'
+                + tile(num(q.totalQuestions), 'questions asked')
+                + tile(num(q.openClusters), 'open clusters')
+                + tile(num(q.answeredClusters), 'answered')
+                + tile(num(q.passedClusters), 'passed', 'points refunded in full')
+                + '</div>';
+
+            var themes = q.themes || [];
+            if (themes.length) {
+                var maxT = Math.max.apply(null, themes.map(function (t) { return t.fans; }));
+                h += '<div class="card"><div class="card__title">Themes, ranked by how many people asked</div>'
+                    + themes.slice(0, 10).map(function (t) {
+                        return rankBar(t.topic, t.fans, maxT, t.clusters + ' ' + plural(t.clusters, 'cluster'));
+                    }).join('') + '</div>';
+            }
+
+            var top = q.topClusters || [];
+            if (top.length) {
+                h += '<div class="card"><div class="card__title">Biggest open questions</div><div class="tbl-wrap"><table class="tbl">'
+                    + '<thead><tr><th>People</th><th>Question</th><th>Status</th></tr></thead><tbody>'
+                    + top.map(function (c) {
+                        return '<tr><td><strong>' + num(c.count) + '</strong></td>'
+                            + '<td>' + esc(c.mergedQuestion) + '</td>'
+                            + '<td>' + (c.promoted ? '<span class="tag tag--t2">Promoted</span>' : '&mdash;') + '</td></tr>';
+                    }).join('')
+                    + '</tbody></table></div></div>';
+            }
+            return h;
+        },
+
+        tour: function () {
+            var t = D.tour || {};
+            var h = '<div class="vhead"><h1 class="vhead__title">Where the audience actually is</h1>'
+                + '<p class="vhead__sub">Fans tap once to say they would come, and optionally how many they would bring. '
+                + 'That turns interest into a bookable number instead of a guess.</p></div>';
+
+            if (!t.available) return h + unavailable('No pledges yet', 'City demand appears as fans register interest.');
+
+            if (t.demoIncluded) {
+                h += '<div class="callout"><strong>Demonstration data included.</strong> '
+                    + num(t.demoPledges) + ' seeded pledges are mixed in and marked below. '
+                    + 'Run <code>node scripts/purge-demo-data.js</code> to remove them before going live.</div>';
+            }
+
+            h += '<div class="tiles">'
+                + tile(num(t.totalPeople), 'people would come')
+                + tile(num(t.totalCities), 'cities')
+                + '</div>';
+
+            var cities = t.cities || [];
+            var maxC = cities.length ? cities[0].people : 0;
+            h += '<div class="card"><div class="card__title">Demand by city</div>'
+                + cities.slice(0, 25).map(function (c) {
+                    return rankBar(
+                        c.city + (c.country ? ', ' + c.country : ''),
+                        c.people, maxC,
+                        c.pledges + ' ' + plural(c.pledges, 'pledge') + (c.isDemo ? ' · demo' : ''),
+                        c.isDemo ? 'demo' : null
+                    );
+                }).join('') + '</div>';
+            return h;
+        },
+
+        sentiment: function () {
+            var s = D.sentiment || {};
+            var h = '<div class="vhead"><h1 class="vhead__title">How the room feels</h1>'
+                + '<p class="vhead__sub">' + esc(s.method || '') + '</p></div>';
+
+            if (!s.available) {
+                return h + unavailable('Not enough signal yet',
+                    'Sentiment needs a handful of posts, reviews or notes before a trend means anything.');
+            }
+
+            var trend = s.trend || [];
+            var maxTotal = Math.max.apply(null, trend.map(function (w) { return w.total; }).concat([1]));
+
+            h += '<div class="card"><div class="card__title">Last ' + trend.length + ' weeks</div>'
+                + '<div class="senti">'
+                + trend.map(function (w) {
+                    var scale = 118 / maxTotal;
+                    return '<div class="senti__col">'
+                        + '<div class="senti__seg senti__seg--pos" style="height:' + (w.positive * scale) + 'px"></div>'
+                        + '<div class="senti__seg senti__seg--neu" style="height:' + (w.neutral * scale) + 'px"></div>'
+                        + '<div class="senti__seg senti__seg--neg" style="height:' + (w.negative * scale) + 'px"></div>'
+                        + '</div>';
+                }).join('')
+                + '</div>'
+                + '<div style="display:flex;gap:4px">' + trend.map(function (w) {
+                    return '<div class="senti__label" style="flex:1">' + esc(w.week.split('-W')[1]) + '</div>';
+                }).join('') + '</div>'
+                + '<div class="legend">'
+                + '<span><i class="legend__dot" style="background:var(--success)"></i>Positive</span>'
+                + '<span><i class="legend__dot" style="background:var(--gray-200)"></i>Neutral</span>'
+                + '<span><i class="legend__dot" style="background:var(--purple)"></i>Negative</span>'
+                + '<span style="margin-left:auto;color:var(--gray-400)">' + num(s.sampleSize) + ' items scored</span>'
+                + '</div></div>';
+            return h;
+        },
+
+        archive: function () {
+            var a = D.archive || {};
+            var h = '<div class="vhead"><h1 class="vhead__title">The verified archive</h1>'
+                + '<p class="vhead__sub">Every answer she records is signed and timestamped. The skip pile is kept '
+                + 'deliberately &mdash; what she declined to endorse is itself a record.</p></div>';
+
+            if (!a.available) return h + unavailable('Archive is empty', 'Items appear as she approves them.');
+
+            h += '<div class="tiles">'
+                + tile(num(a.approved), 'approved items')
+                + tile(num(a.transcribed), 'transcribed', 'searchable to the second')
+                + tile(num(a.candidates), 'awaiting review')
+                + tile(num(a.skipped), 'skipped', 'retained, not published')
+                + '</div>';
+
+            var pile = a.skipPile || [];
+            if (pile.length) {
+                h += '<div class="card"><div class="card__title">Skip pile &mdash; declined, on file</div>'
+                    + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th>Source</th><th>Skipped</th></tr></thead><tbody>'
+                    + pile.slice(0, 20).map(function (i) {
+                        return '<tr><td>' + esc(i.title) + '</td><td>' + esc(i.source) + '</td>'
+                            + '<td>' + esc(Yeng.timeAgo(i.skippedAt)) + '</td></tr>';
+                    }).join('') + '</tbody></table></div></div>';
+            }
+            return h;
+        },
+
+        moderation: function () {
+            var m = D.moderation || {};
+            var h = '<div class="vhead"><h1 class="vhead__title">Moderation</h1>'
+                + '<p class="vhead__sub">The filter escalates on pattern, not on one bad day. Tier 1 is silent by '
+                + 'design; only tier 2 and above appear here.</p></div>';
+
+            h += '<div class="tiles">'
+                + tile(num(m.tier2), 'tier 2', 'notified + throttled')
+                + tile(num(m.tier3), 'tier 3', 'shadowbanned')
+                + tile(num(m.pendingPosts), 'posts to review')
+                + tile(num(m.pendingCovers), 'covers to review')
+                + '</div>';
+
+            var users = m.users || [];
+            if (!users.length) {
+                h += unavailable('Nobody is flagged', 'No sustained pattern has crossed the tier-2 threshold.');
+            } else {
+                h += '<div class="card"><div class="card__title">Flagged accounts</div>'
+                    + '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Fan</th><th>Tier</th><th>Category</th><th>Flags</th><th>Updated</th></tr></thead><tbody>'
+                    + users.map(function (u) {
+                        return '<tr><td>' + esc(u.userName || u.userId) + '</td>'
+                            + '<td><span class="tag tag--t' + u.tier + '">Tier ' + u.tier + '</span></td>'
+                            + '<td>' + esc(u.category) + '</td>'
+                            + '<td>' + num(u.flagCount) + '</td>'
+                            + '<td>' + esc(Yeng.timeAgo(u.updatedAt)) + '</td></tr>';
+                    }).join('') + '</tbody></table></div></div>';
+            }
+            return h;
+        },
+
+        economy: function () {
+            var e = D.economy || {};
+            var r = e.revenue || {}, p = e.points || {}, mem = e.members || {};
+            var h = '<div class="vhead"><h1 class="vhead__title">Revenue and the points economy</h1>'
+                + '<p class="vhead__sub">' + esc(r.note || '') + '</p></div>';
+
+            h += '<div class="tiles">'
+                + tile(peso(r.total), 'total, all sources')
+                + tile(peso(r.merch), 'merch')
+                + tile(peso(r.memberships), 'memberships')
+                + tile(peso(r.cameo), 'personalised video')
+                + '</div>';
+
+            h += '<div class="card"><div class="card__title">Yeng Points</div>'
+                + '<div class="tiles" style="margin-bottom:0">'
+                + tile(num(p.inCirculation), 'in circulation')
+                + tile(num(p.earned), 'earned, all time')
+                + tile(num(p.spent), 'spent')
+                + tile(num(p.refunded), 'refunded', p.promotionsRefunded + ' passed questions')
+                + '</div></div>';
+
+            var byTier = mem.byTier || {};
+            var order = ['Free', 'Sariwang Simula', 'Laging Nandito', 'Ikaw Lamang'];
+            var maxTier = Math.max.apply(null, order.map(function (t) { return byTier[t] || 0; }).concat([1]));
+            h += '<div class="card"><div class="card__title">Members by tier</div>'
+                + order.map(function (t) {
+                    return rankBar(t, byTier[t] || 0, maxTier, null, t === 'Ikaw Lamang' ? 'gold' : null);
+                }).join('') + '</div>';
+            return h;
+        }
+    };
+
+    /* ── Routing ── */
+    function show(name) {
+        document.querySelectorAll('.navlink').forEach(function (b) {
+            b.setAttribute('aria-selected', b.dataset.view === name ? 'true' : 'false');
+        });
+        document.querySelectorAll('.view').forEach(function (v) {
+            v.classList.toggle('is-active', v.id === 'view-' + name);
+        });
+        if (location.hash !== '#' + name) history.replaceState(null, '', '#' + name);
+        var el = document.getElementById('view-' + name);
+        if (D && render[name]) el.innerHTML = render[name]();
+    }
+
+    document.querySelectorAll('.navlink').forEach(function (b) {
+        b.addEventListener('click', function () { show(b.dataset.view); });
+    });
+
+    /* ── Load ── */
+    (async function () {
+        try {
+            D = await api('get-handler-dashboard');
+            document.getElementById('stamp').textContent =
+                'Updated ' + new Date(D.generatedAt).toLocaleTimeString('en-PH', { hour: 'numeric', minute: '2-digit' });
+            var initial = (location.hash || '#today').replace('#', '');
+            show(render[initial] ? initial : 'today');
+        } catch (err) {
+            document.getElementById('view-today').innerHTML =
+                Yeng.errorState(err.message, function () { location.reload(); });
+        }
+    })();
+})();
+</script>
+</body>
+</html>

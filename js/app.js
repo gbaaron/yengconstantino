@@ -10,6 +10,26 @@ const APP = {
     API_BASE: ((window.NativeBridge && window.NativeBridge.API_BASE) || '') + '/.netlify/functions',
     TOKEN_KEY: 'yc_token',
     USER_KEY: 'yc_user',
+
+    // True when this page is rendered inside demo.html's Web/App frame.
+    // Pages use it to drop the intro animation and any chrome that only makes
+    // sense standalone.
+    // True when demo.html is rendering this page inside its iPhone bezel.
+    // env(safe-area-inset-top) resolves to 0 in an iframe, so the site's nav
+    // would sit under the Dynamic Island without this.
+    isPhoneFrame: (function () {
+        try { return new URLSearchParams(window.location.search).get('frame') === 'phone'; }
+        catch (e) { return false; }
+    })(),
+
+    isEmbedded: (function () {
+        try {
+            return new URLSearchParams(window.location.search).get('embed') === '1'
+                || window.self !== window.top;
+        } catch (e) {
+            return true; // cross-origin frame access threw — treat as embedded
+        }
+    })(),
 };
 
 /* ── Auth Helpers ── */
@@ -446,6 +466,11 @@ function initScrollAnimations() {
 
 /* ── Page Loader (Signature Animation) ── */
 function initPageLoader() {
+    // Inside the six-view demo shell (demo.html) every panel is an iframe with
+    // its own sessionStorage partition, so the 2.8s signature animation would
+    // fire on every view switch. `?embed=1` suppresses it.
+    if (APP.isEmbedded) return;
+
     // Skip if already shown this session (only show once per session)
     if (sessionStorage.getItem('yc_loader_shown')) {
         return;
@@ -707,6 +732,8 @@ function renderIgPlaceholder(grid) {
 
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
+    if (APP.isEmbedded) document.documentElement.classList.add('is-embedded');
+    if (APP.isPhoneFrame) document.documentElement.classList.add('is-phone-frame');
     initPageLoader();
     initNav();
     initLanguageSelector();

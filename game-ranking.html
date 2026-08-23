@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Ranking — Yeng Constantino (Spec Preview)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body { background: var(--off-white); }
+
+        /* Hero uses the shared .page-hero component. */
+        .rk-progress { display: flex; align-items: center; justify-content: center; gap: 1.75rem; margin-top: var(--space-lg); font-size: .82rem; color: rgba(251,248,242,.6); }
+        .rk-progress strong { color: var(--gold); font-family: var(--font-display); font-size: 1.15rem; }
+
+        /* ── The matchup ── */
+        .matchup {
+            display: grid; grid-template-columns: 1fr auto 1fr;
+            gap: var(--space-md); align-items: stretch;
+            max-width: 760px; margin: 0 auto;
+        }
+        .pick {
+            appearance: none; border: 2px solid var(--gray-200); cursor: pointer;
+            background: var(--white); padding: 0; overflow: hidden;
+            display: flex; flex-direction: column; text-align: left;
+            transition: all var(--transition-fast);
+            font-family: var(--font-body);
+        }
+        .pick:hover { border-color: var(--purple); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .pick:active { transform: translateY(-1px) scale(.99); }
+        .pick.is-won { border-color: var(--success); }
+        .pick.is-lost { opacity: .35; }
+        .pick__art { aspect-ratio: 1; width: 100%; display: block; background: var(--gray-100); object-fit: cover; }
+        .pick__body { padding: var(--space-md); flex: 1; display: flex; flex-direction: column; }
+        .pick__title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; line-height: 1.3; }
+        .pick__meta { font-size: .78rem; color: var(--gray-400); margin-top: .25rem; }
+        .pick__champ {
+            display: inline-block; margin-top: .5rem;
+            font-size: .64rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+            color: var(--gold); }
+
+        .vs {
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 1.1rem; color: var(--gray-300);
+            writing-mode: vertical-rl;
+        }
+
+        .rk-actions { display: flex; justify-content: center; gap: .6rem; margin-top: var(--space-lg); flex-wrap: wrap; }
+
+        /* ── Standings ── */
+        .stand-row {
+            display: flex; align-items: center; gap: var(--space-md);
+            background: var(--white); border: 1px solid var(--gray-200);
+            padding: .7rem var(--space-lg); margin-bottom: .4rem;
+        }
+        .stand-row__rank {
+            font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
+            color: var(--gray-300); min-width: 2.2ch;
+        }
+        .stand-row__rank--top { color: var(--gold); }
+        .stand-row__name { font-weight: 600; flex: 1; min-width: 0; }
+        .stand-row__meta { font-size: .74rem; color: var(--gray-400); }
+        .stand-row__prov {
+            font-size: .62rem; text-transform: uppercase; letter-spacing: .05em;
+            color: var(--gray-300); border: 1px solid var(--gray-200);
+            padding: .05rem .35rem; border-radius: var(--radius-full);
+        }
+        .stand-row__score { font-family: var(--font-display); font-weight: 600; color: var(--burgundy); }
+
+        .note {
+            font-size: .82rem; color: var(--gray-500); line-height: 1.6;
+            background: var(--white); border-left: 3px solid var(--gray-300);
+            padding: var(--space-md) var(--space-lg); margin-bottom: var(--space-lg);
+        }
+
+        @media (max-width: 620px) {
+            .matchup { grid-template-columns: 1fr; }
+            .vs { writing-mode: horizontal-tb; padding: .25rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/games.html" class="nav__link">&larr; Games</a></li>
+            <li><a href="/ask.html" class="nav__link">Ask Yeng</a></li>
+            <li><a href="/archive.html" class="nav__link">Archive</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-hero">
+    <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Alin ang mas gusto mo?</span>
+        <h1 class="page-hero__title">Which one?</h1>
+        <p class="page-hero__sub">Pick the one you'd rather hear. Winner stays on.</p>
+        <div class="rk-progress">
+            <span>This session <strong id="session-count">0</strong></span>
+            <span>Points <strong data-points-balance>—</strong></span>
+        </div>
+    </div>
+</header>
+
+<main class="section section--compact">
+    <div class="container">
+        <div id="game"><div class="skeleton" style="height:340px"></div></div>
+
+        <div class="rk-actions">
+            <button class="btn btn--ghost btn--sm" id="skip">Skip this pair</button>
+            <button class="btn btn--secondary btn--sm" id="finish">Finish session</button>
+        </div>
+
+        <section class="mt-4" id="standings-section">
+            <div class="section-header" style="text-align:left;margin-bottom:1rem">
+                <span class="section-header__eyebrow" style="font-size:1.15rem">Ang ranggo</span>
+                <h2 class="section-header__title" style="font-size:1.4rem">The standings</h2>
+            </div>
+            <div class="note" id="standings-note"></div>
+            <div id="standings"></div>
+        </section>
+    </div>
+</main>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   SONG RANKING
+   Ratings are never shown during a matchup — seeing them would anchor the
+   vote and poison the dataset. They only appear in the standings below.
+   ═══════════════════════════════════════════════════════ */
+(function () {
+    'use strict';
+    var esc = Yeng.esc, plural = Yeng.plural;
+
+    var pair = null;
+    var champion = null;
+    var seen = [];
+    var votes = 0;
+    var busy = false;
+
+    function art(title, url) {
+        if (url) return url;
+        var hue = 0;
+        for (var i = 0; i < title.length; i++) hue = (hue * 31 + title.charCodeAt(i)) % 360;
+        var svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>"
+            + "<rect width='400' height='400' fill='hsl(" + hue + ",30%,24%)'/>"
+            + "<circle cx='200' cy='200' r='140' fill='hsl(" + hue + ",28%,13%)'/>"
+            + "<g fill='none' stroke='#fff' stroke-opacity='.07' stroke-width='2'>"
+            + "<circle cx='200' cy='200' r='126'/><circle cx='200' cy='200' r='110'/>"
+            + "<circle cx='200' cy='200' r='94'/><circle cx='200' cy='200' r='78'/></g>"
+            + "<circle cx='200' cy='200' r='44' fill='#D49A24'/>"
+            + "<circle cx='200' cy='200' r='6' fill='hsl(" + hue + ",28%,13%)'/></svg>";
+        return 'data:image/svg+xml,' + encodeURIComponent(svg);
+    }
+
+    function render() {
+        var el = document.getElementById('game');
+        if (!pair) {
+            el.innerHTML = Yeng.emptyState('No matchup available',
+                'The music library needs at least two songs before ranking can run.');
+            return;
+        }
+        el.innerHTML = '<div class="matchup">'
+            + card(pair[0]) + '<div class="vs">VS</div>' + card(pair[1])
+            + '</div>';
+
+        document.querySelectorAll('.pick').forEach(function (b) {
+            b.addEventListener('click', function () { vote(b.dataset.id); });
+        });
+    }
+
+    function card(s) {
+        var isChamp = champion === s.id;
+        return '<button class="pick" data-id="' + s.id + '">'
+            + '<img class="pick__art" alt="" src="' + art(s.title, s.thumbnail) + '">'
+            + '<div class="pick__body">'
+            + '<span class="pick__title">' + esc(s.title) + '</span>'
+            + '<span class="pick__meta">' + esc([s.year, s.era].filter(Boolean).join(' · ')) + '</span>'
+            + (isChamp ? '<span class="pick__champ">Still standing</span>' : '')
+            + '</div></button>';
+    }
+
+    async function vote(winnerId) {
+        if (busy || !pair) return;
+        busy = true;
+
+        var loserId = pair[0].id === winnerId ? pair[1].id : pair[0].id;
+
+        document.querySelectorAll('.pick').forEach(function (b) {
+            b.classList.add(b.dataset.id === winnerId ? 'is-won' : 'is-lost');
+        });
+        if (window.NativeBridge && NativeBridge.haptic) { try { NativeBridge.haptic('light'); } catch (e) {} }
+
+        votes++;
+        document.getElementById('session-count').textContent = votes;
+        champion = winnerId;
+        if (seen.indexOf(loserId) === -1) seen.push(loserId);
+
+        try {
+            var res = await api('submit-ranking', {
+                method: 'POST',
+                body: { winnerId: winnerId, loserId: loserId }
+            });
+            if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+        } catch (err) {
+            if (/log in/i.test(err.message || '')) {
+                window.location.href = '/login.html?redirect=' + encodeURIComponent('/game-ranking.html');
+                return;
+            }
+        }
+
+        setTimeout(function () { busy = false; next(); }, 320);
+    }
+
+    async function next() {
+        try {
+            var q = 'get-song-pairs'
+                + (champion ? '?keep=' + encodeURIComponent(champion) : '?')
+                + (seen.length ? '&exclude=' + encodeURIComponent(seen.slice(-8).join(',')) : '');
+            var data = await api(q);
+            pair = data.pair;
+            render();
+        } catch (err) {
+            document.getElementById('game').innerHTML = Yeng.errorState(err.message, next);
+        }
+    }
+
+    document.getElementById('skip').addEventListener('click', function () {
+        if (pair) { seen.push(pair[0].id, pair[1].id); }
+        champion = null;
+        next();
+    });
+
+    document.getElementById('finish').addEventListener('click', async function () {
+        if (!votes) { showToast('Play a few rounds first.', 'info'); return; }
+        try {
+            // Mark the last vote as completing a session so the points and the
+            // card drop trigger fire once, not per vote.
+            if (pair) {
+                var res = await api('submit-ranking', {
+                    method: 'POST',
+                    body: { winnerId: pair[0].id, loserId: pair[1].id, sessionComplete: true }
+                });
+                if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+                showToast(res.pointsEarned
+                    ? 'Session done — ' + res.pointsEarned + ' Yeng Points.'
+                    : 'Session done.', 'success');
+            }
+        } catch (e) { /* non-blocking */ }
+        votes = 0;
+        document.getElementById('session-count').textContent = '0';
+        loadStandings();
+        document.getElementById('standings-section').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    /* ── Standings ── */
+    async function loadStandings() {
+        try {
+            var data = await api('get-song-pairs?view=standings&limit=40');
+            var list = data.standings || [];
+            var note = document.getElementById('standings-note');
+            note.textContent = list.length
+                ? data.settledCount + ' ' + plural(data.settledCount, 'song has', 'songs have')
+                  + ' enough matchups to be settled. '
+                  + data.provisionalCount + ' still provisional — a song needs 10 matchups before its position means much.'
+                : 'No votes yet.';
+
+            document.getElementById('standings').innerHTML = list.length
+                ? list.map(function (s) {
+                    return '<div class="stand-row">'
+                        + '<span class="stand-row__rank' + (s.rank <= 3 ? ' stand-row__rank--top' : '') + '">' + s.rank + '</span>'
+                        + '<span class="stand-row__name">' + esc(s.title)
+                        + '<br><span class="stand-row__meta">' + esc([s.year, s.era].filter(Boolean).join(' · '))
+                        + ' · ' + s.winRate + '% win rate</span></span>'
+                        + (s.appearances < 10 ? '<span class="stand-row__prov">provisional</span>' : '')
+                        + '<span class="stand-row__score">' + s.rating + '</span>'
+                        + '</div>';
+                  }).join('')
+                : Yeng.emptyState('Nothing ranked yet', 'Play a few rounds to start the board.');
+        } catch (err) {
+            document.getElementById('standings').innerHTML = Yeng.errorState(err.message, loadStandings);
+        }
+    }
+
+    /* ── Boot ── */
+    (async function () {
+        await Yeng.Points.load();
+        next();
+        loadStandings();
+    })();
+})();
+</script>
+</body>
+</html>

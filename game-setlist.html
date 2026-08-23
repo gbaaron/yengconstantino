@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setlist Prediction — Yeng Constantino (Spec Preview)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body { background: var(--off-white); }
+        /* Hero uses the shared .page-hero component. */
+
+        .show-pick { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: var(--space-lg); }
+        .show-chip {
+            appearance: none; cursor: pointer; text-align: left;
+            border: 1px solid var(--gray-200); background: var(--white);
+            padding: .6rem .9rem; font-family: var(--font-body);
+        }
+        .show-chip[aria-selected="true"] { border-color: var(--purple); border-width: 2px; }
+        .show-chip__t { font-family: var(--font-display); font-weight: 600; font-size: .95rem; }
+        .show-chip__m { font-size: .74rem; color: var(--gray-400); margin-top: .1rem; }
+
+        .picker {
+            display: flex; align-items: center; gap: var(--space-md);
+            background: var(--gray-900); color: var(--cream);
+            padding: var(--space-md) var(--space-lg);
+            position: sticky; top: 0; z-index: 15; flex-wrap: wrap;
+        }
+        .picker__count { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--gold); line-height: 1; }
+        .picker__label { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: rgba(251,248,242,.6); }
+        .picker__spacer { flex: 1; }
+
+        .songgrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: .5rem; margin-top: var(--space-lg); }
+        .song {
+            appearance: none; cursor: pointer; text-align: left;
+            display: flex; align-items: center; gap: .7rem;
+            border: 1px solid var(--gray-200); background: var(--white);
+            padding: .7rem .85rem; font-family: var(--font-body);
+            transition: all var(--transition-fast);
+        }
+        .song:hover { border-color: var(--gray-400); }
+        .song[aria-pressed="true"] { border-color: var(--purple); background: rgba(165,44,50,.06); }
+        .song[aria-pressed="true"] .song__box { background: var(--purple); border-color: var(--purple); color: #fff; }
+        .song__box {
+            width: 20px; height: 20px; flex: none; border: 1px solid var(--gray-300);
+            border-radius: var(--radius-sm); display: inline-flex;
+            align-items: center; justify-content: center; font-size: .7rem;
+        }
+        .song__t { font-weight: 600; font-size: .9rem; flex: 1; min-width: 0; }
+        .song__pop { font-size: .7rem; color: var(--gray-400); }
+        .song.is-played { border-color: var(--success); background: rgba(64,88,74,.07); }
+        .song.is-missed { opacity: .45; }
+
+        .crowd-note { font-size: .8rem; color: var(--gray-500); margin-top: .6rem; }
+        .scored-banner {
+            background: var(--success); color: #fff;
+            padding: var(--space-md) var(--space-lg); margin-top: var(--space-lg);
+            font-size: .92rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/games.html" class="nav__link">&larr; Games</a></li>
+            <li><a href="/events.html" class="nav__link">Events</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-hero page-hero--left">
+    <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Ano kaya ang kakantahin niya?</span>
+        <h1 class="page-hero__title">Setlist Prediction</h1>
+        <p class="page-hero__sub">
+            Pick what you think she'll play. Scored after the show — five points a song.
+            Her team sees the totals, which is how a setlist stops being a guess.
+        </p>
+        <div class="show-pick" id="shows"></div>
+    </div>
+</header>
+
+<main class="section section--compact">
+    <div class="container">
+        <div id="body"><div class="skeleton" style="height:260px"></div></div>
+    </div>
+</main>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+(function () {
+    'use strict';
+    var esc = Yeng.esc, plural = Yeng.plural;
+
+    var shows = [];
+    var current = null;
+    var data = null;
+    var picks = [];
+    var MAX = 10;
+
+    async function loadShows() {
+        try {
+            var res = await api('play-setlist');
+            shows = res.shows || [];
+            if (!shows.length) {
+                document.getElementById('body').innerHTML = Yeng.emptyState(
+                    'No shows announced yet',
+                    'Setlist predictions open as soon as a date goes on sale.');
+                return;
+            }
+            document.getElementById('shows').innerHTML = shows.map(function (s) {
+                return '<button class="show-chip" data-id="' + s.id + '" aria-selected="false">'
+                    + '<div class="show-chip__t">' + esc(s.title) + '</div>'
+                    + '<div class="show-chip__m">' + esc([s.venue, s.city].filter(Boolean).join(' · '))
+                    + (s.date ? ' · ' + new Date(s.date).toLocaleDateString('en-PH', { day: 'numeric', month: 'short' }) : '')
+                    + (s.setlistScored ? ' · scored' : '') + '</div></button>';
+            }).join('');
+            document.querySelectorAll('.show-chip').forEach(function (b) {
+                b.addEventListener('click', function () { selectShow(b.dataset.id); });
+            });
+            selectShow(shows[0].id);
+        } catch (err) {
+            document.getElementById('body').innerHTML = Yeng.errorState(err.message, loadShows);
+        }
+    }
+
+    async function selectShow(id) {
+        current = id;
+        document.querySelectorAll('.show-chip').forEach(function (b) {
+            b.setAttribute('aria-selected', b.dataset.id === id ? 'true' : 'false');
+        });
+        document.getElementById('body').innerHTML = '<div class="skeleton" style="height:260px"></div>';
+        try {
+            data = await api('play-setlist?eventId=' + encodeURIComponent(id));
+            picks = (data.yourPicks || []).slice();
+            render();
+        } catch (err) {
+            document.getElementById('body').innerHTML = Yeng.errorState(err.message, function () { selectShow(id); });
+        }
+    }
+
+    function render() {
+        var scored = data.show.scored;
+        var actual = data.show.actualSongIds || [];
+        var maxPop = Math.max.apply(null, (data.songs || []).map(function (s) { return s.pickCount; }).concat([1]));
+
+        var html = '';
+
+        if (scored) {
+            var hits = picks.filter(function (p) { return actual.indexOf(p) !== -1; }).length;
+            html += '<div class="scored-banner">This show has been scored. You got <strong>' + hits + '</strong> of '
+                + picks.length + ' &mdash; ' + (hits * 5) + ' Yeng Points.</div>';
+        } else {
+            html += '<div class="picker">'
+                + '<div><div class="picker__count"><span id="pc">' + picks.length + '</span>/' + MAX + '</div>'
+                + '<div class="picker__label">songs picked</div></div>'
+                + '<span class="picker__spacer"></span>'
+                + '<button class="btn btn--gold btn--sm" id="save">Lock in my picks</button>'
+                + '</div>';
+        }
+
+        html += '<div class="songgrid">' + (data.songs || []).map(function (s) {
+            var on = picks.indexOf(s.id) !== -1;
+            var cls = 'song'
+                + (scored && actual.indexOf(s.id) !== -1 ? ' is-played' : '')
+                + (scored && on && actual.indexOf(s.id) === -1 ? ' is-missed' : '');
+            return '<button class="' + cls + '" data-id="' + s.id + '" aria-pressed="' + on + '"'
+                + (scored ? ' disabled' : '') + '>'
+                + '<span class="song__box">' + (on ? '&#10003;' : '') + '</span>'
+                + '<span class="song__t">' + esc(s.title) + '</span>'
+                + '<span class="song__pop">' + (s.pickCount ? Math.round((s.pickCount / maxPop) * 100) + '%' : '') + '</span>'
+                + '</button>';
+        }).join('') + '</div>';
+
+        html += '<p class="crowd-note">' + Number(data.totalPredictions || 0).toLocaleString() + ' '
+            + plural(data.totalPredictions, 'prediction') + ' in. The percentage is how often each song is picked.</p>';
+
+        document.getElementById('body').innerHTML = html;
+
+        document.querySelectorAll('.song:not([disabled])').forEach(function (b) {
+            b.addEventListener('click', function () { toggle(b); });
+        });
+        var save = document.getElementById('save');
+        if (save) save.addEventListener('click', savePicks);
+    }
+
+    function toggle(btn) {
+        var id = btn.dataset.id;
+        var i = picks.indexOf(id);
+        if (i !== -1) picks.splice(i, 1);
+        else {
+            if (picks.length >= MAX) { showToast('That is the maximum ' + MAX + ' songs.', 'info'); return; }
+            picks.push(id);
+        }
+        btn.setAttribute('aria-pressed', picks.indexOf(id) !== -1);
+        btn.querySelector('.song__box').innerHTML = picks.indexOf(id) !== -1 ? '&#10003;' : '';
+        document.getElementById('pc').textContent = picks.length;
+    }
+
+    async function savePicks() {
+        if (!picks.length) { showToast('Pick at least one song.', 'error'); return; }
+        if (!Auth.isLoggedIn()) {
+            window.location.href = '/login.html?redirect=' + encodeURIComponent('/game-setlist.html');
+            return;
+        }
+        var btn = document.getElementById('save');
+        btn.disabled = true; btn.textContent = 'Saving…';
+        try {
+            var res = await api('play-setlist', {
+                method: 'POST',
+                body: { eventId: current, songIds: picks }
+            });
+            if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+            showToast(res.updated ? 'Picks updated.' : 'Locked in. Scored after the show.', 'success');
+        } catch (err) {
+            showToast(err.message || 'Could not save.', 'error');
+        } finally {
+            btn.disabled = false; btn.textContent = 'Lock in my picks';
+        }
+    }
+
+    Yeng.Points.load().then(loadShows);
+})();
+</script>
+</body>
+</html>

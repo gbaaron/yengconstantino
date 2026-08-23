@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
-    <title>Music & Content Archive — Yeng Constantino Official</title>
+    <title>Music & Content Archive — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="Browse Yeng Constantino's complete discography and content archive. Studio recordings, live performances, music videos, interviews, and behind the scenes — all in one place.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,9 +28,13 @@
             --burgundy: #741E27;
             --burgundy-light: #96313B;
             --bg-off-white: #FBF8F2;
-            --font-display: var(--font-display);
-            --font-body: var(--font-body);
-            --font-accent: var(--font-accent);
+            /* Resolve to the real stacks. These three were previously
+               self-referential (--font-display: var(--font-display)), which is a
+               CSS custom-property cycle: invalid at computed-value time, so the
+               whole page fell back to Times. See AUDIT.md §1.5. */
+            --font-display: 'Fraunces', 'Playfair Display', serif;
+            --font-body: 'Instrument Sans', system-ui, sans-serif;
+            --font-accent: 'Kalam', cursive;
             --gradient-primary: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
             --gradient-cta: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
             --shadow-warm-sm: 0 2px 8px rgba(212, 154, 36, 0.10);
@@ -1262,6 +1266,10 @@
             <ul class="nav__links">
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link nav__link--active">Music</a></li>
+                <li><a href="/ask.html" class="nav__link">Ask Yeng</a></li>
+                <li><a href="/archive.html" class="nav__link">Archive</a></li>
+                <li><a href="/tour.html" class="nav__link">Tour Map</a></li>
+                <li><a href="/games.html" class="nav__link">Games</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
@@ -1297,7 +1305,9 @@
                     <span class="filter-group__label">Era</span>
                     <div class="filter-group__pills" id="eraFilters">
                         <button class="filter-tab filter-tab--active" data-era="all">All</button>
-                        <button class="filter-tab" data-era="Philippine Idol Era">Philippine Idol Era</button>
+                        <!-- data-era must match the Airtable Era field value; only the label is corrected here.
+                             She won Pinoy Dream Academy (2006), not Philippine Idol. -->
+                        <button class="filter-tab" data-era="Philippine Idol Era">Pinoy Dream Academy Era</button>
                         <button class="filter-tab" data-era="Early Career">Early Career</button>
                         <button class="filter-tab" data-era="Mature Sound">Mature Sound</button>
                         <button class="filter-tab" data-era="Recent Releases">Recent Releases</button>
@@ -1430,7 +1440,7 @@
                 </div>
             </div>
             <div class="footer__bottom">
-                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
                 <span style="font-family:var(--font-accent);font-size:1.1rem;color:var(--gold);">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
@@ -1856,7 +1866,7 @@
                         renderFallback();
                         return;
                     }
-                    totalResults = data.pagination ? data.pagination.total : allContent.length;
+                    totalResults = data.pagination ? data.pagination.totalRecords : allContent.length;
                     renderContent(allContent);
                     renderPagination(data.pagination);
                 } catch (err) {
@@ -2178,7 +2188,7 @@
                 }
 
                 try {
-                    var data = await api('rate-vlog', {
+                    var data = await api('rate-content', {
                         method: 'POST',
                         body: {
                             vlogId: ratingModalContentId,

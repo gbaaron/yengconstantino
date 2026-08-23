@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Yeng Constantino — Platform Preview</title>
+    <meta name="description" content="A six-view preview of the Yeng Constantino fan platform concept. Built by Global Media.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════
+           SIX-VIEW DEMO SHELL
+           3 audiences (Fan / Yeng / Management) × 2 form factors
+           (Web / App) = six views, all addressable by URL hash.
+
+           Built as a projection of the live product rather than a set of
+           hand-drawn screens: every panel iframes the real page, so this
+           cannot drift out of date the way deck.html did.
+
+           Requires netlify.toml X-Frame-Options: SAMEORIGIN (DENY blocks
+           same-origin framing too).
+           ═══════════════════════════════════════════════════════ */
+
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            background: var(--off-white);
+            font-family: var(--font-body);
+            color: var(--gray-800);
+            overflow: hidden;
+        }
+
+        /* ── Gate ── */
+        .gate {
+            position: fixed; inset: 0; z-index: 200;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--gray-900);
+            padding: var(--space-lg);
+        }
+        .gate[hidden] { display: none; }
+        .gate__card {
+            width: 100%; max-width: 420px;
+            background: var(--cream);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+        }
+        .gate__mark {
+            font-family: var(--font-accent);
+            font-size: 1.5rem; color: var(--purple);
+            margin-bottom: var(--space-xs);
+        }
+        .gate__title {
+            font-family: var(--font-display);
+            font-size: 1.6rem; font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        .gate__sub {
+            font-size: 0.9rem; color: var(--gray-500);
+            margin-bottom: var(--space-xl); line-height: 1.6;
+        }
+        .gate__input {
+            width: 100%; padding: 0.85rem 1rem;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            font-family: var(--font-body); font-size: 1rem;
+            margin-bottom: var(--space-md);
+            border-radius: var(--radius-sm);
+        }
+        .gate__input:focus { outline: none; border-color: var(--purple); box-shadow: var(--shadow-glow); }
+        .gate__err { color: var(--error); font-size: 0.85rem; min-height: 1.2em; margin-bottom: var(--space-sm); }
+
+        /* ── Shell chrome ── */
+        .shell {
+            display: flex; flex-direction: column;
+            height: 100vh; height: 100dvh;
+        }
+        .topbar {
+            flex: none;
+            display: flex; align-items: center; gap: var(--space-lg);
+            padding: 0 var(--space-lg);
+            height: 56px;
+            background: var(--gray-900);
+            color: var(--cream);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .topbar__brand {
+            display: flex; align-items: baseline; gap: 0.5rem;
+            font-family: var(--font-display); font-weight: 600; font-size: 1rem;
+            white-space: nowrap;
+        }
+        .topbar__brand small {
+            font-family: var(--font-body); font-weight: 500;
+            font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--gold);
+        }
+        .topbar__spacer { flex: 1; }
+        .topbar__note {
+            font-size: 0.75rem; color: rgba(251,248,242,0.55);
+            display: none;
+        }
+        @media (min-width: 1100px) { .topbar__note { display: block; } }
+
+        /* ── Persona tabs (audience) ── */
+        .personas { display: flex; gap: 2px; }
+        .persona {
+            appearance: none; border: 0; cursor: pointer;
+            background: rgba(255,255,255,0.06);
+            color: rgba(251,248,242,0.72);
+            font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+            padding: 0.5rem 1.1rem;
+            border-radius: var(--radius-sm);
+            transition: background var(--transition-fast), color var(--transition-fast);
+            white-space: nowrap;
+        }
+        .persona:hover { background: rgba(255,255,255,0.12); color: var(--cream); }
+        .persona[aria-selected="true"] {
+            background: var(--purple); color: #fff;
+        }
+
+        /* ── Sub-bar: platform toggle + page chips ── */
+        .subbar {
+            flex: none;
+            display: flex; align-items: center; gap: var(--space-lg);
+            padding: 0 var(--space-lg);
+            height: 52px;
+            background: var(--cream);
+            border-bottom: 1px solid var(--gray-200);
+            overflow-x: auto;
+        }
+        .platforms {
+            display: flex; gap: 0;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-sm);
+            overflow: hidden; flex: none;
+        }
+        .platform {
+            appearance: none; border: 0; cursor: pointer;
+            background: transparent; color: var(--gray-600);
+            font-family: var(--font-body); font-size: 0.8rem; font-weight: 600;
+            padding: 0.4rem 0.95rem;
+            display: flex; align-items: center; gap: 0.4rem;
+            transition: background var(--transition-fast);
+        }
+        .platform + .platform { border-left: 1px solid var(--gray-300); }
+        .platform[aria-selected="true"] { background: var(--gray-800); color: var(--cream); }
+        .platform svg { width: 13px; height: 13px; }
+
+        .pages { display: flex; gap: 0.35rem; flex: 1; min-width: 0; }
+        .page-chip {
+            appearance: none; border: 1px solid transparent; cursor: pointer;
+            background: transparent; color: var(--gray-500);
+            font-family: var(--font-body); font-size: 0.78rem; font-weight: 500;
+            padding: 0.3rem 0.7rem; border-radius: var(--radius-full);
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+        }
+        .page-chip:hover { background: var(--gray-100); color: var(--gray-800); }
+        .page-chip[aria-selected="true"] {
+            background: var(--purple); color: #fff; border-color: var(--purple);
+        }
+        .persona-note {
+            flex: none; font-size: 0.75rem; color: var(--gray-400);
+            font-style: italic; white-space: nowrap;
+        }
+
+        /* ── Stage ── */
+        .stage {
+            flex: 1; min-height: 0;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            padding: var(--space-lg);
+            background:
+                radial-gradient(ellipse 900px 500px at 50% 0%, rgba(165,44,50,0.05), transparent 70%),
+                var(--off-white);
+        }
+        .stage::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background-image: radial-gradient(circle at 1px 1px, rgba(25,23,22,0.045) 1px, transparent 1.5px);
+            background-size: 22px 22px;
+        }
+
+        /* ── Web frame: browser chrome ── */
+        .web-frame {
+            position: relative; z-index: 1;
+            width: 100%; height: 100%;
+            max-width: 1400px;
+            display: flex; flex-direction: column;
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .web-frame__bar {
+            flex: none; height: 38px;
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0 0.8rem;
+            background: var(--gray-100);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .web-frame__dots { display: flex; gap: 6px; }
+        .web-frame__dot { width: 11px; height: 11px; border-radius: 50%; background: var(--gray-300); }
+        .web-frame__url {
+            flex: 1; height: 24px;
+            display: flex; align-items: center;
+            padding: 0 0.7rem;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-full);
+            font-size: 0.72rem; color: var(--gray-500);
+            font-family: var(--font-body);
+            overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+        }
+        .web-frame__body { flex: 1; min-height: 0; position: relative; }
+
+        /* ── App frame: current-generation iPhone ──
+           The iframe is set to a REAL device width (393px = iPhone 15/16) and
+           then scaled to fit the bezel, so the page renders at true mobile
+           breakpoints rather than a squashed desktop layout. */
+        .app-frame {
+            position: relative; z-index: 1;
+            width: 393px; height: 852px;
+            flex: none;
+            background: #0b0b0d;
+            border-radius: 56px;
+            padding: 12px;
+            box-shadow:
+                0 0 0 2px #2a2a30,
+                0 0 0 3px #48484f,
+                0 30px 60px rgba(0,0,0,0.35);
+            transform-origin: center center;
+        }
+        .app-frame__screen {
+            position: relative;
+            width: 100%; height: 100%;
+            background: var(--white);
+            border-radius: 44px;
+            overflow: hidden;
+        }
+        /* Dynamic Island */
+        .app-frame__island {
+            position: absolute; top: 11px; left: 50%;
+            transform: translateX(-50%);
+            width: 122px; height: 34px;
+            background: #0b0b0d;
+            border-radius: 20px;
+            z-index: 3; pointer-events: none;
+        }
+        .app-frame__statusbar {
+            position: absolute; top: 0; left: 0; right: 0; height: 54px;
+            z-index: 2; pointer-events: none;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 32px 0;
+            font-size: 0.78rem; font-weight: 600; color: var(--gray-800);
+            font-family: var(--font-body);
+            background: linear-gradient(to bottom, rgba(251,248,242,0.92), rgba(251,248,242,0));
+        }
+        .app-frame__home {
+            position: absolute; bottom: 8px; left: 50%;
+            transform: translateX(-50%);
+            width: 140px; height: 5px; border-radius: 3px;
+            background: rgba(25,23,22,0.28);
+            z-index: 3; pointer-events: none;
+        }
+        .app-frame__body {
+            position: absolute; inset: 0;
+            border-radius: 44px; overflow: hidden;
+        }
+
+        /* Both frames share the iframe treatment */
+        .stage iframe {
+            display: block;
+            width: 100%; height: 100%;
+            border: 0;
+            background: var(--white);
+        }
+
+        .frame-wrap { display: none; }
+        .frame-wrap.is-active { display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; }
+
+        /* ── Loading veil ── */
+        .veil {
+            position: absolute; inset: 0; z-index: 4;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--white);
+            transition: opacity 220ms ease;
+        }
+        .veil[hidden] { display: none; }
+        .veil__mark { font-family: var(--font-accent); color: var(--purple); font-size: 1.2rem; }
+
+        /* ── Footer strip ── */
+        .footstrip {
+            flex: none;
+            display: flex; align-items: center; gap: var(--space-md);
+            padding: 0 var(--space-lg); height: 40px;
+            background: var(--cream);
+            border-top: 1px solid var(--gray-200);
+            font-size: 0.73rem; color: var(--gray-500);
+        }
+        .footstrip__spacer { flex: 1; }
+        .footstrip a { color: var(--purple); text-decoration: none; font-weight: 600; }
+        .footstrip a:hover { text-decoration: underline; }
+        .badge-spec {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.15rem 0.55rem;
+            background: var(--gold); color: var(--gray-900);
+            border-radius: var(--radius-full);
+            font-size: 0.66rem; font-weight: 700;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .topbar { gap: var(--space-md); padding: 0 var(--space-md); }
+            .subbar { gap: var(--space-md); padding: 0 var(--space-md); }
+            .persona { padding: 0.45rem 0.7rem; font-size: 0.78rem; }
+            .persona-note { display: none; }
+            .stage { padding: var(--space-sm); }
+        }
+        @media (max-width: 560px) {
+            .topbar__brand small { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════ GATE ══════════════ -->
+<div class="gate" id="gate">
+    <div class="gate__card">
+        <div class="gate__mark">Global Media</div>
+        <h1 class="gate__title">Platform Preview</h1>
+        <p class="gate__sub">
+            A working preview of the Yeng Constantino fan platform concept.
+            Enter the access code you were sent.
+        </p>
+        <form id="gate-form" autocomplete="off">
+            <input class="gate__input" type="password" id="gate-code" placeholder="Access code" autocomplete="off" aria-label="Access code">
+            <div class="gate__err" id="gate-err"></div>
+            <button class="btn btn--primary btn--block" type="submit">Open the preview</button>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════ SHELL ══════════════ -->
+<div class="shell" id="shell" hidden>
+
+    <div class="topbar">
+        <div class="topbar__brand">Yeng Constantino <small>Platform Preview</small></div>
+        <div class="personas" role="tablist" aria-label="Audience" id="personas"></div>
+        <div class="topbar__spacer"></div>
+        <div class="topbar__note" id="view-label"></div>
+    </div>
+
+    <div class="subbar">
+        <div class="platforms" role="tablist" aria-label="Form factor">
+            <button class="platform" role="tab" data-platform="web" aria-selected="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                Web
+            </button>
+            <button class="platform" role="tab" data-platform="app" aria-selected="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M11 18h2"/></svg>
+                App
+            </button>
+        </div>
+        <div class="pages" id="pages"></div>
+        <div class="persona-note" id="persona-note"></div>
+    </div>
+
+    <div class="stage" id="stage">
+        <div class="frame-wrap is-active" id="wrap-web">
+            <div class="web-frame">
+                <div class="web-frame__bar">
+                    <div class="web-frame__dots"><span class="web-frame__dot"></span><span class="web-frame__dot"></span><span class="web-frame__dot"></span></div>
+                    <div class="web-frame__url" id="web-url">yengconstantino.netlify.app</div>
+                </div>
+                <div class="web-frame__body">
+                    <iframe id="frame-web" title="Web preview" loading="eager"></iframe>
+                    <div class="veil" id="veil-web"><span class="veil__mark">Yeng</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="frame-wrap" id="wrap-app">
+            <div class="app-frame" id="app-frame">
+                <div class="app-frame__screen">
+                    <div class="app-frame__island"></div>
+                    <div class="app-frame__statusbar"><span id="app-clock">9:41</span><span>&#9679;&#9679;&#9679;&#9679;</span></div>
+                    <div class="app-frame__body">
+                        <iframe id="frame-app" title="App preview" loading="eager"></iframe>
+                        <div class="veil" id="veil-app"><span class="veil__mark">Yeng</span></div>
+                    </div>
+                    <div class="app-frame__home"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footstrip">
+        <span class="badge-spec">Spec concept</span>
+        <span>Built by Global Media &mdash; not affiliated with or endorsed by Yeng Constantino.</span>
+        <span class="footstrip__spacer"></span>
+        <a href="#" id="copy-link">Copy link to this view</a>
+    </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   Six views: 3 personas × 2 platforms. State lives in the URL hash
+   (#fan/app/index.html) so any view is directly linkable — the handler can
+   forward a link to one exact screen instead of describing it.
+   ═══════════════════════════════════════════════════════ */
+(function () {
+    'use strict';
+
+    /* Access code. This gate is presentation, not security — every page it
+       frames is independently auth-gated. It exists so the preview reads as a
+       professional agency handoff rather than a raw link. */
+    var ACCESS_CODES = ['yengpreview2026', 'globalmedia'];
+    var GATE_KEY = 'yc_demo_ok';
+
+    var PERSONAS = {
+        fan: {
+            label: 'Fan',
+            note: 'What the audience sees',
+            pages: [
+                { path: '/index.html',            label: 'Home' },
+                { path: '/ask.html',              label: 'Ask Yeng' },
+                { path: '/archive.html',          label: 'Archive' },
+                { path: '/tour.html',             label: 'Tour Map' },
+                { path: '/games.html',            label: 'Games' },
+                { path: '/cards.html',            label: 'Cards' },
+                { path: '/music.html',            label: 'Music' },
+                { path: '/merch.html',            label: 'Store' },
+                { path: '/membership.html',       label: 'Membership' },
+                { path: '/profile.html?demo=1',   label: 'Profile' }
+            ]
+        },
+        yeng: {
+            label: 'Yeng',
+            note: 'Fifteen minutes a week',
+            pages: [
+                { path: '/studio.html#queue',   label: 'Answer Queue' },
+                { path: '/studio.html#archive', label: 'Archive Review' },
+                { path: '/studio.html#cameo',   label: 'Video Requests' }
+            ]
+        },
+        management: {
+            label: 'Management',
+            note: 'The bottleneck, unblocked',
+            pages: [
+                { path: '/handler.html#today',      label: 'Today' },
+                { path: '/handler.html#questions',  label: 'Questions' },
+                { path: '/handler.html#tour',       label: 'Tour Demand' },
+                { path: '/handler.html#sentiment',  label: 'Sentiment' },
+                { path: '/handler.html#moderation', label: 'Moderation' },
+                { path: '/handler.html#economy',    label: 'Revenue' }
+            ]
+        }
+    };
+
+    var state = { persona: 'fan', platform: 'web', page: '/index.html' };
+
+    var $ = function (id) { return document.getElementById(id); };
+
+    /* ── Gate ── */
+    function openShell() {
+        $('gate').hidden = true;
+        $('shell').hidden = false;
+        readHash();
+        render();
+        fitPhone();
+    }
+
+    if (sessionStorage.getItem(GATE_KEY) === '1') {
+        openShell();
+    }
+
+    $('gate-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var val = ($('gate-code').value || '').trim().toLowerCase();
+        if (ACCESS_CODES.indexOf(val) !== -1) {
+            sessionStorage.setItem(GATE_KEY, '1');
+            openShell();
+        } else {
+            $('gate-err').textContent = "That code didn't work. Check the message you were sent.";
+            $('gate-code').select();
+        }
+    });
+
+    /* ── Hash routing: #persona/platform/page ── */
+    function readHash() {
+        var raw = decodeURIComponent(location.hash.replace(/^#/, ''));
+        if (!raw) return;
+        var parts = raw.split('/');
+        var p = parts.shift();
+        if (PERSONAS[p]) state.persona = p;
+        var pf = parts.shift();
+        if (pf === 'web' || pf === 'app') state.platform = pf;
+        var rest = parts.join('/');
+        if (rest) {
+            var candidate = rest.charAt(0) === '/' ? rest : '/' + rest;
+            var known = PERSONAS[state.persona].pages.some(function (x) { return x.path === candidate; });
+            state.page = known ? candidate : PERSONAS[state.persona].pages[0].path;
+        } else {
+            state.page = PERSONAS[state.persona].pages[0].path;
+        }
+    }
+
+    function writeHash() {
+        var h = '#' + state.persona + '/' + state.platform + state.page;
+        if (location.hash !== h) history.replaceState(null, '', h);
+    }
+
+    /* ── Render ── */
+    function render() {
+        // Persona tabs
+        var pc = $('personas');
+        pc.innerHTML = '';
+        Object.keys(PERSONAS).forEach(function (key) {
+            var b = document.createElement('button');
+            b.className = 'persona';
+            b.setAttribute('role', 'tab');
+            b.setAttribute('aria-selected', key === state.persona ? 'true' : 'false');
+            b.textContent = PERSONAS[key].label;
+            b.addEventListener('click', function () {
+                if (state.persona === key) return;
+                state.persona = key;
+                state.page = PERSONAS[key].pages[0].path;
+                render();
+            });
+            pc.appendChild(b);
+        });
+
+        // Platform toggle
+        Array.prototype.forEach.call(document.querySelectorAll('.platform'), function (b) {
+            b.setAttribute('aria-selected', b.dataset.platform === state.platform ? 'true' : 'false');
+            b.onclick = function () {
+                if (state.platform === b.dataset.platform) return;
+                state.platform = b.dataset.platform;
+                render();
+            };
+        });
+
+        // Page chips
+        var pgs = $('pages');
+        pgs.innerHTML = '';
+        PERSONAS[state.persona].pages.forEach(function (p) {
+            var b = document.createElement('button');
+            b.className = 'page-chip';
+            b.setAttribute('aria-selected', p.path === state.page ? 'true' : 'false');
+            b.textContent = p.label;
+            b.addEventListener('click', function () {
+                if (state.page === p.path) return;
+                state.page = p.path;
+                render();
+            });
+            pgs.appendChild(b);
+        });
+
+        $('persona-note').textContent = PERSONAS[state.persona].note;
+        $('view-label').textContent =
+            PERSONAS[state.persona].label + ' · ' + (state.platform === 'web' ? 'Web' : 'App');
+        $('web-url').textContent = 'yengconstantino.netlify.app' + state.page.split('#')[0];
+
+        // Swap frames without reloading the one that is already correct.
+        $('wrap-web').classList.toggle('is-active', state.platform === 'web');
+        $('wrap-app').classList.toggle('is-active', state.platform === 'app');
+
+        var frameId = state.platform === 'web' ? 'frame-web' : 'frame-app';
+        var veilId = state.platform === 'web' ? 'veil-web' : 'veil-app';
+        var frame = $(frameId);
+        // `embed=1` lets the page skip its 2.8s intro loader inside the shell.
+        // A page path can carry its own fragment (/studio.html#cameo). Query
+        // params must go BEFORE the fragment or the browser treats them as
+        // part of it and the target page never sees them.
+        var hashAt = state.page.indexOf('#');
+        var pagePath = hashAt === -1 ? state.page : state.page.slice(0, hashAt);
+        var pageHash = hashAt === -1 ? '' : state.page.slice(hashAt);
+        var target = pagePath
+            + (pagePath.indexOf('?') === -1 ? '?' : '&') + 'embed=1'
+            + (state.platform === 'app' ? '&frame=phone' : '')
+            + pageHash;
+
+        if (frame.dataset.loaded !== target) {
+            $(veilId).hidden = false;
+            frame.dataset.loaded = target;
+            frame.src = target;
+            frame.onload = function () {
+                var v = $(veilId);
+                v.style.opacity = '0';
+                setTimeout(function () { v.hidden = true; v.style.opacity = ''; }, 240);
+            };
+        }
+
+        writeHash();
+        fitPhone();
+    }
+
+    /* Scale the phone to fit whatever vertical space is left, so the whole
+       device is always visible without the stage scrolling. */
+    function fitPhone() {
+        var frame = $('app-frame');
+        if (!frame) return;
+        var stage = $('stage');
+        var avail = stage.clientHeight - 32;
+        var scale = Math.min(1, avail / 852);
+        frame.style.transform = 'scale(' + scale.toFixed(3) + ')';
+        frame.style.marginTop = ((852 * scale) - 852) / 2 + 'px';
+        frame.style.marginBottom = ((852 * scale) - 852) / 2 + 'px';
+    }
+
+    window.addEventListener('resize', fitPhone);
+    window.addEventListener('hashchange', function () { readHash(); render(); });
+
+    /* Keyboard: 1/2/3 switch audience, W/A switch form factor. Ninety seconds
+       through all six views without touching the mouse. */
+    document.addEventListener('keydown', function (e) {
+        if ($('shell').hidden) return;
+        if (/^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName || ''))) return;
+        var keys = Object.keys(PERSONAS);
+        if (e.key === '1' || e.key === '2' || e.key === '3') {
+            var k = keys[parseInt(e.key, 10) - 1];
+            if (k) { state.persona = k; state.page = PERSONAS[k].pages[0].path; render(); }
+        }
+        if (e.key.toLowerCase() === 'w') { state.platform = 'web'; render(); }
+        if (e.key.toLowerCase() === 'a') { state.platform = 'app'; render(); }
+    });
+
+    $('copy-link').addEventListener('click', function (e) {
+        e.preventDefault();
+        var url = location.origin + location.pathname + '#' + state.persona + '/' + state.platform + state.page;
+        var done = function () {
+            var el = e.target;
+            var old = el.textContent;
+            el.textContent = 'Link copied';
+            setTimeout(function () { el.textContent = old; }, 1600);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done);
+        else done();
+    });
+
+    /* Status-bar clock, because a frozen 9:41 is the tell that it's a mockup. */
+    function tick() {
+        var d = new Date();
+        var h = d.getHours() % 12 || 12;
+        $('app-clock').textContent = h + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 20000);
+})();
+</script>
+</body>
+</html>

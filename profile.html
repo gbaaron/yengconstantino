@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
-    <title>My Profile — Yeng Constantino Official</title>
+    <title>My Profile — Yeng Constantino (Spec Preview)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
@@ -256,6 +256,10 @@
             <ul class="nav__links">
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/ask.html" class="nav__link">Ask Yeng</a></li>
+                <li><a href="/archive.html" class="nav__link">Archive</a></li>
+                <li><a href="/tour.html" class="nav__link">Tour Map</a></li>
+                <li><a href="/games.html" class="nav__link">Games</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link">Yeng Covers</a></li>
@@ -291,6 +295,8 @@
             <button class="profile-tab" data-tab="exclusive" onclick="switchTab('exclusive')">Exclusive Content</button>
             <button class="profile-tab" data-tab="covers" onclick="switchTab('covers')">My Covers</button>
             <button class="profile-tab" data-tab="cards" onclick="switchTab('cards')">My Cards</button>
+            <button class="profile-tab" data-tab="messages" onclick="switchTab('messages')">My Messages</button>
+            <button class="profile-tab" data-tab="tickets" onclick="switchTab('tickets')">My Tickets</button>
         </div>
 
         <div class="profile-panels">
@@ -344,6 +350,18 @@
             </div>
 
             <!-- My Cards Tab -->
+            <div class="profile-panel" id="panel-messages">
+                <h2 class="panel-title">Mensahe ni Yeng</h2>
+                <p class="panel-intro">Your personalised message requests, and the finished ones ready to watch.</p>
+                <div id="messages-list"></div>
+            </div>
+
+            <div class="profile-panel" id="panel-tickets">
+                <h2 class="panel-title">My Tickets</h2>
+                <p class="panel-intro">Everything you have booked, and where each one stands.</p>
+                <div id="tickets-list"></div>
+            </div>
+
             <div class="profile-panel" id="panel-cards">
                 <h2 style="font-family:var(--font-display);font-size:1.5rem;color:#322E2A;margin-bottom:var(--space-sm);">My Cards</h2>
                 <p class="cards-intro">Your collectible Yeng cards. Tap a card to flip it and see the rewards on the back.</p>
@@ -371,7 +389,7 @@
                 <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">
-                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
                 <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
@@ -392,7 +410,7 @@
         // Open a tab based on the URL hash (e.g. profile.html#orders from a widget tap).
         function openTabFromHash() {
             var tab = (window.location.hash || '').replace('#', '');
-            var validTabs = ['profile', 'orders', 'ratings', 'exclusive', 'covers', 'cards'];
+            var validTabs = ['profile', 'orders', 'ratings', 'exclusive', 'covers', 'cards', 'messages', 'tickets'];
             if (tab && validTabs.indexOf(tab) !== -1) switchTab(tab);
         }
 
@@ -474,27 +492,97 @@
                 else if (tab === 'exclusive') loadExclusiveContent();
                 else if (tab === 'covers') loadMyCovers();
                 else if (tab === 'cards') loadMyCards();
+                else if (tab === 'messages') loadMyMessages();
+                else if (tab === 'tickets') loadMyTickets();
             }
         }
 
-        // The fan's collectible cards. No backend/ownership yet — we surface the one
-        // designed card ("Live in Pasay") so the viewing experience can be demoed.
-        // Each entry points at the real bundled card files in /cards/, rendered via
-        // iframe + click-to-flip (same treatment as the pitch deck).
-        var MY_CARDS = [
-            {
-                name: 'Yeng Constantino',
-                title: 'Live in Pasay',
-                rarity: 'Legendary',
-                number: '1',
-                total: '25',
-                front: '/cards/yeng-front.html',
-                back: '/cards/yeng-back.html'
+        /* ── My Messages ──
+           Closes the loop the audit flagged: a fan could pay for a personalised
+           video and had no surface anywhere to retrieve it (AUDIT.md §1.2). */
+        async function loadMyMessages() {
+            var el = document.getElementById('messages-list');
+            el.innerHTML = '<div class="skeleton" style="height:80px"></div>';
+            try {
+                var data = await api('get-my-messages');
+                if (!data.messages.length) {
+                    el.innerHTML = '<div class="empty-state"><h3 class="empty-state__title">No requests yet</h3>'
+                        + '<p class="empty-state__text">Ask Yeng to record something for a person you love '
+                        + '&mdash; <a href="/mensahe.html">Mensahe ni Yeng</a>.</p></div>';
+                    return;
+                }
+                el.innerHTML = data.messages.map(function (m) {
+                    return '<div class="card" style="padding:1rem;margin-bottom:.6rem">'
+                        + '<div style="display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap">'
+                        + '<strong>' + escapeHtml(m.type) + ' for ' + escapeHtml(m.recipientName) + '</strong>'
+                        + '<span style="font-size:.78rem;color:var(--gray-400)">' + escapeHtml(m.occasion) + '</span>'
+                        + '<span style="margin-left:auto;font-size:.76rem;color:'
+                        + (m.tone === 'done' ? 'var(--success)' : 'var(--gray-500)') + '">'
+                        + escapeHtml(m.statusLabel) + '</span></div>'
+                        + (m.deliveryUrl
+                            ? '<div style="margin-top:.7rem"><a class="btn btn--primary btn--sm" href="'
+                              + escapeHtml(m.deliveryUrl) + '" target="_blank" rel="noopener">Watch it</a></div>'
+                            : '')
+                        + '</div>';
+                }).join('');
+            } catch (err) {
+                el.innerHTML = '<div class="empty-state"><p class="empty-state__text">Could not load your messages right now.</p></div>';
             }
-        ];
+        }
 
-        function loadMyCards() {
+        /* ── My Tickets ──
+           get-user-tickets.js existed with zero callers, so a fan who bought a
+           ticket could not see it anywhere after checkout (AUDIT.md §1.2). */
+        async function loadMyTickets() {
+            var el = document.getElementById('tickets-list');
+            el.innerHTML = '<div class="skeleton" style="height:80px"></div>';
+            try {
+                var data = await api('get-user-tickets');
+                var list = data.tickets || [];
+                if (!list.length) {
+                    el.innerHTML = '<div class="empty-state"><h3 class="empty-state__title">No tickets yet</h3>'
+                        + '<p class="empty-state__text">See what is coming up on the <a href="/events.html">events page</a>.</p></div>';
+                    return;
+                }
+                el.innerHTML = list.map(function (t) {
+                    return '<div class="card" style="padding:1rem;margin-bottom:.6rem">'
+                        + '<div style="display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap">'
+                        + '<strong>' + escapeHtml(t.eventTitle || 'Event') + '</strong>'
+                        + '<span style="font-size:.78rem;color:var(--gray-400)">' + (t.quantity || 1) + ' ticket(s)</span>'
+                        + '<span style="margin-left:auto;font-size:.76rem">' + escapeHtml(t.status || '') + '</span>'
+                        + '</div></div>';
+                }).join('');
+            } catch (err) {
+                el.innerHTML = '<div class="empty-state"><p class="empty-state__text">Could not load your tickets right now.</p></div>';
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str == null ? '' : str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        /* ── My Cards ──
+           Was a hardcoded single card, so EVERY logged-in fan saw the same
+           Legendary #1-of-25 they did not own (AUDIT.md §1.1). Now reads real
+           ownership from get-my-cards. */
+        var MY_CARDS = [];
+
+        async function loadMyCards() {
             var container = document.getElementById('cards-list');
+            try {
+                var data = await api('get-my-cards');
+                MY_CARDS = (data.cards || []).map(function (c) {
+                    return {
+                        name: c.name, title: c.title || c.name, rarity: c.rarity,
+                        number: c.serial, total: c.cardTotal || '?',
+                        front: c.frontUrl, back: c.backUrl
+                    };
+                });
+            } catch (e) {
+                MY_CARDS = [];
+            }
             if (!MY_CARDS.length) {
                 container.innerHTML = '<div class="cards-empty"><div class="cards-empty__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="18" x="3" y="3" rx="1.5"/><rect width="7" height="18" x="14" y="3" rx="1.5"/></svg></div><h3 class="cards-empty__title">No cards yet</h3><p class="cards-empty__desc">Collectible Yeng cards will appear here once you have one.</p></div>';
                 return;
@@ -523,7 +611,7 @@
             try {
                 var data = await api('get-orders');
                 var orders = data.orders || [];
-                if (!orders.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div><h3 class="empty-state__title">No orders yet</h3><p class="empty-state__text">Visit the <a href="/merch.html">Merch Store</a> to get official Yeng merch!</p></div>'; return; }
+                if (!orders.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div><h3 class="empty-state__title">No orders yet</h3><p class="empty-state__text">Visit the <a href="/merch.html">Merch Store</a> to browse the concept store!</p></div>'; return; }
                 container.innerHTML = orders.map(function(o) {
                     var statusClass = 'order-card__status--' + (o.status || 'pending').toLowerCase();
                     var items = Array.isArray(o.items) ? o.items : [];
@@ -565,7 +653,7 @@
             var container = document.getElementById('covers-list');
             try {
                 var data = await api('get-covers');
-                var allCovers = data.submissions || [];
+                var allCovers = data.covers || data.submissions || [];
                 var userId = Auth.getUser()?.id;
                 var myCovers = allCovers.filter(function(c) { return c.user && c.user.id === userId; });
                 if (!myCovers.length) { container.innerHTML = '<div class="empty-state"><div class="empty-state__icon"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div><h3 class="empty-state__title">No covers submitted</h3><p class="empty-state__text">Submit your first cover on the <a href="/covers.html">Yeng Covers</a> page!</p></div>'; return; }

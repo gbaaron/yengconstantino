@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeng Millionaire — Yeng Constantino (Spec Preview)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body { background: var(--ember); background-attachment: fixed; color: var(--cream); }
+
+        .mn-top { padding: calc(var(--nav-height,72px) + 1.25rem) 0 .5rem; text-align: center; }
+        .mn-top__title {
+            font-family: var(--font-display); font-size: clamp(1.7rem,4.5vw,2.4rem); font-weight: 800;
+            background: var(--ink-flame); -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .mn-top__sub { color: rgba(251,248,242,.55); font-size: .85rem; margin-top: .25rem; }
+
+        .mn-layout { display: grid; grid-template-columns: 1fr 220px; gap: var(--space-xl); align-items: start; }
+        @media (max-width: 860px) { .mn-layout { grid-template-columns: 1fr; } }
+
+        /* ── Ladder ── */
+        .ladder { display: flex; flex-direction: column-reverse; gap: 2px; }
+        .rung {
+            display: flex; align-items: center; gap: .6rem;
+            padding: .3rem .7rem; border-radius: var(--radius-sm);
+            font-size: .8rem; color: rgba(251,248,242,.45);
+        }
+        .rung--safe { color: var(--gold); }
+        .rung--safe .rung__lv { border-color: var(--gold); }
+        .rung--current { background: var(--purple); color: #fff; font-weight: 700; }
+        .rung--won { color: rgba(251,248,242,.75); }
+        .rung__lv {
+            min-width: 22px; text-align: center; font-size: .68rem;
+            border: 1px solid rgba(251,248,242,.2); border-radius: var(--radius-sm);
+            padding: .05rem 0;
+        }
+        .rung__pts { margin-left: auto; font-family: var(--font-display); font-weight: 600; }
+
+        /* ── Question ── */
+        .qpanel {
+            background: rgba(251,248,242,.05);
+            border: 1px solid rgba(251,248,242,.12);
+            padding: var(--space-xl);
+        }
+        .qpanel__meta {
+            display: flex; align-items: center; gap: var(--space-md);
+            font-size: .76rem; color: rgba(251,248,242,.5);
+            margin-bottom: var(--space-md); flex-wrap: wrap;
+        }
+        .qpanel__prompt {
+            font-family: var(--font-display); font-size: clamp(1.2rem,3vw,1.6rem);
+            line-height: 1.4; margin-bottom: var(--space-lg);
+        }
+
+        .choices { display: grid; gap: .6rem; }
+        .choice {
+            appearance: none; cursor: pointer; text-align: left;
+            border: 1px solid rgba(251,248,242,.2);
+            background: rgba(251,248,242,.04); color: var(--cream);
+            font-family: var(--font-body); font-size: 1rem;
+            padding: .9rem 1.1rem; display: flex; gap: .8rem; align-items: center;
+            transition: all var(--transition-fast);
+        }
+        .choice:hover:not(:disabled) { background: rgba(251,248,242,.1); border-color: var(--gold); }
+        .choice:disabled { cursor: default; }
+        .choice__k {
+            width: 24px; height: 24px; flex: none; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(251,248,242,.3); font-size: .74rem; font-weight: 700;
+        }
+        .choice.is-right { background: var(--success); border-color: var(--success); color: #fff; }
+        .choice.is-wrong { background: var(--purple); border-color: var(--purple); color: #fff; }
+        .choice.is-gone { opacity: .2; }
+
+        /* ── The decision ── */
+        .decision {
+            margin-top: var(--space-lg); padding-top: var(--space-lg);
+            border-top: 1px solid rgba(251,248,242,.12);
+            display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap;
+        }
+        .decision__text {
+            font-family: var(--font-display); font-size: 1.05rem; flex: 1; min-width: 200px;
+        }
+
+        .timer {
+            display: flex; align-items: center; gap: .5rem;
+            font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
+        }
+        .timer__bar { width: 90px; height: 4px; background: rgba(251,248,242,.15); border-radius: 2px; overflow: hidden; }
+        .timer__fill { height: 100%; background: var(--gold); transition: width 1s linear; }
+        .timer--low .timer__fill { background: var(--purple); }
+
+        .lifelines { display: flex; gap: .4rem; }
+        .lifeline {
+            appearance: none; cursor: pointer;
+            border: 1px solid rgba(251,248,242,.25); background: transparent;
+            color: rgba(251,248,242,.75); font-family: var(--font-body);
+            font-size: .74rem; font-weight: 700; padding: .3rem .6rem;
+            border-radius: var(--radius-full);
+        }
+        .lifeline:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+        .lifeline:disabled { opacity: .25; cursor: default; text-decoration: line-through; }
+
+        .result-panel { text-align: center; padding: var(--space-3xl) var(--space-lg); }
+        .result-panel__num {
+            font-family: var(--font-display); font-size: clamp(2.5rem,8vw,4rem);
+            font-weight: 700; color: var(--gold); line-height: 1;
+        }
+        .result-panel__label { color: rgba(251,248,242,.6); margin-top: .5rem; }
+        .result-panel__msg { margin-top: var(--space-md); font-size: 1.05rem; }
+
+        .provenance {
+            font-size: .72rem; color: rgba(251,248,242,.4);
+            margin-top: var(--space-lg); text-align: center; line-height: 1.6;
+        }
+        .nav { background: rgba(16,15,14,.9) !important; }
+        .nav__link, .nav__logo { color: var(--cream) !important; }
+    </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/games.html" class="nav__link">&larr; Games</a></li>
+            <li><a href="/ask.html" class="nav__link">Ask Yeng</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="mn-top">
+    <div class="container">
+        <span class="page-hero__eyebrow" style="font-size:1.25rem">Kaya mo ba?</span>
+        <h1 class="mn-top__title">Yeng Millionaire</h1>
+        <p class="mn-top__sub">Once a day. Three safe levels. Bank any time.</p>
+    </div>
+</header>
+
+<main class="section section--compact">
+    <div class="container">
+        <div class="mn-layout">
+            <div id="stage"><div class="skeleton" style="height:320px"></div></div>
+            <aside class="ladder" id="ladder"></aside>
+        </div>
+        <p class="provenance">
+            Every question is built from material Yeng has approved &mdash; her discography
+            and her own recorded words. Nothing here is generated or guessed.
+        </p>
+    </div>
+</main>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════
+   YENG MILLIONAIRE
+   The server owns the ladder, the safe floors, the session and the correct
+   answer. The client only ever sees four choices and a clock.
+   ═══════════════════════════════════════════════════════ */
+(function () {
+    'use strict';
+    var esc = Yeng.esc;
+
+    var sessionId = null;
+    var ladder = [];
+    var current = null;
+    var timer = null;
+    var remaining = 0;
+    var lifelines = [];
+    var used = [];
+    var locked = false;
+
+    var stage = document.getElementById('stage');
+
+    function renderLadder(level) {
+        document.getElementById('ladder').innerHTML = ladder.map(function (r) {
+            var cls = 'rung'
+                + (r.safe ? ' rung--safe' : '')
+                + (r.level === level ? ' rung--current' : '')
+                + (level && r.level < level ? ' rung--won' : '');
+            return '<div class="' + cls + '">'
+                + '<span class="rung__lv">' + r.level + '</span>'
+                + (r.safe ? '<span title="Safe level">&#9679;</span>' : '')
+                + '<span class="rung__pts">' + r.points.toLocaleString() + '</span></div>';
+        }).join('');
+    }
+
+    /* ── Start screen ── */
+    function renderStart(status) {
+        if (status.playedToday) {
+            var r = status.result || {};
+            stage.innerHTML = '<div class="qpanel result-panel">'
+                + '<div class="result-panel__num">' + Number(r.pointsWon || 0).toLocaleString() + '</div>'
+                + '<div class="result-panel__label">Yeng Points from today\'s run</div>'
+                + '<p class="result-panel__msg">That\'s your go for today. Come back tomorrow.</p>'
+                + '<a class="btn btn--gold mt-2" href="/games.html">Other games</a></div>';
+            return;
+        }
+        stage.innerHTML = '<div class="qpanel result-panel">'
+            + '<div class="result-panel__num">5,000</div>'
+            + '<div class="result-panel__label">Yeng Points if you clear all fifteen</div>'
+            + '<p class="result-panel__msg">Twenty seconds a question. Two lifelines. '
+            + 'Safe levels at 5, 10 and 15 &mdash; get past one and you keep it whatever happens after.</p>'
+            + '<button class="btn btn--gold mt-2" id="start-btn">Start today\'s run</button></div>';
+        document.getElementById('start-btn').addEventListener('click', start);
+    }
+
+    async function start() {
+        try {
+            var data = await api('play-millionaire', { method: 'POST', body: { action: 'start' } });
+            sessionId = data.sessionId;
+            lifelines = data.lifelines || [];
+            used = [];
+            showQuestion(data.question);
+        } catch (err) {
+            if (/log in/i.test(err.message || '')) {
+                window.location.href = '/login.html?redirect=' + encodeURIComponent('/game-millionaire.html');
+                return;
+            }
+            showToast(err.message, 'error', 6000);
+            stage.innerHTML = Yeng.errorState(err.message, function () { boot(); });
+        }
+    }
+
+    /* ── Question ── */
+    function showQuestion(q) {
+        current = q;
+        locked = false;
+        renderLadder(q.level);
+
+        var bank = q.level > 1 ? ladder[q.level - 2].points : 0;
+        var remainingLifelines = lifelines.filter(function (l) { return used.indexOf(l) === -1; });
+
+        stage.innerHTML = '<div class="qpanel">'
+            + '<div class="qpanel__meta">'
+            + '<span>Question ' + q.level + ' of ' + ladder.length + '</span>'
+            + '<span>Playing for <strong style="color:var(--gold)">' + q.pointsAtStake.toLocaleString() + '</strong></span>'
+            + (q.isSafeLevel ? '<span style="color:var(--gold)">&#9679; Safe level</span>' : '')
+            + (q.safeFloor ? '<span>Locked in: ' + q.safeFloor.toLocaleString() + '</span>' : '')
+            + '<span class="timer" id="timer"><span id="tnum">' + q.seconds + '</span>'
+            + '<span class="timer__bar"><span class="timer__fill" id="tfill" style="width:100%"></span></span></span>'
+            + '</div>'
+            + '<div class="qpanel__prompt">' + esc(q.prompt) + '</div>'
+            + '<div class="choices">'
+            + q.choices.map(function (c, i) {
+                return '<button class="choice" data-c="' + esc(c) + '">'
+                    + '<span class="choice__k">' + 'ABCD'[i] + '</span><span>' + esc(c) + '</span></button>';
+            }).join('')
+            + '</div>'
+            + '<div class="decision">'
+            + '<span class="decision__text">' + (bank
+                ? 'Bank <strong style="color:var(--gold)">' + bank.toLocaleString() + '</strong>, or risk it for '
+                  + q.pointsAtStake.toLocaleString() + '?'
+                : 'Nothing banked yet — first one is free.') + '</span>'
+            + '<span class="lifelines">'
+            + '<button class="lifeline" data-l="fifty"' + (remainingLifelines.indexOf('fifty') === -1 ? ' disabled' : '') + '>50:50</button>'
+            + '<button class="lifeline" data-l="skip"' + (remainingLifelines.indexOf('skip') === -1 ? ' disabled' : '') + '>Skip</button>'
+            + '</span>'
+            + (bank ? '<button class="btn btn--secondary btn--sm" id="bank-btn">Bank ' + bank.toLocaleString() + '</button>' : '')
+            + '</div></div>';
+
+        document.querySelectorAll('.choice').forEach(function (b) {
+            b.addEventListener('click', function () { answer(b.dataset.c, b); });
+        });
+        document.querySelectorAll('.lifeline').forEach(function (b) {
+            b.addEventListener('click', function () { useLifeline(b.dataset.l); });
+        });
+        var bb = document.getElementById('bank-btn');
+        if (bb) bb.addEventListener('click', bank_);
+
+        startTimer(q.seconds);
+    }
+
+    function startTimer(seconds) {
+        clearInterval(timer);
+        remaining = seconds;
+        var el = document.getElementById('tnum');
+        var fill = document.getElementById('tfill');
+        var wrap = document.getElementById('timer');
+        timer = setInterval(function () {
+            remaining--;
+            if (el) el.textContent = Math.max(0, remaining);
+            if (fill) fill.style.width = Math.max(0, (remaining / seconds) * 100) + '%';
+            if (wrap) wrap.classList.toggle('timer--low', remaining <= 5);
+            if (remaining <= 0) {
+                clearInterval(timer);
+                if (!locked) answer('__timeout__', null);
+            }
+        }, 1000);
+    }
+
+    async function answer(choice, btn) {
+        if (locked) return;
+        locked = true;
+        clearInterval(timer);
+        document.querySelectorAll('.choice').forEach(function (b) { b.disabled = true; });
+
+        try {
+            var res = await api('play-millionaire', {
+                method: 'POST',
+                body: { action: 'answer', sessionId: sessionId, answer: choice }
+            });
+
+            document.querySelectorAll('.choice').forEach(function (b) {
+                if (b.dataset.c === (res.correctAnswer || choice) && res.correct) b.classList.add('is-right');
+                if (!res.correct && b.dataset.c === res.correctAnswer) b.classList.add('is-right');
+                if (!res.correct && b === btn) b.classList.add('is-wrong');
+            });
+
+            if (window.NativeBridge && NativeBridge.haptic) {
+                try { NativeBridge.haptic(res.correct ? 'light' : 'heavy'); } catch (e) {}
+            }
+
+            if (res.state === 'lost' || res.state === 'won') {
+                if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+                setTimeout(function () { renderResult(res); }, 1400);
+                return;
+            }
+
+            setTimeout(function () { showQuestion(res.question); }, 1100);
+        } catch (err) {
+            showToast(err.message || 'Something went wrong.', 'error');
+            locked = false;
+        }
+    }
+
+    async function useLifeline(kind) {
+        try {
+            var res = await api('play-millionaire', {
+                method: 'POST',
+                body: { action: 'lifeline', sessionId: sessionId, lifeline: kind }
+            });
+            used.push(kind);
+            if (res.lifeline === 'fifty') {
+                var keep = res.remainingChoices || [];
+                document.querySelectorAll('.choice').forEach(function (b) {
+                    if (keep.indexOf(b.dataset.c) === -1) { b.classList.add('is-gone'); b.disabled = true; }
+                });
+                document.querySelector('.lifeline[data-l="fifty"]').disabled = true;
+            } else if (res.lifeline === 'skip') {
+                showQuestion(res.question);
+            }
+        } catch (err) {
+            showToast(err.message || 'Lifeline unavailable.', 'error');
+        }
+    }
+
+    async function bank_() {
+        clearInterval(timer);
+        try {
+            var res = await api('play-millionaire', { method: 'POST', body: { action: 'bank', sessionId: sessionId } });
+            if (typeof res.balance === 'number') Yeng.Points.set(res.balance);
+            renderResult({ state: 'banked', pointsWon: res.pointsWon, message: res.message });
+        } catch (err) {
+            showToast(err.message || 'Could not bank.', 'error');
+        }
+    }
+
+    function renderResult(res) {
+        renderLadder(0);
+        stage.innerHTML = '<div class="qpanel result-panel">'
+            + '<div class="result-panel__num">' + Number(res.pointsWon || 0).toLocaleString() + '</div>'
+            + '<div class="result-panel__label">Yeng Points</div>'
+            + '<p class="result-panel__msg">' + esc(res.message || '') + '</p>'
+            + '<div class="flex flex-center gap-2 mt-3">'
+            + '<a class="btn btn--gold btn--sm" href="/ask.html">Spend them on a question</a>'
+            + '<a class="btn btn--ghost btn--sm" href="/games.html">Other games</a>'
+            + '</div></div>';
+    }
+
+    /* ── Boot ── */
+    async function boot() {
+        try {
+            var status = await api('play-millionaire?action=status');
+            ladder = status.ladder || [];
+            renderLadder(status.hasActiveRun ? 1 : 0);
+            if (status.hasActiveRun) {
+                sessionId = status.sessionId;
+                var resumed = await api('play-millionaire', { method: 'POST', body: { action: 'start' } });
+                lifelines = resumed.lifelines || [];
+                used = resumed.lifelinesUsed || [];
+                showQuestion(resumed.question);
+            } else {
+                renderStart(status);
+            }
+        } catch (err) {
+            if (/log in/i.test(err.message || '')) {
+                stage.innerHTML = Yeng.emptyState('Log in to play',
+                    'Yeng Millionaire runs once a day, and your points need somewhere to land.',
+                    '<a class="btn btn--gold btn--sm" href="/login.html?redirect=%2Fgame-millionaire.html">Log in</a>');
+                return;
+            }
+            stage.innerHTML = Yeng.errorState(err.message, boot);
+        }
+    }
+
+    Yeng.Points.load().then(boot);
+})();
+</script>
+</body>
+</html>

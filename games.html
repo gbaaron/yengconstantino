@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games — Yeng Constantino (Spec Preview)</title>
+    <meta name="description" content="Rank her songs, climb the Millionaire ladder, finish the lyric, predict the setlist. All of it earns Yeng Points.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        /* Hero uses the shared .page-hero component. */
+
+        .pointsbar {
+            display: flex; align-items: center; gap: var(--space-lg);
+            background: var(--gray-900); color: var(--cream);
+            padding: var(--space-md) var(--space-lg); margin-top: var(--space-lg);
+            flex-wrap: wrap;
+            border: 1px solid rgba(212,154,36,.28);
+        }
+        .pointsbar__num { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--gold); line-height: 1; }
+        .pointsbar__label { font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; color: rgba(251,248,242,.6); }
+        .pointsbar__note { font-size: .8rem; color: rgba(251,248,242,.6); margin-left: auto; }
+
+        .gcards { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: var(--space-md); }
+        .gcard {
+            display: flex; flex-direction: column;
+            background: var(--white); border: 1px solid var(--gray-200);
+            padding: var(--space-lg); text-decoration: none; color: inherit;
+            transition: all var(--transition-fast); position: relative; overflow: hidden;
+        }
+        .gcard:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow-lg); border-color: var(--purple); }
+        .gcard__badge {
+            position: absolute; top: 0; right: 0;
+            background: var(--gold); color: var(--gray-900);
+            font-size: .64rem; font-weight: 700; letter-spacing: .06em;
+            text-transform: uppercase; padding: .2rem .6rem;
+        }
+        .gcard__badge--daily { background: var(--purple); color: #fff; }
+        .gcard__title { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; margin-bottom: .35rem; }
+        .gcard__sub { font-size: .88rem; color: var(--gray-500); line-height: 1.6; flex: 1; }
+        .gcard__foot {
+            display: flex; align-items: center; gap: .6rem;
+            margin-top: var(--space-md); padding-top: var(--space-md);
+            border-top: 1px solid var(--gray-100);
+            font-size: .78rem; color: var(--gray-400);
+        }
+        .gcard__pts { color: var(--burgundy); font-weight: 700; }
+
+        .earn-table { background: var(--white); border: 1px solid var(--gray-200); }
+        .earn-row {
+            display: flex; align-items: center; gap: var(--space-md);
+            padding: .7rem var(--space-lg); border-bottom: 1px solid var(--gray-100);
+            font-size: .9rem;
+        }
+        .earn-row:last-child { border-bottom: 0; }
+        .earn-row__pts {
+            margin-left: auto; font-family: var(--font-display);
+            font-weight: 700; color: var(--burgundy); min-width: 3ch; text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/music.html" class="nav__link">Music</a></li>
+            <li><a href="/ask.html" class="nav__link" data-i18n="nav.ask">Ask Yeng</a></li>
+            <li><a href="/archive.html" class="nav__link" data-i18n="nav.archive">Archive</a></li>
+            <li><a href="/tour.html" class="nav__link" data-i18n="nav.tour">Tour Map</a></li>
+            <li><a href="/games.html" class="nav__link nav__link--active" data-i18n="nav.games">Games</a></li>
+            <li><a href="/cards.html" class="nav__link" data-i18n="nav.cards">Cards</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+            <li data-admin style="display:none"><a href="/handler.html" class="nav__link">Dashboard</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-hero page-hero--left">
+    <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Maglaro tayo</span>
+        <h1 class="page-hero__title" data-i18n="nav.games">Games</h1>
+        <p class="page-hero__sub">
+            Four ways to spend five minutes. Everything you play earns Yeng Points,
+            and points are what get a question in front of her.
+        </p>
+        <div class="pointsbar">
+            <div>
+                <div class="pointsbar__num" data-points-balance>—</div>
+                <div class="pointsbar__label" data-i18n="points.balance">Your Yeng Points</div>
+            </div>
+            <div class="pointsbar__note" id="rank-note"></div>
+        </div>
+    </div>
+</header>
+
+<main class="section section--compact">
+    <div class="container">
+        <div class="gcards">
+            <a class="gcard" href="/game-ranking.html">
+                <span class="gcard__badge">Unlimited</span>
+                <div class="gcard__title" data-i18n="games.ranking">Song Ranking</div>
+                <p class="gcard__sub">
+                    Two songs, pick one. Winner stays on. It's a survey you'll actually
+                    enjoy filling in &mdash; and the aggregate tells her team which songs
+                    matter in Cebu versus Chicago.
+                </p>
+                <div class="gcard__foot"><span class="gcard__pts">+6</span><span>per finished session</span></div>
+            </a>
+
+            <a class="gcard" href="/game-millionaire.html">
+                <span class="gcard__badge gcard__badge--daily">Once a day</span>
+                <div class="gcard__title" data-i18n="games.millionaire">Yeng Millionaire</div>
+                <p class="gcard__sub">
+                    Fifteen questions, doubling points, three safe levels, a clock.
+                    Bank what you've got or risk it for the next rung &mdash; that
+                    decision is the whole game.
+                </p>
+                <div class="gcard__foot"><span class="gcard__pts">+5000</span><span>if you clear the ladder</span></div>
+            </a>
+
+            <a class="gcard" href="/game-lyric.html">
+                <span class="gcard__badge">Unlimited</span>
+                <div class="gcard__title" data-i18n="games.lyric">Finish the Lyric</div>
+                <p class="gcard__sub">
+                    A few seconds of audio, then type the next line before the clock runs
+                    out. Scored on speed, so a detour through an AI costs more than it wins.
+                </p>
+                <div class="gcard__foot"><span class="gcard__pts">+2&ndash;6</span><span>per round, by speed</span></div>
+            </a>
+
+            <a class="gcard" href="/game-setlist.html">
+                <span class="gcard__badge">Before each show</span>
+                <div class="gcard__title" data-i18n="games.setlist">Setlist Prediction</div>
+                <p class="gcard__sub">
+                    Pick what she'll play. Scored after the show. Costs nothing to run and
+                    quietly doubles as the clearest demand signal her team has.
+                </p>
+                <div class="gcard__foot"><span class="gcard__pts">+5</span><span>per correct song</span></div>
+            </a>
+        </div>
+
+        <section class="mt-4">
+            <div class="section-header" style="text-align:left;margin-bottom:1rem">
+                <span class="section-header__eyebrow" style="font-size:1.15rem">Paano kumita</span>
+                <h2 class="section-header__title" style="font-size:1.4rem" data-i18n="points.earn">How to earn</h2>
+                <p class="section-header__subtitle" style="text-align:left;margin:0">
+                    One currency. Earn it by turning up, or get a monthly allowance with a membership.
+                    Premium buys points &mdash; it never buys answers.
+                </p>
+            </div>
+            <div class="earn-table" id="earn-table"><div class="skeleton" style="height:180px"></div></div>
+        </section>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__bottom">
+            <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+(function () {
+    'use strict';
+    (async function () {
+        var state = await Yeng.Points.load();
+        var table = document.getElementById('earn-table');
+        if (!state) {
+            table.innerHTML = Yeng.emptyState('Log in to start earning',
+                'Yeng Points track what you do here — asking, playing, showing up.',
+                '<a class="btn btn--primary btn--sm" href="/login.html?redirect=%2Fgames.html">Log in</a>');
+            return;
+        }
+        table.innerHTML = (state.earnRates || []).map(function (r) {
+            return '<div class="earn-row"><span>' + Yeng.esc(r.label) + '</span>'
+                + '<span class="earn-row__pts">+' + r.points + '</span></div>';
+        }).join('');
+
+        if (state.monthlyFromTier) {
+            document.getElementById('rank-note').textContent =
+                state.tier + ' — ' + state.monthlyFromTier.toLocaleString() + ' points a month included';
+        } else {
+            document.getElementById('rank-note').textContent =
+                'Promoting a question costs ' + state.prices.promoteQuestion + ' points';
+        }
+    })();
+})();
+</script>
+</body>
+</html>

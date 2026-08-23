@@ -56,33 +56,43 @@ exports.handler = async (event) => {
 
         const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
-        // Calculate expiry date (1 year from now)
+        // Expiry matches the billing period. The tiers are priced and sold as
+        // MONTHLY (membership.html shows "/month"), but this previously granted
+        // a full YEAR — one month's payment bought twelve (AUDIT.md §3.6).
         const expiryDate = new Date();
-        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+        expiryDate.setMonth(expiryDate.getMonth() + 1);
         const expiryDateStr = expiryDate.toISOString().split('T')[0];
 
-        // Create membership record
+        // Is a real payment processor connected? If Stripe is configured the
+        // ONLY thing that may activate a membership is the signed webhook
+        // (stripe-webhook.js). Any authenticated fan could previously POST an
+        // arbitrary reference string and be granted Ikaw Lamang instantly
+        // (AUDIT.md §3.5 #2), so without a processor this now lands in
+        // 'Pending' for a human to confirm rather than granting access.
+        const stripeConnected = !!(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET);
+        const status = stripeConnected ? 'AwaitingPayment' : 'Pending';
+
         const membershipRecord = await base('Memberships').create({
             UserId: decoded.userId,
             Tier: tier,
             PaymentReference: paymentReference,
             StartDate: new Date().toISOString().split('T')[0],
             ExpiryDate: expiryDateStr,
-            Status: 'Active',
+            Status: status,
             CreatedAt: new Date().toISOString()
         });
 
-        // Update user's membership tier and expiry
-        await base('Users').update(decoded.userId, {
-            MembershipTier: tier,
-            MembershipExpiry: expiryDateStr
-        });
+        // Deliberately NOT writing MembershipTier onto the Users record here.
+        // Tier is granted by stripe-webhook.js on verified payment, or by an
+        // admin confirming the reference. Self-reported payment never unlocks
+        // a paid tier.
 
         return {
             statusCode: 201,
             headers,
             body: JSON.stringify({
-                message: `Membership upgraded to ${tier} successfully`,
+                message: `Request received. Your ${tier} membership activates once payment is confirmed.`,
+                pendingVerification: true,
                 membership: {
                     id: membershipRecord.id,
                     tier,

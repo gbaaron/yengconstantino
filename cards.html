@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeng Cards — Yeng Constantino (Spec Preview)</title>
+    <meta name="description" content="Collectible Yeng cards. Earned, never bought.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        /* Hero uses the shared .page-hero component. */
+
+        .no-packs {
+            display: inline-flex; align-items: center; gap: .5rem;
+            margin-top: var(--space-lg); padding: .5rem 1rem;
+            background: rgba(64,88,74,.22); color: #a7c9b3;
+            font-size: .82rem; font-weight: 600;
+        }
+
+        .cd-stats { display: flex; gap: 2rem; margin-top: var(--space-lg); flex-wrap: wrap; }
+        .cs__num { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--gold); line-height: 1; }
+        .cs__label { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: rgba(251,248,242,.55); margin-top: .25rem; }
+
+        /* ── Collection ── */
+        .collection { display: grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap: var(--space-lg); }
+        .cardslot { perspective: 1400px; }
+        .cardslot__inner {
+            position: relative; width: 100%; aspect-ratio: 408/608;
+            transform-style: preserve-3d; transition: transform .8s var(--transition-base);
+            cursor: pointer;
+        }
+        .cardslot.is-flipped .cardslot__inner { transform: rotateY(180deg); }
+        .cardslot__face {
+            position: absolute; inset: 0; backface-visibility: hidden;
+            border: 0; overflow: hidden; background: var(--gray-900);
+        }
+        .cardslot__face--back { transform: rotateY(180deg); }
+        .cardslot__face iframe {
+            width: 408px; height: 608px; border: 0; display: block;
+            transform-origin: top left;
+        }
+        .cardslot__catch { position: absolute; inset: 0; z-index: 5; }
+        .cardslot__meta {
+            margin-top: .6rem; display: flex; align-items: baseline; gap: .5rem;
+        }
+        .cardslot__name { font-family: var(--font-display); font-weight: 600; font-size: .95rem; }
+        .cardslot__serial { font-size: .74rem; color: var(--gray-400); margin-left: auto; }
+        .rarity {
+            font-size: .62rem; font-weight: 700; letter-spacing: .07em;
+            text-transform: uppercase; padding: .1rem .45rem; border-radius: var(--radius-full);
+        }
+        .rarity--Common { background: var(--gray-100); color: var(--gray-500); }
+        .rarity--Uncommon { background: rgba(64,88,74,.16); color: var(--success); }
+        .rarity--Rare { background: rgba(4,83,151,.14); color: #245e93; }
+        .rarity--Legendary { background: var(--gold); color: var(--gray-900); }
+
+        /* ── Odds table ── */
+        .odds { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: var(--space-md); }
+        .oddbox { background: var(--white); border: 1px solid var(--gray-200); padding: var(--space-lg); }
+        .oddbox__t { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: .6rem; text-transform: capitalize; }
+        .oddrow { display: flex; align-items: center; gap: .6rem; font-size: .86rem; padding: .3rem 0; }
+        .oddrow__pct { margin-left: auto; font-family: var(--font-display); font-weight: 600; color: var(--burgundy); }
+
+        .earn-row {
+            display: flex; align-items: center; gap: var(--space-md);
+            padding: .7rem var(--space-lg); border-bottom: 1px solid var(--gray-100);
+            font-size: .9rem; background: var(--white);
+        }
+        .earn-row:last-child { border-bottom: 0; }
+        .earn-row__tier {
+            margin-left: auto; font-size: .64rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: .06em;
+            padding: .1rem .5rem; border-radius: var(--radius-full);
+            background: var(--gray-100); color: var(--gray-500);
+        }
+        .earn-row__tier--premium { background: var(--gold); color: var(--gray-900); }
+
+        .drop-reveal {
+            position: fixed; inset: 0; z-index: 90;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(16,15,14,.94); padding: var(--space-lg);
+        }
+        .drop-reveal[hidden] { display: none; }
+        .drop-reveal__inner { text-align: center; color: var(--cream); max-width: 340px; }
+        .drop-reveal__rarity { font-family: var(--font-accent); font-size: 1.4rem; color: var(--gold); }
+    </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="container nav__inner">
+        <a href="/" class="nav__logo">Yeng</a>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="/music.html" class="nav__link">Music</a></li>
+            <li><a href="/ask.html" class="nav__link" data-i18n="nav.ask">Ask Yeng</a></li>
+            <li><a href="/games.html" class="nav__link" data-i18n="nav.games">Games</a></li>
+            <li><a href="/cards.html" class="nav__link nav__link--active" data-i18n="nav.cards">Cards</a></li>
+            <li data-auth style="display:none"><a href="/profile.html" class="nav__link">Profile</a></li>
+            <li data-guest><a href="/login.html" class="nav__link">Log In</a></li>
+        </ul>
+        <button class="nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<header class="page-hero page-hero--left">
+    <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Koleksyon</span>
+        <h1 class="page-hero__title" data-i18n="nav.cards">Yeng Cards</h1>
+        <p class="page-hero__sub">
+            Numbered, collectible, and earned by turning up &mdash; not bought.
+            Cards carry real perks: store discounts, points multipliers, an extra
+            mini-game lifeline, and skipping the line at a fan event.
+        </p>
+        <div class="no-packs">&#10003; No paid packs. Cards are earned only.</div>
+        <div class="page-hero__stats" id="cd-stats"></div>
+    </div>
+</header>
+
+<main class="section section--compact">
+    <div class="container">
+        <div id="weekly"></div>
+
+        <section>
+            <div class="section-header" style="text-align:left;margin-bottom:1rem">
+                <span class="section-header__eyebrow" style="font-size:1.15rem">Ang koleksyon mo</span>
+                <h2 class="section-header__title" style="font-size:1.4rem">Your collection</h2>
+            </div>
+            <div id="collection"><div class="skeleton" style="height:300px"></div></div>
+        </section>
+
+        <section class="mt-4">
+            <div class="section-header" style="text-align:left;margin-bottom:1rem">
+                <span class="section-header__eyebrow" style="font-size:1.15rem">Paano makakuha</span>
+                <h2 class="section-header__title" style="font-size:1.4rem">How cards drop</h2>
+                <p class="section-header__subtitle" style="text-align:left;margin:0">
+                    Weighted toward the things that actually help her &mdash; asking good questions
+                    and ranking songs &mdash; not just showing up daily.
+                </p>
+            </div>
+            <div id="earn"></div>
+        </section>
+
+        <section class="mt-4">
+            <div class="section-header" style="text-align:left;margin-bottom:1rem">
+                <span class="section-header__eyebrow" style="font-size:1.15rem">Bukas na bukas</span>
+                <h2 class="section-header__title" style="font-size:1.4rem">Published odds</h2>
+                <p class="section-header__subtitle" style="text-align:left;margin:0">
+                    Same rates for everyone, printed here. Nothing is hidden and nothing is sold.
+                </p>
+            </div>
+            <div class="odds" id="odds"></div>
+        </section>
+    </div>
+</main>
+
+<div class="drop-reveal" id="drop" hidden>
+    <div class="drop-reveal__inner" id="drop-inner"></div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer__bottom">
+            <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/native-bridge.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/yeng.js"></script>
+<script>
+(function () {
+    'use strict';
+    var esc = Yeng.esc, plural = Yeng.plural;
+
+    function fitCard(slot) {
+        // Native-size the iframe then scale it into the slot, so the card
+        // renders at its designed 408x608 rather than being squashed.
+        var w = slot.clientWidth;
+        var scale = w / 408;
+        slot.querySelectorAll('iframe').forEach(function (f) {
+            f.style.transform = 'scale(' + scale.toFixed(4) + ')';
+        });
+    }
+
+    function renderCollection(data) {
+        var el = document.getElementById('collection');
+        if (!data.cards.length) {
+            el.innerHTML = Yeng.emptyState('No cards yet',
+                'Cards drop when you ask a question that finds its cluster, when Yeng answers one you were part of, and when you finish a ranking session.',
+                '<a class="btn btn--primary btn--sm" href="/ask.html">Ask Yeng something</a>');
+            return;
+        }
+        el.innerHTML = '<div class="collection">' + data.cards.map(function (c, i) {
+            return '<div>'
+                + '<div class="cardslot" id="slot' + i + '">'
+                + '<div class="cardslot__inner">'
+                + '<div class="cardslot__face"><iframe src="' + esc(c.frontUrl) + '" scrolling="no" loading="lazy" title="' + esc(c.name) + ' front"></iframe></div>'
+                + '<div class="cardslot__face cardslot__face--back"><iframe src="' + esc(c.backUrl) + '" scrolling="no" loading="lazy" title="' + esc(c.name) + ' back"></iframe></div>'
+                + '<div class="cardslot__catch"></div>'
+                + '</div></div>'
+                + '<div class="cardslot__meta">'
+                + '<span class="cardslot__name">' + esc(c.title || c.name) + '</span>'
+                + '<span class="rarity rarity--' + esc(c.rarity) + '">' + esc(c.rarity) + '</span>'
+                + '</div>'
+                + '<div class="cardslot__meta" style="margin-top:.15rem">'
+                + '<span style="font-size:.76rem;color:var(--gray-400)">'
+                + (c.perk ? 'Perk: ' + esc(c.perk) : '&nbsp;') + '</span>'
+                + '<span class="cardslot__serial">#' + c.serial + (c.cardTotal ? ' of ' + c.cardTotal : '') + '</span>'
+                + '</div></div>';
+        }).join('') + '</div>';
+
+        document.querySelectorAll('.cardslot').forEach(function (s) {
+            fitCard(s);
+            s.addEventListener('click', function () { s.classList.toggle('is-flipped'); });
+        });
+        window.addEventListener('resize', function () {
+            document.querySelectorAll('.cardslot').forEach(fitCard);
+        });
+    }
+
+    function renderStats(data) {
+        var byR = data.byRarity || {};
+        document.getElementById('cd-stats').innerHTML =
+            s(data.count, 'cards owned')
+            + s(byR.Legendary || 0, 'legendary')
+            + s(data.storeDiscount ? data.storeDiscount + '%' : '0%', 'best store discount');
+        function s(n, label) {
+            return '<div><div class="hstat__num">' + (typeof n === 'number' ? n.toLocaleString() : n) + '</div>'
+                + '<div class="hstat__label">' + label + '</div></div>';
+        }
+    }
+
+    function renderEarn(data) {
+        document.getElementById('earn').innerHTML =
+            '<div style="border:1px solid var(--gray-200)">'
+            + (data.howToEarn || []).map(function (t) {
+                return '<div class="earn-row"><span>' + esc(t.label) + '</span>'
+                    + '<span class="earn-row__tier' + (t.tier === 'premium' ? ' earn-row__tier--premium' : '') + '">'
+                    + esc(t.tier) + ' pack</span></div>';
+            }).join('') + '</div>';
+    }
+
+    function renderOdds(data) {
+        document.getElementById('odds').innerHTML = Object.keys(data.packOdds || {}).map(function (tier) {
+            var o = data.packOdds[tier];
+            return '<div class="oddbox"><div class="oddbox__t">' + esc(tier) + ' pack</div>'
+                + Object.keys(o).map(function (r) {
+                    return '<div class="oddrow"><span class="rarity rarity--' + esc(r) + '">' + esc(r) + '</span>'
+                        + '<span class="oddrow__pct">' + Math.round(o[r] * 100) + '%</span></div>';
+                }).join('') + '</div>';
+        }).join('');
+    }
+
+    function renderWeekly(data) {
+        var el = document.getElementById('weekly');
+        var p = data.premium || {};
+        if (!p.isPremium) {
+            el.innerHTML = '';
+            return;
+        }
+        el.innerHTML = p.weeklyDropAvailable
+            ? '<div class="card" style="border:2px solid var(--gold);padding:var(--space-lg);margin-bottom:var(--space-lg);display:flex;align-items:center;gap:var(--space-lg);flex-wrap:wrap">'
+              + '<div><div style="font-family:var(--font-display);font-size:1.15rem;font-weight:600">Your weekly drop is ready</div>'
+              + '<div style="font-size:.85rem;color:var(--gray-500)">' + esc(p.tier) + ' members get one extra card a week, plus exclusive art.</div></div>'
+              + '<button class="btn btn--gold btn--sm" id="claim" style="margin-left:auto">Open it</button></div>'
+            : '<p style="font-size:.84rem;color:var(--gray-400);margin-bottom:var(--space-lg)">Weekly drop claimed. Next one in a few days.</p>';
+
+        var b = document.getElementById('claim');
+        if (b) b.addEventListener('click', claimWeekly);
+    }
+
+    async function claimWeekly() {
+        var b = document.getElementById('claim');
+        b.disabled = true; b.textContent = 'Opening…';
+        try {
+            var res = await api('get-my-cards', { method: 'POST', body: { action: 'claimWeekly' } });
+            if (res.dropped) {
+                reveal(res.card);
+                load();
+            } else {
+                showToast('No card available right now.', 'info');
+                b.disabled = false; b.textContent = 'Open it';
+            }
+        } catch (err) {
+            showToast(err.message || 'Could not open that.', 'error');
+            b.disabled = false; b.textContent = 'Open it';
+        }
+    }
+
+    function reveal(card) {
+        var d = document.getElementById('drop');
+        document.getElementById('drop-inner').innerHTML =
+            '<div class="drop-reveal__rarity">' + esc(card.rarity) + '</div>'
+            + '<div style="font-family:var(--font-display);font-size:1.5rem;margin:.3rem 0 1rem">' + esc(card.title || card.name) + '</div>'
+            + '<div style="width:240px;margin:0 auto;aspect-ratio:408/608;overflow:hidden;background:var(--gray-900)">'
+            + '<iframe src="' + esc(card.frontUrl) + '" scrolling="no" style="width:408px;height:608px;border:0;transform:scale(' + (240 / 408).toFixed(4) + ');transform-origin:top left"></iframe></div>'
+            + '<div style="margin-top:.75rem;font-size:.82rem;color:rgba(251,248,242,.65)">#' + card.serial
+            + (card.cardTotal ? ' of ' + card.cardTotal : '') + '</div>'
+            + '<button class="btn btn--gold btn--sm mt-2" id="close-drop">Add to collection</button>';
+        d.hidden = false;
+        document.getElementById('close-drop').addEventListener('click', function () { d.hidden = true; });
+    }
+
+    async function load() {
+        try {
+            var data = await api('get-my-cards');
+            renderStats(data);
+            renderWeekly(data);
+            renderCollection(data);
+            renderEarn(data);
+            renderOdds(data);
+        } catch (err) {
+            if (/log in/i.test(err.message || '')) {
+                document.getElementById('collection').innerHTML = Yeng.emptyState(
+                    'Log in to see your cards',
+                    'Cards are tied to your account, and they only drop for things you actually do.',
+                    '<a class="btn btn--primary btn--sm" href="/login.html?redirect=%2Fcards.html">Log in</a>');
+                return;
+            }
+            document.getElementById('collection').innerHTML = Yeng.errorState(err.message, load);
+        }
+    }
+
+    load();
+})();
+</script>
+</body>
+</html>

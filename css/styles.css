@@ -108,6 +108,8 @@ body {
     /* Subtle printed-paper grain + faint warm speckle */
     background-image:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    /* Leave this as `hidden`. Swapping it for `overflow-x: clip` makes <body>
+       a clipping context, which drags the fixed nav out of the viewport. */
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
@@ -1310,4 +1312,793 @@ textarea.form-input {
     overflow: hidden;
     clip: rect(0,0,0,0);
     border: 0;
+}
+
+
+/* ── Demo shell: iPhone bezel offset ──────────────────────
+   demo.html renders pages inside a device frame with a Dynamic Island.
+   env(safe-area-inset-top) is 0 inside an iframe, so push the fixed nav and
+   the first section down by the island's height instead. Only applies when
+   demo.html asks for it via ?frame=phone. */
+html.is-phone-frame .nav { padding-top: 46px; }
+html.is-phone-frame .hero,
+html.is-phone-frame .ask-hero,
+html.is-phone-frame .arc-hero,
+html.is-phone-frame .tour-hero,
+html.is-phone-frame .g-hero,
+html.is-phone-frame .cd-hero,
+html.is-phone-frame .rk-top,
+html.is-phone-frame .ly-top,
+html.is-phone-frame .sl-top,
+html.is-phone-frame .mn-top { padding-top: calc(72px + 46px); }
+html.is-phone-frame .studio-top { padding-top: 58px; }
+html.is-phone-frame .studio-tabs { top: 0; }
+html.is-phone-frame .hdr { padding-top: calc(var(--space-lg) + 46px); }
+
+/* ═══════════════════════════════════════════════════════
+   PAGE HERO — the "Tahanan Songbook" hero language
+   ═══════════════════════════════════════════════════════
+   Lifted from the treatment music.html and merch.html already use, so the
+   new surfaces feel like the same site instead of a plainer cousin:
+
+     - warm dark ground (ember browns, not neutral black)
+     - two big blurred orbs, red and gold, at very low opacity
+     - Kalam eyebrow in gold at a real size (1.4rem, not a caption)
+     - title with a red → burgundy → gold gradient clipped to the glyphs
+     - warm cream subtitle
+
+   Defined once here rather than copied into twelve pages — the audit found
+   7,465 lines of per-page CSS against 1,313 shared, and this is the shared
+   half doing its job.
+   ─────────────────────────────────────────────────────── */
+
+:root {
+    --ember: linear-gradient(135deg, #161010 0%, #2A1512 40%, #2E1B18 70%, #221812 100%);
+    --ink-flame: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
+}
+
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--ember);
+    padding: calc(var(--nav-height, 68px) + 72px) 0 60px;
+    text-align: center;
+}
+
+/* The two orbs. Low opacity and heavily blurred, so they read as warmth in
+   the room rather than as decoration. */
+.page-hero::before,
+.page-hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.page-hero::before {
+    top: -200px; right: -150px;
+    width: 500px; height: 500px;
+    background: var(--purple);
+    opacity: 0.09;
+    filter: blur(100px);
+}
+.page-hero::after {
+    bottom: -150px; left: -100px;
+    width: 400px; height: 400px;
+    background: var(--gold);
+    opacity: 0.07;
+    filter: blur(80px);
+}
+
+.page-hero__inner { position: relative; z-index: 1; }
+.page-hero--left { text-align: left; }
+
+.page-hero__eyebrow {
+    display: block;
+    font-family: var(--font-accent);
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: var(--space-xs);
+    line-height: 1.2;
+}
+
+.page-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 5.5vw, 3.1rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: var(--space-sm);
+    background: var(--ink-flame);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.page-hero__sub {
+    font-family: var(--font-body);
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: rgba(251, 248, 242, 0.66);
+    max-width: 54ch;
+    margin: 0 auto;
+}
+.page-hero--left .page-hero__sub { margin: 0; }
+
+/* Kalam line under the subtitle — the "Suportahan natin ang OPM!" slot. */
+.page-hero__accent {
+    font-family: var(--font-accent);
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-top: var(--space-sm);
+}
+
+/* Stat row that several of the new pages carry. */
+.page-hero__stats {
+    display: flex;
+    gap: 2.25rem;
+    margin-top: var(--space-xl);
+    flex-wrap: wrap;
+}
+.page-hero--left .page-hero__stats { justify-content: flex-start; }
+.page-hero:not(.page-hero--left) .page-hero__stats { justify-content: center; }
+
+.hstat__num {
+    font-family: var(--font-display);
+    font-size: 1.9rem; font-weight: 700; line-height: 1;
+    color: var(--gold);
+}
+.hstat__label {
+    font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase;
+    color: rgba(251, 248, 242, 0.55);
+    margin-top: 0.3rem;
+}
+
+/* A card that overlaps the hero's bottom edge. */
+.hero-overlap {
+    position: relative;
+    z-index: 5;
+    margin-top: -2.25rem;
+}
+
+@media (max-width: 640px) {
+    .page-hero { padding: calc(var(--nav-height, 68px) + 44px) 0 44px; }
+    .page-hero__eyebrow { font-size: 1.2rem; }
+    .page-hero__stats { gap: 1.4rem; }
+    .hero-overlap { margin-top: var(--space-lg); }
+}
+
+html.is-phone-frame .page-hero { padding-top: calc(var(--nav-height, 68px) + 44px + 46px); }
+
+/* ═══════════════════════════════════════════════════════
+   THE RECORD LAYER
+   ═══════════════════════════════════════════════════════
+
+   Redesign of the three fan surfaces (Ask / Archive / Tour) around one
+   idea, which is also the product's pitch:
+
+       serif  = what a person said
+       mono   = what the system recorded
+
+   Her words, fan questions and city names are set in the display serif.
+   Every count, timestamp, date, source line, language tag and signature is
+   set in monospace with letterspacing, like a catalogue card or a tape log.
+   That split is the provenance argument made visual, and it is the reason
+   these pages read as a record rather than as a website about a singer.
+
+   It replaces the .page-hero formula on these three pages — same ember
+   gradient, same orbs, same gold Kalam eyebrow, same gradient-clipped title
+   on every surface meant that a question composer, a search index and a map
+   all entered through the same doorway. .page-hero stays defined for the
+   other twenty-four pages; nothing below touches them.
+   ─────────────────────────────────────────────────────── */
+
+:root {
+    /* ── Paper and ink ──
+       Matched to the existing palette on purpose so the redesigned pages sit
+       on the same ground as the rest of the site with no visible seam. */
+    --paper: #F3EEE5;
+    --paper-raised: #FBF8F2;
+    --paper-aged: #EAE2D5;
+
+    --ink: #191716;
+    --ink-soft: #4A443F;
+    --ink-faint: #7C7269;
+    --rule: #CFC3B4;
+    --rule-strong: #A99B89;
+
+    /* ── Semantic accents ──
+       Three, and each one means something. Red is Yeng and fan action, gold
+       is participation and momentum, green is a verified source. Nothing is
+       coloured because a colour was available. */
+    --yeng-red: #A52C32;
+    --yeng-red-dark: #741E27;
+    --yeng-red-wash: #F3E3E2;
+
+    --ticket-gold: #D49A24;
+    --ticket-gold-dark: #8A6410;
+    --ticket-wash: #F7EDD6;
+
+    --verified: #40584A;
+    --verified-dark: #2F4136;
+    --verified-wash: #E3E8E3;
+
+    /* Monospace carries every machine-recorded fact. */
+    --font-evidence: ui-monospace, 'SF Mono', SFMono-Regular, 'Cascadia Mono', Menlo, Consolas, monospace;
+
+    --page-x: clamp(18px, 5vw, 64px);
+    --reading: 720px;
+    --tap: 48px;
+}
+
+/* ── Shells ── */
+.reading {
+    width: min(calc(100% - (var(--page-x) * 2)), var(--reading));
+    margin-inline: auto;
+}
+.wide {
+    width: min(calc(100% - (var(--page-x) * 2)), 1180px);
+    margin-inline: auto;
+}
+
+/* ── Evidence type ──
+   The single most reused thing in the redesign. */
+.ev {
+    font-family: var(--font-evidence);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+}
+.ev--plain { text-transform: none; letter-spacing: 0.02em; }
+.ev--red { color: var(--yeng-red-dark); font-weight: 700; }
+.ev--gold { color: var(--ticket-gold-dark); font-weight: 700; }
+
+/* Verified mark. Deliberately boring — a stamp, not a badge. */
+.verified-source {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-evidence);
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--verified);
+}
+.verified-source svg { width: 13px; height: 13px; flex: none; }
+
+/* ── Editorial page intro ──
+   Paper, not ember. Ink, not a gradient clipped to glyphs. The kicker is the
+   display serif in italic rather than a handwriting face, so it reads as a
+   standfirst instead of as decoration. */
+.page-intro {
+    padding: calc(var(--nav-height, 68px) + 44px) 0 0;
+    border-bottom: 1px solid var(--rule);
+}
+.page-intro__inner { padding-bottom: clamp(26px, 5vw, 44px); }
+
+.page-intro__kicker {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1rem, 2.4vw, 1.14rem);
+    color: var(--yeng-red);
+    margin-bottom: 0.4rem;
+}
+.page-intro__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.3rem, 7.5vw, 4.1rem);
+    line-height: 0.96;
+    letter-spacing: -0.028em;
+    color: var(--ink);
+    max-width: 15ch;
+    margin: 0;
+}
+.page-intro__copy {
+    max-width: 56ch;
+    margin: 0.9rem 0 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+}
+.page-intro__meta {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem;
+    margin-top: 1rem;
+}
+
+/* Dynamic Island clears the fixed nav inside the phone frame. */
+html.is-phone-frame .page-intro { padding-top: calc(var(--nav-height, 68px) + 44px + 46px); }
+
+/* ── Section headings inside a record page ── */
+.rec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 0.2rem;
+}
+.rec-head__title {
+    font-family: var(--font-display);
+    font-size: 1.32rem; font-weight: 700; line-height: 1.15;
+    color: var(--ink);
+}
+
+/* ── Fields ──
+   16px minimum so mobile Safari does not zoom on focus. */
+.rec-label {
+    display: block; margin-bottom: 0.45rem;
+    font-family: var(--font-evidence);
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint);
+}
+.rec-field {
+    width: 100%; min-height: var(--tap);
+    padding: 0.72rem 0.85rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px; line-height: 1.5;
+}
+.rec-field:focus {
+    outline: 2px solid var(--ticket-gold);
+    outline-offset: 2px;
+    border-color: var(--ink);
+}
+textarea.rec-field { min-height: 132px; resize: vertical; }
+.rec-help { margin-top: 0.5rem; font-size: 0.86rem; line-height: 1.55; color: var(--ink-faint); }
+
+/* Tap-target floor for the shared button, which predates this layer. */
+.btn { min-height: var(--tap); }
+.btn--block { display: flex; width: 100%; }
+
+/* Focus that survives on paper. */
+.rec-page a:focus-visible,
+.rec-page button:focus-visible,
+.rec-page input:focus-visible,
+.rec-page select:focus-visible,
+.rec-page textarea:focus-visible {
+    outline: 2px solid var(--ticket-gold);
+    outline-offset: 2px;
+}
+
+/* ── Choice row ──
+   Four languages as four equal targets. A dropdown with English at the top
+   makes English the default worldview; this does not. */
+.choice {
+    display: grid; gap: 0.35rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.choice button {
+    appearance: none; cursor: pointer;
+    min-height: 44px; padding: 0.5rem 0.3rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    font-family: var(--font-body);
+    font-size: 0.85rem; font-weight: 600;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+.choice button[aria-pressed="true"] {
+    background: var(--ink); border-color: var(--ink); color: var(--paper-raised);
+}
+/* Selection is not carried by colour alone. */
+.choice button[aria-pressed="true"]::before { content: '\2713\00a0'; }
+
+/* ── Ruled list ──
+   The default container in this layer. Cards are the exception, not the rule. */
+.ruled { border-top: 1px solid var(--rule); }
+.ruled > * { border-bottom: 1px solid var(--rule); }
+
+/* ═══════════════════════════════════════════════════════
+   ASK — the question record
+   ═══════════════════════════════════════════════════════ */
+
+.compose { padding: clamp(24px, 5vw, 40px) 0 0; }
+.compose__prompt {
+    display: block; margin-bottom: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 1.28rem; font-weight: 700; color: var(--ink);
+}
+.compose__foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; margin-top: 0.5rem;
+}
+
+/* The disclosure that explains grouping before it happens. */
+.aside-note {
+    margin-top: 1.6rem; padding: 0.9rem 0 0.9rem 1rem;
+    border-left: 3px solid var(--ticket-gold);
+    font-size: 0.9rem; line-height: 1.6; color: var(--ink-soft);
+}
+.aside-note strong { color: var(--ink); }
+
+/* ── The transparency moment ──
+   Not a toast. The page becomes a record: what goes to Yeng, how many people
+   it carries, and the fan's own wording preserved underneath it. */
+.qrecord {
+    margin: 1.8rem 0 0;
+    border-top: 4px solid var(--yeng-red);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-card);
+}
+.qrecord[hidden] { display: none; }
+
+.qrecord__banner {
+    padding: 0.8rem clamp(16px, 4vw, 28px);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-evidence);
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--yeng-red-dark);
+}
+.qrecord__body { padding: clamp(20px, 4.5vw, 34px); }
+
+.qrecord__label {
+    font-family: var(--font-evidence);
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.55rem;
+}
+/* Layer 1: what is carried to her. The largest thing on the page. */
+.qrecord__question {
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 4.4vw, 2.15rem);
+    font-weight: 600; line-height: 1.15;
+    letter-spacing: -0.016em;
+    color: var(--ink);
+    margin: 0;
+}
+/* Layer 2: the weight it carries. Stated, not celebrated. */
+.qrecord__people {
+    margin-top: 0.9rem;
+    display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; align-items: center;
+}
+/* Layer 3: the fan's own words, kept. */
+.qrecord__yours {
+    margin: 0 clamp(20px, 4.5vw, 34px) clamp(22px, 4.5vw, 30px);
+    padding: 1rem 0 0 1rem;
+    border-top: 1px solid var(--rule);
+    border-left: 3px solid var(--ticket-gold);
+}
+.qrecord__yours blockquote {
+    margin: 0.5rem 0 0.7rem;
+    font-family: var(--font-display);
+    font-size: 1.08rem; line-height: 1.45; color: var(--ink);
+}
+.qrecord__preserved {
+    font-size: 0.88rem; font-weight: 600; color: var(--verified-dark);
+}
+
+/* Promote sits inside the record, under a rule — an option, not the point. */
+.qrecord__promote {
+    margin: 0 clamp(20px, 4.5vw, 34px);
+    padding: 1.1rem 0 clamp(22px, 4.5vw, 28px);
+    border-top: 1px solid var(--rule);
+}
+.qrecord__promote-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+.qrecord__promote-note {
+    margin-top: 0.65rem; max-width: 58ch;
+    font-size: 0.85rem; line-height: 1.6; color: var(--ink-soft);
+}
+.qrecord__promote-note strong { color: var(--ink); }
+
+.live { display: inline-flex; align-items: center; gap: 0.4rem; }
+.live__dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--verified); flex: none;
+    animation: livePulse 2.6s ease-in-out infinite;
+}
+@keyframes livePulse { 0%,100% { opacity: 1 } 50% { opacity: 0.3 } }
+@media (prefers-reduced-motion: reduce) { .live__dot { animation: none } }
+
+/* ── Open questions, as ruled entries ── */
+.qrow {
+    display: block; text-decoration: none; color: inherit;
+    padding: 1.15rem 0;
+}
+a.qrow:hover { background: var(--paper-aged); }
+.qrow__top { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
+.qrow__count {
+    font-family: var(--font-evidence);
+    font-size: 0.78rem; font-weight: 700; color: var(--yeng-red-dark);
+}
+.qrow__q {
+    font-family: var(--font-display);
+    font-size: 1.06rem; line-height: 1.35; color: var(--ink);
+}
+.qrow__meta { margin-top: 0.5rem; display: flex; gap: 0.4rem 0.9rem; flex-wrap: wrap; align-items: center; }
+
+.tag {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-evidence);
+    font-size: 0.64rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+}
+.tag--promoted { background: var(--ticket-wash); color: var(--ticket-gold-dark); }
+.tag--answered { background: var(--verified-wash); color: var(--verified-dark); }
+.tag--refunded { background: var(--verified-wash); color: var(--verified-dark); }
+
+/* ── Her answer ── */
+.answer {
+    margin-top: 1rem;
+    border-top: 3px solid var(--verified);
+    background: var(--verified-wash);
+    padding: 1.1rem 1.2rem;
+}
+.answer__head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.7rem;
+}
+.answer audio { width: 100%; margin: 0.4rem 0; }
+.answer__transcript {
+    margin-top: 0.9rem; padding-left: 0.9rem;
+    border-left: 2px solid var(--rule);
+    font-size: 0.93rem; line-height: 1.7; color: var(--ink-soft);
+}
+.answer__math {
+    margin-top: 0.9rem; padding-top: 0.7rem;
+    border-top: 1px solid var(--rule);
+}
+
+/* ── Tabs as an index, not pills ── */
+.index-tabs { display: flex; gap: 1.3rem; flex-wrap: wrap; }
+.index-tabs button {
+    appearance: none; border: 0; background: none; cursor: pointer;
+    padding: 0.3rem 0 0.45rem;
+    font-family: var(--font-body); font-size: 0.9rem; font-weight: 600;
+    color: var(--ink-faint);
+    border-bottom: 2px solid transparent;
+}
+.index-tabs button:hover { color: var(--ink); }
+.index-tabs button[aria-selected="true"] {
+    color: var(--ink); border-bottom-color: var(--yeng-red); font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ARCHIVE — search first, results as source entries
+   ═══════════════════════════════════════════════════════ */
+
+.arc-search { padding: clamp(20px, 4vw, 30px) 0 clamp(16px, 3vw, 22px); }
+.arc-search__field { position: relative; display: flex; align-items: baseline; gap: 0.6rem; }
+.arc-search input {
+    flex: 1; min-width: 0;
+    padding: 0.5rem 0 0.6rem;
+    border: 0; border-bottom: 2px solid var(--ink);
+    border-radius: 0; background: transparent;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.06rem, 3.6vw, 1.85rem);
+    font-weight: 500;
+}
+.arc-search input::placeholder { color: var(--ink-faint); opacity: 0.7; }
+.arc-search input:focus { outline: none; border-bottom-color: var(--yeng-red); }
+.arc-search input:focus-visible { outline: 2px solid var(--ticket-gold); outline-offset: 4px; }
+.arc-search__try { margin-top: 0.65rem; display: flex; gap: 0.4rem 0.8rem; flex-wrap: wrap; align-items: baseline; }
+.arc-search__try button {
+    appearance: none; border: 0; background: none; cursor: pointer; padding: 0;
+    font-family: var(--font-display); font-style: italic;
+    font-size: 0.92rem; color: var(--yeng-red-dark);
+    text-decoration: underline; text-underline-offset: 3px;
+}
+
+.arc-filters { display: flex; gap: 1.1rem; flex-wrap: wrap; padding: 0.2rem 0 0.9rem; }
+.arc-filters button {
+    appearance: none; border: 0; background: none; cursor: pointer; padding: 0.2rem 0;
+    font-family: var(--font-evidence);
+    font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint);
+    border-bottom: 2px solid transparent;
+}
+.arc-filters button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 700; }
+
+.arc-count { padding: 0.9rem 0 0.3rem; }
+
+/* One source moment. Grid puts the timestamp in a left rail on wide screens
+   so the eye reads down the times like a tape log. */
+.arc-entry {
+    display: grid; grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem; padding: 1.5rem 0;
+}
+.arc-entry__rail { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.8rem; }
+.arc-entry__time {
+    font-family: var(--font-evidence);
+    font-size: 0.95rem; font-weight: 700; color: var(--yeng-red-dark);
+    font-variant-numeric: tabular-nums;
+}
+.arc-entry__body { min-width: 0; }
+.arc-entry__source { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: baseline; margin-bottom: 0.55rem; }
+/* Her actual words. The largest thing in the entry, always in the serif. */
+.arc-entry__quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.14rem, 3vw, 1.42rem);
+    line-height: 1.38; color: var(--ink);
+    margin: 0 0 0.5rem;
+}
+.arc-entry__quote + .arc-entry__quote { margin-top: 0.9rem; }
+.arc-entry__title { font-size: 0.92rem; color: var(--ink-soft); margin: 0.2rem 0 0; }
+.arc-entry__actions { display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; align-items: center; margin-top: 0.7rem; }
+
+.cue-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    min-height: 34px;
+    /* Also used on <button>, which would otherwise inherit buttonface. */
+    padding: 0; background: none; border: 0; cursor: pointer;
+    font-family: var(--font-evidence);
+    font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--yeng-red-dark); text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+.cue-link:hover { color: var(--ink); }
+.cue-link svg { width: 11px; height: 11px; flex: none; }
+
+.arc-sig {
+    margin-top: 0.55rem;
+    font-family: var(--font-evidence);
+    font-size: 0.63rem; color: var(--rule-strong);
+    word-break: break-all;
+}
+
+@media (min-width: 760px) {
+    .arc-entry { grid-template-columns: 120px minmax(0, 1fr); gap: 1.6rem; }
+    .arc-entry__rail { flex-direction: column; gap: 0.3rem; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   TOUR — a commitment ledger with geography attached
+   ═══════════════════════════════════════════════════════ */
+
+.commit { padding: clamp(22px, 4.5vw, 34px) 0 0; }
+.commit__grid { display: grid; gap: 0.9rem; }
+.party-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.3rem; }
+.party-grid button {
+    appearance: none; cursor: pointer;
+    min-height: var(--tap); padding: 0.45rem 0.25rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-sm);
+    background: var(--paper-raised); color: var(--ink-soft);
+    font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+    line-height: 1.2;
+}
+.party-grid button[aria-pressed="true"] {
+    background: var(--yeng-red); border-color: var(--yeng-red); color: #fff;
+}
+/* The arithmetic, stated. */
+.party-sum { margin-top: 0.55rem; font-size: 0.92rem; color: var(--ink-soft); }
+.party-sum strong { color: var(--ink); }
+
+/* Post-submit city record — gold, because this is participation. */
+.city-record {
+    margin-top: 1.6rem;
+    border-top: 4px solid var(--ticket-gold);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-card);
+    padding: clamp(18px, 4vw, 26px);
+}
+.city-record[hidden] { display: none; }
+.city-record__name { margin-bottom: 0.7rem; }
+.city-record__count {
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 7vw, 3.2rem);
+    font-weight: 700; line-height: 0.95; color: var(--ink);
+    margin: 0;
+}
+.city-record__sub { margin-top: 0.45rem; color: var(--ink-soft); font-size: 0.95rem; }
+.city-record__you {
+    margin-top: 1rem; padding-left: 0.85rem;
+    border-left: 3px solid var(--yeng-red);
+    font-weight: 600; color: var(--ink);
+}
+.city-record__rank { margin-top: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; }
+
+/* The ledger. This, not the map, is the page on a phone. */
+.ledger { border-top: 3px solid var(--ink); }
+.ledger__row {
+    display: grid;
+    grid-template-columns: 2.2rem minmax(0, 1fr) auto;
+    gap: 0.7rem; align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+.ledger__rank {
+    font-family: var(--font-evidence);
+    font-size: 0.78rem; color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+}
+.ledger__city { font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; color: var(--ink); }
+.ledger__where { display: block; margin-top: 0.1rem; }
+.ledger__num {
+    font-family: var(--font-evidence);
+    font-size: 0.92rem; font-weight: 700; color: var(--ink);
+    text-align: right; font-variant-numeric: tabular-nums;
+}
+.ledger__bar { grid-column: 2 / -1; height: 3px; background: var(--paper-aged); margin-top: 0.4rem; }
+.ledger__fill { display: block; height: 100%; background: var(--yeng-red); }
+.ledger__fill--demo { background: repeating-linear-gradient(45deg, var(--rule-strong) 0 4px, var(--paper-aged) 4px 8px); }
+.ledger__row--mine .ledger__city { color: var(--yeng-red-dark); }
+.ledger__row--mine .ledger__fill { background: var(--ticket-gold); }
+
+/* ── Map: paper, and loaded only when asked for ── */
+.map-panel { margin-top: 1.4rem; border: 1px solid var(--rule); background: var(--paper-aged); }
+.map-panel__bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.8rem; flex-wrap: wrap;
+    padding: 0.6rem 0.85rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-raised);
+}
+.map-scope { display: flex; gap: 1rem; }
+.map-scope button {
+    appearance: none; border: 0; background: none; cursor: pointer; padding: 0.25rem 0;
+    font-family: var(--font-evidence);
+    font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); border-bottom: 2px solid transparent;
+}
+.map-scope button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 700; }
+
+.map-stage { position: relative; padding: 0.9rem 0; min-height: 220px; }
+.map-stage svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.map-open {
+    display: grid; place-items: center; gap: 0.7rem;
+    min-height: 220px; padding: 1.6rem; text-align: center;
+}
+.land { fill: #E4DACA; stroke: #A89D90; stroke-width: 0.5; }
+.dot { cursor: pointer; }
+.dot__halo { fill: var(--yeng-red); opacity: 0.16; }
+.dot__core { fill: var(--yeng-red); stroke: var(--paper-raised); stroke-width: 0.9; }
+.dot--demo .dot__halo { fill: var(--rule-strong); opacity: 0.2; }
+.dot--demo .dot__core { fill: var(--rule-strong); }
+.dot--you .dot__halo { fill: var(--ticket-gold); opacity: 0.3; }
+.dot--you .dot__core { fill: var(--ticket-gold); stroke: var(--ink); }
+.dot:hover .dot__halo, .dot:focus .dot__halo { opacity: 0.34; }
+
+.maptip {
+    position: absolute; z-index: 4; pointer-events: none;
+    background: var(--ink); color: var(--paper-raised);
+    padding: 0.45rem 0.65rem; font-size: 0.78rem; line-height: 1.4;
+    white-space: nowrap;
+    transform: translate(-50%, -128%); opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+.maptip.is-on { opacity: 1; }
+.maptip strong { display: block; font-family: var(--font-display); }
+
+/* ── Honest notices ── */
+.notice {
+    padding: 0.85rem 0 0.85rem 1rem;
+    border-left: 3px solid var(--rule-strong);
+    font-size: 0.86rem; line-height: 1.6; color: var(--ink-soft);
+}
+.notice--gold { border-left-color: var(--ticket-gold); }
+.notice--green { border-left-color: var(--verified); }
+.notice strong { color: var(--ink); }
+
+/* ── Quiet empty state ──
+   Zeros are never the centrepiece. */
+.quiet {
+    padding: 2rem 0; max-width: 46ch;
+    font-family: var(--font-display);
+    font-size: 1.08rem; line-height: 1.5; color: var(--ink-soft);
+}
+.quiet strong { display: block; color: var(--ink); font-weight: 600; }
+.quiet__sub { margin-top: 0.5rem; font-family: var(--font-body); font-size: 0.9rem; color: var(--ink-faint); }
+
+.loading-line { padding: 1.4rem 0; }
+
+@media (max-width: 480px) {
+    .party-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .party-grid button:nth-child(4) { grid-column: span 1; }
+    .party-grid button:nth-child(5) { grid-column: span 2; }
+    .choice { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Tour: city and country side by side once there is room. */
+@media (min-width: 640px) {
+    .commit__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+    /* A full-bleed 1180px primary button reads as a banner, not a control. */
+    .commit .btn--block { width: auto; max-width: 320px; }
 }

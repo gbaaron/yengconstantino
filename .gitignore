@@ -1,6 +1,8 @@
 node_modules/
 .netlify/
 .env
+.env.*
+!.env.example
 .DS_Store
 .claude/worktrees/
 
@@ -14,3 +16,6 @@ ios/DerivedData/
 # Generated promo video build output (large media)
 scripts/promo/build/
 scripts/promo/clips/
+
+# Handover material for the external design review (complete). Local only.
+design-refs/

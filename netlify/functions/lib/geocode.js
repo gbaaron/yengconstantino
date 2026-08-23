@@ -118,18 +118,30 @@ function norm(s) {
     return String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
-// Try the built-in dictionary. Matches on exact city, then a loose "contains"
-// so "Metro Manila" or "Quezon City, Metro Manila" still resolve.
+// Try the built-in dictionary. Exact match first, then LONGEST word-boundary
+// match so "Quezon City, Metro Manila" resolves to Quezon City.
+//
+// The previous version did a loose bidirectional `indexOf` and returned the
+// first hit in object-key order, which made results order-dependent and wrong:
+// a city of "San" matched whichever of 'san juan' / 'san fernando' /
+// 'san francisco' happened to iterate first (AUDIT.md §1.2). Requiring a word
+// boundary and preferring the longest match removes both problems.
 function fromDictionary(city) {
     const key = norm(city);
     if (!key) return null;
     if (CITY_COORDS[key]) return CITY_COORDS[key];
+
+    let best = null;
+    let bestLen = 0;
     for (const dictKey in CITY_COORDS) {
-        if (key.indexOf(dictKey) !== -1 || dictKey.indexOf(key) !== -1) {
-            return CITY_COORDS[dictKey];
+        // Word-boundary containment only — "san" must not match "san juan".
+        const re = new RegExp(`(^|[^a-z])${dictKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^a-z]|$)`);
+        if (re.test(key) && dictKey.length > bestLen) {
+            best = CITY_COORDS[dictKey];
+            bestLen = dictKey.length;
         }
     }
-    return null;
+    return best;
 }
 
 // Fallback: OpenStreetMap Nominatim (free, no key). Only called on a dict miss.
@@ -168,4 +180,68 @@ async function geocodeCity(city, country) {
     return null;
 }
 
-module.exports = { geocodeCity, fromDictionary };
+/* ── Process-level cache ──────────────────────────────────
+   A warm Lambda serves many requests. Caching here means a dictionary miss
+   costs one Nominatim call per container rather than one per request.
+
+   This is the fix for the gap the audit found: the header comment above
+   (step 3) promised coordinates were written back so each city was geocoded
+   once, but no write-back existed anywhere — get-events.js re-geocoded every
+   miss on every request, in parallel, against Nominatim's 1 req/s policy.
+   Callers that own a record (pledge-tour.js, get-events.js) now also persist
+   Latitude/Longitude on the row, so the cache is belt and braces.           */
+const _cache = new Map();
+
+/**
+ * Resolve { lat, lng, source } for a city, or null.
+ * Cached in-process; safe to call in a loop.
+ */
+async function resolveCity(city, country) {
+    const key = `${norm(city)}|${norm(country)}`;
+    if (_cache.has(key)) return _cache.get(key);
+
+    const result = await geocodeCity(city, country);
+    _cache.set(key, result);
+    return result;
+}
+
+/**
+ * Resolve many cities without hammering Nominatim: dictionary hits resolve
+ * instantly and in parallel, misses are serialised with a 1.1s gap to stay
+ * inside the usage policy.
+ */
+async function resolveMany(items, { maxRemote = 5 } = {}) {
+    const out = new Map();
+    const misses = [];
+
+    for (const { city, country } of items) {
+        const key = `${norm(city)}|${norm(country)}`;
+        if (out.has(key)) continue;
+        if (_cache.has(key)) { out.set(key, _cache.get(key)); continue; }
+        const dict = fromDictionary(city);
+        if (dict) {
+            const hit = { lat: dict[0], lng: dict[1], source: 'dict' };
+            _cache.set(key, hit);
+            out.set(key, hit);
+        } else {
+            misses.push({ key, city, country });
+        }
+    }
+
+    let remoteUsed = 0;
+    for (const m of misses) {
+        if (remoteUsed >= maxRemote) { out.set(m.key, null); continue; }
+        const remote = await fromNominatim(m.city, m.country);
+        const hit = remote ? { lat: remote[0], lng: remote[1], source: 'nominatim' } : null;
+        _cache.set(m.key, hit);
+        out.set(m.key, hit);
+        remoteUsed++;
+        if (remoteUsed < misses.length) await new Promise((r) => setTimeout(r, 1100));
+    }
+
+    return out;
+}
+
+const cacheKey = (city, country) => `${norm(city)}|${norm(country)}`;
+
+module.exports = { geocodeCity, fromDictionary, resolveCity, resolveMany, cacheKey, norm };

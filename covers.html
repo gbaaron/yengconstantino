@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
-    <title>Yeng Covers — Yeng Constantino Official</title>
+    <title>Yeng Covers — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="Share your cover of a Yeng Constantino song with the world. Submit your version, get upvotes, and earn a spot in the Hall of Fame.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -798,6 +798,10 @@
             <ul class="nav__links">
                 <li><a href="/" class="nav__link">Home</a></li>
                 <li><a href="/music.html" class="nav__link">Music</a></li>
+                <li><a href="/ask.html" class="nav__link">Ask Yeng</a></li>
+                <li><a href="/archive.html" class="nav__link">Archive</a></li>
+                <li><a href="/tour.html" class="nav__link">Tour Map</a></li>
+                <li><a href="/games.html" class="nav__link">Games</a></li>
                 <li><a href="/community.html" class="nav__link">Community</a></li>
                 <li><a href="/merch.html" class="nav__link">Merch</a></li>
                 <li><a href="/covers.html" class="nav__link nav__link--active">Yeng Covers</a></li>
@@ -859,18 +863,18 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="cover-song">Song Title *</label>
-                                <input type="text" id="cover-song" class="form-input" placeholder="e.g., Hawak Kamay, Ikaw, Chinito" list="song-suggestions" required>
+                                <input type="text" id="cover-song" class="form-input" placeholder="e.g. Hawak Kamay, Ikaw, Chinita Girl" list="song-suggestions" required>
                                 <datalist id="song-suggestions">
                                     <option value="Hawak Kamay">
                                     <option value="Ikaw">
-                                    <option value="Chinito">
+                                    <option value="Chinita Girl">
                                     <option value="Salamat">
                                     <option value="Pag-ibig">
                                     <option value="Himig ng Pag-ibig">
                                     <option value="Alaala">
                                     <option value="Kahit Na">
-                                    <option value="Sana Maulit Muli">
-                                    <option value="Paasa T.A.N.G.A.">
+                                    <option value="Ikaw Lang Talaga">
+                                    <option value="Di Na Ganun">
                                 </datalist>
                             </div>
                             <div class="form-group">
@@ -986,7 +990,7 @@
                 <div><h4 class="footer__heading">Connect</h4><ul class="footer__list"><li><a href="https://www.youtube.com/@yaborecords" target="_blank" rel="noopener" data-config-href="social_youtube">YouTube</a></li><li><a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" data-config-href="social_instagram">Instagram</a></li><li><a href="https://www.facebook.com/YengConstantinoOfficial" target="_blank" rel="noopener" data-config-href="social_facebook">Facebook</a></li><li><a href="https://open.spotify.com/artist/0E4xH3JTB45IWqkPUpNrPr" target="_blank" rel="noopener" data-config-href="social_spotify">Spotify</a></li></ul></div>
             </div>
             <div class="footer__bottom">
-                <span>&copy; 2026 <span data-config="footer_copyright">Yeng Constantino Official</span>. All rights reserved.</span>
+                <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
                 <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9835;</span>
             </div>
         </div>
@@ -1014,6 +1018,24 @@
 
         /* ── Auth state for submit panel ── */
         function initAuthState() {
+                /* ── FEATURE DORMANT ──────────────────────────────────
+                   Fan cover uploads are UNDECIDED pending a moderation-liability
+                   review across jurisdictions (see AUDIT.md §3.3). The scaffolding
+                   is intact and the browse/Hall of Fame views still work; only the
+                   submission surface is switched off. Flip DORMANT to false to
+                   restore it — nothing else needs changing.                      */
+                var DORMANT = true;
+                if (DORMANT) {
+                    var sg = document.getElementById('submit-guest');
+                    var sa = document.getElementById('submit-auth');
+                    if (sg) sg.style.display = 'none';
+                    if (sa) sa.style.display = 'none';
+                    var sec = document.querySelector('.submit-section');
+                    if (sec) sec.style.display = 'none';
+                    var pipeline = document.querySelector('.status-pipeline');
+                    if (pipeline) pipeline.style.display = 'none';
+                    return;
+                }
             const guestEl = document.getElementById('submit-guest');
             const authEl = document.getElementById('submit-auth');
             if (Auth.isLoggedIn()) {
@@ -1042,7 +1064,7 @@
                 if (currentStyle) params.set('style', currentStyle);
                 params.set('sort', currentSort);
                 const data = await api('get-covers?' + params.toString());
-                covers = data.submissions || [];
+                covers = data.covers || data.submissions || [];
                 renderCovers(covers);
                 populateSongFilter(covers);
             } catch (err) {
@@ -1056,7 +1078,7 @@
         async function loadHallOfFame() {
             try {
                 const data = await api('get-covers?status=Hall of Fame');
-                hallOfFame = data.submissions || [];
+                hallOfFame = data.covers || data.submissions || [];
                 renderHallOfFame(hallOfFame);
             } catch (err) {
                 hallOfFame = [];

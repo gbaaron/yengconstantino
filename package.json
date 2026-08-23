@@ -1,7 +1,7 @@
 {
   "name": "yengconstantino-official",
   "version": "1.0.0",
-  "description": "Yeng Constantino Official Fan Hub & Music Platform + iOS app",
+  "description": "Yeng Constantino fan platform — spec concept by Global Media (web + iOS)",
   "private": true,
   "scripts": {
     "dev": "netlify dev",
@@ -27,7 +27,8 @@
     "bcryptjs": "^2.4.3",
     "capacitor-native-biometric": "^4.2.2",
     "jsonwebtoken": "^9.0.2",
-    "openai": "^4.52.0"
+    "openai": "^4.52.0",
+    "stripe": "^14.25.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.3.4"
