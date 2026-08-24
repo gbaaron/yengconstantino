@@ -274,6 +274,44 @@ fallback the site already ships to anyone without the Fraunces webfont.
 
 Verified by building and running on an iPhone 17 simulator.
 
+## The "log in even though I'm logged in" trap
+
+Reported on Finish the Line, seen elsewhere. It was not really a login bug —
+it was a state the site could enter and never leave.
+
+**How it happened.** `Auth.isLoggedIn()` was `!!this.getToken()`. It asked
+whether a *string* existed, never whether that string still worked. So the
+moment a token went bad — the 7-day expiry, a rotated `JWT_SECRET`, a deleted
+user — the client kept insisting it was logged in while every authenticated
+call came back `401 {"error":"Please log in"}`.
+
+**Why it trapped you.** The game pages match on that message and show a "Log in
+to play" gate. Clicking it goes to `login.html` — which asked the same broken
+question, decided you were logged in, and redirected you straight back to the
+page that had just told you to log in. Round and round. Nothing anywhere
+cleared a rejected session; `clearSession()` was only ever reachable from the
+Log Out link in the nav, which is exactly where a stuck fan would not think to
+look.
+
+**Fixed at three points, so no single failure re-opens it:**
+
+1. `Auth.isLoggedIn()` now decodes the JWT payload and checks `exp` (public,
+   no secret needed) with 60s of leeway, clearing the session if it has
+   passed. Catches the ordinary expiry case before any request is made.
+2. `api()` clears the session on a `401` **when a token was actually sent** —
+   the server is the authority on validity, so a rotated secret or deleted
+   user is caught too. Fires `authStateChanged` with
+   `reason: 'session-expired'` so the nav updates.
+3. `login.html` and `signup.html` bounce a "logged in" visitor at most **once**
+   per session; a second arrival clears the session and says
+   *"Your session expired. Please log in again."* `setSession()` clears those
+   guards so a real login restores normal redirect behaviour.
+
+**Verified** with a crafted expired token (cleared client-side, no request), a
+valid-looking token with a bad signature (cleared by `api()` on the 401), the
+full bounce journey (one redirect, then a working login form), and a genuine
+signup → play round.
+
 ## Files changed
 
 `css/styles.css` (appended) · `ask.html` · `archive.html` · `tour.html` ·

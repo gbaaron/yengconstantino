@@ -573,11 +573,17 @@
            Signup Page Logic
            ═══════════════════════════════════════════════════ */
         (function() {
-            // If already logged in, redirect
-            if (Auth.isLoggedIn()) {
+            /* If already logged in, redirect -- but never twice. Same guard as
+               login.html: a token the server rejects would otherwise bounce
+               the fan to profile.html and back here forever. */
+            var BOUNCED = 'yc_signup_bounced';
+            if (Auth.isLoggedIn() && !sessionStorage.getItem(BOUNCED)) {
+                sessionStorage.setItem(BOUNCED, '1');
                 window.location.href = '/profile.html';
                 return;
             }
+            if (Auth.isLoggedIn()) Auth.clearSession();
+            sessionStorage.removeItem(BOUNCED);
 
             var form = document.getElementById('signup-form');
             var nameInput = document.getElementById('signup-name');

@@ -46,6 +46,11 @@ const Auth = {
     setSession(token, user) {
         localStorage.setItem(APP.TOKEN_KEY, token);
         localStorage.setItem(APP.USER_KEY, JSON.stringify(user));
+        // A fresh session invalidates the login/signup loop guards.
+        try {
+            sessionStorage.removeItem('yc_login_bounced');
+            sessionStorage.removeItem('yc_signup_bounced');
+        } catch (e) { /* private mode */ }
         // Mirror into the shared App Group so home-screen widgets can fetch
         // on the fan's behalf. No-ops in the browser / when not native.
         if (window.NativeBridge && NativeBridge.syncWidgetData) {
@@ -62,8 +67,46 @@ const Auth = {
         }
     },
 
+    /** Read a JWT's payload without verifying it.
+
+        The signature can only be checked server-side, but `exp` is public and
+        that is enough to know a token is spent. Returns null if the string is
+        not a JWT at all. */
+    decodeToken(token) {
+        try {
+            var part = String(token || '').split('.')[1];
+            if (!part) return null;
+            var b64 = part.replace(/-/g, '+').replace(/_/g, '/');
+            while (b64.length % 4) b64 += '=';
+            return JSON.parse(decodeURIComponent(escape(atob(b64))));
+        } catch (e) {
+            return null;
+        }
+    },
+
+    /** True only if a token exists AND has not expired.
+
+        This used to be `!!this.getToken()`, which meant the app called itself
+        logged in for any leftover string. Once a token expired -- seven days,
+        or a JWT_SECRET rotation -- every authenticated call 401'd while the
+        nav still said "logged in", pages showed "Log in to play", and
+        login.html bounced the fan straight back out because it asked this same
+        question. There was no way out except finding Log Out by hand.
+
+        Sixty seconds of leeway so a token does not die mid-request. */
     isLoggedIn() {
-        return !!this.getToken();
+        var token = this.getToken();
+        if (!token) return false;
+        var payload = this.decodeToken(token);
+        // A token we cannot parse might still be valid to the server; only
+        // treat a *readable* and expired `exp` as proof it is dead.
+        if (payload && typeof payload.exp === 'number') {
+            if (Date.now() >= (payload.exp * 1000) - 60000) {
+                this.clearSession();
+                return false;
+            }
+        }
+        return true;
     },
 
     getUserTier() {
@@ -144,6 +187,20 @@ async function api(endpoint, options = {}) {
     const data = await res.json();
 
     if (!res.ok) {
+        /* The server is the authority on whether a token is good. If it says
+           401 while we were sending one, that session is finished -- expired,
+           signed with a rotated secret, or belonging to a deleted user. Drop
+           it, so the UI stops claiming to be logged in and login.html will
+           actually let the fan back in.
+
+           Only when a token was actually sent: a 401 from a public page that
+           never had a session is just an unauthenticated read. */
+        if (res.status === 401 && token) {
+            Auth.clearSession();
+            window.dispatchEvent(new CustomEvent('authStateChanged', {
+                detail: { loggedIn: false, user: null, reason: 'session-expired' },
+            }));
+        }
         throw new Error(data.error || 'Something went wrong');
     }
 

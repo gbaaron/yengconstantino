@@ -515,12 +515,38 @@
            Login Page Logic
            ═══════════════════════════════════════════════════ */
         (function() {
-            // If already logged in, redirect away
-            if (Auth.isLoggedIn()) {
-                var params = new URLSearchParams(window.location.search);
+            /* If already logged in, redirect away -- but never twice.
+
+               A token can be structurally valid and unexpired and still be
+               rejected by the server (a rotated JWT_SECRET, a deleted user).
+               In that state this check said "logged in", bounced the fan to
+               the page that had just told them to log in, and that page
+               bounced them back here: a loop with no exit but finding Log Out
+               by hand.
+
+               api() now clears a session the server rejects, so one bounce is
+               enough to break it. This flag guarantees it, and explains
+               itself instead of silently failing. */
+            var params = new URLSearchParams(window.location.search);
+            var BOUNCED = 'yc_login_bounced';
+
+            if (Auth.isLoggedIn() && !sessionStorage.getItem(BOUNCED)) {
+                sessionStorage.setItem(BOUNCED, '1');
                 window.location.href = params.get('redirect') || '/profile.html';
                 return;
             }
+
+            if (Auth.isLoggedIn()) {
+                // Second time here with a session that is not working.
+                Auth.clearSession();
+                var stale = document.getElementById('login-error');
+                var staleText = document.getElementById('login-error-text');
+                if (stale && staleText) {
+                    staleText.textContent = 'Your session expired. Please log in again.';
+                    stale.style.display = '';
+                }
+            }
+            sessionStorage.removeItem(BOUNCED);
 
             var form = document.getElementById('login-form');
             var emailInput = document.getElementById('login-email');
