@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FAFAFC">
+    <meta name="theme-color" content="#FBF8F2">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Yeng Constantino — OPM Icon — Spec Preview</title>
@@ -579,7 +579,16 @@
         @media (max-width: 768px) {
             .hero__title { font-size: 3rem; }
             .hero__tagline { font-size: 1.5rem; }
-            .hero--home { min-height: auto; padding: 120px 0 60px; }
+            /* The shorthand here used to be `padding: 120px 0 60px`, which
+               silently replaced the safe-area-aware padding-top set on
+               .hero--home in styles.css. In the iOS app the nav is
+               68px + env(safe-area-inset-top) tall -- about 127px on a
+               notched device -- so a flat 120px put the hero title
+               underneath it. */
+            .hero--home {
+                min-height: auto;
+                padding: calc(72px + env(safe-area-inset-top)) 0 60px;
+            }
             .stats__grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); }
             .stat__number { font-size: 2.2rem; }
             .section-header__title { font-size: 2rem; }

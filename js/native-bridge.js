@@ -62,9 +62,12 @@
   }
 
   // ---- Status bar ----
-  // Yeng's UI is LIGHT (#FAFAFC), so we want DARK content (dark text/icons).
+  // The status bar sits directly on the nav, which paints --cream.
   var StatusBar = (isNative && global.Capacitor.Plugins && global.Capacitor.Plugins.StatusBar) || null;
 
+  /* Named for the BACKGROUND they are used against, matching Capacitor's
+     own convention. setStatusBarDark() is for a dark surface (Studio, the
+     player chrome); setStatusBarLight() is for paper. */
   function setStatusBarDark() {
     if (StatusBar && StatusBar.setStyle) {
       try { StatusBar.setStyle({ style: 'DARK' }); } catch (e) {}
@@ -171,8 +174,14 @@
     // Immediately configure the status bar (don't wait for DOMContentLoaded).
     if (StatusBar) {
       try {
-        StatusBar.setStyle({ style: 'DARK' });
-        if (StatusBar.setBackgroundColor) StatusBar.setBackgroundColor({ color: '#FAFAFC' });
+        // Capacitor's Style.Light means DARK TEXT for a light background, and
+        // Style.Dark means light text for a dark one -- the naming describes
+        // the background, not the glyphs. This said DARK, which was right when
+        // the app was near-black; against warm paper it painted the clock and
+        // battery white on white. #FAFAFC was a cool grey that also did not
+        // match --paper.
+        StatusBar.setStyle({ style: 'LIGHT' });
+        if (StatusBar.setBackgroundColor) StatusBar.setBackgroundColor({ color: '#FBF8F2' });
         if (StatusBar.setOverlaysWebView) StatusBar.setOverlaysWebView({ overlay: true });
       } catch (e) {}
     }
