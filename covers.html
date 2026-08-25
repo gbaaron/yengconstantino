@@ -422,6 +422,10 @@
             flex: 1;
             min-width: 0;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            overflow-x: auto;
             scrollbar-width: none;
         }
 
@@ -488,6 +492,10 @@
         }
 
         .covers-filters__sort {
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             margin-left: auto;
         }
 
@@ -758,6 +766,17 @@
 
             .covers-filters__sort {
                 margin-left: 0;
+            }
+
+            /* The row stacks here, but align-items:center on a column flex
+               container sizes each child to its own content — so three
+               un-shrinkable chip rows widened the layout viewport to 604px
+               and knocked the fixed nav and every centred container off
+               true. They stretch to the column and swipe inside themselves
+               instead. */
+            .covers-filters__inner > * {
+                width: 100%;
+                max-width: 100%;
             }
 
             .covers-grid {

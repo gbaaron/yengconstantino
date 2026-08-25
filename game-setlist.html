@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFF9EE">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Setlist Prediction — Yeng Constantino (Spec Preview)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,23 +86,27 @@
     </div>
 </nav>
 
-<header class="page-hero page-hero--left">
-    <div class="container page-hero__inner">
-        <span class="page-hero__eyebrow">Ano kaya ang kakantahin niya?</span>
-        <h1 class="page-hero__title">Call the setlist</h1>
-        <p class="page-hero__sub">
-            Pick what she&rsquo;ll play. Scored after the show, five points a song. Her team
-            sees the totals &mdash; which is how a setlist stops being a guess.
-        </p>
-        <div class="show-pick" id="shows"></div>
-    </div>
-</header>
+<div class="gshell">
 
-<main class="section section--compact">
-    <div class="container">
-        <div id="body"><div class="skeleton" style="height:260px"></div></div>
-    </div>
-</main>
+    <header class="page-hero page-hero--left gshell__head">
+        <div class="container page-hero__inner">
+            <span class="page-hero__eyebrow">Ano kaya ang kakantahin niya?</span>
+            <h1 class="page-hero__title">Call the setlist</h1>
+            <p class="page-hero__sub">
+                Pick what she&rsquo;ll play. Scored after the show, five points a song. Her team
+                sees the totals &mdash; which is how a setlist stops being a guess.
+            </p>
+            <div class="show-pick chiprow" id="shows"></div>
+        </div>
+    </header>
+
+    <main class="gshell__body">
+        <div class="container">
+            <div id="body"><div class="skeleton" style="height:260px"></div></div>
+        </div>
+    </main>
+
+</div>
 
 <script src="/js/native-bridge.js"></script>
 <script src="/js/app.js"></script>

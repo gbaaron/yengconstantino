@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFF9EE">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Finish the Lyric — Yeng Constantino (Spec Preview)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,9 +20,9 @@
 
     <style>
         body { background: var(--off-white); }
-        /* Hero uses the shared .page-hero component. */
-        .ly-stats { display: flex; justify-content: center; gap: 1.75rem; margin-top: var(--space-lg); font-size: .82rem; color: rgba(255, 249, 238,.6); }
-        .ly-stats strong { font-family: var(--font-display); color: var(--gold); font-size: 1.15rem; }
+        /* Hero uses the shared .page-hero component, inside the game shell. */
+        .ly-stats { display: flex; justify-content: center; gap: 1.75rem; margin-top: var(--space-sm); font-size: .82rem; color: var(--ink-soft); }
+        .ly-stats strong { font-family: var(--font-display); color: var(--ticket-gold-dark); font-size: 1.15rem; }
 
         .round {
             background: var(--white); border: 1px solid var(--gray-200);
@@ -98,28 +106,37 @@
     </div>
 </nav>
 
-<header class="page-hero">
-    <div class="container page-hero__inner">
-        <span class="page-hero__eyebrow">Kabisado mo ba?</span>
-        <h1 class="page-hero__title">Finish the line</h1>
-        <p class="page-hero__sub">A few seconds of her. Type what comes next. Mabilis, mas malaki.</p>
-        <div class="ly-stats">
-            <span>Streak <strong id="streak">0</strong></span>
-            <span>Points <strong data-points-balance>—</strong></span>
-        </div>
-    </div>
-</header>
+<div class="gshell">
 
-<main class="section section--compact">
-    <div class="container">
-        <div id="stage"><div class="skeleton" style="height:280px;max-width:640px;margin:0 auto"></div></div>
-        <p class="speed-note">
-            Rounds are scored on how fast you answer, not just whether you're right.
-            That's deliberate &mdash; it makes a detour through a screenshot and an AI
-            cost more time than the points are worth.
-        </p>
-    </div>
-</main>
+    <header class="page-hero gshell__head">
+        <div class="container page-hero__inner">
+            <span class="page-hero__eyebrow">Kabisado mo ba?</span>
+            <h1 class="page-hero__title">Finish the line</h1>
+            <p class="page-hero__sub">A few seconds of her. Type what comes next. Mabilis, mas malaki.</p>
+            <div class="ly-stats">
+                <span>Streak <strong id="streak">0</strong></span>
+                <span>Points <strong data-points-balance>&mdash;</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="gshell__body">
+        <div class="container">
+            <div id="stage"><div class="skeleton" style="height:280px;max-width:640px;margin:0 auto"></div></div>
+        </div>
+    </main>
+
+    <footer class="gshell__foot">
+        <div class="container">
+            <p class="speed-note" style="margin:0">
+                Rounds are scored on how fast you answer, not just whether you're right.
+                That's deliberate &mdash; it makes a detour through a screenshot and an AI
+                cost more time than the points are worth.
+            </p>
+        </div>
+    </footer>
+
+</div>
 
 <audio id="clip" preload="auto"></audio>
 

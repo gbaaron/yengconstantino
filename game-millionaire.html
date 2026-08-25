@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFF9EE">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Yeng Millionaire — Yeng Constantino (Spec Preview)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +21,7 @@
     <style>
         body { background: var(--ember); background-attachment: fixed; color: var(--cream); }
 
-        .mn-top { padding: calc(var(--nav-height,72px) + 1.25rem) 0 .5rem; text-align: center; }
+        .mn-top { padding: 0; text-align: center; }
         .mn-top__title {
             font-family: var(--font-display); font-size: clamp(1.7rem,4.5vw,2.4rem); font-weight: 800;
             background: var(--ink-flame); -webkit-background-clip: text; background-clip: text;
@@ -119,6 +127,53 @@
             font-size: .72rem; color: rgba(255, 249, 238,.4);
             margin-top: var(--space-lg); text-align: center; line-height: 1.6;
         }
+        /* ── Millionaire: the ladder becomes a rail ──
+           Fifteen stacked rungs below the choices meant the answers and the money
+           were never on screen together. As a horizontal strip the ladder costs one
+           row, and the four choices get the rest of the screen. */
+        @media (max-width: 860px) {
+            .mn-layout { grid-template-columns: 1fr; gap: 0.7rem; }
+            .ladder {
+                order: -1;                    /* money above the question, not below */
+                flex-direction: row;          /* level 1 at the left, 15 at the right */
+                gap: 4px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding-bottom: 3px;
+            }
+            .ladder::-webkit-scrollbar { display: none; }
+            .rung {
+                flex: 0 0 auto;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+                min-width: 52px;
+                padding: 0.28rem 0.3rem;
+                border: 1px solid rgba(255, 249, 238, 0.12);
+                scroll-snap-align: center;
+                line-height: 1.25;
+            }
+            .rung__lv { min-width: 0; border: 0; padding: 0; font-size: 0.62rem; opacity: 0.75; }
+            .rung__pts { margin-left: 0; font-size: 0.74rem; }
+            .rung--current { border-color: var(--yeng-red); }
+            /* The safe-level dot is a second, non-colour signal — keep it, shrink it. */
+            .rung > span[title] { font-size: 0.4rem; line-height: 1; margin-top: -1px; }
+
+            /* Desktop padding on a phone was the last thing pushing the bank
+               row under the fold. The question panel is the whole screen
+               here; it does not need a 32px frame around it. */
+            .qpanel { padding: var(--space-md) var(--space-md) var(--space-lg); }
+            .qpanel__meta { gap: .6rem; margin-bottom: .6rem; }
+            .qpanel__prompt { margin-bottom: var(--space-md); }
+            .choices { gap: .45rem; }
+            .choice { padding: .7rem .9rem; }
+            .decision { margin-top: var(--space-md); padding-top: var(--space-md); gap: .6rem; }
+            .provenance { font-size: .66rem; margin-top: 0; }
+        }
+
         .nav { background: rgba(16,15,14,.9) !important; }
         .nav__link, .nav__logo { color: var(--cream) !important; }
     </style>
@@ -138,26 +193,35 @@
     </div>
 </nav>
 
-<header class="mn-top">
-    <div class="container">
-        <span class="page-hero__eyebrow" style="font-size:1.25rem">Kaya mo ba?</span>
-        <h1 class="mn-top__title">Yeng Millionaire</h1>
-        <p class="mn-top__sub">Once a day. Three safe levels. Bank any time.</p>
-    </div>
-</header>
+<div class="gshell">
 
-<main class="section section--compact">
-    <div class="container">
-        <div class="mn-layout">
-            <div id="stage"><div class="skeleton" style="height:320px"></div></div>
-            <aside class="ladder" id="ladder"></aside>
+    <header class="mn-top gshell__head">
+        <div class="container">
+            <span class="page-hero__eyebrow mn-top__kicker" style="font-size:1.25rem">Kaya mo ba?</span>
+            <h1 class="mn-top__title">Yeng Millionaire</h1>
+            <p class="mn-top__sub">Once a day. Three safe levels. Bank any time.</p>
         </div>
-        <p class="provenance">
-            Every question is built from material Yeng has approved &mdash; her discography
-            and her own recorded words. Nothing here is generated or guessed.
-        </p>
-    </div>
-</main>
+    </header>
+
+    <main class="gshell__body">
+        <div class="container">
+            <div class="mn-layout">
+                <div id="stage"><div class="skeleton" style="height:320px"></div></div>
+                <aside class="ladder" id="ladder"></aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="gshell__foot">
+        <div class="container">
+            <p class="provenance" style="margin-top:0">
+                Every question is built from material Yeng has approved &mdash; her discography
+                and her own recorded words. Nothing here is generated or guessed.
+            </p>
+        </div>
+    </footer>
+
+</div>
 
 <script src="/js/native-bridge.js"></script>
 <script src="/js/app.js"></script>
@@ -194,6 +258,14 @@
                 + (r.safe ? '<span title="Safe level">&#9679;</span>' : '')
                 + '<span class="rung__pts">' + r.points.toLocaleString() + '</span></div>';
         }).join('');
+
+        /* On a phone the ladder is a horizontal rail, so the rung being
+           played for can be off to one side. inline:'center' brings it in;
+           block:'nearest' keeps it from dragging the page vertically. */
+        var cur = document.querySelector('.rung--current');
+        if (cur && cur.scrollIntoView) {
+            cur.scrollIntoView({ block: 'nearest', inline: 'center' });
+        }
     }
 
     /* ── Start screen ── */

@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- iOS native app / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yeng">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFF9EE">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Song Ranking — Yeng Constantino (Spec Preview)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,9 +21,9 @@
     <style>
         body { background: var(--off-white); }
 
-        /* Hero uses the shared .page-hero component. */
-        .rk-progress { display: flex; align-items: center; justify-content: center; gap: 1.75rem; margin-top: var(--space-lg); font-size: .82rem; color: rgba(255, 249, 238,.6); }
-        .rk-progress strong { color: var(--gold); font-family: var(--font-display); font-size: 1.15rem; }
+        /* Hero uses the shared .page-hero component, inside the game shell. */
+        .rk-progress { display: flex; align-items: center; justify-content: center; gap: 1.75rem; margin-top: var(--space-sm); font-size: .82rem; color: var(--ink-soft); }
+        .rk-progress strong { color: var(--ticket-gold-dark); font-family: var(--font-display); font-size: 1.15rem; }
 
         /* ── The matchup ── */
         .matchup {
@@ -84,6 +92,42 @@
             .matchup { grid-template-columns: 1fr; }
             .vs { writing-mode: horizontal-tb; padding: .25rem 0; }
         }
+
+        /* ── Ranking: two records and the buttons, on one screen ──
+           The artwork flexes into whatever height is left instead of holding a fixed
+           16:9 that pushed the second card off the bottom. */
+        @media (max-width: 620px) {
+            /* The height chain: body -> container -> #game -> matchup. Every
+               link needs flex:1 and min-height:0 or the grid has no definite
+               height to split between the two records. */
+            .gshell__body { justify-content: stretch; }
+            .gshell__body > .container,
+            .gshell__body #game {
+                display: flex; flex-direction: column;
+                flex: 1 1 auto; min-height: 0;
+            }
+            .gshell__body .matchup {
+                flex: 1 1 auto;
+                min-height: 0;
+                grid-template-columns: 1fr;
+                grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+                gap: 0.5rem;
+            }
+            .gshell__head .page-hero__title { font-size: 1.9rem; }
+            .gshell__head .page-hero__sub { font-size: .84rem; }
+            .gshell__body .pick { min-height: 0; }
+            .gshell__body .pick__art {
+                flex: 1 1 auto;
+                min-height: 64px;
+                height: auto;
+                aspect-ratio: auto;
+            }
+            .gshell__body .pick__body { flex: 0 0 auto; padding: 0.55rem 0.75rem; }
+            .gshell__body .pick__title { font-size: 1rem; }
+            .gshell__body .pick__meta { font-size: 0.72rem; }
+            .gshell__body .vs { padding: 0; font-size: 0.95rem; }
+        }
+
     </style>
 </head>
 <body>
@@ -102,28 +146,40 @@
     </div>
 </nav>
 
-<header class="page-hero">
-    <div class="container page-hero__inner">
-        <span class="page-hero__eyebrow">Alin ang itatago mo?</span>
-        <h1 class="page-hero__title">Which one stays?</h1>
-        <p class="page-hero__sub">Two records. Keep one. The one you keep faces the next.</p>
-        <div class="rk-progress">
-            <span>This session <strong id="session-count">0</strong></span>
-            <span>Points <strong data-points-balance>—</strong></span>
-        </div>
-    </div>
-</header>
+<div class="gshell">
 
-<main class="section section--compact">
+    <header class="page-hero gshell__head">
+        <div class="container page-hero__inner">
+            <span class="page-hero__eyebrow">Alin ang itatago mo?</span>
+            <h1 class="page-hero__title">Which one stays?</h1>
+            <p class="page-hero__sub">Two records. Keep one. The one you keep faces the next.</p>
+            <div class="rk-progress">
+                <span>This session <strong id="session-count">0</strong></span>
+                <span>Points <strong data-points-balance>&mdash;</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="gshell__body">
+        <div class="container">
+            <div id="game"><div class="skeleton" style="height:340px"></div></div>
+        </div>
+    </main>
+
+    <footer class="gshell__foot">
+        <div class="container">
+            <div class="rk-actions" style="margin-top:0">
+                <button class="btn btn--ghost btn--sm" id="skip">Skip this pair</button>
+                <button class="btn btn--secondary btn--sm" id="finish">Finish session</button>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<main class="after-game">
     <div class="container">
-        <div id="game"><div class="skeleton" style="height:340px"></div></div>
-
-        <div class="rk-actions">
-            <button class="btn btn--ghost btn--sm" id="skip">Skip this pair</button>
-            <button class="btn btn--secondary btn--sm" id="finish">Finish session</button>
-        </div>
-
-        <section class="mt-4" id="standings-section">
+        <section id="standings-section">
             <div class="section-header" style="text-align:left;margin-bottom:1rem">
                 <span class="section-header__eyebrow" style="font-size:1.15rem">Ang ranggo</span>
                 <h2 class="section-header__title" style="font-size:1.4rem">The standings</h2>

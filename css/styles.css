@@ -1206,12 +1206,35 @@ textarea.form-input {
 .ig-feed {
     padding: var(--space-4xl) 0;
     background: var(--off-white);
+    /* Final containment for the one part of the page a third party renders
+       into. Whatever embed.js decides an iframe should be, it stops at this
+       section's edge and can never widen the document again. */
+    overflow-x: hidden;
 }
 
 .ig-feed__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-md);
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Grid items default to min-width:auto, so a child that refuses to shrink
+   pushes the track wider than its share. Nothing in a feed tile needs to. */
+.ig-feed__grid > * { min-width: 0; }
+
+/* Instagram re-applies min-width:326px inline after embed.js runs, which no
+   ordinary rule can outrank. This is one of the few places !important is the
+   correct tool: we are overriding a third party's inline style, not our own. */
+/* Match any iframe in the well, not just the ones that keep the
+   instagram-media class — embed.js swaps a couple of them for plain frames
+   while it hydrates, and those were the two still sticking out. */
+.ig-feed__grid .instagram-media,
+.ig-feed__grid iframe {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
 }
 
 .ig-feed__item {
@@ -1308,7 +1331,8 @@ textarea.form-input {
 }
 
 @media (max-width: 768px) {
-    .ig-feed__grid { grid-template-columns: repeat(2, 1fr); }
+    .ig-feed__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 
     .grid--2,
     .grid--3,
@@ -2389,6 +2413,24 @@ a.qrow:hover { background: var(--paper-aged); }
 .notice--green { border-left-color: var(--verified); }
 .notice strong { color: var(--ink); }
 
+@media (max-width: 700px) {
+    .ig-feed__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Chip rows that must never widen the page ──
+   A filter row wider than the screen has to scroll inside itself. If it does
+   not, it widens the layout viewport and drags every centred container and
+   the fixed nav off true with it. */
+.chiprow {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    min-width: 0;
+}
+.chiprow::-webkit-scrollbar { display: none; }
+.chiprow > * { flex: 0 0 auto; }
+
 /* ── Quiet empty state ──
    Zeros are never the centrepiece. */
 .quiet {
@@ -3008,3 +3050,78 @@ a.qrow:hover { background: var(--paper-aged); }
 @media (max-width: 620px) {
     .points-ticket__note { margin-left: 0; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   THE GAME SHELL
+   ═══════════════════════════════════════════════════════
+
+   A game that scrolls like an article does not read as a game. The four
+   game pages were built as ordinary documents — big hero, section, content
+   flowing off the bottom — so on a phone you met a title card first and had
+   to scroll to find the thing you were meant to tap.
+
+   .gshell makes the playable part occupy exactly one screen: a compact head,
+   a body that takes whatever height is left, and a foot pinned under it.
+   Anything that is not the game (standings, provenance, history) still lives
+   below the fold, which is the right place for it — the point is that the
+   game itself never starts halfway up the screen or runs off the bottom.
+
+   100dvh, not 100vh: on iOS 100vh is the height with browser chrome hidden,
+   so a vh-sized screen is always taller than the space actually available
+   and the last control sits under the toolbar. svh is the floor and is used
+   as the fallback for engines without dvh.
+   ─────────────────────────────────────────────────────── */
+
+.gshell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    min-height: 100dvh;
+    /* The fixed nav plus, in the native app, the status bar above it. */
+    padding-top: calc(var(--nav-height, 72px) + env(safe-area-inset-top, 0px));
+}
+
+.gshell__head {
+    flex: 0 0 auto;
+    padding: clamp(8px, 2vw, 20px) 0 clamp(6px, 1.5vw, 14px);
+    text-align: center;
+}
+
+/* Three of the four games reuse .page-hero as their title band. Inside the
+   shell it must not reserve nav height a second time, and it must not be a
+   full-height hero. */
+.gshell__head.page-hero { padding: 0; min-height: 0; }
+.gshell__head .page-hero__inner { padding-block: clamp(10px, 2vw, 22px); }
+
+/* Takes the remaining height and centres the play area in it. Scrolls
+   inside itself rather than pushing the foot off-screen when a question is
+   unusually long or the user has scaled their text up. */
+.gshell__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.gshell__body > .container { width: 100%; }
+
+.gshell__foot {
+    flex: 0 0 auto;
+    padding: clamp(8px, 2vw, 16px) 0 calc(clamp(10px, 2vw, 18px) + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--rule);
+}
+
+/* Everything after the shell is the below-the-fold half: standings, history,
+   the small print. It gets its own breathing room. */
+.gshell + .after-game { padding: clamp(28px, 6vw, 52px) 0 clamp(40px, 8vw, 72px); }
+
+@media (max-width: 700px) {
+    /* A title card is not worth a third of a phone screen. */
+    .gshell__head .page-hero__eyebrow,
+    .gshell__head .mn-top__kicker { font-size: 1.05rem; }
+    .gshell__head .page-hero__sub,
+    .gshell__head .mn-top__sub { font-size: 0.78rem; margin-top: 0.15rem; }
+}
+
