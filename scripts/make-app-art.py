@@ -35,11 +35,14 @@ except ImportError:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ── Palette, lifted from css/styles.css ──
-PAPER = (0xF3, 0xEE, 0xE5)   # --paper
-CREAM = (0xFB, 0xF8, 0xF2)   # --paper-raised
-INK = (0x19, 0x17, 0x16)     # --ink
-RED = (0xA5, 0x2C, 0x32)     # --yeng-red
-GOLD = (0xD4, 0x9A, 0x24)    # --ticket-gold
+# Keep these in step with the :root tokens. The launch screen is the first
+# thing anyone sees, so a stale value here shows as a colour flash between
+# the splash and the first painted page.
+PAPER = (0xF7, 0xEB, 0xD5)   # --paper-main
+CREAM = (0xFF, 0xF9, 0xEE)   # --paper-light
+INK = (0x1F, 0x19, 0x16)     # --ink
+RED = (0xD6, 0x2D, 0x2F)     # --yeng-red
+GOLD = (0xF4, 0xB3, 0x1C)    # --sun-yellow
 
 SERIF_BOLD = "/System/Library/Fonts/Supplemental/Georgia Bold.ttf"
 SERIF_ITALIC = "/System/Library/Fonts/Supplemental/Georgia Bold Italic.ttf"

@@ -8,23 +8,23 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FBF8F2">
+    <meta name="theme-color" content="#FFF9EE">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Admin Dashboard — Yeng Constantino (Spec Preview)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
-        .admin-page { padding-top: 72px; min-height: 100vh; background: #FBF8F2; }
+        .admin-page { padding-top: 72px; min-height: 100vh; background: #FFF9EE; }
 
         .admin-header {
-            background: linear-gradient(135deg, #191716 0%, #322E2A 60%, #A52C32 100%);
+            background: linear-gradient(135deg, #1F1916 0%, #38312C 60%, #D62D2F 100%);
             padding: var(--space-3xl) 0 calc(var(--space-3xl) + 60px);
             text-align: center;
         }
-        .admin-header__eyebrow { font-family: var(--font-accent); font-size: 1.2rem; color: #D49A24; }
+        .admin-header__eyebrow { font-family: var(--font-accent); font-size: 1.2rem; color: #F4B31C; }
         .admin-header__title { font-family: var(--font-display); font-size: 2.5rem; font-weight: 900; color: #FFF; margin-top: 4px; }
 
         .admin-stats {
@@ -47,9 +47,9 @@
         }
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
         .stat-card__icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
-        .stat-card__value { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #A52C32; line-height: 1.1; }
-        .stat-card__label { font-family: var(--font-body); font-size: 0.75rem; color: #625B55; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; font-weight: 600; }
-        .stat-card__sub { font-family: var(--font-body); font-size: 0.72rem; color: #D49A24; margin-top: 2px; font-weight: 600; }
+        .stat-card__value { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #D62D2F; line-height: 1.1; }
+        .stat-card__label { font-family: var(--font-body); font-size: 0.75rem; color: #6B6058; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; font-weight: 600; }
+        .stat-card__sub { font-family: var(--font-body); font-size: 0.72rem; color: #F4B31C; margin-top: 2px; font-weight: 600; }
 
         .admin-tabs {
             max-width: 1200px;
@@ -67,15 +67,15 @@
             font-family: var(--font-body);
             font-weight: 600;
             font-size: 0.85rem;
-            color: #625B55;
+            color: #6B6058;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             margin-bottom: -2px;
             transition: all 150ms ease;
             white-space: nowrap;
         }
-        .admin-tab:hover { color: #A52C32; }
-        .admin-tab--active { color: #A52C32; border-bottom-color: #A52C32; }
+        .admin-tab:hover { color: #D62D2F; }
+        .admin-tab--active { color: #D62D2F; border-bottom-color: #D62D2F; }
         .admin-tab__badge {
             display: inline-flex;
             align-items: center;
@@ -84,7 +84,7 @@
             height: 20px;
             padding: 0 6px;
             border-radius: 10px;
-            background: #741E27;
+            background: #A92228;
             color: #FFF;
             font-size: 0.65rem;
             font-weight: 700;
@@ -94,54 +94,54 @@
         .admin-panels { max-width: 1200px; margin: 0 auto; padding: var(--space-xl); }
         .admin-panel { display: none; }
         .admin-panel--active { display: block; }
-        .admin-panel__title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #322E2A; margin-bottom: var(--space-xl); }
+        .admin-panel__title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #38312C; margin-bottom: var(--space-xl); }
 
         /* Data Tables */
         .admin-table-wrap { overflow-x: auto; }
-        .admin-table { width: 100%; border-collapse: collapse; background: #FFF; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 2px 8px rgba(212, 154, 36,0.06); }
+        .admin-table { width: 100%; border-collapse: collapse; background: #FFF; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 2px 8px rgba(244, 179, 28,0.06); }
         .admin-table th {
             background: #F7F3EE; font-family: var(--font-body); font-weight: 700; font-size: 0.72rem;
             text-transform: uppercase; letter-spacing: 0.05em; color: #6B5D50; padding: 12px 16px; text-align: left;
         }
-        .admin-table td { padding: 12px 16px; font-family: var(--font-body); font-size: 0.88rem; color: #322E2A; border-top: 1px solid #EDE7DF; vertical-align: middle; }
-        .admin-table tr:hover td { background: rgba(116, 30, 39,0.02); }
+        .admin-table td { padding: 12px 16px; font-family: var(--font-body); font-size: 0.88rem; color: #38312C; border-top: 1px solid #EDE7DF; vertical-align: middle; }
+        .admin-table tr:hover td { background: rgba(169, 34, 40,0.02); }
 
         /* Moderation Cards */
-        .mod-card { background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(212, 154, 36,0.06); }
+        .mod-card { background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(244, 179, 28,0.06); }
         .mod-card__header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-md); margin-bottom: var(--space-sm); flex-wrap: wrap; }
-        .mod-card__user { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: #322E2A; }
-        .mod-card__meta { font-family: var(--font-body); font-size: 0.8rem; color: #625B55; margin-bottom: var(--space-sm); }
+        .mod-card__user { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: #38312C; }
+        .mod-card__meta { font-family: var(--font-body); font-size: 0.8rem; color: #6B6058; margin-bottom: var(--space-sm); }
         .mod-card__content { font-family: var(--font-body); font-size: 0.9rem; color: #4A3D32; line-height: 1.7; margin-bottom: var(--space-md); }
         .mod-card__actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
 
         /* Status badges */
         .status-badge { display: inline-block; padding: 3px 10px; border-radius: 9999px; font-family: var(--font-body); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
-        .status-badge--pending { background: rgba(212, 154, 36,0.15); color: #B0801E; }
-        .status-badge--confirmed, .status-badge--approved { background: rgba(116, 30, 39,0.12); color: #A52C32; }
+        .status-badge--pending { background: rgba(244, 179, 28,0.15); color: #B0801E; }
+        .status-badge--confirmed, .status-badge--approved { background: rgba(169, 34, 40,0.12); color: #D62D2F; }
         .status-badge--shipped, .status-badge--delivered, .status-badge--active { background: rgba(45,142,126,0.12); color: #2D8E7E; }
-        .status-badge--cancelled, .status-badge--rejected { background: rgba(116, 30, 39,0.12); color: #741E27; }
-        .status-badge--recording, .status-badge--accepted { background: rgba(116, 30, 39,0.12); color: #C24048; }
+        .status-badge--cancelled, .status-badge--rejected { background: rgba(169, 34, 40,0.12); color: #A92228; }
+        .status-badge--recording, .status-badge--accepted { background: rgba(169, 34, 40,0.12); color: #F06C65; }
 
         /* Config Editor */
         .config-row { display: grid; grid-template-columns: 180px 1fr 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md) 0; border-bottom: 1px solid #EDE7DF; }
-        .config-row__key { font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; color: #322E2A; word-break: break-all; }
-        .config-row__input { padding: 8px 12px; border: 2px solid #EDE7DF; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.85rem; color: #322E2A; width: 100%; }
-        .config-row__input:focus { outline: none; border-color: #A52C32; }
+        .config-row__key { font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; color: #38312C; word-break: break-all; }
+        .config-row__input { padding: 8px 12px; border: 2px solid #EDE7DF; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.85rem; color: #38312C; width: 100%; }
+        .config-row__input:focus { outline: none; border-color: #D62D2F; }
 
         /* Membership bar */
         .tier-bar { display: flex; height: 32px; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: var(--space-md); }
         .tier-bar__segment { display: flex; align-items: center; justify-content: center; font-family: var(--font-body); font-size: 0.7rem; font-weight: 700; color: #FFF; min-width: 40px; }
         .tier-bar__segment--free { background: #B8A999; }
-        .tier-bar__segment--sariwang { background: #A52C32; }
-        .tier-bar__segment--laging { background: #741E27; }
-        .tier-bar__segment--ikaw { background: #D49A24; color: #191716; }
+        .tier-bar__segment--sariwang { background: #D62D2F; }
+        .tier-bar__segment--laging { background: #A92228; }
+        .tier-bar__segment--ikaw { background: #F4B31C; color: #1F1916; }
 
         /* Search */
         .admin-search { padding: 10px 16px; border: 2px solid #EDE7DF; border-radius: var(--radius-md); font-family: var(--font-body); font-size: 0.9rem; width: 100%; max-width: 400px; margin-bottom: var(--space-xl); }
-        .admin-search:focus { outline: none; border-color: #A52C32; box-shadow: 0 0 0 3px rgba(116, 30, 39,0.12); }
+        .admin-search:focus { outline: none; border-color: #D62D2F; box-shadow: 0 0 0 3px rgba(169, 34, 40,0.12); }
 
         /* Inline select */
-        .inline-select { padding: 4px 24px 4px 8px; border: 1px solid #EDE7DF; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.8rem; color: #322E2A; appearance: none; background: #FFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236B5D50' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 8px center; cursor: pointer; }
+        .inline-select { padding: 4px 24px 4px 8px; border: 1px solid #EDE7DF; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.8rem; color: #38312C; appearance: none; background: #FFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236B5D50' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 8px center; cursor: pointer; }
 
         @media (max-width: 1024px) { .admin-stats { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
@@ -167,7 +167,7 @@
             align-items: center;
             gap: 10px;
             padding: 14px 32px;
-            background: linear-gradient(135deg, #A52C32, #A52C32);
+            background: linear-gradient(135deg, #D62D2F, #D62D2F);
             color: #FFF;
             border: none;
             border-radius: var(--radius-md);
@@ -185,13 +185,13 @@
             animation: livePulse 1.5s ease-in-out infinite;
         }
         @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .go-live-btn__hint { font-family: var(--font-body); font-size: 0.8rem; color: #625B55; }
+        .go-live-btn__hint { font-family: var(--font-body); font-size: 0.8rem; color: #6B6058; }
 
         /* CSS Charts */
         .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
         .chart-card {
             background: #FFF; border-radius: var(--radius-md); padding: var(--space-xl);
-            box-shadow: 0 2px 8px rgba(212, 154, 36,0.06);
+            box-shadow: 0 2px 8px rgba(244, 179, 28,0.06);
         }
         .chart-card__title {
             font-family: var(--font-body); font-size: 0.8rem; font-weight: 700;
@@ -204,8 +204,8 @@
             width: 100%; border-radius: 4px 4px 0 0; min-height: 4px;
             transition: height 0.6s ease;
         }
-        .bar-chart__label { font-family: var(--font-body); font-size: 0.65rem; color: #625B55; text-align: center; }
-        .bar-chart__value { font-family: var(--font-body); font-size: 0.7rem; font-weight: 700; color: #322E2A; }
+        .bar-chart__label { font-family: var(--font-body); font-size: 0.65rem; color: #6B6058; text-align: center; }
+        .bar-chart__value { font-family: var(--font-body); font-size: 0.7rem; font-weight: 700; color: #38312C; }
 
         /* Donut Chart */
         .donut-wrap { display: flex; align-items: center; gap: var(--space-xl); }
@@ -214,28 +214,28 @@
             position: absolute; inset: 30px; border-radius: 50%; background: #FFF;
             display: flex; align-items: center; justify-content: center; flex-direction: column;
         }
-        .donut-chart__total { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: #A52C32; }
-        .donut-chart__label { font-family: var(--font-body); font-size: 0.65rem; color: #625B55; }
+        .donut-chart__total { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: #D62D2F; }
+        .donut-chart__label { font-family: var(--font-body); font-size: 0.65rem; color: #6B6058; }
         .donut-legend { list-style: none; padding: 0; }
         .donut-legend li {
             display: flex; align-items: center; gap: 8px; padding: 4px 0;
-            font-family: var(--font-body); font-size: 0.82rem; color: #322E2A;
+            font-family: var(--font-body); font-size: 0.82rem; color: #38312C;
         }
         .donut-legend__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
         .donut-legend__count { margin-left: auto; font-weight: 700; color: #6B5D50; }
 
         /* Line Sparkline */
         .sparkline-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 12px; }
-        .sparkline-row__label { font-family: var(--font-body); font-size: 0.82rem; color: #322E2A; min-width: 80px; }
+        .sparkline-row__label { font-family: var(--font-body); font-size: 0.82rem; color: #38312C; min-width: 80px; }
         .sparkline-row__bar { flex: 1; height: 24px; background: var(--gray-100); border-radius: 4px; overflow: hidden; position: relative; }
         .sparkline-row__fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
         .sparkline-row__value { font-family: var(--font-body); font-size: 0.8rem; font-weight: 700; color: #6B5D50; min-width: 40px; text-align: right; }
 
         /* Engagement list */
         .engagement-item { display: flex; align-items: center; gap: var(--space-md); padding: 10px 0; border-bottom: 1px solid #EDE7DF; }
-        .engagement-item__rank { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: #D49A24; min-width: 30px; }
-        .engagement-item__title { font-family: var(--font-body); font-size: 0.88rem; color: #322E2A; flex: 1; }
-        .engagement-item__stat { font-family: var(--font-body); font-size: 0.82rem; font-weight: 700; color: #A52C32; }
+        .engagement-item__rank { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: #F4B31C; min-width: 30px; }
+        .engagement-item__title { font-family: var(--font-body); font-size: 0.88rem; color: #38312C; flex: 1; }
+        .engagement-item__stat { font-family: var(--font-body); font-size: 0.82rem; font-weight: 700; color: #D62D2F; }
 
         @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } .donut-wrap { flex-direction: column; } .go-live-bar { flex-direction: column; text-align: center; } }
 
@@ -244,35 +244,35 @@
         .goals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
         .goal-card {
             background: #FFF; border-radius: var(--radius-md); padding: var(--space-lg);
-            box-shadow: 0 2px 8px rgba(212, 154, 36,0.06); position: relative; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(244, 179, 28,0.06); position: relative; overflow: hidden;
         }
         .goal-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md); }
-        .goal-card__title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: #322E2A; }
+        .goal-card__title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: #38312C; }
         .goal-card__edit {
             background: none; border: 1px solid #EDE7DF; border-radius: 6px; padding: 4px 10px;
-            font-family: var(--font-body); font-size: 0.7rem; color: #625B55; cursor: pointer;
+            font-family: var(--font-body); font-size: 0.7rem; color: #6B6058; cursor: pointer;
         }
-        .goal-card__edit:hover { border-color: #A52C32; color: #A52C32; }
+        .goal-card__edit:hover { border-color: #D62D2F; color: #D62D2F; }
         .goal-card__numbers { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
-        .goal-card__current { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: #A52C32; }
-        .goal-card__target { font-family: var(--font-body); font-size: 0.85rem; color: #625B55; }
+        .goal-card__current { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: #D62D2F; }
+        .goal-card__target { font-family: var(--font-body); font-size: 0.85rem; color: #6B6058; }
         .goal-card__bar { height: 8px; background: #EDE7DF; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
         .goal-card__fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
-        .goal-card__fill--purple { background: linear-gradient(90deg, #A52C32, #C24048); }
-        .goal-card__fill--gold { background: linear-gradient(90deg, #D49A24, #F0CD79); }
-        .goal-card__fill--burgundy { background: linear-gradient(90deg, #741E27, #96313B); }
+        .goal-card__fill--purple { background: linear-gradient(90deg, #D62D2F, #F06C65); }
+        .goal-card__fill--gold { background: linear-gradient(90deg, #F4B31C, #FFD96F); }
+        .goal-card__fill--burgundy { background: linear-gradient(90deg, #A92228, #C33338); }
         .goal-card__fill--teal { background: linear-gradient(90deg, #2D8E7E, #3DB8A5); }
-        .goal-card__meta { font-family: var(--font-body); font-size: 0.75rem; color: #625B55; }
+        .goal-card__meta { font-family: var(--font-body); font-size: 0.75rem; color: #6B6058; }
         .goal-card__pace { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 0.7rem; margin-left: 6px; }
         .goal-card__pace--ahead { background: rgba(45,142,126,0.12); color: #2D8E7E; }
-        .goal-card__pace--behind { background: rgba(116, 30, 39,0.12); color: #741E27; }
-        .goal-card__pace--on-track { background: rgba(212, 154, 36,0.15); color: #B0801E; }
+        .goal-card__pace--behind { background: rgba(169, 34, 40,0.12); color: #A92228; }
+        .goal-card__pace--on-track { background: rgba(244, 179, 28,0.15); color: #B0801E; }
 
         /* AI Insights */
         .insights-section { margin-bottom: var(--space-2xl); }
         .insights-card {
-            background: linear-gradient(135deg, #F3EEE5 0%, #fff8f0 100%);
-            border: 1px solid rgba(116, 30, 39,0.1);
+            background: linear-gradient(135deg, #F7EBD5 0%, #fff8f0 100%);
+            border: 1px solid rgba(169, 34, 40,0.1);
             border-radius: var(--radius-md); padding: var(--space-xl); margin-bottom: var(--space-md);
         }
         .insights-card__header {
@@ -281,15 +281,15 @@
         .insights-card__icon { font-size: 1.3rem; }
         .insights-card__label {
             font-family: var(--font-body); font-size: 0.75rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.05em; color: #A52C32;
+            text-transform: uppercase; letter-spacing: 0.05em; color: #D62D2F;
         }
         .insights-card__badge {
             margin-left: auto; padding: 3px 10px; border-radius: 9999px;
             font-family: var(--font-body); font-size: 0.65rem; font-weight: 700;
-            background: rgba(116, 30, 39,0.1); color: #A52C32;
+            background: rgba(169, 34, 40,0.1); color: #D62D2F;
         }
         .insight-item {
-            padding: 12px 0; border-bottom: 1px solid rgba(116, 30, 39,0.08);
+            padding: 12px 0; border-bottom: 1px solid rgba(169, 34, 40,0.08);
             display: flex; gap: var(--space-md); align-items: flex-start;
         }
         .insight-item:last-child { border-bottom: none; }
@@ -298,23 +298,23 @@
             font-size: 0.7rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
         }
         .insight-item__type--growth { background: rgba(45,142,126,0.12); color: #2D8E7E; }
-        .insight-item__type--action { background: rgba(212, 154, 36,0.15); color: #B0801E; }
-        .insight-item__type--alert { background: rgba(116, 30, 39,0.12); color: #741E27; }
-        .insight-item__type--idea { background: rgba(116, 30, 39,0.1); color: #A52C32; }
-        .insight-item__text { font-family: var(--font-body); font-size: 0.88rem; color: #322E2A; line-height: 1.6; }
-        .insight-item__text strong { color: #A52C32; }
+        .insight-item__type--action { background: rgba(244, 179, 28,0.15); color: #B0801E; }
+        .insight-item__type--alert { background: rgba(169, 34, 40,0.12); color: #A92228; }
+        .insight-item__type--idea { background: rgba(169, 34, 40,0.1); color: #D62D2F; }
+        .insight-item__text { font-family: var(--font-body); font-size: 0.88rem; color: #38312C; line-height: 1.6; }
+        .insight-item__text strong { color: #D62D2F; }
 
         .insights-refresh {
             display: inline-flex; align-items: center; gap: 6px;
-            padding: 8px 20px; border: 1px solid rgba(116, 30, 39,0.2); border-radius: var(--radius-md);
+            padding: 8px 20px; border: 1px solid rgba(169, 34, 40,0.2); border-radius: var(--radius-md);
             background: #FFF; font-family: var(--font-body); font-size: 0.82rem;
-            font-weight: 600; color: #A52C32; cursor: pointer; margin-top: var(--space-md);
+            font-weight: 600; color: #D62D2F; cursor: pointer; margin-top: var(--space-md);
         }
-        .insights-refresh:hover { background: rgba(116, 30, 39,0.05); }
+        .insights-refresh:hover { background: rgba(169, 34, 40,0.05); }
 
         /* Goal edit modal */
         .goal-modal__field { margin-bottom: var(--space-md); }
-        .goal-modal__label { font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; color: #322E2A; margin-bottom: 4px; display: block; }
+        .goal-modal__label { font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; color: #38312C; margin-bottom: 4px; display: block; }
 
         @media (max-width: 768px) { .goals-grid { grid-template-columns: 1fr; } }
     </style>
@@ -392,7 +392,7 @@
                 <div class="modal-overlay" id="goal-modal">
                     <div class="modal" style="max-width:420px;">
                         <button class="modal__close" onclick="closeGoalModal()">&times;</button>
-                        <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;margin-bottom:var(--space-xl);color:#322E2A;" id="goal-modal-title">Edit Goal</h3>
+                        <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;margin-bottom:var(--space-xl);color:#38312C;" id="goal-modal-title">Edit Goal</h3>
                         <div class="goal-modal__field">
                             <label class="goal-modal__label">Goal Name</label>
                             <input class="form-input" id="goal-name" placeholder="e.g. Total Members">
@@ -577,7 +577,7 @@
             </div>
             <div class="footer__bottom">
                 <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9834;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#F4B31C;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
     </footer>
@@ -657,7 +657,7 @@
             ordersHtml += '<tr><td>' + (o.orderNumber || 'N/A') + '</td><td>' + formatPrice(o.totalAmount) + '</td><td><span class="status-badge status-badge--' + sc + '">' + o.status + '</span></td><td>' + (o.orderDate ? formatDate(o.orderDate) : '') + '</td></tr>';
         });
         ordersHtml += '</tbody></table>';
-        document.getElementById('overview-orders').innerHTML = data.recentOrders && data.recentOrders.length ? ordersHtml : '<p style="color:#625B55;">No orders yet.</p>';
+        document.getElementById('overview-orders').innerHTML = data.recentOrders && data.recentOrders.length ? ordersHtml : '<p style="color:#6B6058;">No orders yet.</p>';
 
         // Recent signups table
         var signupsHtml = '<table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Tier</th><th>Joined</th></tr></thead><tbody>';
@@ -665,7 +665,7 @@
             signupsHtml += '<tr><td>' + (u.name || '') + '</td><td>' + (u.email || '') + '</td><td>' + (u.membershipTier || 'Free') + '</td><td>' + (u.joinDate ? formatDate(u.joinDate) : '') + '</td></tr>';
         });
         signupsHtml += '</tbody></table>';
-        document.getElementById('overview-signups').innerHTML = data.recentSignups && data.recentSignups.length ? signupsHtml : '<p style="color:#625B55;">No signups yet.</p>';
+        document.getElementById('overview-signups').innerHTML = data.recentSignups && data.recentSignups.length ? signupsHtml : '<p style="color:#6B6058;">No signups yet.</p>';
     }
 
     /* ── Tab Switching ── */
@@ -703,7 +703,7 @@
                     + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="moderatePost(\'' + p.id + '\',\'Approved\')">Approve</button><button class="btn btn--ghost btn--sm" onclick="moderatePost(\'' + p.id + '\',\'Rejected\')">Reject</button></div>'
                     + '</div>';
             }).join('');
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load posts.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load posts.</p>'; }
     }
 
     async function moderatePost(postId, status) {
@@ -727,7 +727,7 @@
 
     function renderQuestionCard(p) {
         var answered = qAnswer(p);
-        var bumpTag = qBumped(p) ? '<span class="status-badge" style="background:linear-gradient(135deg,#741E27,#A52C32);color:#fff;">&#9650; Bumped</span>' : '';
+        var bumpTag = qBumped(p) ? '<span class="status-badge" style="background:linear-gradient(135deg,#A92228,#D62D2F);color:#fff;">&#9650; Bumped</span>' : '';
         var likeTag = '<span class="mod-card__meta" style="margin:0;">&#9829; ' + qLikes(p) + ' likes</span>';
         var answerBlock = answered
             ? '<div class="mod-card__content" style="background:linear-gradient(135deg,rgba(201,139,30,0.08),rgba(108,43,217,0.08));border-left:3px solid var(--gold);padding:var(--space-md);border-radius:var(--radius-sm);margin-top:var(--space-sm);"><strong style="color:var(--gold);">Yeng answered:</strong><br><span style="font-style:italic;">' + truncate(answered, 300) + '</span></div>'
@@ -763,7 +763,7 @@
                 ? liked.map(renderQuestionCard).join('')
                 : '<div class="empty-state"><div class="empty-state__icon">&#9829;</div><h3 class="empty-state__title">No questions yet</h3><p class="empty-state__text">Fan questions for you will show up here, most-liked first.</p></div>';
         } catch (err) {
-            bumpedContainer.innerHTML = '<p style="color:#741E27;">Failed to load questions.</p>';
+            bumpedContainer.innerHTML = '<p style="color:#A92228;">Failed to load questions.</p>';
             likedContainer.innerHTML = '';
         }
     }
@@ -797,7 +797,7 @@
                 return '<div class="mod-card" id="mod-cover-' + c.id + '">'
                     + '<div class="mod-card__header"><span class="mod-card__user">' + (c.UserName || 'Unknown') + '</span><span class="status-badge status-badge--pending">Submitted</span></div>'
                     + '<div class="mod-card__meta">' + (c.Title || '') + ' &middot; ' + (c.SongTitle || '') + ' &middot; ' + (c.ArrangementStyle || '') + '</div>'
-                    + (c.ContentURL ? '<div style="margin-bottom:var(--space-sm);"><a href="' + c.ContentURL + '" target="_blank" rel="noopener" style="color:#A52C32;font-weight:600;font-size:0.85rem;">View Content &#8599;</a></div>' : '')
+                    + (c.ContentURL ? '<div style="margin-bottom:var(--space-sm);"><a href="' + c.ContentURL + '" target="_blank" rel="noopener" style="color:#D62D2F;font-weight:600;font-size:0.85rem;">View Content &#8599;</a></div>' : '')
                     + (c.PersonalNote ? '<div class="mod-card__content" style="font-style:italic;">"' + truncate(c.PersonalNote, 200) + '"</div>' : '')
                     + '<div class="mod-card__actions">'
                     + '<button class="btn btn--primary btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Featured on Site\')">Feature</button>'
@@ -805,7 +805,7 @@
                     + '<button class="btn btn--ghost btn--sm" onclick="moderateCover(\'' + c.id + '\',\'Rejected\')">Reject</button>'
                     + '</div></div>';
             }).join('');
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load covers.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load covers.</p>'; }
     }
 
     async function moderateCover(coverId, status) {
@@ -823,7 +823,7 @@
         try {
             var data = await api('get-admin-content?type=orders&status=');
             var items = data.items || [];
-            if (!items.length) { container.innerHTML = '<p style="color:#625B55;">No orders yet.</p>'; return; }
+            if (!items.length) { container.innerHTML = '<p style="color:#6B6058;">No orders yet.</p>'; return; }
             var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order #</th><th>Total</th><th>Payment</th><th>Status</th><th>Tracking</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
             items.forEach(function(o) {
                 var sc = (o.Status || 'pending').toLowerCase();
@@ -834,7 +834,7 @@
             });
             html += '</tbody></table></div>';
             container.innerHTML = html;
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load orders.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load orders.</p>'; }
     }
 
     async function updateOrder(orderId, status) {
@@ -864,7 +864,7 @@
             });
             html += '</tbody></table></div>';
             container.innerHTML = html;
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load tickets.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load tickets.</p>'; }
     }
 
     async function updateTicket(ticketId, status) {
@@ -894,7 +894,7 @@
                     + ' <button class="btn btn--primary btn--sm" onclick="updateMessage(\'' + m.id + '\')">Update</button>'
                     + '</div></div>';
             }).join('');
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load messages.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load messages.</p>'; }
     }
 
     async function updateMessage(msgId) {
@@ -923,7 +923,7 @@
         try {
             var data = await api('get-admin-users?limit=50' + (search ? '&search=' + encodeURIComponent(search) : ''));
             var users = data.users || [];
-            if (!users.length) { container.innerHTML = '<p style="color:#625B55;">No users found.</p>'; return; }
+            if (!users.length) { container.innerHTML = '<p style="color:#6B6058;">No users found.</p>'; return; }
             var html = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Tier</th><th>Role</th><th>Joined</th><th>Credits</th></tr></thead><tbody>';
             users.forEach(function(u) {
                 html += '<tr><td>' + (u.name || '') + '</td><td>@' + (u.username || '') + '</td><td>' + (u.email || '') + '</td>'
@@ -932,7 +932,7 @@
             });
             html += '</tbody></table></div>';
             container.innerHTML = html;
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load users.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load users.</p>'; }
     }
 
     /* ── Reviews Moderation ── */
@@ -950,7 +950,7 @@
                     + '<div class="mod-card__actions"><button class="btn btn--primary btn--sm" onclick="moderateReview(\'' + r.id + '\',\'Approved\')">Approve</button><button class="btn btn--ghost btn--sm" onclick="moderateReview(\'' + r.id + '\',\'Rejected\')">Reject</button></div>'
                     + '</div>';
             }).join('');
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load reviews.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load reviews.</p>'; }
     }
 
     async function moderateReview(reviewId, status) {
@@ -1064,7 +1064,7 @@
 
             for (var section in CONFIG_MAP) {
                 html += '<div style="margin-bottom:var(--space-2xl);">'
-                    + '<h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#322E2A;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">' + section + '</h3>';
+                    + '<h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#38312C;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">' + section + '</h3>';
 
                 CONFIG_MAP[section].forEach(function(item) {
                     var entry = config[item.key] || {};
@@ -1096,7 +1096,7 @@
             var unmapped = [];
             for (var k in config) { if (!mappedKeys[k] && !k.startsWith('ig_post_')) unmapped.push(k); }
             if (unmapped.length > 0) {
-                html += '<div style="margin-bottom:var(--space-2xl);"><h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#322E2A;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">Other Settings</h3>';
+                html += '<div style="margin-bottom:var(--space-2xl);"><h3 style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:#38312C;margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid #EDE7DF;">Other Settings</h3>';
                 unmapped.forEach(function(key) {
                     var entry = config[key] || {};
                     html += '<div class="config-row" data-key="' + key + '">'
@@ -1109,7 +1109,7 @@
             }
 
             container.innerHTML = html;
-        } catch (err) { container.innerHTML = '<p style="color:#741E27;">Failed to load config.</p>'; }
+        } catch (err) { container.innerHTML = '<p style="color:#A92228;">Failed to load config.</p>'; }
     }
 
     async function saveConfig() {
@@ -1187,7 +1187,7 @@
         if (!grid) return;
 
         if (!goals || goals.length === 0) {
-            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl);color:#625B55;font-family:\'Inter\',sans-serif;"><p>No goals set yet.</p><button class="btn btn--primary btn--sm" onclick="openAddGoalModal()" style="margin-top:var(--space-md);">Set Your First Goal</button></div>';
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl);color:#6B6058;font-family:\'Inter\',sans-serif;"><p>No goals set yet.</p><button class="btn btn--primary btn--sm" onclick="openAddGoalModal()" style="margin-top:var(--space-md);">Set Your First Goal</button></div>';
             return;
         }
 
@@ -1333,7 +1333,7 @@
         var btn = document.querySelector('.insights-refresh');
         btn.disabled = true;
         btn.innerHTML = '&#8987; Analyzing with AI...';
-        list.innerHTML = '<div style="text-align:center;padding:var(--space-xl);color:#625B55;"><div class="spinner" style="margin:0 auto var(--space-md);"></div>Generating AI insights...</div>';
+        list.innerHTML = '<div style="text-align:center;padding:var(--space-xl);color:#6B6058;"><div class="spinner" style="margin:0 auto var(--space-md);"></div>Generating AI insights...</div>';
 
         try {
             var data = await api('get-ai-insights', {
@@ -1343,7 +1343,7 @@
 
             var insights = data.insights || [];
             if (insights.length === 0) {
-                list.innerHTML = '<p style="color:#625B55;font-style:italic;">No insights generated. Try again.</p>';
+                list.innerHTML = '<p style="color:#6B6058;font-style:italic;">No insights generated. Try again.</p>';
             } else {
                 var tagMap = { growth: 'Growth', action: 'Action', idea: 'Idea', alert: 'Alert' };
                 list.innerHTML = insights.map(function(ins) {

@@ -8,18 +8,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FBF8F2">
+    <meta name="theme-color" content="#FFF9EE">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Events — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="Upcoming concerts, meet & greets, and special events. Get tickets and exclusive member perks for Yeng Constantino events.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         .events-hero {
-            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #741E27 100%);
+            background: linear-gradient(135deg, #231A12 0%, #352A20 60%, #A92228 100%);
             padding: 140px 0 80px;
             text-align: center;
             position: relative;
@@ -29,7 +29,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212, 154, 36,0.04)'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(244, 179, 28,0.04)'/%3E%3C/svg%3E");
             pointer-events: none;
         }
         .events-hero__content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 0 var(--space-xl); }
@@ -37,14 +37,14 @@
             font-family: var(--font-display);
             font-size: 3rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #D49A24 0%, #F0CD79 50%, #FFFFFF 100%);
+            background: linear-gradient(135deg, #F4B31C 0%, #FFD96F 50%, #FFFFFF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: var(--space-md);
         }
         .events-hero__subtitle { font-family: var(--font-body); font-size: 1.15rem; color: rgba(255,255,255,0.7); margin-bottom: var(--space-lg); }
-        .events-hero__tagline { font-family: var(--font-accent); font-size: 1.6rem; color: #D49A24; }
+        .events-hero__tagline { font-family: var(--font-accent); font-size: 1.6rem; color: #F4B31C; }
 
         .events-filters {
             background: #FFF8F0;
@@ -52,7 +52,7 @@
             position: sticky;
             top: 72px;
             z-index: 100;
-            border-bottom: 1px solid rgba(212, 154, 36,0.15);
+            border-bottom: 1px solid rgba(244, 179, 28,0.15);
         }
         .events-filters__inner {
             max-width: 1200px;
@@ -75,9 +75,9 @@
             transition: all 250ms ease;
             white-space: nowrap;
         }
-        .events-filter-tab:hover { border-color: #741E27; color: #741E27; }
+        .events-filter-tab:hover { border-color: #A92228; color: #A92228; }
         .events-filter-tab--active {
-            background: linear-gradient(135deg, #741E27, #96313B);
+            background: linear-gradient(135deg, #A92228, #C33338);
             color: #FFFFFF;
             border-color: transparent;
         }
@@ -108,9 +108,9 @@
             transition: all 250ms ease;
             white-space: nowrap;
         }
-        .events-near-btn:hover { border-color: #741E27; color: #741E27; }
+        .events-near-btn:hover { border-color: #A92228; color: #A92228; }
         .events-near-btn--active {
-            background: linear-gradient(135deg, #D49A24, #E7B84D);
+            background: linear-gradient(135deg, #F4B31C, #E7B84D);
             color: #FFFFFF;
             border-color: transparent;
         }
@@ -140,7 +140,7 @@
             font-weight: 700;
             font-family: var(--font-body);
             border-radius: 9999px;
-            background: rgba(212, 154, 36,0.15);
+            background: rgba(244, 179, 28,0.15);
             color: #B0801E;
         }
 
@@ -155,15 +155,15 @@
             background: #FFFFFF;
             border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 0 4px 24px rgba(212, 154, 36,0.08);
+            box-shadow: 0 4px 24px rgba(244, 179, 28,0.08);
             transition: all 250ms ease;
         }
-        .event-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(212, 154, 36,0.18); }
+        .event-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(244, 179, 28,0.18); }
         .event-card__image {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            background: linear-gradient(135deg, rgba(116, 30, 39,0.08), rgba(212, 154, 36,0.08));
+            background: linear-gradient(135deg, rgba(169, 34, 40,0.08), rgba(244, 179, 28,0.08));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -182,9 +182,9 @@
             letter-spacing: 0.06em;
             border-radius: 9999px;
         }
-        .event-card__type--concert { background: rgba(116, 30, 39,0.12); color: #741E27; }
-        .event-card__type--meetandgreet { background: rgba(116, 30, 39,0.12); color: #741E27; }
-        .event-card__type--special { background: rgba(212, 154, 36,0.15); color: #B0801E; }
+        .event-card__type--concert { background: rgba(169, 34, 40,0.12); color: #A92228; }
+        .event-card__type--meetandgreet { background: rgba(169, 34, 40,0.12); color: #A92228; }
+        .event-card__type--special { background: rgba(244, 179, 28,0.15); color: #B0801E; }
         .event-card__title {
             font-family: var(--font-display);
             font-size: 1.2rem;
@@ -234,7 +234,7 @@
             font-weight: 700;
             font-family: var(--font-body);
             border-radius: 9999px;
-            background: rgba(212, 154, 36,0.15);
+            background: rgba(244, 179, 28,0.15);
             color: #B0801E;
         }
         .event-card__actions { margin-top: var(--space-lg); }
@@ -246,12 +246,12 @@
             font-weight: 700;
             font-size: 0.85rem;
         }
-        .event-card__status--soldout { background: rgba(116, 30, 39,0.12); color: #741E27; }
+        .event-card__status--soldout { background: rgba(169, 34, 40,0.12); color: #A92228; }
         .event-card__status--past { background: rgba(107,93,80,0.12); color: #6B5D50; }
 
         .ticket-modal__event { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: var(--space-sm); color: #231A12; }
         .ticket-modal__price { text-align: center; font-family: var(--font-body); font-size: 1.1rem; color: #6B5D50; margin-bottom: var(--space-xl); }
-        .ticket-modal__free-note { text-align: center; font-family: var(--font-accent); font-size: 1.1rem; color: #D49A24; margin-bottom: var(--space-md); }
+        .ticket-modal__free-note { text-align: center; font-family: var(--font-accent); font-size: 1.1rem; color: #F4B31C; margin-bottom: var(--space-md); }
 
         @media (max-width: 768px) {
             .events-hero { padding: 120px 0 60px; }
@@ -387,7 +387,7 @@
             </div>
             <div class="footer__bottom">
                 <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9834;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#F4B31C;">Salamat sa suporta! &#9834;</span>
             </div>
         </div>
     </footer>
@@ -575,7 +575,7 @@
                 if (!isConcert && evt.maxTickets) {
                     var remaining = evt.maxTickets - (evt.ticketsSold || 0);
                     if (remaining <= 20 && remaining > 0) {
-                        availHtml = '<div style="font-family:\'Inter\',sans-serif;font-size:0.8rem;color:#741E27;font-weight:600;margin-top:4px;">Only ' + remaining + ' tickets left!</div>';
+                        availHtml = '<div style="font-family:\'Inter\',sans-serif;font-size:0.8rem;color:#A92228;font-weight:600;margin-top:4px;">Only ' + remaining + ' tickets left!</div>';
                     }
                 }
 
@@ -595,7 +595,7 @@
                     actionHtml = '<a href="' + evt.ticketUrl + '" target="_blank" rel="noopener" class="btn btn--primary btn--sm">Get Tickets &#8599;</a>';
                 } else if (!isConcert) {
                     if (isEarlyAccessPeriod && !Auth.isLoggedIn()) {
-                        actionHtml = '<span style="font-family:\'Inter\',sans-serif;font-size:0.85rem;color:#741E27;font-weight:600;">Members get early access — <a href="/signup.html">Join now</a></span>';
+                        actionHtml = '<span style="font-family:\'Inter\',sans-serif;font-size:0.85rem;color:#A92228;font-weight:600;">Members get early access — <a href="/signup.html">Join now</a></span>';
                     } else {
                         actionHtml = '<button class="btn btn--primary btn--sm" onclick="openTicketModal(\'' + evt.id + '\')">Buy Tickets</button>';
                     }

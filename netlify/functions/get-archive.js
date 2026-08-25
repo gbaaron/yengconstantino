@@ -66,6 +66,13 @@ function shape(rec) {
         source: f.Source || '',
         audioUrl: f.AudioUrl || null,
         sourceUrl: f.SourceUrl || null,
+        /* Optional. The archive card draws a kind-coded paper tile when this
+           is absent, so the field can stay unset in Airtable indefinitely —
+           reading a field that does not exist returns undefined, it does not
+           error. Accepts either a plain URL string or an Airtable attachment. */
+        thumbnail: (typeof f.Thumbnail === 'string' && f.Thumbnail)
+            || (Array.isArray(f.Thumbnail) && f.Thumbnail[0] && f.Thumbnail[0].url)
+            || null,
         durationSeconds: Number(f.DurationSeconds) || 0,
         language: f.Language || 'en',
         verified: !!f.Verified,

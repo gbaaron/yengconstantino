@@ -9,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
@@ -102,7 +102,7 @@
         }
         .topbar__spacer { flex: 1; }
         .topbar__note {
-            font-size: 0.75rem; color: rgba(251,248,242,0.55);
+            font-size: 0.75rem; color: rgba(255, 249, 238,0.55);
             display: none;
         }
         @media (min-width: 1100px) { .topbar__note { display: block; } }
@@ -112,7 +112,7 @@
         .persona {
             appearance: none; border: 0; cursor: pointer;
             background: rgba(255,255,255,0.06);
-            color: rgba(251,248,242,0.72);
+            color: rgba(255, 249, 238,0.72);
             font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
             padding: 0.5rem 1.1rem;
             border-radius: var(--radius-sm);
@@ -177,12 +177,12 @@
             display: flex; align-items: center; justify-content: center;
             padding: var(--space-lg);
             background:
-                radial-gradient(ellipse 900px 500px at 50% 0%, rgba(165,44,50,0.05), transparent 70%),
+                radial-gradient(ellipse 900px 500px at 50% 0%, rgba(214, 45, 47,0.05), transparent 70%),
                 var(--off-white);
         }
         .stage::after {
             content: ''; position: absolute; inset: 0; pointer-events: none;
-            background-image: radial-gradient(circle at 1px 1px, rgba(25,23,22,0.045) 1px, transparent 1.5px);
+            background-image: radial-gradient(circle at 1px 1px, rgba(31, 25, 22,0.045) 1px, transparent 1.5px);
             background-size: 22px 22px;
         }
 
@@ -260,13 +260,13 @@
             padding: 14px 32px 0;
             font-size: 0.78rem; font-weight: 600; color: var(--gray-800);
             font-family: var(--font-body);
-            background: linear-gradient(to bottom, rgba(251,248,242,0.92), rgba(251,248,242,0));
+            background: linear-gradient(to bottom, rgba(255, 249, 238,0.92), rgba(255, 249, 238,0));
         }
         .app-frame__home {
             position: absolute; bottom: 8px; left: 50%;
             transform: translateX(-50%);
             width: 140px; height: 5px; border-radius: 3px;
-            background: rgba(25,23,22,0.28);
+            background: rgba(31, 25, 22,0.28);
             z-index: 3; pointer-events: none;
         }
         .app-frame__body {

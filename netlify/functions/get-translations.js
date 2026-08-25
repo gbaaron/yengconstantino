@@ -39,7 +39,7 @@ const UI = {
     en: {
         'nav.ask': 'Ask Yeng', 'nav.archive': 'Archive', 'nav.tour': 'Tour Map',
         'nav.games': 'Games', 'nav.cards': 'Cards', 'nav.points': 'Yeng Points',
-        'ask.title': 'May tanong ka kay Yeng?',
+        'ask.title': 'Totoong sagot.',
         'ask.subtitle': 'Ask it in your own words. If other fans are wondering the same thing, your questions travel together \u2014 and she answers the group by voice.',
         'ask.placeholder': "Write it the way you'd actually ask her.",
         'ask.submit': 'Send my question',
@@ -74,7 +74,7 @@ const UI = {
     tl: {
         'nav.ask': 'Tanong kay Yeng', 'nav.archive': 'Arkibo', 'nav.tour': 'Mapa ng Tour',
         'nav.games': 'Laro', 'nav.cards': 'Mga Card', 'nav.points': 'Yeng Points',
-        'ask.title': 'May tanong ka kay Yeng?',
+        'ask.title': 'Totoong sagot.',
         'ask.subtitle': 'Itanong mo sa sarili mong salita. Kung ganito rin ang tanong ng ibang fans, sabay-sabay na dadalhin ang mga tanong ninyo \u2014 at sasagutin niya ang grupo sa boses.',
         'ask.placeholder': 'Isulat mo kung paano mo talaga itatanong sa kanya.',
         'ask.submit': 'Ipadala ang tanong ko',

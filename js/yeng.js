@@ -48,6 +48,10 @@
                 var v = I18N.t(el.getAttribute('data-i18n-placeholder'), null);
                 if (v && v !== el.getAttribute('data-i18n-placeholder')) el.placeholder = v;
             });
+            /* apply() writes textContent, so any markup a page drew inside a
+               translated element is gone by now. Pages that decorate a
+               translated string redraw it on this event. */
+            global.dispatchEvent(new CustomEvent('i18nApplied', { detail: { scope: scope } }));
         },
 
         async setLanguage(lang) {

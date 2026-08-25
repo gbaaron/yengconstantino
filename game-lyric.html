@@ -7,13 +7,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
         body { background: var(--off-white); }
         /* Hero uses the shared .page-hero component. */
-        .ly-stats { display: flex; justify-content: center; gap: 1.75rem; margin-top: var(--space-lg); font-size: .82rem; color: rgba(251,248,242,.6); }
+        .ly-stats { display: flex; justify-content: center; gap: 1.75rem; margin-top: var(--space-lg); font-size: .82rem; color: rgba(255, 249, 238,.6); }
         .ly-stats strong { font-family: var(--font-display); color: var(--gold); font-size: 1.15rem; }
 
         .round {
@@ -37,13 +37,13 @@
             display: block; margin: 0 auto var(--space-lg);
             width: 72px; height: 72px; border-radius: 50%;
             background: var(--purple); color: #fff;
-            box-shadow: 0 6px 20px rgba(165,44,50,.28);
+            box-shadow: 0 6px 20px rgba(214, 45, 47,.28);
             transition: transform var(--transition-fast);
         }
         .playbtn:active { transform: scale(.93); }
         .playbtn svg { width: 28px; height: 28px; }
         .playbtn[data-state="playing"] { animation: ring 1.2s ease-in-out infinite; }
-        @keyframes ring { 0%,100% { box-shadow: 0 6px 20px rgba(165,44,50,.28); } 50% { box-shadow: 0 6px 32px rgba(165,44,50,.55); } }
+        @keyframes ring { 0%,100% { box-shadow: 0 6px 20px rgba(214, 45, 47,.28); } 50% { box-shadow: 0 6px 32px rgba(214, 45, 47,.55); } }
 
         .answerbar { display: flex; gap: .5rem; }
         .answerbar input {

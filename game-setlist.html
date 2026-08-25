@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
@@ -31,7 +31,7 @@
             position: sticky; top: 0; z-index: 15; flex-wrap: wrap;
         }
         .picker__count { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--gold); line-height: 1; }
-        .picker__label { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: rgba(251,248,242,.6); }
+        .picker__label { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: rgba(255, 249, 238,.6); }
         .picker__spacer { flex: 1; }
 
         .songgrid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: .5rem; margin-top: var(--space-lg); }
@@ -43,7 +43,7 @@
             transition: all var(--transition-fast);
         }
         .song:hover { border-color: var(--gray-400); }
-        .song[aria-pressed="true"] { border-color: var(--purple); background: rgba(165,44,50,.06); }
+        .song[aria-pressed="true"] { border-color: var(--purple); background: rgba(214, 45, 47,.06); }
         .song[aria-pressed="true"] .song__box { background: var(--purple); border-color: var(--purple); color: #fff; }
         .song__box {
             width: 20px; height: 20px; flex: none; border: 1px solid var(--gray-300);
@@ -52,7 +52,7 @@
         }
         .song__t { font-weight: 600; font-size: .9rem; flex: 1; min-width: 0; }
         .song__pop { font-size: .7rem; color: var(--gray-400); }
-        .song.is-played { border-color: var(--success); background: rgba(64,88,74,.07); }
+        .song.is-played { border-color: var(--success); background: rgba(71, 122, 89,.07); }
         .song.is-missed { opacity: .45; }
 
         .crowd-note { font-size: .8rem; color: var(--gray-500); margin-top: .6rem; }

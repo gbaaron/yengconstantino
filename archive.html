@@ -8,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
@@ -32,7 +32,7 @@
         .player audio { flex: 2; min-width: 180px; max-width: 460px; }
         .player__close {
             appearance: none; border: 0; background: transparent; cursor: pointer;
-            color: rgba(251,248,242,.6); font-size: 1.4rem; line-height: 1;
+            color: rgba(255, 249, 238,.6); font-size: 1.4rem; line-height: 1;
             min-width: 44px; min-height: 44px;
         }
         .player__close:hover { color: var(--paper-raised); }
@@ -40,13 +40,13 @@
         .transcript {
             max-height: 38vh; overflow-y: auto;
             margin: 0.8rem auto 0; padding-top: 0.8rem;
-            border-top: 1px solid rgba(251,248,242,.14);
+            border-top: 1px solid rgba(255, 249, 238,.14);
             max-width: 1180px;
         }
         .cue {
             display: flex; gap: 0.9rem; padding: 0.3rem 0;
             font-size: 0.88rem; line-height: 1.6; cursor: pointer;
-            color: rgba(251,248,242,.6);
+            color: rgba(255, 249, 238,.6);
             background: none; border: 0; text-align: left; width: 100%;
             font-family: var(--font-body);
         }
@@ -58,15 +58,25 @@
             opacity: 0.55; padding-top: 0.15rem; font-variant-numeric: tabular-nums;
         }
 
-        /* Chronology rail — only rendered when real records span real years. */
-        .year-rail { display: flex; flex-wrap: wrap; gap: 0.15rem 0.9rem; padding: 0.3rem 0 1rem; }
+        /* Chronology rail — only rendered when real records span real years.
+           Small bordered rectangles, matched to the source filters above. */
+        .year-rail { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.1rem 0 1rem; align-items: center; }
+        .year-rail > .fig { margin-right: 0.35rem; }
         .year-rail button {
-            appearance: none; border: 0; background: none; cursor: pointer; padding: 0.25rem 0;
-            font-family: var(--font-evidence); font-size: 0.72rem;
-            color: var(--ink-faint); border-bottom: 2px solid transparent;
+            appearance: none; cursor: pointer;
+            min-height: 32px; padding: 0.2rem 0.6rem;
+            border: 1px solid var(--rule-dark); border-radius: 2px;
+            background: var(--paper-light);
+            font-family: var(--font-body); font-size: 0.78rem; font-weight: 500;
+            color: var(--ink-soft);
             font-variant-numeric: tabular-nums;
         }
-        .year-rail button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--yeng-red); font-weight: 700; }
+        .year-rail button:hover { border-color: var(--ink); color: var(--ink); }
+        @media (max-width: 700px) { .year-rail button { min-height: 44px; padding-inline: 0.8rem; } }
+        .year-rail button[aria-selected="true"] {
+            background: var(--yeng-red); border-color: var(--yeng-red-dark);
+            color: #fff; font-weight: 700;
+        }
 
         body { padding-bottom: 4rem; }
     </style>
@@ -92,13 +102,24 @@
 </nav>
 
 <header class="page-intro">
-    <div class="wide page-intro__inner">
-        <span class="page-intro__kicker">Totoong salita. Totoong source.</span>
-        <h1 class="page-intro__title" data-i18n="archive.title">Sinabi niya. Nandito.</h1>
-        <p class="page-intro__copy" data-i18n="archive.subtitle">
-            Search Yeng&rsquo;s real recordings, interviews and answers &mdash; and play the
-            source from the exact second she said it.
-        </p>
+    <div class="wide page-intro__inner archive-hero">
+
+        <div>
+            <span class="page-intro__kicker">Totoong salita.</span>
+            <h1 class="page-intro__title" id="archive-title" data-i18n="archive.title">Sinabi niya. Nandito.</h1>
+            <p class="page-intro__copy" data-i18n="archive.subtitle">
+                Search Yeng&rsquo;s real recordings, interviews and answers &mdash; and play the
+                source from the exact second she said it.
+            </p>
+        </div>
+
+        <!-- A note from the archivist, taped to the page. This is the trust
+             copy from the old .notice, given the weight it deserves. -->
+        <aside class="paper-note archive-note taped-item tape-red">
+            <p data-i18n="archive.retrievalNote">Nothing here is paraphrased, summarised or generated.</p>
+            <p>Original audio.<br>Her real voice.<br>Verified.</p>
+        </aside>
+
     </div>
 </header>
 
@@ -107,23 +128,23 @@
     <section class="arc-search">
         <label class="rec-label" for="q">Search the archive</label>
         <div class="arc-search__field">
+            <svg class="arc-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="10.5" cy="10.5" r="7"/><path d="M15.6 15.6L21 21"/>
+            </svg>
             <input id="q" type="search" data-i18n-placeholder="archive.search"
                    placeholder="A topic, a lyric, a memory…" autocomplete="off">
         </div>
         <div class="arc-search__try">
             <span class="fig">Try</span>
-            <button type="button" data-try="being scared before performing">&ldquo;being scared before performing&rdquo;</button>
-            <button type="button" data-try="songwriting">&ldquo;songwriting&rdquo;</button>
+            <button type="button" data-try="being scared before performing">being scared before performing</button>
+            <button type="button" data-try="songwriting">songwriting</button>
+            <button type="button" data-try="first concert">first concert</button>
+            <button type="button" data-try="anxiety">anxiety</button>
         </div>
     </section>
 
-    <p class="notice notice--green" data-i18n="archive.retrievalNote">
-        Search returns her real recordings. Nothing here is paraphrased, summarised or
-        generated, and her voice is never synthesised. This archive only grows when she
-        approves an item herself.
-    </p>
-
-    <div class="arc-filters" role="group" aria-label="Filter by source" style="margin-top:1.4rem">
+    <div class="arc-filters" role="group" aria-label="Filter by source" style="margin-top:1rem">
         <button data-kind="" aria-selected="true">Everything</button>
         <button data-kind="Answer" aria-selected="false">Voice answers</button>
         <button data-kind="Interview" aria-selected="false">Interviews</button>
@@ -132,9 +153,23 @@
     <div class="year-rail" id="year-rail" role="group" aria-label="Filter by year"></div>
 
     <div class="arc-count ev" id="arc-count"></div>
-    <div id="results" class="ruled">
+    <div id="results">
         <div class="loading-line ev">Searching the archive…</div>
     </div>
+
+    <p class="archive-footer-note">
+        <svg class="doodle doodle-blue" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M20 20C11 18 10 8 16 7c5-1 6 5 4 13z"/>
+            <path d="M20 20c2-9 11-10 13-4 1 6-6 7-13 4z"/>
+            <path d="M20 20c9 2 9 11 3 13-6 1-6-6-3-13z"/>
+            <path d="M20 20c-2 9-11 10-13 4-1-6 6-7 13-4z"/>
+            <circle cx="20" cy="20" r="3"/>
+        </svg>
+        <span>This archive grows only when Yeng approves an item herself.</span>
+        <svg class="doodle doodle--sm doodle-red" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 27C14 24 5 19 5 11c0-4 3-6 6-6 2.5 0 4 1.5 5 3.3C17.2 6.4 19 5 21.3 5 25 5 27 7.7 27 11c0 7-8 13-11 16z"/>
+        </svg>
+    </p>
     <div style="height:clamp(48px,8vw,80px)"></div>
 </main>
 
@@ -178,6 +213,45 @@
         + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>';
     var PLAY = '<svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
 
+    /* ── Kind vocabulary ──
+       Each kind of record gets an accent down the card's left edge and a
+       drawn tile in the media well. The colour is never the only signal —
+       the kind is spelled out in the source line on every card.
+
+       There is no stock photography in this build. When Airtable has a
+       Thumbnail the card shows it; when it does not, the well draws a
+       paper tile rather than borrowing a stranger's concert photo. */
+    var KINDS = {
+        Answer:      { accent: 'red',    bg: '#F6D3CB', ink: '#A92228',
+                       art: '<path d="M14 4h8v14a4 4 0 0 1-8 0z" transform="translate(-4 0)"/>'
+                          + '<rect x="10" y="4" width="8" height="14" rx="4"/>'
+                          + '<path d="M6 15a8 8 0 0 0 16 0"/><path d="M14 23v4M10 27h8"/>' },
+        Interview:   { accent: 'blue',   bg: '#D7EEF1', ink: '#26778A',
+                       art: '<path d="M26 16.5c0 4.7-4.9 8.5-11 8.5-1.4 0-2.8-.2-4-.6L5 27l1.8-5C5.6 20.5 5 18.6 5 16.5 5 11.8 9.9 8 16 8s10 3.8 10 8.5z"/>' },
+        Performance: { accent: 'yellow', bg: '#FFD96F', ink: '#8A6410',
+                       art: '<circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="3.4"/>'
+                          + '<path d="M16 4.5a11.5 11.5 0 0 1 0 23"/>' },
+        Item:        { accent: '',       bg: '#ECDABC', ink: '#554C45',
+                       art: '<path d="M4 25V8a2 2 0 0 1 2-2h8l3 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>' }
+    };
+
+    function kindOf(k) { return KINDS[k] || KINDS.Item; }
+
+    /* A media well: real thumbnail if there is one, otherwise a paper tile. */
+    function mediaWell(r, canPlay) {
+        var k = kindOf(r.kind);
+        var inner = r.thumbnail
+            ? '<img src="' + esc(r.thumbnail) + '" alt="" loading="lazy" decoding="async">'
+            : '<span class="arc-entry__tile" style="--tile-bg:' + k.bg + ';--tile-ink:' + k.ink + '">'
+              + '<svg class="doodle" viewBox="0 0 32 32" aria-hidden="true">' + k.art + '</svg></span>';
+        return '<div class="arc-entry__media">' + inner
+            + (canPlay
+                ? '<button class="arc-play" type="button" data-item="' + esc(r.id) + '" data-t="' + canPlay.t + '"'
+                  + ' aria-label="Play ' + esc(r.title) + (canPlay.t ? ' from ' + fmt(canPlay.t) : '') + '">' + PLAY + '</button>'
+                : '')
+            + '</div>';
+    }
+
     var kind = '';
     var year = '';
     var lastResults = [];
@@ -193,6 +267,26 @@
         title: document.getElementById('player-title'),
         transcript: document.getElementById('transcript')
     };
+
+    /* ── The hand-drawn stroke under the title ──
+       The title is authored per language ("Sinabi niya. Nandito." /
+       "Iyang gisulti. Ania dinhi." / "Imbagana. Adda ditoy."), so the
+       stroke cannot be baked into the markup — i18n would overwrite it.
+       Instead it is drawn under the closing sentence once the catalogue
+       string has landed. No sentence break, no stroke: the title still
+       reads correctly, it just loses a decoration. */
+    function underlineTitle() {
+        var h = document.getElementById('archive-title');
+        var text = h.textContent.trim();
+        var cut = text.search(/[.!?]\s+\S/);
+        if (cut === -1) return;
+        var head = text.slice(0, cut + 1);
+        var tail = text.slice(cut + 1).trim();
+        h.innerHTML = esc(head) + ' <span class="hand-underline hand-underline--red">'
+            + esc(tail) + '</span>';
+    }
+    underlineTitle();
+    window.addEventListener('i18nApplied', underlineTitle);
 
     els.q.addEventListener('input', function () {
         clearTimeout(debounce);
@@ -290,47 +384,57 @@
             var spans = r.spans || [];
             var firstT = spans.length ? spans[0].t : 0;
             var date = fmtDate(r.recordedAt);
+            var k = kindOf(r.kind);
+            var playable = r.audioUrl ? { t: firstT } : null;
 
-            return '<article class="arc-entry">'
-                /* Left rail: the tape log. */
-                + '<div class="arc-entry__rail">'
-                + (spans.length ? '<span class="arc-entry__time">' + fmt(firstT) + '</span>' : '')
-                + (r.durationSeconds ? '<span class="ev">' + fmt(r.durationSeconds) + ' long</span>' : '')
-                + '</div>'
+            return '<article class="arc-entry' + (k.accent ? ' arc-entry--' + k.accent : '') + '">'
+
+                + mediaWell(r, playable)
 
                 + '<div class="arc-entry__body">'
+
+                /* The source line. Provenance stays the most serious thing
+                   on the card: kind, source, date, verified mark, length. */
                 + '<div class="arc-entry__source">'
                 + '<span class="ev">' + esc(r.kind) + (r.source ? ' &middot; ' + esc(r.source) : '')
                 + (date ? ' &middot; ' + esc(date) : '') + '</span>'
                 + (r.verified ? '<span class="verified-source">' + TICK + ' Verified</span>' : '')
+                + (r.durationSeconds ? '<span class="arc-entry__time">' + fmt(r.durationSeconds) + '</span>' : '')
                 + '</div>'
 
-                /* Her words. */
+                /* Her words, when a search has matched some. Browsing with no
+                   query, or an item whose transcript has not been cut into
+                   spans yet, has no quote to show — so the record's own title
+                   takes the lead line rather than leaving the card headless
+                   with its title set in the smallest type on it. */
                 + (spans.length
-                    ? spans.map(function (s) {
-                        return '<blockquote class="arc-entry__quote">&ldquo;' + esc(s.text) + '&rdquo;</blockquote>'
-                            + '<div class="arc-entry__actions">'
-                            + '<a class="cue-link" href="#" data-item="' + esc(r.id) + '" data-t="' + s.t + '">'
-                            + PLAY + ' Play from ' + fmt(s.t) + '</a></div>';
+                    ? spans.map(function (sp) {
+                        return '<blockquote class="arc-entry__quote">&ldquo;' + esc(sp.text) + '&rdquo;</blockquote>';
                       }).join('')
-                    : '')
+                      + '<p class="arc-entry__title">' + esc(r.title) + '</p>'
+                    : '<h3 class="arc-entry__quote">' + esc(r.title) + '</h3>')
 
-                + '<p class="arc-entry__title">' + esc(r.title) + '</p>'
-
+                /* Language, a drawn waveform, then the exact second. */
                 + '<div class="arc-entry__actions">'
-                + (!spans.length && r.audioUrl
-                    ? '<a class="cue-link" href="#" data-item="' + esc(r.id) + '" data-t="0">' + PLAY + ' Play</a>'
-                    : '')
-                + (r.clusterSize ? '<span class="fig">' + Number(r.clusterSize).toLocaleString() + ' fans asked this</span>' : '')
                 + '<span class="ev">' + esc(langName(r.language)) + '</span>'
+                + (r.audioUrl ? '<span class="arc-wave" aria-hidden="true"></span>' : '')
+                + (r.audioUrl
+                    ? '<button class="cue-link" type="button" data-item="' + esc(r.id) + '" data-t="' + firstT + '">'
+                      + PLAY + (spans.length ? ' from ' + fmt(firstT) : ' Play') + '</button>'
+                    : '')
                 + (r.sourceUrl ? '<a class="cue-link" href="' + esc(r.sourceUrl) + '" target="_blank" rel="noopener">Original source</a>' : '')
                 + '</div>'
+
+                + (r.clusterSize
+                    ? '<div class="arc-entry__actions"><span class="fig">'
+                      + Number(r.clusterSize).toLocaleString() + ' fans asked this</span></div>'
+                    : '')
 
                 + (r.signature ? '<div class="arc-sig">signature ' + esc(r.signature.slice(0, 32)) + '…</div>' : '')
                 + '</div></article>';
         }).join('');
 
-        els.results.querySelectorAll('.cue-link[data-item]').forEach(function (a) {
+        els.results.querySelectorAll('[data-item]').forEach(function (a) {
             a.addEventListener('click', function (e) {
                 e.preventDefault();
                 openItem(a.dataset.item, parseFloat(a.dataset.t) || 0);

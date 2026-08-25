@@ -8,39 +8,40 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FBF8F2">
+    <meta name="theme-color" content="#FFF9EE">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Music & Content Archive — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="Browse Yeng Constantino's complete discography and content archive. Studio recordings, live performances, music videos, interviews, and behind the scenes — all in one place.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Music Page — Color System Overrides ── */
         :root {
-            --primary: #A52C32;
-            --primary-light: #C24048;
-            --primary-glow: rgba(116, 30, 39, 0.15);
-            --gold: #D49A24;
-            --gold-light: #F0CD79;
-            --burgundy: #741E27;
-            --burgundy-light: #96313B;
-            --bg-off-white: #FBF8F2;
+            --primary: #D62D2F;
+            --primary-light: #F06C65;
+            --primary-glow: rgba(169, 34, 40, 0.15);
+            --gold: #F4B31C;
+            --gold-light: #FFD96F;
+            --burgundy: #A92228;
+            --burgundy-light: #C33338;
+            --bg-off-white: #FFF9EE;
             /* Resolve to the real stacks. These three were previously
                self-referential (--font-display: var(--font-display)), which is a
                CSS custom-property cycle: invalid at computed-value time, so the
                whole page fell back to Times. See AUDIT.md §1.5. */
-            --font-display: 'Fraunces', 'Playfair Display', serif;
+            --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
             --font-body: 'Instrument Sans', system-ui, sans-serif;
-            --font-accent: 'Fraunces', 'Playfair Display', serif;
-            --gradient-primary: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
-            --gradient-cta: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
-            --shadow-warm-sm: 0 2px 8px rgba(212, 154, 36, 0.10);
-            --shadow-warm-md: 0 4px 20px rgba(212, 154, 36, 0.14);
-            --shadow-warm-lg: 0 8px 40px rgba(212, 154, 36, 0.18);
-            --shadow-warm-glow: 0 0 30px rgba(212, 154, 36, 0.25);
+            --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+            --font-accent: 'Newsreader', Georgia, serif;
+            --gradient-primary: linear-gradient(135deg, #D62D2F 0%, #A92228 50%, #F4B31C 100%);
+            --gradient-cta: linear-gradient(135deg, #D62D2F 0%, #F06C65 100%);
+            --shadow-warm-sm: 0 2px 8px rgba(244, 179, 28, 0.10);
+            --shadow-warm-md: 0 4px 20px rgba(244, 179, 28, 0.14);
+            --shadow-warm-lg: 0 8px 40px rgba(244, 179, 28, 0.18);
+            --shadow-warm-glow: 0 0 30px rgba(244, 179, 28, 0.25);
         }
 
         /* ── Music Hero ── */
@@ -146,7 +147,7 @@
 
         .music-search__btn:hover {
             transform: translateY(-50%) scale(1.08);
-            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.4);
+            box-shadow: 0 4px 15px rgba(169, 34, 40, 0.4);
         }
 
         /* ── Filter Bar ── */
@@ -382,7 +383,7 @@
             width: 40px; height: 40px; flex: none;
             display: grid; place-items: center;
             border: 0; border-radius: 50%;
-            background: var(--era, var(--purple)); color: var(--paper-raised, #FBF8F2);
+            background: var(--era, var(--purple)); color: var(--paper-raised, #FFF9EE);
             cursor: pointer;
         }
         .track-row__play svg { width: 14px; height: 14px; }
@@ -391,12 +392,12 @@
         .track-head {
             padding-top: 10px;
             padding-bottom: 10px;
-            border-bottom: 1px solid var(--gray-100, #EAE2D5);
+            border-bottom: 1px solid var(--gray-100, #ECDABC);
             font-size: 0.68rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--gray-400, #8C8175);
+            color: var(--gray-400, #82766C);
         }
 
         .track-head__col--num { text-align: center; }
@@ -420,7 +421,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--gray-400, #8C8175);
+            color: var(--gray-400, #82766C);
             font-size: 0.85rem;
             font-variant-numeric: tabular-nums;
         }
@@ -482,7 +483,7 @@
         .track-row__year {
             text-align: center;
             font-size: 0.85rem;
-            color: var(--gray-500, #625B55);
+            color: var(--gray-500, #6B6058);
             font-variant-numeric: tabular-nums;
         }
 
@@ -509,12 +510,12 @@
 
         .track-rating__count {
             font-size: 0.62rem;
-            color: var(--gray-400, #8C8175);
+            color: var(--gray-400, #82766C);
             font-weight: 500;
         }
 
         .track-rating__empty {
-            color: var(--gray-300, #CFC3B4);
+            color: var(--gray-300, #D5C2A4);
             font-size: 1rem;
             line-height: 1;
         }
@@ -533,7 +534,7 @@
             gap: 3px;
             padding: 4px 10px;
             border-radius: var(--radius-sm);
-            background: rgba(116, 30, 39, 0.10);
+            background: rgba(169, 34, 40, 0.10);
             color: var(--burgundy);
             font-size: 0.72rem;
             font-weight: 700;
@@ -543,12 +544,12 @@
             transition: background var(--transition-base);
         }
 
-        .track-rate-btn:hover { background: rgba(116, 30, 39, 0.20); }
+        .track-rate-btn:hover { background: rgba(169, 34, 40, 0.20); }
 
         .track-row__len {
             text-align: right;
             font-size: 0.85rem;
-            color: var(--gray-400, #8C8175);
+            color: var(--gray-400, #82766C);
             font-variant-numeric: tabular-nums;
         }
 
@@ -570,7 +571,7 @@
         .music-card--video .music-card__thumb {
             position: relative;
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #2A1512 0%, #A52C32 50%, #741E27 100%);
+            background: linear-gradient(135deg, #2A1512 0%, #D62D2F 50%, #A92228 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -654,7 +655,7 @@
             width: 100px;
             min-height: 100px;
             flex-shrink: 0;
-            background: linear-gradient(135deg, #2A1512 0%, #A52C32 50%, #741E27 100%);
+            background: linear-gradient(135deg, #2A1512 0%, #D62D2F 50%, #A92228 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -765,7 +766,7 @@
             font-family: var(--font-accent);
             font-size: 0.85rem;
             border-radius: var(--radius-full);
-            background: rgba(212, 154, 36, 0.9);
+            background: rgba(244, 179, 28, 0.9);
             color: #2A1512;
             font-weight: 700;
         }
@@ -841,7 +842,7 @@
         }
 
         .music-card__rating:hover {
-            background: rgba(212, 154, 36, 0.12);
+            background: rgba(244, 179, 28, 0.12);
         }
 
         .music-card__rating-star {
@@ -907,19 +908,19 @@
 
         .rating-chip--yeng {
             background: rgba(108, 43, 217, 0.12);
-            color: var(--yc-purple, #A52C32);
+            color: var(--yc-purple, #D62D2F);
         }
 
         .rating-chip--fans {
-            background: rgba(212, 154, 36, 0.12);
+            background: rgba(244, 179, 28, 0.12);
             color: var(--gold);
         }
 
         .rating-chip--fans .rating-chip__val { color: var(--gold); }
 
         .rating-chip--you {
-            background: rgba(116, 30, 39, 0.12);
-            color: var(--yc-burgundy, #741E27);
+            background: rgba(169, 34, 40, 0.12);
+            color: var(--yc-burgundy, #A92228);
         }
 
         .rating-chip--rate {
@@ -1129,7 +1130,7 @@
         }
 
         .rating-modal__submit:hover {
-            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.4);
+            box-shadow: 0 4px 15px rgba(169, 34, 40, 0.4);
             transform: translateY(-2px);
         }
 
@@ -1721,12 +1722,12 @@
                         '<defs>' +
                             '<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">' +
                                 '<stop offset="0" stop-color="#2A1512"/>' +
-                                '<stop offset="0.55" stop-color="#A52C32"/>' +
-                                '<stop offset="1" stop-color="#741E27"/>' +
+                                '<stop offset="0.55" stop-color="#D62D2F"/>' +
+                                '<stop offset="1" stop-color="#A92228"/>' +
                             '</linearGradient>' +
                             '<radialGradient id="label" cx="0.5" cy="0.5" r="0.5">' +
                                 '<stop offset="0" stop-color="#FFE9A8"/>' +
-                                '<stop offset="1" stop-color="#D49A24"/>' +
+                                '<stop offset="1" stop-color="#F4B31C"/>' +
                             '</radialGradient>' +
                             '<radialGradient id="glow" cx="0.3" cy="0.25" r="0.8">' +
                                 '<stop offset="0" stop-color="rgba(255,255,255,0.35)"/>' +
@@ -1736,10 +1737,10 @@
                         '<rect width="100" height="100" fill="url(#bg)"/>' +
                         '<rect width="100" height="100" fill="url(#glow)"/>' +
                         '<g transform="translate(50,50)">' +
-                            '<circle r="35" fill="#100F0E"/>' +
+                            '<circle r="35" fill="#140F0D"/>' +
                             grooves +
                             '<circle r="11" fill="url(#label)"/>' +
-                            '<circle r="2" fill="#100F0E"/>' +
+                            '<circle r="2" fill="#140F0D"/>' +
                             '<path d="M -35 0 A 35 35 0 0 1 -10 -33" fill="none" ' +
                                 'stroke="rgba(255,255,255,0.18)" stroke-width="1.4" stroke-linecap="round"/>' +
                         '</g>' +

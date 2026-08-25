@@ -8,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="rec-page">
@@ -32,41 +32,83 @@
 </nav>
 
 <header class="page-intro">
-    <div class="reading page-intro__inner">
-        <span class="page-intro__kicker">Tanong mo. Totoong sagot.</span>
-        <h1 class="page-intro__title" data-i18n="ask.title">May tanong ka kay Yeng?</h1>
-        <p class="page-intro__copy" data-i18n="ask.subtitle">
-            Ask it in your own words. If other fans are wondering the same thing,
-            your questions travel together &mdash; and she answers the group by voice.
-        </p>
-        <div class="page-intro__meta" id="intro-meta"></div>
+    <div class="wide page-intro__inner scrap-hero">
+
+        <div class="scrap-hero__copy">
+            <span class="page-intro__kicker">Tanong mo.</span>
+            <h1 class="page-intro__title page-intro__title--hand">
+                <span class="hand-underline" data-i18n="ask.title">Totoong sagot.</span>
+            </h1>
+            <p class="page-intro__copy page-intro__copy--wide" data-i18n="ask.subtitle">
+                Ask in your own words. If other fans are wondering the same thing,
+                your questions travel together &mdash; and she answers the group by voice.
+            </p>
+            <svg class="doodle doodle--sm doodle-yellow hero-doodle hero-doodle--star2 decorative-only" viewBox="0 0 32 32" aria-hidden="true">
+                <path class="d-fill" d="M16 2c0 8 2 12 10 14-8 2-10 6-10 14-2-8-4-12-12-14 8-2 10-6 12-14z"/>
+            </svg>
+        </div>
+
+        <div class="scrap-hero__aside taped-item">
+            <figure class="scrap-photo">
+                <img data-config-img="ask_portrait" src="" alt="Yeng Constantino" style="display:none">
+                <div class="scrap-photo__await">Yeng&rsquo;s photo goes here</div>
+            </figure>
+
+            <span class="hand-note" style="position:absolute;right:-6px;bottom:-26px">salamat!</span>
+
+            <svg class="doodle doodle-red hero-doodle hero-doodle--heart decorative-only" viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M16 27C14 24 5 19 5 11c0-4 3-6 6-6 2.5 0 4 1.5 5 3.3C17.2 6.4 19 5 21.3 5 25 5 27 7.7 27 11c0 7-8 13-11 16z"/>
+            </svg>
+
+            <svg class="doodle doodle--lg doodle-blue hero-doodle hero-doodle--flower decorative-only" viewBox="0 0 40 40" aria-hidden="true">
+                <path d="M20 20C11 18 10 8 16 7c5-1 6 5 4 13z"/>
+                <path d="M20 20c2-9 11-10 13-4 1 6-6 7-13 4z"/>
+                <path d="M20 20c9 2 9 11 3 13-6 1-6-6-3-13z"/>
+                <path d="M20 20c-2 9-11 10-13 4-1-6 6-7 13-4z"/>
+                <circle cx="20" cy="20" r="3"/>
+            </svg>
+        </div>
+
+        <div class="scrap-hero__foot">
+            <div class="fan-stats" id="intro-meta"></div>
+        </div>
+
     </div>
 </header>
 
 <main>
     <!-- ── The composer. First thing on the page, deliberately. ── -->
     <section class="reading compose">
-        <label class="compose__prompt" for="question-input">What do you want to ask?</label>
-        <textarea class="rec-field" id="question-input" maxlength="500"
-                  data-i18n-placeholder="ask.placeholder"
-                  placeholder="Write it the way you'd actually ask her."></textarea>
+        <div class="notebook-panel">
+            <h2 class="notebook-panel__heading">
+                <span class="hand-underline hand-underline--red hand-underline--thin">What do you want to ask?</span>
+            </h2>
 
-        <div class="compose__foot">
-            <span class="fig" id="char-count">0 / 500</span>
-        </div>
+            <label class="rec-label" for="question-input">Your question</label>
+            <textarea class="rec-field" id="question-input" maxlength="500"
+                      data-i18n-placeholder="ask.placeholder"
+                      placeholder="Write it the way you'd actually ask her."></textarea>
 
-        <div style="margin-top:1.1rem">
-            <span class="rec-label" id="lang-label" data-i18n="ask.langLabel">Ask in</span>
-            <div class="choice" id="lang-choice" role="group" aria-labelledby="lang-label">
-                <button type="button" data-lang="en"  aria-pressed="true">English</button>
-                <button type="button" data-lang="tl"  aria-pressed="false">Tagalog</button>
-                <button type="button" data-lang="ceb" aria-pressed="false">Bisaya</button>
-                <button type="button" data-lang="ilo" aria-pressed="false">Ilokano</button>
+            <div class="compose__foot">
+                <span class="fig" id="char-count">0 / 500</span>
             </div>
-        </div>
 
-        <div style="margin-top:1.1rem">
-            <button class="btn btn--primary btn--block" id="submit-btn" data-i18n="ask.submit">Send my question</button>
+            <div style="margin-top:1.1rem">
+                <span class="rec-label" id="lang-label" data-i18n="ask.langLabel">Ask in</span>
+                <div class="choice" id="lang-choice" role="group" aria-labelledby="lang-label">
+                    <button type="button" data-lang="en"  aria-pressed="true">English</button>
+                    <button type="button" data-lang="tl"  aria-pressed="false">Tagalog</button>
+                    <button type="button" data-lang="ceb" aria-pressed="false">Bisaya</button>
+                    <button type="button" data-lang="ilo" aria-pressed="false">Ilokano</button>
+                </div>
+            </div>
+
+            <button class="ask-submit" id="submit-btn" type="button">
+                <span id="submit-label" data-i18n="ask.submit">Send my question</span>
+                <svg class="doodle doodle--sm" viewBox="0 0 32 32" aria-hidden="true" style="stroke:none;fill:rgba(255,255,255,.85)">
+                    <path d="M16 2c0 8 2 12 10 14-8 2-10 6-10 14-2-8-4-12-12-14 8-2 10-6 12-14z"/>
+                </svg>
+            </button>
         </div>
 
         <div class="aside-note">
@@ -81,6 +123,57 @@
     <!-- ── The question record. Replaces the page's centre of gravity on submit. ── -->
     <section class="reading" id="record-slot" aria-live="polite">
         <article class="qrecord" id="record" hidden></article>
+    </section>
+
+    <!-- ── What happens next: three drawn steps on a torn blue band ── -->
+    <section class="what-next torn-paper">
+        <div class="reading">
+            <h2 class="hand-section-title">What happens next?</h2>
+            <div class="next-grid">
+
+                <article class="next-step">
+                    <span class="next-step__art doodle-ink">
+                        <svg class="doodle" viewBox="0 0 62 40" height="54" aria-hidden="true">
+                            <circle cx="13" cy="12" r="6"/><path d="M3 34c0-6 4.5-10 10-10s10 4 10 10"/>
+                            <circle cx="31" cy="9" r="7"/><path d="M20 34c0-7 5-12 11-12s11 5 11 12"/>
+                            <circle cx="49" cy="12" r="6"/><path d="M39 34c0-6 4.5-10 10-10s10 4 10 10"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <strong>1. Others join in</strong>
+                        <p>We group similar questions so one answer reaches thousands.</p>
+                    </div>
+                </article>
+
+                <article class="next-step">
+                    <span class="next-step__art doodle-red">
+                        <svg class="doodle" viewBox="0 0 34 44" height="54" aria-hidden="true">
+                            <rect x="11" y="3" width="12" height="21" rx="6"/>
+                            <path d="M6 20c0 6 5 11 11 11s11-5 11-11"/>
+                            <path d="M17 31v8M11 39h12"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <strong>2. Yeng answers by voice</strong>
+                        <p>She records answers in her own words. Always her real voice.</p>
+                    </div>
+                </article>
+
+                <article class="next-step">
+                    <span class="next-step__art doodle-yellow">
+                        <svg class="doodle" viewBox="0 0 46 40" height="54" aria-hidden="true">
+                            <path d="M3 34V8a3 3 0 0 1 3-3h11l4 5h16a3 3 0 0 1 3 3v21a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/>
+                            <path d="M23 16l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <strong>3. It goes in the archive</strong>
+                        <p>Everything she approves stays here, forever.</p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
     </section>
 
     <!-- ── Index of what everyone is asking ── -->
@@ -136,12 +229,38 @@
     var els = {
         input: document.getElementById('question-input'),
         submit: document.getElementById('submit-btn'),
+        submitLabel: document.getElementById('submit-label'),
         count: document.getElementById('char-count'),
         record: document.getElementById('record'),
         list: document.getElementById('cluster-list'),
         listCount: document.getElementById('list-count'),
         meta: document.getElementById('intro-meta')
     };
+
+    /* Small line drawings for the stat row. Inline so they inherit the
+       accent colour, and aria-hidden because the figure beside each one
+       already says what it counts. */
+    var ART = {
+        fans: '<svg class="doodle doodle--sm doodle-red" viewBox="0 0 40 28" aria-hidden="true">'
+            + '<circle cx="9" cy="9" r="4.2"/><path d="M2 24c0-4 3.2-7 7-7s7 3 7 7"/>'
+            + '<circle cx="20" cy="7" r="5"/><path d="M12 24c0-5 3.6-8.6 8-8.6s8 3.6 8 8.6"/>'
+            + '<circle cx="31" cy="9" r="4.2"/><path d="M24 24c0-4 3.2-7 7-7s7 3 7 7"/></svg>',
+        question: '<svg class="doodle doodle--sm doodle-yellow" viewBox="0 0 28 28" aria-hidden="true">'
+            + '<path d="M24 15.5c0 4.4-4.5 8-10 8-1.3 0-2.5-.2-3.6-.6L4 25l1.6-4.6C4.6 19 4 17.3 4 15.5c0-4.4 4.5-8 10-8s10 3.6 10 8z"/>'
+            + '<path d="M11.4 12.6c.3-1.2 1.3-2 2.6-2 1.5 0 2.6 1 2.6 2.3 0 1.8-2.4 1.9-2.4 3.6"/>'
+            + '<path d="M14.2 19.2h.01"/></svg>',
+        mic: '<svg class="doodle doodle--sm doodle-green" viewBox="0 0 28 28" aria-hidden="true">'
+            + '<rect x="10" y="3" width="8" height="14" rx="4"/>'
+            + '<path d="M6 15c0 4.4 3.6 8 8 8s8-3.6 8-8"/><path d="M14 23v3M10 26h8"/></svg>',
+        globe: '<svg class="doodle doodle--sm doodle-blue" viewBox="0 0 28 28" aria-hidden="true">'
+            + '<circle cx="14" cy="14" r="11"/><path d="M3 14h22"/>'
+            + '<path d="M14 3c3 3.4 4.5 7 4.5 11S17 22.6 14 25c-3-2.4-4.5-7-4.5-11S11 6.4 14 3z"/></svg>'
+    };
+
+    function stat(art, big, small) {
+        return '<div class="fan-stat">' + art + '<div><strong>' + big + '</strong>'
+            + '<span>' + small + '</span></div></div>';
+    }
 
     var currentTab = 'Open';
     var lang = Yeng.I18N.lang() || 'en';
@@ -180,7 +299,7 @@
         }
 
         els.submit.disabled = true;
-        els.submit.textContent = 'Sending…';
+        els.submitLabel.textContent = 'Sending…';
 
         try {
             var res = await api('submit-question', {
@@ -209,7 +328,7 @@
             showToast(err.message || 'Could not send that right now.', 'error');
         } finally {
             els.submit.disabled = false;
-            els.submit.textContent = Yeng.I18N.t('ask.submit', 'Send my question');
+            els.submitLabel.textContent = Yeng.I18N.t('ask.submit', 'Send my question');
         }
     }
 
@@ -435,13 +554,13 @@
             var answered = (await api('get-clusters?status=Answered&limit=100')).clusters || [];
             var waiting = open.reduce(function (s, c) { return s + (c.count || 0); }, 0);
             var bits = [];
-            if (waiting)         bits.push(waiting.toLocaleString() + ' fans waiting');
-            if (open.length)     bits.push(open.length + ' open ' + plural(open.length, 'question'));
-            if (answered.length) bits.push(answered.length + ' answered');
-            bits.push('English · Tagalog · Bisaya · Ilokano');
-            els.meta.innerHTML = bits.map(function (b) { return '<span class="fig">' + esc(b) + '</span>'; }).join('');
+            if (waiting)         bits.push(stat(ART.fans, waiting.toLocaleString(), 'fans waiting'));
+            if (open.length)     bits.push(stat(ART.question, open.length, 'open ' + plural(open.length, 'question')));
+            if (answered.length) bits.push(stat(ART.mic, answered.length, 'answered'));
+            bits.push(stat(ART.globe, 'English &middot; Tagalog', 'Bisaya &middot; Ilokano'));
+            els.meta.innerHTML = bits.join('');
         } catch (e) {
-            els.meta.innerHTML = '<span class="fig">English · Tagalog · Bisaya · Ilokano</span>';
+            els.meta.innerHTML = stat(ART.globe, 'English &middot; Tagalog', 'Bisaya &middot; Ilokano');
         }
     }
 

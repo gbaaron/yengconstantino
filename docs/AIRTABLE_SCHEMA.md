@@ -117,6 +117,7 @@ Append-only. The ledger is the truth; `Users.PointsBalance` is a rebuildable cac
 | `Language` | Single select | `en`, `tl`, `ceb`, `ilo` |
 | `ClusterId` / `ClusterSize` | Text / Number | set when minted from an answer |
 | `Verified` | Checkbox | |
+| `Thumbnail` | URL **or** Attachment | *Optional, added by the scrapbook redesign.* Shown in the archive card's media well. Leave it unset and the card draws a kind-coded paper tile instead — there is no stock photography anywhere in this build. |
 | `Signature` | Single line text | HMAC over url + cluster + timestamp |
 | `Status` | Single select | `Candidate`, `Approved`, `Skipped` — **skips are retained, never deleted** |
 | `Excerpt` | Long text | shown in the keep/skip queue |
@@ -254,6 +255,7 @@ Entered by hand from cleared material. **Nothing is scraped or generated.**
 | `MessageRequests` | `Status` gains `AwaitingPayment`, `PaymentFailed`. New: `PaidAt`, `AmountPaid`, `RefundedAt`. Payment is now confirmed by the Stripe webhook only. |
 | `Events` | New: `SetlistScored` (Checkbox), `ActualSetlist` (Long text, comma-separated song ids), `SetlistScoredAt`. |
 | `SiteConfig` | New keys: `cameo_price_video`, `cameo_price_voice`, `cameo_price_written` — Cameo pricing is now configurable instead of hardcoded in four places. |
+| `SiteConfig` | New image keys for the scrapbook heroes: `ask_portrait` (Ask Yeng — a portrait, cropped 4:5) and `tour_photo` (Tour Map — a live shot, cropped 4:5). Both are taped photo mounts. **Until a real supplied photo is attached, each mount shows a handwritten paper card rather than falling back to stock imagery.** Use the record's attachment field, the same as `about_image`. |
 
 ---
 

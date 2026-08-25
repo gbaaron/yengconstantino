@@ -8,29 +8,29 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FBF8F2">
+    <meta name="theme-color" content="#FFF9EE">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Fan Leaderboard — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="See where you rank among Yeng Nation. Earn points by attending events, commenting, voting, and engaging — no purchases required.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Fan Leaderboard Page — Custom Properties ── */
         :root {
-            --yeng-purple: #A52C32;
-            --yeng-gold: #D49A24;
-            --yeng-burgundy: #741E27;
-            --yeng-offwhite: #FBF8F2;
+            --yeng-purple: #D62D2F;
+            --yeng-gold: #F4B31C;
+            --yeng-burgundy: #A92228;
+            --yeng-offwhite: #FFF9EE;
             --yeng-font-display: var(--font-display);
             --yeng-font-body: var(--font-body);
             --yeng-font-accent: var(--font-accent);
-            --yeng-gradient-primary: linear-gradient(135deg, #A52C32, #741E27, #D49A24);
-            --yeng-gradient-cta: linear-gradient(135deg, #A52C32, #C24048);
-            --yeng-gradient-warm: linear-gradient(135deg, #D49A24, #741E27, #A52C32);
-            --yeng-gradient-dark: linear-gradient(135deg, #191716, #322E2A);
+            --yeng-gradient-primary: linear-gradient(135deg, #D62D2F, #A92228, #F4B31C);
+            --yeng-gradient-cta: linear-gradient(135deg, #D62D2F, #F06C65);
+            --yeng-gradient-warm: linear-gradient(135deg, #F4B31C, #A92228, #D62D2F);
+            --yeng-gradient-dark: linear-gradient(135deg, #1F1916, #38312C);
         }
 
         /* ── Hero ── */
@@ -46,7 +46,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(212, 154, 36,0.04)'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5l5 10 10 2-7 7 2 10-10-5-10 5 2-10-7-7 10-2z' fill='rgba(244, 179, 28,0.04)'/%3E%3C/svg%3E");
             pointer-events: none;
         }
 
@@ -100,13 +100,13 @@
         .my-score__card {
             background: #fff;
             border-radius: var(--radius-lg);
-            box-shadow: 0 18px 50px rgba(25,23,22,0.16);
+            box-shadow: 0 18px 50px rgba(31, 25, 22,0.16);
             padding: var(--space-xl);
             display: flex;
             align-items: center;
             gap: var(--space-xl);
             flex-wrap: wrap;
-            border: 1px solid rgba(212,154,36,0.25);
+            border: 1px solid rgba(244, 179, 28,0.25);
         }
 
         .my-score__rank {
@@ -146,7 +146,7 @@
 
         .my-score__points {
             font-size: 1.05rem;
-            color: #4A443F;
+            color: #554C45;
             margin: 0 0 12px;
         }
 
@@ -204,7 +204,7 @@
 
         .lb-info__item {
             background: #fff;
-            border: 1px solid rgba(212,154,36,0.2);
+            border: 1px solid rgba(244, 179, 28,0.2);
             border-radius: var(--radius-md);
             padding: var(--space-md);
             text-align: center;
@@ -219,7 +219,7 @@
 
         .lb-info__label {
             font-size: 0.82rem;
-            color: #4A443F;
+            color: #554C45;
             margin-top: 2px;
         }
 
@@ -259,7 +259,7 @@
             align-items: center;
             gap: var(--space-md);
             background: #fff;
-            border: 1px solid rgba(25,23,22,0.06);
+            border: 1px solid rgba(31, 25, 22,0.06);
             border-radius: var(--radius-md);
             padding: var(--space-md) var(--space-lg);
             transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -267,13 +267,13 @@
 
         .lb-row:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(25,23,22,0.08);
+            box-shadow: 0 10px 24px rgba(31, 25, 22,0.08);
         }
 
         .lb-row--me {
             border-color: var(--yeng-gold);
             background: linear-gradient(135deg, #fff, #FDF6E8);
-            box-shadow: 0 6px 18px rgba(212,154,36,0.18);
+            box-shadow: 0 6px 18px rgba(244, 179, 28,0.18);
         }
 
         .lb-row__rank {
@@ -477,7 +477,7 @@
             </div>
             <div class="footer__bottom">
                 <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9835;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#F4B31C;">Salamat sa suporta! &#9835;</span>
             </div>
         </div>
     </footer>

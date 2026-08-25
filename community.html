@@ -8,38 +8,39 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FBF8F2">
+    <meta name="theme-color" content="#FFF9EE">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Yeng Nation Community — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="Join the Yeng Nation! Connect with fellow Yeng Constantino fans, share fan art, cover videos, stories, and be part of the most passionate OPM fandom.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Community Page — Color System Overrides ── */
         :root {
-            --primary: #A52C32;
-            --primary-light: #C24048;
-            --primary-glow: rgba(116, 30, 39, 0.15);
-            --gold: #D49A24;
-            --gold-light: #F0CD79;
-            --burgundy: #741E27;
-            --burgundy-light: #96313B;
-            --bg-off-white: #FBF8F2;
+            --primary: #D62D2F;
+            --primary-light: #F06C65;
+            --primary-glow: rgba(169, 34, 40, 0.15);
+            --gold: #F4B31C;
+            --gold-light: #FFD96F;
+            --burgundy: #A92228;
+            --burgundy-light: #C33338;
+            --bg-off-white: #FFF9EE;
             /* Resolve to the real stacks. These three were previously
                self-referential (--font-display: var(--font-display)), which is a
                CSS custom-property cycle: invalid at computed-value time, so the
                whole page fell back to Times. See AUDIT.md §1.5. */
-            --font-display: 'Fraunces', 'Playfair Display', serif;
+            --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
             --font-body: 'Instrument Sans', system-ui, sans-serif;
-            --font-accent: 'Fraunces', 'Playfair Display', serif;
-            --gradient-primary: linear-gradient(135deg, #A52C32 0%, #741E27 50%, #D49A24 100%);
-            --gradient-cta: linear-gradient(135deg, #A52C32 0%, #C24048 100%);
-            --shadow-warm-sm: 0 2px 8px rgba(212, 154, 36, 0.10);
-            --shadow-warm-md: 0 4px 20px rgba(212, 154, 36, 0.14);
-            --shadow-warm-lg: 0 8px 40px rgba(212, 154, 36, 0.18);
+            --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+            --font-accent: 'Newsreader', Georgia, serif;
+            --gradient-primary: linear-gradient(135deg, #D62D2F 0%, #A92228 50%, #F4B31C 100%);
+            --gradient-cta: linear-gradient(135deg, #D62D2F 0%, #F06C65 100%);
+            --shadow-warm-sm: 0 2px 8px rgba(244, 179, 28, 0.10);
+            --shadow-warm-md: 0 4px 20px rgba(244, 179, 28, 0.14);
+            --shadow-warm-lg: 0 8px 40px rgba(244, 179, 28, 0.18);
         }
 
         /* ── Community Hero ── */
@@ -200,8 +201,8 @@
 
         /* ── My Yeng Story Highlight ── */
         .memory-highlight {
-            background: linear-gradient(135deg, rgba(212, 154, 36, 0.08) 0%, rgba(116, 30, 39, 0.06) 100%);
-            border: 1px solid rgba(212, 154, 36, 0.2);
+            background: linear-gradient(135deg, rgba(244, 179, 28, 0.08) 0%, rgba(169, 34, 40, 0.06) 100%);
+            border: 1px solid rgba(244, 179, 28, 0.2);
             border-radius: var(--radius-xl);
             padding: var(--space-xl);
             margin-bottom: var(--space-xl);
@@ -365,7 +366,7 @@
         }
 
         .post-creator__submit:hover {
-            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.4);
+            box-shadow: 0 4px 15px rgba(169, 34, 40, 0.4);
             transform: translateY(-2px);
         }
 
@@ -403,7 +404,7 @@
         }
 
         .post-creator__guest-cta .btn:hover {
-            box-shadow: 0 4px 15px rgba(116, 30, 39, 0.4);
+            box-shadow: 0 4px 15px rgba(169, 34, 40, 0.4);
             transform: translateY(-2px);
         }
 
@@ -422,7 +423,7 @@
         }
 
         .post-card--featured {
-            border: 2px solid rgba(212, 154, 36, 0.3);
+            border: 2px solid rgba(244, 179, 28, 0.3);
         }
 
         .post-card__header {
@@ -475,11 +476,11 @@
         }
 
         .post-card__type-badge--post { background: var(--primary-glow); color: var(--primary); }
-        .post-card__type-badge--fanart { background: rgba(116, 30, 39, 0.12); color: var(--burgundy); }
-        .post-card__type-badge--cover { background: rgba(212, 154, 36, 0.15); color: #8B6914; }
+        .post-card__type-badge--fanart { background: rgba(169, 34, 40, 0.12); color: var(--burgundy); }
+        .post-card__type-badge--cover { background: rgba(244, 179, 28, 0.15); color: #8B6914; }
         .post-card__type-badge--memory { background: rgba(34, 197, 94, 0.12); color: #16a34a; }
-        .post-card__type-badge--question { background: rgba(212, 154, 36, 0.15); color: #8B6914; }
-        .post-card__type-badge--edit { background: rgba(116, 30, 39, 0.12); color: var(--primary); }
+        .post-card__type-badge--question { background: rgba(244, 179, 28, 0.15); color: #8B6914; }
+        .post-card__type-badge--edit { background: rgba(169, 34, 40, 0.12); color: var(--primary); }
 
         .post-card__time {
             font-size: 0.8rem;
@@ -519,8 +520,8 @@
             margin: var(--space-md) 0 0;
             padding: var(--space-md);
             border-radius: var(--radius-md);
-            background: linear-gradient(135deg, rgba(212, 154, 36, 0.12) 0%, rgba(116, 30, 39, 0.08) 100%);
-            border: 1px solid rgba(212, 154, 36, 0.35);
+            background: linear-gradient(135deg, rgba(244, 179, 28, 0.12) 0%, rgba(169, 34, 40, 0.08) 100%);
+            border: 1px solid rgba(244, 179, 28, 0.35);
             border-left: 4px solid var(--gold);
         }
 
@@ -592,8 +593,8 @@
 
         /* ── Ask Yeng intro banner ── */
         .ask-yeng-note {
-            background: linear-gradient(135deg, rgba(212, 154, 36, 0.1) 0%, rgba(116, 30, 39, 0.06) 100%);
-            border: 1px solid rgba(212, 154, 36, 0.3);
+            background: linear-gradient(135deg, rgba(244, 179, 28, 0.1) 0%, rgba(169, 34, 40, 0.06) 100%);
+            border: 1px solid rgba(244, 179, 28, 0.3);
             border-radius: var(--radius-md);
             padding: var(--space-md);
             margin-bottom: var(--space-md);
@@ -995,12 +996,12 @@
 
             var avatarBgOptions = [
                 'var(--gradient-primary)',
-                'linear-gradient(135deg, #A52C32 0%, #C24048 100%)',
-                'linear-gradient(135deg, #741E27 0%, #96313B 100%)',
-                'linear-gradient(135deg, #D49A24 0%, #F0CD79 100%)',
+                'linear-gradient(135deg, #D62D2F 0%, #F06C65 100%)',
+                'linear-gradient(135deg, #A92228 0%, #C33338 100%)',
+                'linear-gradient(135deg, #F4B31C 0%, #FFD96F 100%)',
                 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
-                'linear-gradient(135deg, #A52C32 0%, #D49A24 100%)',
-                'linear-gradient(135deg, #741E27 0%, #D49A24 100%)'
+                'linear-gradient(135deg, #D62D2F 0%, #F4B31C 100%)',
+                'linear-gradient(135deg, #A92228 0%, #F4B31C 100%)'
             ];
 
             // ── Fallback demo posts ──

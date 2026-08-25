@@ -10,7 +10,7 @@
     "SplashScreen": {
       "launchAutoHide": true,
       "launchShowDuration": 2000,
-      "backgroundColor": "#F3EEE5",
+      "backgroundColor": "#F7EBD5",
       "showSpinner": false,
       "splashFullScreen": true,
       "splashImmersive": true
@@ -18,7 +18,7 @@
     "StatusBar": {
       "overlaysWebView": false,
       "style": "LIGHT",
-      "backgroundColor": "#FBF8F2"
+      "backgroundColor": "#FFF9EE"
     },
     "Keyboard": {
       "resize": "native",

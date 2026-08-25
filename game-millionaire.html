@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
@@ -19,7 +19,7 @@
             background: var(--ink-flame); -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent; color: transparent;
         }
-        .mn-top__sub { color: rgba(251,248,242,.55); font-size: .85rem; margin-top: .25rem; }
+        .mn-top__sub { color: rgba(255, 249, 238,.55); font-size: .85rem; margin-top: .25rem; }
 
         .mn-layout { display: grid; grid-template-columns: 1fr 220px; gap: var(--space-xl); align-items: start; }
         @media (max-width: 860px) { .mn-layout { grid-template-columns: 1fr; } }
@@ -29,28 +29,28 @@
         .rung {
             display: flex; align-items: center; gap: .6rem;
             padding: .3rem .7rem; border-radius: var(--radius-sm);
-            font-size: .8rem; color: rgba(251,248,242,.45);
+            font-size: .8rem; color: rgba(255, 249, 238,.45);
         }
         .rung--safe { color: var(--gold); }
         .rung--safe .rung__lv { border-color: var(--gold); }
         .rung--current { background: var(--purple); color: #fff; font-weight: 700; }
-        .rung--won { color: rgba(251,248,242,.75); }
+        .rung--won { color: rgba(255, 249, 238,.75); }
         .rung__lv {
             min-width: 22px; text-align: center; font-size: .68rem;
-            border: 1px solid rgba(251,248,242,.2); border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 249, 238,.2); border-radius: var(--radius-sm);
             padding: .05rem 0;
         }
         .rung__pts { margin-left: auto; font-family: var(--font-display); font-weight: 600; }
 
         /* ── Question ── */
         .qpanel {
-            background: rgba(251,248,242,.05);
-            border: 1px solid rgba(251,248,242,.12);
+            background: rgba(255, 249, 238,.05);
+            border: 1px solid rgba(255, 249, 238,.12);
             padding: var(--space-xl);
         }
         .qpanel__meta {
             display: flex; align-items: center; gap: var(--space-md);
-            font-size: .76rem; color: rgba(251,248,242,.5);
+            font-size: .76rem; color: rgba(255, 249, 238,.5);
             margin-bottom: var(--space-md); flex-wrap: wrap;
         }
         .qpanel__prompt {
@@ -61,18 +61,18 @@
         .choices { display: grid; gap: .6rem; }
         .choice {
             appearance: none; cursor: pointer; text-align: left;
-            border: 1px solid rgba(251,248,242,.2);
-            background: rgba(251,248,242,.04); color: var(--cream);
+            border: 1px solid rgba(255, 249, 238,.2);
+            background: rgba(255, 249, 238,.04); color: var(--cream);
             font-family: var(--font-body); font-size: 1rem;
             padding: .9rem 1.1rem; display: flex; gap: .8rem; align-items: center;
             transition: all var(--transition-fast);
         }
-        .choice:hover:not(:disabled) { background: rgba(251,248,242,.1); border-color: var(--gold); }
+        .choice:hover:not(:disabled) { background: rgba(255, 249, 238,.1); border-color: var(--gold); }
         .choice:disabled { cursor: default; }
         .choice__k {
             width: 24px; height: 24px; flex: none; border-radius: 50%;
             display: inline-flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(251,248,242,.3); font-size: .74rem; font-weight: 700;
+            border: 1px solid rgba(255, 249, 238,.3); font-size: .74rem; font-weight: 700;
         }
         .choice.is-right { background: var(--success); border-color: var(--success); color: #fff; }
         .choice.is-wrong { background: var(--purple); border-color: var(--purple); color: #fff; }
@@ -81,7 +81,7 @@
         /* ── The decision ── */
         .decision {
             margin-top: var(--space-lg); padding-top: var(--space-lg);
-            border-top: 1px solid rgba(251,248,242,.12);
+            border-top: 1px solid rgba(255, 249, 238,.12);
             display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap;
         }
         .decision__text {
@@ -92,15 +92,15 @@
             display: flex; align-items: center; gap: .5rem;
             font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
         }
-        .timer__bar { width: 90px; height: 4px; background: rgba(251,248,242,.15); border-radius: 2px; overflow: hidden; }
+        .timer__bar { width: 90px; height: 4px; background: rgba(255, 249, 238,.15); border-radius: 2px; overflow: hidden; }
         .timer__fill { height: 100%; background: var(--gold); transition: width 1s linear; }
         .timer--low .timer__fill { background: var(--purple); }
 
         .lifelines { display: flex; gap: .4rem; }
         .lifeline {
             appearance: none; cursor: pointer;
-            border: 1px solid rgba(251,248,242,.25); background: transparent;
-            color: rgba(251,248,242,.75); font-family: var(--font-body);
+            border: 1px solid rgba(255, 249, 238,.25); background: transparent;
+            color: rgba(255, 249, 238,.75); font-family: var(--font-body);
             font-size: .74rem; font-weight: 700; padding: .3rem .6rem;
             border-radius: var(--radius-full);
         }
@@ -112,11 +112,11 @@
             font-family: var(--font-display); font-size: clamp(2.5rem,8vw,4rem);
             font-weight: 700; color: var(--gold); line-height: 1;
         }
-        .result-panel__label { color: rgba(251,248,242,.6); margin-top: .5rem; }
+        .result-panel__label { color: rgba(255, 249, 238,.6); margin-top: .5rem; }
         .result-panel__msg { margin-top: var(--space-md); font-size: 1.05rem; }
 
         .provenance {
-            font-size: .72rem; color: rgba(251,248,242,.4);
+            font-size: .72rem; color: rgba(255, 249, 238,.4);
             margin-top: var(--space-lg); text-align: center; line-height: 1.6;
         }
         .nav { background: rgba(16,15,14,.9) !important; }

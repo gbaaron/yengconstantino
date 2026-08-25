@@ -498,8 +498,14 @@ const SiteConfig = {
             if (url) {
                 el.src = url;
                 el.style.display = '';
-                // Hide any sibling placeholder text
-                const sibling = el.parentElement && el.parentElement.querySelector('.about__image-text');
+                // Hide the sibling that stands in while no photo is supplied.
+                // .scrap-photo__await is the scrapbook mount's paper card —
+                // there is no stock imagery in this build, so an unset key
+                // shows a handwritten placeholder rather than a stranger's
+                // concert photo.
+                const sibling = el.parentElement && el.parentElement.querySelector(
+                    '.about__image-text, .scrap-photo__await'
+                );
                 if (sibling) sibling.style.display = 'none';
             }
         });

@@ -8,27 +8,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Yeng">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FBF8F2">
+    <meta name="theme-color" content="#FFF9EE">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <title>Yeng's Activity — Yeng Constantino (Spec Preview)</title>
     <meta name="description" content="See what Yeng has been posting and the fan questions she's answered.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
         /* ── Yeng Activity Feed — Custom Properties ── */
         :root {
-            --yeng-purple: #A52C32;
-            --yeng-gold: #D49A24;
-            --yeng-burgundy: #741E27;
-            --yeng-offwhite: #FBF8F2;
+            --yeng-purple: #D62D2F;
+            --yeng-gold: #F4B31C;
+            --yeng-burgundy: #A92228;
+            --yeng-offwhite: #FFF9EE;
             --yeng-font-display: var(--font-display);
             --yeng-font-body: var(--font-body);
             --yeng-font-accent: var(--font-accent);
-            --yeng-gradient-primary: linear-gradient(135deg, #A52C32, #741E27, #D49A24);
-            --yeng-gradient-dark: linear-gradient(135deg, #191716, #322E2A);
+            --yeng-gradient-primary: linear-gradient(135deg, #D62D2F, #A92228, #F4B31C);
+            --yeng-gradient-dark: linear-gradient(135deg, #1F1916, #38312C);
         }
 
         /* ── Hero ── */
@@ -87,8 +87,8 @@
             background: #fff;
             border-radius: var(--radius-full);
             padding: 5px;
-            box-shadow: 0 12px 30px rgba(25,23,22,0.14);
-            border: 1px solid rgba(212,154,36,0.25);
+            box-shadow: 0 12px 30px rgba(31, 25, 22,0.14);
+            border: 1px solid rgba(244, 179, 28,0.25);
         }
 
         .af-toggle__btn {
@@ -108,7 +108,7 @@
         .af-toggle__btn--active {
             background: var(--yeng-gradient-primary);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(165,44,50,0.3);
+            box-shadow: 0 4px 12px rgba(214, 45, 47,0.3);
         }
 
         /* ── Feed ── */
@@ -122,7 +122,7 @@
 
         .af-post {
             background: #fff;
-            border: 1px solid rgba(25,23,22,0.06);
+            border: 1px solid rgba(31, 25, 22,0.06);
             border-radius: var(--radius-lg);
             padding: var(--space-lg);
             transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -130,7 +130,7 @@
 
         .af-post:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(25,23,22,0.08);
+            box-shadow: 0 10px 24px rgba(31, 25, 22,0.08);
         }
 
         .af-post__head {
@@ -185,7 +185,7 @@
             letter-spacing: 0.06em;
             padding: 3px 10px;
             border-radius: var(--radius-full);
-            background: rgba(212,154,36,0.14);
+            background: rgba(244, 179, 28,0.14);
             color: var(--yeng-burgundy);
             font-weight: 600;
         }
@@ -208,7 +208,7 @@
         .af-post__footer {
             margin-top: var(--space-md);
             padding-top: var(--space-md);
-            border-top: 1px solid rgba(25,23,22,0.06);
+            border-top: 1px solid rgba(31, 25, 22,0.06);
             font-size: 0.82rem;
             color: #918A83;
         }
@@ -303,7 +303,7 @@
             </div>
             <div class="footer__bottom">
                 <span><span data-config="footer_copyright">Spec concept by Global Media</span> &mdash; an unofficial proposal built for review. Not affiliated with, endorsed by, or operated by Yeng Constantino.</span>
-                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#D49A24;">Salamat sa suporta! &#9835;</span>
+                <span style="font-family:var(--font-accent);font-size:1.1rem;color:#F4B31C;">Salamat sa suporta! &#9835;</span>
             </div>
         </div>
     </footer>
