@@ -52,10 +52,16 @@
            photograph. Over a tiled wall they bury it completely, so a slide
            that actually has art gets a lighter one — still dark enough that
            the type is the loudest thing on it. */
-        .slide-bg--walled.slide-bg--dark::after   { background: rgba(15,14,26,0.62); }
-        .slide-bg--walled.slide-bg--darker::after { background: rgba(15,14,26,0.74); }
+        .slide-bg--walled.slide-bg--dark::after {
+            background:
+                radial-gradient(ellipse 62% 58% at 50% 50%, rgba(15,14,26,0.93) 0%, rgba(15,14,26,0.74) 62%, rgba(15,14,26,0.58) 100%);
+        }
+        .slide-bg--walled.slide-bg--darker::after {
+            background:
+                radial-gradient(ellipse 70% 64% at 50% 50%, rgba(15,14,26,0.95) 0%, rgba(15,14,26,0.86) 60%, rgba(15,14,26,0.7) 100%);
+        }
         .slide-bg--walled.slide-bg--gradient::after {
-            background: linear-gradient(135deg, rgba(108,43,217,0.82), rgba(190,24,93,0.78));
+            background: linear-gradient(135deg, rgba(108,43,217,0.86), rgba(190,24,93,0.82));
         }
         .slide-bg--dark::after { background: rgba(15,14,26,0.85); }
         .slide-bg--darker::after { background: rgba(15,14,26,0.92); }
