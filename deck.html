@@ -40,7 +40,8 @@
            nothing generic is substituted. */
         .slide-bg__wall {
             position: absolute; inset: -12%;
-            display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px;
+            display: grid; grid-template-columns: repeat(10, 1fr);
+            grid-auto-rows: 1fr; gap: 5px;
             transform: rotate(-6deg) scale(1.12);
         }
         .slide-bg__wall img {
@@ -1201,7 +1202,7 @@
             if (pack) pack.classList.add('pack-rip');
 
             // Particle explosion
-            for (var i = 0; i < 24; i++) {
+            for (var i = 0; i < 80; i++) {
                 var p = document.createElement('div');
                 p.className = 'rip-particle';
                 var angle = (Math.PI * 2 * i) / 24;
