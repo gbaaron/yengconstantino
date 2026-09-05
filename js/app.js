@@ -252,6 +252,153 @@ window.ytArt = function (url) {
     return String(url).replace(/\/(maxres|sd|mq|)default\.jpg/, '/hqdefault.jpg');
 };
 
+/* ── Art: the catalogue as pictures ──────────────────────────────────
+   Every page that names one of her songs can now show the still from it.
+   Before this, eight real thumbnails sat in the music catalogue and only
+   music.html and the featured strip on the home page ever drew them —
+   eight of fourteen fan pages rendered no picture at all.
+
+   Resolution order, best available first (never a stock photo, never a
+   gradient tile pretending to be one):
+     1. an explicit image on the row
+     2. the still from her recording of that song
+     3. a ruled paper panel with the title in the hand face — honest,
+        clearly not a photograph, and obviously part of the scrapbook
+   ──────────────────────────────────────────────────────────────────── */
+window.Art = (function () {
+    var CACHE_KEY = 'yc_art_v1';
+    var _map = null;          // normalised title -> { thumb, title, year }
+    var _list = [];           // catalogue order, for the walls
+    var _loading = null;
+
+    function norm(s) {
+        return String(s || '')
+            .toLowerCase()
+            .replace(/\(.*?\)|\[.*?\]/g, ' ')      // "Ikaw (Live)" -> "ikaw"
+            .replace(/[^a-z0-9]+/g, ' ')
+            .trim();
+    }
+
+    function ingest(items) {
+        _map = {};
+        _list = [];
+        (items || []).forEach(function (it) {
+            if (!it || !it.thumbnail) return;
+            var row = { thumb: window.ytArt(it.thumbnail), title: it.title || '', year: it.year || null };
+            _list.push(row);
+            var k = norm(it.title);
+            if (k && !_map[k]) _map[k] = row;
+        });
+        return _list;
+    }
+
+    /** Fetch the catalogue once per session. Never throws: a page that
+        can't reach the API still renders its paper panels. */
+    function load() {
+        if (_map) return Promise.resolve(_list);
+        if (_loading) return _loading;
+
+        var cached = null;
+        try { cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null'); } catch (e) { /* ignore */ }
+        if (cached && cached.length) { ingest(cached); return Promise.resolve(_list); }
+
+        /* APP.API_BASE, not a bare '/api/...': inside the Capacitor app the
+           pages are served from the bundle and the functions live on the
+           Netlify origin, so a root-relative path resolves to nothing. */
+        _loading = fetch(APP.API_BASE + '/get-music-content?limit=200')
+            .then(function (r) { return r.ok ? r.json() : { content: [] }; })
+            .then(function (d) {
+                var items = (d.content || []).map(function (x) {
+                    return { title: x.title, thumbnail: x.thumbnail, year: x.year };
+                }).filter(function (x) { return x.thumbnail; });
+                try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch (e) { /* quota */ }
+                return ingest(items);
+            })
+            .catch(function () { return ingest([]); });
+        return _loading;
+    }
+
+    /** The still from her recording of `title`, or null. */
+    function forSong(title) {
+        if (!_map) return null;
+        var k = norm(title);
+        if (!k) return null;
+        if (_map[k]) return _map[k].thumb;
+        // "Jeepney Love Story cover" / "my Hawak Kamay story" — the song
+        // name is usually inside a longer fan-written string.
+        var keys = Object.keys(_map);
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i].length >= 4 && k.indexOf(keys[i]) !== -1) return _map[keys[i]].thumb;
+        }
+        return null;
+    }
+
+    function all() { return _list.slice(); }
+
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    /** One taped scrapbook photo. `src` wins; else the song still; else
+        a ruled paper panel carrying the caption. */
+    function tile(opts) {
+        opts = opts || {};
+        var src = opts.src || (opts.song ? forSong(opts.song) : null);
+        var cap = opts.caption || opts.song || '';
+        var cls = 'art-tile' + (opts.tilt === 'left' ? ' art-tile--left' : '') + (opts.className ? ' ' + opts.className : '');
+        var inner = src
+            ? '<span class="art-tile__plate yt-crop"><img src="' + esc(src) + '" alt="' + esc(opts.alt || cap) + '"'
+                + ' loading="lazy" decoding="async"'
+                + ' onerror="this.parentNode.setAttribute(\'data-failed\', this.alt || \'\')"></span>'
+            : '<span class="art-tile__plate art-tile__plate--await"><span>' + esc(cap) + '</span></span>';
+        return '<figure class="' + cls + '">' + inner
+            + (opts.caption ? '<figcaption class="art-tile__cap">' + esc(opts.caption) + '</figcaption>' : '')
+            + '</figure>';
+    }
+
+    /** Fill `el` with a wall of catalogue stills, repeating to `count`.
+        Built from the data, so a new song lands on every wall at once. */
+    function wall(el, count) {
+        if (!el) return;
+        return load().then(function (rows) {
+            if (!rows.length) { el.setAttribute('data-empty', '1'); return; }
+            var n = count || 24, out = [];
+            for (var i = 0; i < n; i++) {
+                var r = rows[i % rows.length];
+                out.push('<img src="' + esc(r.thumb) + '" alt="" aria-hidden="true" loading="lazy" decoding="async"'
+                    + ' onerror="this.setAttribute(\'data-failed\', \'1\')">');
+            }
+            el.innerHTML = out.join('');
+        });
+    }
+
+    return { load: load, forSong: forSong, all: all, tile: tile, wall: wall, norm: norm };
+})();
+
+/* ── Reveal on scroll ────────────────────────────────────────────────
+   `.animate-on-scroll` had an observer in this file and was on zero
+   pages. This is the same idea under the class the pages actually use,
+   unobserving after it fires so scrolling back up doesn't re-animate. */
+window.initReveal = function (root) {
+    var els = (root || document).querySelectorAll('.reveal:not(.is-in)');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+        });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    els.forEach(function (el) { io.observe(el); });
+};
+
 /* ── Toast Notifications ── */
 function showToast(message, type = 'info', duration = 3500) {
     const existing = document.querySelector('.toast');
@@ -792,23 +939,25 @@ function renderIgEmbeds(grid, postUrls) {
     }
 }
 
+/* When no Instagram posts are configured, this used to paint nine tiles of
+   Instagram's OWN brand gradient (#833AB4 → #FD1D1D) with a music-note glyph
+   in each — another company's colours, standing in for photographs, in a
+   624px section that rendered zero images. It now falls back to her stills,
+   which are real and already loaded. If even those are unreachable the
+   section removes itself rather than showing a grid of coloured squares. */
 function renderIgPlaceholder(grid) {
-    const colors = [
-        'linear-gradient(135deg, #833AB4, #FD1D1D)',
-        'linear-gradient(135deg, #FD1D1D, #F77737)',
-        'linear-gradient(135deg, #F77737, #FCAF45)',
-        'linear-gradient(135deg, #FCAF45, #833AB4)',
-        'linear-gradient(135deg, #833AB4, #C13584)',
-        'linear-gradient(135deg, #C13584, #FD1D1D)',
-        'linear-gradient(135deg, #E1306C, #833AB4)',
-        'linear-gradient(135deg, #F77737, #833AB4)',
-        'linear-gradient(135deg, #FCAF45, #E1306C)'
-    ];
-    grid.innerHTML = colors.map((bg) =>
-        '<a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener" class="ig-feed__item" style="background:' + bg + '">' +
-            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.3);font-size:2rem;">&#9835;</div>' +
-        '</a>'
-    ).join('');
+    Art.load().then(function (rows) {
+        var section = grid.closest('.ig-feed');
+        if (!rows.length) { if (section) section.hidden = true; return; }
+        var n = 9, out = [];
+        for (var i = 0; i < n; i++) {
+            var r = rows[i % rows.length];
+            out.push('<a href="https://www.instagram.com/yeng/" target="_blank" rel="noopener"'
+                + ' class="ig-feed__item ig-feed__item--art yt-crop" title="' + r.title.replace(/"/g, '&quot;') + '">'
+                + '<img src="' + r.thumb + '" alt="' + r.title.replace(/"/g, '&quot;') + '" loading="lazy" decoding="async"></a>');
+        }
+        grid.innerHTML = out.join('');
+    });
 }
 
 /* ── Init ── */
@@ -819,7 +968,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initLanguageSelector();
     initScrollAnimations();
+    initReveal();
     initInstagramFeed();
+
+    // Any page can put her catalogue behind its hero with one attribute:
+    //   <div class="artwall"><div class="artwall__grid" data-artwall="24"></div></div>
+    document.querySelectorAll('[data-artwall]').forEach(function (el) {
+        Art.wall(el, parseInt(el.getAttribute('data-artwall'), 10) || 24);
+    });
 
     // Load site config from Airtable and apply to page
     SiteConfig.load().then(() => {
