@@ -195,30 +195,36 @@
         });
     }
 
+    /* Both empty states on this page used to be three lines of text, on a page
+       whose entire subject is printed artwork. The real card is in the repo,
+       so it stands in as the thing being collected — flippable, so the back
+       with the perks is reachable too. */
+    function showCardPreview(el, title, text, actionHtml) {
+        el.innerHTML = '<div class="cd-empty">'
+            + '<div class="cd-empty__card"><div class="cardslot" id="slot-preview">'
+            + '<div class="cardslot__inner">'
+            + '<div class="cardslot__face"><iframe src="/cards/yeng-front.html" scrolling="no" loading="lazy" title="Yeng card front"></iframe></div>'
+            + '<div class="cardslot__face cardslot__face--back"><iframe src="/cards/yeng-back.html" scrolling="no" loading="lazy" title="Yeng card back"></iframe></div>'
+            + '<div class="cardslot__catch"></div>'
+            + '</div></div><span class="cd-empty__tap">tap to flip</span></div>'
+            + '<div class="cd-empty__copy">'
+            + '<h3 class="empty-state__title">' + title + '</h3>'
+            + '<p class="empty-state__text">' + text + '</p>'
+            + actionHtml
+            + '</div></div>';
+        var slot = document.getElementById('slot-preview');
+        if (!slot) return;
+        fitCard(slot);
+        slot.addEventListener('click', function () { slot.classList.toggle('is-flipped'); });
+        window.addEventListener('resize', function () { fitCard(slot); });
+    }
+
     function renderCollection(data) {
         var el = document.getElementById('collection');
         if (!data.cards.length) {
-            /* An empty collection page used to be three lines of text on a page
-               whose entire subject is printed artwork. The real card is in the
-               repo — show it, flippable, as the thing being collected. */
-            el.innerHTML = '<div class="cd-empty">'
-                + '<div class="cd-empty__card"><div class="cardslot" id="slot-preview">'
-                + '<div class="cardslot__inner">'
-                + '<div class="cardslot__face"><iframe src="/cards/yeng-front.html" scrolling="no" loading="lazy" title="Yeng card front"></iframe></div>'
-                + '<div class="cardslot__face cardslot__face--back"><iframe src="/cards/yeng-back.html" scrolling="no" loading="lazy" title="Yeng card back"></iframe></div>'
-                + '<div class="cardslot__catch"></div>'
-                + '</div></div><span class="cd-empty__tap">tap to flip</span></div>'
-                + '<div class="cd-empty__copy">'
-                + '<h3 class="empty-state__title">Your first card</h3>'
-                + '<p class="empty-state__text">Cards drop when a question you asked finds its cluster, when Yeng answers one you were part of, and when you finish a ranking session.</p>'
-                + '<a class="btn btn--primary btn--sm" href="/ask.html">Ask Yeng something</a>'
-                + '</div></div>';
-            var slot = document.getElementById('slot-preview');
-            if (slot) {
-                fitCard(slot);
-                slot.addEventListener('click', function () { slot.classList.toggle('is-flipped'); });
-                window.addEventListener('resize', function () { fitCard(slot); });
-            }
+            showCardPreview(el, 'Your first card',
+                'Cards drop when a question you asked finds its cluster, when Yeng answers one you were part of, and when you finish a ranking session.',
+                '<a class="btn btn--primary btn--sm" href="/ask.html">Ask Yeng something</a>');
             return;
         }
         el.innerHTML = '<div class="collection">' + data.cards.map(function (c, i) {
@@ -342,9 +348,9 @@
             renderOdds(data);
         } catch (err) {
             if (/log in/i.test(err.message || '')) {
-                document.getElementById('collection').innerHTML = Yeng.emptyState(
+                showCardPreview(document.getElementById('collection'),
                     'Log in to see your cards',
-                    'Cards are tied to your account, and they only drop for things you actually do.',
+                    'Cards are tied to your account, and they only drop for things you actually do. This is one of them.',
                     '<a class="btn btn--primary btn--sm" href="/login.html?redirect=%2Fcards.html">Log in</a>');
                 return;
             }
