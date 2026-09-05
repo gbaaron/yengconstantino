@@ -102,18 +102,17 @@
             flex-wrap: wrap;
         }
 
-        .btn--primary {
-            background: var(--coral);
-            color: var(--white);
-            border: 1px solid var(--burgundy);
-            box-shadow: var(--shadow-sm);
-        }
-
+        /* This page used to repaint the main CTA coral with --white text —
+           2.58:1, the worst contrast on the site, on its most important
+           button. --coral was also the one accent a record could not reach,
+           so the button stayed coral whichever record was being worn. The
+           global .btn--primary already fills with the accent and picks its
+           text from --on-accent, so the override is gone and only the lift
+           on hover is kept. */
         .btn--primary:hover {
             transform: translate(-1px, -1px);
             box-shadow: var(--shadow-md);
             background: var(--burgundy);
-            color: var(--white);
         }
 
         .btn--secondary {
@@ -227,9 +226,13 @@
             border-color: var(--gray-300);
         }
 
+        /* 16:9, not square. These stills are designed artwork with the song
+           title set into the left third; a square crop cuts the title off and
+           keeps hqdefault's letterbox bars. A 16:9 cover-crop removes exactly
+           the bars and nothing else. */
         .music-card__image {
             width: 100%;
-            aspect-ratio: 1/1;
+            aspect-ratio: 16 / 9;
             object-fit: cover;
             display: block;
             background: var(--gray-800);
@@ -635,6 +638,19 @@
             .stat__number { font-size: 1.8rem; }
         }
     </style>
+<script>
+/* Paint the fan's chosen record before first paint. Without this the page
+   renders in the default palette and snaps when js/theme.js parses, which
+   reads as a bug rather than as a preference. Tokens are cached by
+   Records.set(); see js/theme.js. */
+(function(){try{
+  var r=document.documentElement,k=localStorage.getItem("yc_record");
+  if(k){r.setAttribute("data-record",k);
+    var c=JSON.parse(localStorage.getItem("yc_record_tokens")||"null");
+    if(c){r.setAttribute("data-look",c.look);r.setAttribute("data-tone",c.tone);
+      for(var p in c.t)r.style.setProperty(p,c.t[p]);}}
+}catch(e){}})();
+</script>
 </head>
 <body>
     <!-- ── Navigation ── -->
@@ -854,6 +870,7 @@
     <script src="/js/lucide.min.js"></script>
     <script src="/js/native-bridge.js"></script>
     <script src="/js/app.js"></script>
+    <script src="/js/theme.js"></script>
     <script>
         /* ═══════════════════════════════════════════════════
            Homepage — Featured Music & Stories
@@ -972,7 +989,7 @@
                new song lands on the first screen without touching this file. */
             Art.load().then(function (rows) {
                 var wall = document.getElementById('hero-artwall');
-                if (wall) Art.wall(wall, 84);
+                if (wall) Art.wall(wall, 56);
 
                 var rail = document.querySelector('#hero-rail .artrail__track');
                 if (rail && rows.length) {

@@ -1246,6 +1246,12 @@ textarea.form-input {
 .ig-feed__item {
     position: relative;
     aspect-ratio: 1;
+}
+/* When the well is showing her stills rather than real Instagram posts, the
+   tiles follow the artwork's own 16:9 — a square crop cuts the song title,
+   which is set into the left third of every one of these frames. */
+.ig-feed__item--art {
+    aspect-ratio: 16 / 9;
     border-radius: var(--radius-md);
     overflow: hidden;
     background: var(--gray-100);
@@ -3206,7 +3212,7 @@ a.qrow:hover { background: var(--paper-aged); }
 }
 .artwall__grid {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 6px;
     width: 132%;
     margin-left: -16%;
@@ -3216,7 +3222,9 @@ a.qrow:hover { background: var(--paper-aged); }
 .artwall__grid img {
     display: block;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    /* The artwork's own ratio. Square tiles cropped the title out of every
+       frame and kept hqdefault's black bars top and bottom. */
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     border-radius: 2px;
     /* Warm-washed rather than pushed to black: this is a paper site, and the
@@ -3234,7 +3242,7 @@ a.qrow:hover { background: var(--paper-aged); }
         linear-gradient(to bottom, var(--off-white, #F7EBD5) 0%, rgba(247,235,213,.10) 26%, rgba(247,235,213,.16) 72%, var(--off-white, #F7EBD5) 100%);
 }
 @media (max-width: 700px) {
-    .artwall__grid { grid-template-columns: repeat(7, 1fr); transform: rotate(-7deg) scale(1.26); }
+    .artwall__grid { grid-template-columns: repeat(4, 1fr); transform: rotate(-7deg) scale(1.26); }
     /* A phone has no margin to lose: the title sits ON the wall rather than
        beside it, so the paper has to come further forward under the type. */
     .artwall__grid img { opacity: 0.6; }
@@ -3349,3 +3357,236 @@ a.qrow:hover { background: var(--paper-aged); }
     .cd-empty { grid-template-columns: 1fr; justify-items: center; text-align: center; }
     .cd-empty__copy .empty-state__text { margin-left: auto; margin-right: auto; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   RECORD LOOKS
+   js/theme.js sets the palette as inline custom properties
+   on <html>, derived from three colours sampled off each
+   song's own artwork. Nine hand-written palette blocks here
+   would have drifted from that list the first time a swatch
+   moved, so the list is the theme.
+
+   What lives HERE is the part colour cannot carry. Ikaw Lang
+   Talaga and Di Na Ganun are both oxblood portraits and must
+   not feel identical, so a look moves the display face, its
+   tracking and case, the corner radius, the paper grain and
+   the border weight.
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+    /* Defaults — the scrapbook look. */
+    --display-font:      var(--font-display);
+    --display-transform: none;
+    --display-tracking:  0;
+    --display-weight:    700;
+    --display-style:     normal;
+    --paper-grain:       0.030;
+    --border-w:          1px;
+}
+
+/* Warm paper, red ink, tape and doodles. The house look. */
+[data-look="scrapbook"] {
+    --radius-sm: 2px; --radius-md: 3px; --radius-lg: 4px; --radius-xl: 6px;
+}
+
+/* The pink cards: a watercolour wash with her signature written across it.
+   Caveat already carries the hand voice on this site, so the script look
+   costs no extra font. Generous corners, almost no grain — these are
+   printed cards, not photographs. */
+[data-look="script"] {
+    --radius-sm: 5px; --radius-md: 12px; --radius-lg: 20px; --radius-xl: 26px;
+    --display-font: var(--font-hand);
+    --display-weight: 700;
+    --display-tracking: 0.005em;
+    --paper-grain: 0.012;
+}
+
+/* Daylight on a white wall. Square corners, condensed caps, no texture —
+   the one frame in the catalogue that is not trying to be print. */
+[data-look="clean"] {
+    --radius-sm: 0; --radius-md: 0; --radius-lg: 0; --radius-xl: 0;
+    --display-font: var(--font-body);
+    --display-transform: uppercase;
+    --display-tracking: 0.13em;
+    --display-weight: 600;
+    --paper-grain: 0;
+}
+
+/* The title lit like a sign on near-black. Tight corners, wide tracking. */
+[data-look="neon"] {
+    --radius-sm: 1px; --radius-md: 2px; --radius-lg: 3px; --radius-xl: 4px;
+    --display-transform: uppercase;
+    --display-tracking: 0.14em;
+    --display-weight: 600;
+    --paper-grain: 0.038;
+}
+
+/* A garden at a wedding. Soft everything. */
+[data-look="garden"] {
+    --radius-sm: 6px; --radius-md: 14px; --radius-lg: 22px; --radius-xl: 28px;
+    --display-tracking: -0.005em;
+    --display-weight: 600;
+    --paper-grain: 0.016;
+}
+
+/* Italic caps and nothing else on the frame. */
+[data-look="editorial"] {
+    --radius-sm: 1px; --radius-md: 2px; --radius-lg: 3px; --radius-xl: 4px;
+    --display-style: italic;
+    --display-transform: uppercase;
+    --display-tracking: 0.05em;
+    --display-weight: 700;
+    --paper-grain: 0.026;
+}
+
+/* Same oxblood, but there is a guitar in it. Heavier rules, more grain. */
+[data-look="rock"] {
+    --radius-sm: 0; --radius-md: 1px; --radius-lg: 2px; --radius-xl: 3px;
+    --display-style: italic;
+    --display-transform: uppercase;
+    --display-tracking: 0.02em;
+    --display-weight: 800;
+    --paper-grain: 0.048;
+    --border-w: 2px;
+}
+
+/* A sari-sari store in full daylight. Loud and rounded. */
+[data-look="pop"] {
+    --radius-sm: 6px; --radius-md: 12px; --radius-lg: 18px; --radius-xl: 24px;
+    --display-weight: 800;
+    --display-tracking: -0.01em;
+    --paper-grain: 0.022;
+    --border-w: 2px;
+}
+
+/* Every display surface follows the look. :root raises specificity above a
+   page's own <style> block, which is parsed after this file and would
+   otherwise win on a tie. */
+:root .hero__title, :root .page-hero__title, :root .page-intro__title,
+:root .section-header__title, :root .nav__logo, :root .footer__brand,
+:root .events-hero__title, :root .membership-hero__title,
+:root .mensahe-hero__title, :root .lb-hero__title, :root .community-hero__title,
+:root .rec-modal__title {
+    font-family: var(--display-font);
+    text-transform: var(--display-transform);
+    letter-spacing: var(--display-tracking);
+    font-weight: var(--display-weight);
+    font-style: var(--display-style);
+}
+/* Caveat has long ascenders and needs the room. */
+[data-look="script"] .hero__title, [data-look="script"] .page-hero__title,
+[data-look="script"] .page-intro__title { line-height: 1.2; }
+
+/* Card titles and small headings stay on the serif in every look — the
+   script and the condensed caps are both unreadable at that size. */
+:root .card__title, :root .music-card__title, :root .rec-opt__name {
+    font-family: var(--font-display);
+    text-transform: none;
+    letter-spacing: 0;
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* Dark records: the scrapbook's paper textures and tape read as smudges on
+   a dark ground, so they come down. */
+[data-tone="dark"] .taped-item::before { opacity: 0.55; }
+[data-tone="dark"] .scrap-photo,
+[data-tone="dark"] .art-tile { background: var(--paper-card); }
+[data-tone="dark"] .artwall::after {
+    background:
+        radial-gradient(ellipse 46% 44% at 50% 46%, var(--paper-main) 0%, rgba(0,0,0,0.55) 62%, rgba(0,0,0,0.30) 100%),
+        linear-gradient(to bottom, var(--paper-main) 0%, rgba(0,0,0,0.10) 26%, rgba(0,0,0,0.16) 72%, var(--paper-main) 100%);
+}
+[data-tone="dark"] .artrail::before { background: linear-gradient(to right, var(--paper-main), transparent); }
+[data-tone="dark"] .artrail::after  { background: linear-gradient(to left,  var(--paper-main), transparent); }
+
+/* ── The picker ─────────────────────────────────────── */
+.rec-modal { position: fixed; inset: 0; z-index: 2000; display: none; }
+.rec-modal.is-open { display: block; }
+.rec-modal__backdrop {
+    position: absolute; inset: 0;
+    background: rgba(20, 15, 13, 0.55);
+    backdrop-filter: blur(3px);
+}
+.rec-modal__panel {
+    position: relative;
+    max-width: 940px; width: calc(100% - 2rem);
+    max-height: 86vh; overflow-y: auto;
+    margin: 7vh auto 0;
+    padding: clamp(1.2rem, 3vw, 2rem);
+    background: var(--paper-light);
+    border: var(--border-w) solid var(--rule);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(30, 20, 12, 0.32);
+}
+.rec-modal__close {
+    position: absolute; top: 0.6rem; right: 0.8rem;
+    background: none; border: 0; cursor: pointer;
+    font-size: 1.8rem; line-height: 1; color: var(--ink-muted);
+}
+.rec-modal__eyebrow {
+    display: block; font-family: var(--font-hand);
+    font-size: 1.45rem; color: var(--yeng-red);
+}
+.rec-modal__title { font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--ink); margin: 0.1rem 0 0.4rem; }
+.rec-modal__sub { color: var(--ink-muted); max-width: 52ch; margin: 0 0 1.4rem; font-size: 0.95rem; }
+
+.rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: clamp(0.8rem, 2vw, 1.3rem);
+}
+.rec-opt {
+    display: flex; flex-direction: column; gap: 0.3rem;
+    background: none; border: 0; padding: 0; cursor: pointer;
+    text-align: left; color: inherit;
+}
+.rec-opt__frame {
+    position: relative; display: block;
+    border: var(--border-w) solid var(--rule);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+.rec-opt.is-on .rec-opt__frame { border-color: var(--yeng-red); box-shadow: 0 0 0 2px var(--yeng-red-soft); }
+@media (hover: hover) { .rec-opt:hover .rec-opt__frame { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(40,26,16,0.18); } }
+/* The artwork's own ratio — a square crop cuts the song title off. */
+.rec-opt__art { display: block; position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
+.rec-opt__art--mark {
+    background-image:
+        radial-gradient(circle at 30% 34%, var(--m1) 0 22%, transparent 23%),
+        radial-gradient(circle at 68% 66%, var(--m2) 0 18%, transparent 19%);
+}
+.rec-opt__chips { position: absolute; left: 6px; bottom: 6px; display: flex; gap: 4px; }
+.rec-opt__chips i { width: 13px; height: 13px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.7); }
+.rec-opt__on {
+    position: absolute; top: 6px; right: 6px;
+    background: var(--yeng-red); color: var(--on-accent, #fff);
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 3px 7px; border-radius: 2px;
+}
+.rec-opt__name { font-size: 0.95rem; color: var(--ink); }
+.rec-opt__year { font-size: 0.76rem; color: var(--ink-muted); }
+
+/* The nav trigger, alongside the language selector. */
+.nav__record {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: none; border: var(--border-w) solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.55rem; cursor: pointer;
+    font-family: var(--font-body); font-size: 0.72rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-muted);
+}
+.nav__record:hover { color: var(--ink); border-color: var(--rule-dark); }
+.nav__record i { width: 10px; height: 10px; border-radius: 50%; background: var(--yeng-red); }
+
+/* Buttons under a record.
+   --on-accent is the text colour for a FILLED accent, decided by that
+   accent's own luminance; --accent-ink is the accent walked toward the ink
+   until it clears AA as text on card paper. Babala's yellow needed both:
+   dark text on the filled button, a deepened yellow on the outline one. */
+.btn--primary { color: var(--on-accent, var(--white)); }
+.btn--primary:hover { color: var(--on-accent, var(--white)); }
+.btn--secondary { color: var(--accent-ink, var(--purple)); border-color: var(--accent-ink, var(--purple)); }
+.btn--secondary:hover { background: var(--accent-ink, var(--purple)); color: var(--on-accent, var(--white)); }
