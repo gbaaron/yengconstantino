@@ -56,8 +56,8 @@
 
         <div class="scrap-hero__aside taped-item tape-blue">
             <figure class="scrap-photo scrap-photo--left">
-                <img data-config-img="tour_photo" src="" alt="Yeng Constantino performing live" style="display:none">
-                <div class="scrap-photo__await">A live shot goes here</div>
+                <img data-config-img="tour_photo" alt="Yeng Constantino performing live" style="display:none">
+                <div class="scrap-photo__await">On tour</div>
             </figure>
 
             <span class="hand-note" style="position:absolute;left:-4px;bottom:-26px">See you there!</span>
@@ -304,8 +304,7 @@
         var cities = scopedCities();
         if (!cities.length) {
             el.innerHTML = '<div class="quiet"><strong>No city commitments yet. Add yours and start the map.</strong>'
-                + '<span class="quiet__sub">Every commitment says how many people you&rsquo;d bring, which is what makes '
-                + 'this useful to a promoter rather than just a wish list.</span></div>';
+                + '<span class="quiet__sub">Say how many people you&rsquo;d bring with you.</span></div>';
             return;
         }
         var max = cities[0].people || 1;
