@@ -32,6 +32,21 @@
         .slide-bg::after {
             content: ''; position: absolute; inset: 0;
         }
+        /* The slide backgrounds were fourteen Unsplash stock photographs —
+           a generic crowd, a generic studio — behind a deck about one
+           specific artist. They are her own catalogue now, tiled and pushed
+           back so the type stays the loudest thing on the slide. If the
+           catalogue can't be reached the slide keeps its flat dark ground;
+           nothing generic is substituted. */
+        .slide-bg__wall {
+            position: absolute; inset: -12%;
+            display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px;
+            transform: rotate(-6deg) scale(1.12);
+        }
+        .slide-bg__wall img {
+            width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 2px;
+            filter: grayscale(0.5) contrast(1.05) brightness(0.7);
+        }
         .slide-bg--dark::after { background: rgba(15,14,26,0.85); }
         .slide-bg--darker::after { background: rgba(15,14,26,0.92); }
         .slide-bg--gradient::after { background: linear-gradient(135deg, rgba(108,43,217,0.9), rgba(190,24,93,0.85)); }
@@ -699,7 +714,7 @@
 
     <!-- ═══ 1: TITLE ═══ -->
     <div class="slide slide--hero">
-        <div class="slide-bg slide-bg--dark" style="background-image:url('https://images.unsplash.com/photo-1483577910943-59decea62c35?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--dark"></div>
         <h1>Yeng Constantino</h1>
         <div class="subtitle">Fan Platform &mdash; Spec Concept</div>
         <p>A dedicated digital home for the Philippines' OPM Icon and her fans.</p>
@@ -709,7 +724,7 @@
 
     <!-- ═══ 2: WHY THIS MATTERS ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">The Opportunity</div>
         <h2>Why a Dedicated Platform?</h2>
         <div class="divider" style="background:var(--gold);"></div>
@@ -753,7 +768,7 @@
 
     <!-- ═══ 3: EVERYTHING YENG ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1611810293387-c8afe03cd7dd?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">The Platform</div>
         <h2 class="gradient-text">Everything Yeng, One Place</h2>
         <div class="divider"></div>
@@ -770,7 +785,7 @@
 
     <!-- ═══ 3: MUSIC ARCHIVE ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1692950975644-db8ef8cc2cee?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Feature: Music</div>
         <h2 class="gradient-text">Music Archive</h2>
         <div class="divider"></div>
@@ -814,7 +829,7 @@
 
     <!-- ═══ 4: COMMUNITY ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1602369943974-47ff755fade8?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Feature: Community</div>
         <h2 class="gradient-text">Fan Community</h2>
         <div class="divider"></div>
@@ -846,7 +861,7 @@
 
     <!-- ═══ 5: MERCH STORE ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://plus.unsplash.com/premium_photo-1673356301535-2cc45bcc79e4?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Feature: Merch</div>
         <h2 class="gradient-text">Merch Store</h2>
         <div class="divider"></div>
@@ -875,7 +890,7 @@
 
     <!-- ═══ 6: FAN COVERS ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/35/hKViPxgDRGuiGns6wv5S_IMG_5317.jpeg?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Feature: Covers</div>
         <h2 class="gradient-text">Yeng Covers</h2>
         <div class="divider"></div>
@@ -906,7 +921,7 @@
 
     <!-- ═══ 7: FAN JOURNEY ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1760092189954-5b2f6eb3ca88?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Fan Experience</div>
         <h2>How Fans Engage</h2>
         <div class="divider" style="background:var(--gold);"></div>
@@ -932,7 +947,7 @@
 
     <!-- ═══ 8: MEMBERSHIP ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1475527588268-e6a157656e35?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Revenue</div>
         <h2 class="gradient-text">Membership Tiers</h2>
         <div class="divider"></div>
@@ -985,7 +1000,7 @@
 
     <!-- ═══ 7: MANAGEMENT ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1531651750200-b2c2b3ddc876?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Management</div>
         <h2 class="gradient-text">Easy to Run</h2>
         <div class="divider"></div>
@@ -1004,7 +1019,7 @@
 
     <!-- ═══ 8: CUSTOMIZABLE ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1576514129883-2f1d47a65da6?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Your Vision</div>
         <h2>Fully Customizable</h2>
         <div class="divider" style="background:var(--gold);"></div>
@@ -1023,7 +1038,7 @@
 
     <!-- ═══ DIGITAL CARDS — Intro ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1755152825416-a7b660d3bf1c?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Exclusive: Digital Collectibles</div>
         <h2 class="gradient-text">Yeng Cards</h2>
         <div class="divider"></div>
@@ -1055,7 +1070,7 @@
 
     <!-- ═══ DIGITAL CARDS — Perks ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">Cards Unlock More Than Art</div>
         <h2>Real-World Value</h2>
         <div class="divider" style="background:var(--gold);"></div>
@@ -1090,7 +1105,7 @@
 
     <!-- ═══ THE BIGGER PICTURE ═══ -->
     <div class="slide">
-        <div class="slide-bg slide-bg--darker" style="background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--darker"></div>
         <div class="eyebrow">The Bigger Picture</div>
         <h2 class="gradient-text">More Than a Website</h2>
         <div class="divider"></div>
@@ -1118,7 +1133,7 @@
 
     <!-- ═══ CLOSING ═══ -->
     <div class="slide slide--accent">
-        <div class="slide-bg slide-bg--gradient" style="background-image:url('https://images.unsplash.com/photo-1525016891553-c148049a66b8?w=1600&q=80');"></div>
+        <div class="slide-bg slide-bg--gradient"></div>
         <h2>Built for Yeng Nation</h2>
         <div class="divider"></div>
         <p>A platform that grows with the artist and her fans — music, community, and commerce in one place.</p>
@@ -1242,5 +1257,36 @@
             if (e.key === 'Escape') closePackModal();
         });
     </script>
+<script>
+/* Paint every slide background from her catalogue. Self-contained: the deck
+   is a standalone pitch artifact and does not load js/app.js. */
+(function () {
+    var API = '/.netlify/functions/get-music-content?limit=200';
+    function paint(rows) {
+        if (!rows.length) return;
+        document.querySelectorAll('.slide-bg').forEach(function (bg, si) {
+            var wall = document.createElement('div');
+            wall.className = 'slide-bg__wall';
+            var html = '';
+            for (var i = 0; i < 40; i++) {
+                var r = rows[(i + si * 3) % rows.length];
+                html += '<img src="' + r + '" alt="" aria-hidden="true" loading="lazy" decoding="async"'
+                     + ' onerror="this.style.display=\'none\'">';
+            }
+            wall.innerHTML = html;
+            bg.insertBefore(wall, bg.firstChild);
+        });
+    }
+    fetch(API)
+        .then(function (r) { return r.ok ? r.json() : { content: [] }; })
+        .then(function (d) {
+            paint((d.content || [])
+                .map(function (x) { return x.thumbnail; })
+                .filter(Boolean)
+                .map(function (u) { return String(u).replace(/\/(maxres|sd|mq|)default\.jpg/, '/hqdefault.jpg'); }));
+        })
+        .catch(function () { /* flat dark ground, never stock */ });
+})();
+</script>
 </body>
 </html>
