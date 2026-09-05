@@ -198,9 +198,27 @@
     function renderCollection(data) {
         var el = document.getElementById('collection');
         if (!data.cards.length) {
-            el.innerHTML = Yeng.emptyState('No cards yet',
-                'Cards drop when you ask a question that finds its cluster, when Yeng answers one you were part of, and when you finish a ranking session.',
-                '<a class="btn btn--primary btn--sm" href="/ask.html">Ask Yeng something</a>');
+            /* An empty collection page used to be three lines of text on a page
+               whose entire subject is printed artwork. The real card is in the
+               repo — show it, flippable, as the thing being collected. */
+            el.innerHTML = '<div class="cd-empty">'
+                + '<div class="cd-empty__card"><div class="cardslot" id="slot-preview">'
+                + '<div class="cardslot__inner">'
+                + '<div class="cardslot__face"><iframe src="/cards/yeng-front.html" scrolling="no" loading="lazy" title="Yeng card front"></iframe></div>'
+                + '<div class="cardslot__face cardslot__face--back"><iframe src="/cards/yeng-back.html" scrolling="no" loading="lazy" title="Yeng card back"></iframe></div>'
+                + '<div class="cardslot__catch"></div>'
+                + '</div></div><span class="cd-empty__tap">tap to flip</span></div>'
+                + '<div class="cd-empty__copy">'
+                + '<h3 class="empty-state__title">Your first card</h3>'
+                + '<p class="empty-state__text">Cards drop when a question you asked finds its cluster, when Yeng answers one you were part of, and when you finish a ranking session.</p>'
+                + '<a class="btn btn--primary btn--sm" href="/ask.html">Ask Yeng something</a>'
+                + '</div></div>';
+            var slot = document.getElementById('slot-preview');
+            if (slot) {
+                fitCard(slot);
+                slot.addEventListener('click', function () { slot.classList.toggle('is-flipped'); });
+                window.addEventListener('resize', function () { fitCard(slot); });
+            }
             return;
         }
         el.innerHTML = '<div class="collection">' + data.cards.map(function (c, i) {

@@ -139,6 +139,12 @@
     </div>
 </header>
 
+<!-- Every one of these four games is played on her catalogue, and the page
+     showed none of it. The rail is the songs the games are made of. -->
+<div class="artrail" id="games-rail" aria-label="From the catalogue">
+    <div class="artrail__track"></div>
+</div>
+
 <main class="section section--compact">
     <div class="container">
         <div class="gcards">
@@ -152,9 +158,8 @@
                 </span>
                 <div class="gcard__title" data-i18n="games.ranking">Song Ranking</div>
                 <p class="gcard__sub">
-                    Two records, keep one. The one you keep faces the next.
-                    Cebu and Chicago do not agree about this catalogue, and that
-                    argument is the whole point.
+                    Two songs. Keep one. The one you keep faces the next.
+                    Cebu and Chicago will not agree with you.
                 </p>
                 <div class="gcard__foot"><span class="gcard__pts">+6</span><span>per finished session</span></div>
             </a>
@@ -170,8 +175,7 @@
                 <div class="gcard__title" data-i18n="games.millionaire">Yeng Millionaire</div>
                 <p class="gcard__sub">
                     Fifteen questions, doubling points, three safe levels, a clock.
-                    Bank what you've got or risk it for the next rung &mdash; that
-                    decision is the whole game.
+                    Bank what you have or go one rung higher.
                 </p>
                 <div class="gcard__foot"><span class="gcard__pts">+5000</span><span>if you clear the ladder</span></div>
             </a>
@@ -185,8 +189,8 @@
                 </span>
                 <div class="gcard__title" data-i18n="games.lyric">Finish the Lyric</div>
                 <p class="gcard__sub">
-                    A few seconds of audio, then type the next line before the clock runs
-                    out. Scored on speed, so a detour through an AI costs more than it wins.
+                    A few seconds of audio, then type the next line before the
+                    clock runs out. Fastest answers score highest.
                 </p>
                 <div class="gcard__foot"><span class="gcard__pts">+2&ndash;6</span><span>per round, by speed</span></div>
             </a>
@@ -201,8 +205,8 @@
                 </span>
                 <div class="gcard__title" data-i18n="games.setlist">Setlist Prediction</div>
                 <p class="gcard__sub">
-                    Pick what she'll play. Scored after the show. Costs nothing to run and
-                    quietly doubles as the clearest demand signal her team has.
+                    Pick what she'll play before she plays it. Scored after
+                    the show.
                 </p>
                 <div class="gcard__foot"><span class="gcard__pts">+5</span><span>per correct song</span></div>
             </a>
@@ -260,6 +264,27 @@
                 'Promoting a question costs ' + state.prices.promoteQuestion + ' points';
         }
     })();
+})();
+</script>
+<script>
+/* The rail is built from the catalogue, so a new release joins it here and
+   on every other surface at once. */
+(function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        var rail = document.querySelector('#games-rail .artrail__track');
+        if (!rail) return;
+        Art.load().then(function (rows) {
+            if (!rows.length) { document.getElementById('games-rail').hidden = true; return; }
+            var html = '';
+            for (var pass = 0; pass < 2; pass++) {
+                rows.forEach(function (r, i) {
+                    html += Art.tile({ src: r.thumb, caption: r.title, alt: r.title, tilt: i % 2 ? 'left' : '' });
+                });
+            }
+            rail.innerHTML = html;
+            for (var i = rows.length; i < rail.children.length; i++) rail.children[i].setAttribute('aria-hidden', 'true');
+        });
+    });
 })();
 </script>
 </body>
