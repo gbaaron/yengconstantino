@@ -1218,6 +1218,12 @@ textarea.form-input {
     gap: var(--space-md);
     max-width: 100%;
     overflow: hidden;
+    /* embed.js leaves a couple of frames position:absolute after it measures
+       them. A static grid is not their containing block, so they escaped the
+       overflow:hidden above, resolved width:100% against the whole well and
+       pushed 66px of horizontal scroll onto the document. Being positioned is
+       what makes the clip apply to them. */
+    position: relative;
 }
 
 /* Grid items default to min-width:auto, so a child that refuses to shrink
