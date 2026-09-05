@@ -143,6 +143,19 @@
             .steps-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
         }
     </style>
+<script>
+/* Paint the fan's chosen record before first paint. Without this the page
+   renders in the default palette and snaps when js/theme.js parses, which
+   reads as a bug rather than as a preference. Tokens are cached by
+   Records.set(); see js/theme.js. */
+(function(){try{
+  var r=document.documentElement,k=localStorage.getItem("yc_record");
+  if(k){r.setAttribute("data-record",k);
+    var c=JSON.parse(localStorage.getItem("yc_record_tokens")||"null");
+    if(c){r.setAttribute("data-look",c.look);r.setAttribute("data-tone",c.tone);
+      for(var p in c.t)r.style.setProperty(p,c.t[p]);}}
+}catch(e){}})();
+</script>
 </head>
 <body>
     <nav class="nav">
@@ -173,7 +186,7 @@
     </nav>
 
     <section class="mensahe-hero">
-        <div class="artwall artwall--dark" aria-hidden="true"><div class="artwall__grid" data-artwall="60"></div></div>
+        <div class="artwall artwall--dark" aria-hidden="true"><div class="artwall__grid" data-artwall="42"></div></div>
         <div class="mensahe-hero__content">
             <h1 class="mensahe-hero__title">Mensahe ni Yeng</h1>
             <p class="mensahe-hero__subtitle">Request a personalized message from Yeng for yourself or a loved one. The perfect gift for any occasion.</p>
@@ -339,6 +352,7 @@
     <script src="/js/lucide.min.js" defer></script>
     <script src="/js/native-bridge.js"></script>
     <script src="/js/app.js" defer></script>
+    <script src="/js/theme.js" defer></script>
     <script>
         var selectedMsgType = '';
         var selectedMsgPrice = 0;
