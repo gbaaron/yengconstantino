@@ -397,6 +397,15 @@ window.initReveal = function (root) {
         });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
     els.forEach(function (el) { io.observe(el); });
+
+    /* Fail open. `.reveal` starts at opacity 0, so anything that stops the
+       observer from firing — a backgrounded tab that never composites, a
+       browser that throttles it, an extension — would leave whole sections of
+       the page permanently invisible. An animation is never worth that, so
+       after 2.5s everything still hidden is simply shown. */
+    setTimeout(function () {
+        els.forEach(function (el) { el.classList.add('is-in'); });
+    }, 2500);
 };
 
 /* ── Toast Notifications ── */
