@@ -23,7 +23,7 @@
         /* Hero */
         .hero--home {
             background-color: var(--off-white);
-            min-height: 100vh;
+            min-height: min(82vh, 720px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -48,7 +48,7 @@
 
         .hero__content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             max-width: 800px;
             margin: 0 auto;
             padding: 0 var(--space-xl);
@@ -64,14 +64,28 @@
             color: var(--gray-800);
         }
 
-        .hero__subtitle {
+        /* The eyebrow replaces a 1.2rem paragraph that was the second-largest
+           thing on the page and read as a job description. Small, mono,
+           letterspaced — the record voice the rest of the site uses. */
+        .hero__eyebrow {
             font-family: var(--font-body);
-            font-size: 1.2rem;
-            color: var(--gray-600);
-            line-height: 1.7;
-            max-width: 560px;
-            margin: 0 auto var(--space-md);
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: var(--space-md);
         }
+
+        /* The old four-box stat band, as one line under the buttons. */
+        .hero__facts {
+            margin: var(--space-xl) 0 0;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            letter-spacing: 0.06em;
+            color: var(--gray-500);
+        }
+        .hero__facts span[data-config] { color: var(--gray-700); font-weight: 700; }
+        .hero__facts-dot { margin: 0 0.5rem; opacity: 0.5; }
 
         .hero__tagline {
             font-family: var(--font-accent);
@@ -475,6 +489,24 @@
             left: 20px;
         }
 
+        /* A story that names a song now carries the still from it. The
+           card keeps its ruled-paper look; the picture sits above the words
+           rather than beside them so the three cards stay the same shape. */
+        .story-card__art {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            margin: -4px -4px var(--space-md);
+            border-radius: 2px;
+            background: var(--gray-100);
+        }
+        .story-card__art img {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: auto; height: 133.34%; max-width: none;
+        }
+
         .story-card__text {
             font-family: var(--font-body);
             font-size: 0.95rem;
@@ -632,80 +664,56 @@
         </div>
     </nav>
 
-    <!-- ── Hero ── -->
+    <!-- ── Hero ──
+         Her own catalogue is the backdrop: Art.wall() tiles the stills from
+         the songs, warm-washed so forty different frames read as one sheet of
+         paper. Before this the first screen of the site was 900px of centred
+         type on a flat field, which is what "looks AI-made" looks like.
+         Nothing here is stock — if the catalogue is unreachable the wall is
+         simply empty and the paper shows through. -->
     <section class="hero--home">
+        <div class="artwall" aria-hidden="true"><div class="artwall__grid" id="hero-artwall"></div></div>
         <div class="hero__content">
+            <div class="hero__eyebrow" data-config="hero_subtitle">Twenty years of OPM</div>
             <h1 class="hero__title">Yeng Constantino</h1>
-            <p class="hero__subtitle" data-config="hero_subtitle">The Philippines' OPM Icon. Music, community, and everything Yeng — a concept pitch for what a fan hub could be.</p>
             <div class="hero__tagline" data-config="hero_tagline">Musika mula sa puso</div>
             <div class="hero__actions">
                 <a href="/membership.html" class="btn btn--primary btn--lg">Become a Member</a>
                 <a href="/music.html" class="btn btn--secondary btn--lg">Explore Music</a>
             </div>
+            <!-- The stat band used to be its own 273px section of four boxes
+                 reading 8+ / 40+ / 200+ / 20. Same figures, one line, no box —
+                 and the CMS keys are unchanged. -->
+            <p class="hero__facts">
+                <span data-config="stats_albums">8</span> albums
+                <span class="hero__facts-dot">&middot;</span>
+                <span data-config="stats_hits">40+</span> singles
+                <span class="hero__facts-dot">&middot;</span>
+                <span data-config="stats_concerts">200+</span> concerts
+                <span class="hero__facts-dot">&middot;</span>
+                <span data-config="stats_years">20</span> years
+            </p>
         </div>
     </section>
 
-    <!-- ── Ticker Marquee ── -->
-    <div class="ticker ticker--warm">
-        <div class="ticker__inner">
-            <span class="ticker__item">Salamat</span>
-            <span class="ticker__item">Ikaw</span>
-            <span class="ticker__item">Jeepney Love Story</span>
-            <span class="ticker__item">Salamat</span>
-            <span class="ticker__item">Babala</span>
-            <span class="ticker__item">OPM Queen</span>
-            <span class="ticker__item">Since Day One</span>
-            <span class="ticker__item">Yeng Nation</span>
-            <span class="ticker__item">Hawak Kamay</span>
-            <span class="ticker__item">Chinita Girl</span>
-            <span class="ticker__item">Ikaw Lang Talaga</span>
-            <span class="ticker__item">Di Na Ganun</span>
-            <!-- Duplicate for seamless loop -->
-            <span class="ticker__item">Salamat</span>
-            <span class="ticker__item">Ikaw</span>
-            <span class="ticker__item">Jeepney Love Story</span>
-            <span class="ticker__item">Salamat</span>
-            <span class="ticker__item">Babala</span>
-            <span class="ticker__item">OPM Queen</span>
-            <span class="ticker__item">Since Day One</span>
-            <span class="ticker__item">Yeng Nation</span>
-            <span class="ticker__item">Hawak Kamay</span>
-            <span class="ticker__item">Chinita Girl</span>
-            <span class="ticker__item">Ikaw Lang Talaga</span>
-            <span class="ticker__item">Di Na Ganun</span>
-        </div>
+    <!-- ── The rail ──
+         Was a marquee of twenty-four song TITLES as text — the one place on
+         the page where the words and the pictures were the same twelve songs,
+         and it chose the words. Now it is the stills, built from the
+         catalogue by Art so a new release joins the rail with no edit here.
+         It also fixes a real bug: ticker__inner ran 5261px wide and pushed
+         72px of horizontal scroll onto the whole document. -->
+    <div class="artrail bleed riser" id="hero-rail" aria-label="From the catalogue">
+        <div class="artrail__track"></div>
     </div>
 
-    <!-- ── Stats ── -->
-    <section class="stats">
-        <div class="stats__grid">
-            <div class="stat">
-                <div class="stat__number" data-config="stats_albums">8</div>
-                <div class="stat__label">Studio Albums</div>
-            </div>
-            <div class="stat">
-                <div class="stat__number" data-config="stats_hits">40+</div>
-                <div class="stat__label">Hit Singles</div>
-            </div>
-            <div class="stat">
-                <div class="stat__number" data-config="stats_concerts">200+</div>
-                <div class="stat__label">Live Concerts</div>
-            </div>
-            <div class="stat">
-                <div class="stat__number" data-config="stats_years">20</div>
-                <div class="stat__label">Years in Music</div>
-            </div>
-        </div>
-    </section>
-
     <!-- ── Featured Music ── -->
-    <!-- ── Featured Music ── -->
-    <section class="featured-music">
+    <section class="featured-music reveal">
         <div class="container">
             <div class="section-header">
                 <span class="section-header__eyebrow">Pakinggan Mo</span>
                 <h2 class="section-header__title">Featured Music</h2>
-                <p class="rating-legend">Fan ratings out of 10, from Yeng Nation. Every score here is a real rating left by a real listener &mdash; nothing is seeded.</p>
+                <p class="rating-legend">Scored out of 10 by Yeng Nation.</p>
             </div>
             <div class="music-grid" id="featured-music-grid">
                 <div class="skeleton" style="height:340px"></div>
@@ -719,25 +727,25 @@
     </section>
 
     <!-- ── About ── -->
-    <section class="about">
+    <section class="about reveal">
         <div class="container">
             <div class="about__grid">
                 <div class="about__text">
                     <h2 data-config="about_title">The Voice of a Generation</h2>
-                    <p data-config="about_text">From Star Power champion to one of the most iconic voices in OPM history, Yeng Constantino has captured the hearts of millions with her powerful vocals, authentic songwriting, and unwavering passion for Filipino music. Her journey is a testament to talent, perseverance, and the deep connection between an artist and her fans.</p>
-                    <p>Yeng Nation is more than a fan base. It is a family united by the universal language of music, celebrating every milestone and moment together.</p>
+                    <p data-config="about_text">She won <em>Pinoy Dream Academy</em> in 2006 and has been writing OPM ever since &mdash; <em>Hawak Kamay</em>, <em>Ikaw</em>, <em>Jeepney Love Story</em>, <em>Salamat</em>.</p>
+                    <p>Twenty years of songs people know by heart. This is where they live.</p>
                     <div class="about__accent" data-config="about_accent"><!-- Quotes only appear here once they are sourced from an approved archive item. --></div>
                 </div>
                 <div class="about__image-placeholder">
-                    <img data-config-img="about_image" src="" alt="Yeng Constantino" style="display:none;">
-                    <span class="about__image-text">Artist photo &mdash; to be supplied</span>
+                    <img data-config-img="about_image" alt="Yeng Constantino" style="display:none;">
+                    <span class="about__image-text">Yeng</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ── My Yeng Story ── -->
-    <section class="stories">
+    <section class="stories reveal">
         <div class="container">
             <div class="section-header">
                 <span class="section-header__eyebrow">Kwento ng Puso</span>
@@ -769,7 +777,7 @@
     </section>
 
     <!-- ── Membership CTA ── -->
-    <section class="cta-membership">
+    <section class="cta-membership reveal">
         <div class="cta-membership__content">
             <h2 class="cta-membership__title" data-config="cta_title">Join Yeng Nation Today</h2>
             <div class="cta-membership__quote" data-config="cta_quote">Music, community, and everything in one place.</div>
@@ -778,7 +786,7 @@
     </section>
 
     <!-- ── Instagram Feed ── -->
-    <section class="ig-feed section">
+    <section class="ig-feed section reveal">
         <div class="container">
             <div class="section-header">
                 <span class="section-header__eyebrow">@yeng</span>
@@ -931,23 +939,65 @@
                         return;
                     }
 
+                    /* A fan story almost always names the song it is about.
+                       Art.forSong finds that title inside the sentence and
+                       hangs the still from her recording next to it, so the
+                       section stops being three paragraphs in three boxes.
+                       No match, no picture — nothing generic is substituted. */
+                    await Art.load();
                     grid.innerHTML = posts.map(function (post) {
-                        var content = truncate(post.content || '', 200);
+                        var raw = post.content || '';
+                        var content = truncate(raw, 200);
                         var name = (post.user && post.user.name) ? post.user.name : 'A Yeng Nation Fan';
                         var createdAt = post.createdAt ? formatDate(post.createdAt) : '';
+                        var art = Art.forSong(raw);
 
-                        return '<div class="story-card">'
+                        return '<div class="story-card' + (art ? ' story-card--art' : '') + '">'
+                            + (art ? '<span class="story-card__art yt-crop"><img src="' + art + '" alt="" loading="lazy" decoding="async"></span>' : '')
                             + '<p class="story-card__text">' + content + '</p>'
                             + '<div class="story-card__author">' + name + '</div>'
                             + (createdAt ? '<div class="story-card__location">' + createdAt + '</div>' : '')
                             + '</div>';
                     }).join('');
+                    initReveal(grid);
 
                 } catch (err) {
                     console.warn('Featured stories load failed:', err.message);
                     grid.innerHTML = '<p style="text-align:center;color:#71718A;grid-column:1/-1;font-family:\'Inter\',sans-serif;">Could not load fan stories right now.</p>';
                 }
             }
+
+            /* ── The hero wall and the rail ──
+               Both are built from the catalogue rather than pasted in, so a
+               new song lands on the first screen without touching this file. */
+            Art.load().then(function (rows) {
+                var wall = document.getElementById('hero-artwall');
+                if (wall) Art.wall(wall, 84);
+
+                var rail = document.querySelector('#hero-rail .artrail__track');
+                if (rail && rows.length) {
+                    // Twice through: the loop translates -50%, so the second
+                    // pass is what makes the seam invisible.
+                    var html = '';
+                    for (var pass = 0; pass < 2; pass++) {
+                        rows.forEach(function (r) {
+                            html += Art.tile({
+                                src: r.thumb,
+                                caption: r.title,
+                                alt: r.title,
+                                tilt: (pass + r.title.length) % 2 ? 'left' : ''
+                            });
+                        });
+                    }
+                    rail.innerHTML = html;
+                    // The duplicate pass is decoration; keep it out of the
+                    // accessibility tree so the titles are not read twice.
+                    var tiles = rail.children;
+                    for (var i = rows.length; i < tiles.length; i++) tiles[i].setAttribute('aria-hidden', 'true');
+                } else if (rail) {
+                    document.getElementById('hero-rail').hidden = true;
+                }
+            });
 
             /* ── Initialize ── */
             loadFeaturedStories();
