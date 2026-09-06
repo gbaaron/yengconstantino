@@ -42,6 +42,10 @@ const EXCLUDE = new Set([
   '.gitignore',
   '.DS_Store',
   'AIRTABLE_SCHEMA.md',
+  // 17MB of alternate app-icon masters. These are staged into the iOS
+  // bundle root by scripts/stage-alt-icons.js at the sizes UIKit wants;
+  // the web layer never renders them.
+  'records',
     // The sales deck must not ship inside the App Store binary.
     'deck.html',
     'AUDIT.md',

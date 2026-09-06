@@ -10,6 +10,23 @@
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
+		AC1C04000000000000000001 /* AppIconPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000002 /* AppIconPlugin.swift */; };
+		AC1C04000000000000000003 /* babala@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000004 /* babala@2x.png */; };
+		AC1C04000000000000000005 /* babala@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000006 /* babala@3x.png */; };
+		AC1C04000000000000000007 /* chinito@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000008 /* chinito@2x.png */; };
+		AC1C04000000000000000009 /* chinito@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C0400000000000000000A /* chinito@3x.png */; };
+		AC1C0400000000000000000B /* dinaganun@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C0400000000000000000C /* dinaganun@2x.png */; };
+		AC1C0400000000000000000D /* dinaganun@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C0400000000000000000E /* dinaganun@3x.png */; };
+		AC1C0400000000000000000F /* hawakkamay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000010 /* hawakkamay@2x.png */; };
+		AC1C04000000000000000011 /* hawakkamay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000012 /* hawakkamay@3x.png */; };
+		AC1C04000000000000000013 /* ikaw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000014 /* ikaw@2x.png */; };
+		AC1C04000000000000000015 /* ikaw@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000016 /* ikaw@3x.png */; };
+		AC1C04000000000000000017 /* ikawlang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000018 /* ikawlang@2x.png */; };
+		AC1C04000000000000000019 /* ikawlang@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C0400000000000000001A /* ikawlang@3x.png */; };
+		AC1C0400000000000000001B /* jeepney@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C0400000000000000001C /* jeepney@2x.png */; };
+		AC1C0400000000000000001D /* jeepney@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C0400000000000000001E /* jeepney@3x.png */; };
+		AC1C0400000000000000001F /* salamat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000020 /* salamat@2x.png */; };
+		AC1C04000000000000000021 /* salamat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC1C04000000000000000022 /* salamat@3x.png */; };
 		93A1B2C3D4E5F60700000001 /* WidgetBridgePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A1B2C3D4E5F60700000002 /* WidgetBridgePlugin.swift */; };
 		93A1B2C3D4E5F60700000003 /* LiveActivityPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A1B2C3D4E5F60700000004 /* LiveActivityPlugin.swift */; };
 		93A1B2C3D4E5F60700000005 /* YengLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A1B2C3D4E5F60700000006 /* YengLiveActivityAttributes.swift */; };
@@ -53,6 +70,23 @@
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		504EC3071FED79650016851F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AC1C04000000000000000002 /* AppIconPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconPlugin.swift; sourceTree = "<group>"; };
+		AC1C04000000000000000004 /* babala@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "babala@2x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000006 /* babala@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "babala@3x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000008 /* chinito@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chinito@2x.png"; sourceTree = "<group>"; };
+		AC1C0400000000000000000A /* chinito@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chinito@3x.png"; sourceTree = "<group>"; };
+		AC1C0400000000000000000C /* dinaganun@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dinaganun@2x.png"; sourceTree = "<group>"; };
+		AC1C0400000000000000000E /* dinaganun@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dinaganun@3x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000010 /* hawakkamay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hawakkamay@2x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000012 /* hawakkamay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hawakkamay@3x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000014 /* ikaw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ikaw@2x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000016 /* ikaw@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ikaw@3x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000018 /* ikawlang@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ikawlang@2x.png"; sourceTree = "<group>"; };
+		AC1C0400000000000000001A /* ikawlang@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ikawlang@3x.png"; sourceTree = "<group>"; };
+		AC1C0400000000000000001C /* jeepney@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jeepney@2x.png"; sourceTree = "<group>"; };
+		AC1C0400000000000000001E /* jeepney@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jeepney@3x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000020 /* salamat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "salamat@2x.png"; sourceTree = "<group>"; };
+		AC1C04000000000000000022 /* salamat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "salamat@3x.png"; sourceTree = "<group>"; };
 		93A1B2C3D4E5F60700000002 /* WidgetBridgePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBridgePlugin.swift; sourceTree = "<group>"; };
 		93A1B2C3D4E5F60700000004 /* LiveActivityPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityPlugin.swift; sourceTree = "<group>"; };
 		93A1B2C3D4E5F60700000006 /* YengLiveActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YengLiveActivityAttributes.swift; sourceTree = "<group>"; };
@@ -143,6 +177,23 @@
 				932FD7612FF8AE4600A6CCD5 /* App.entitlements */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
+				AC1C04000000000000000002 /* AppIconPlugin.swift */,
+				AC1C04000000000000000004 /* babala@2x.png */,
+				AC1C04000000000000000006 /* babala@3x.png */,
+				AC1C04000000000000000008 /* chinito@2x.png */,
+				AC1C0400000000000000000A /* chinito@3x.png */,
+				AC1C0400000000000000000C /* dinaganun@2x.png */,
+				AC1C0400000000000000000E /* dinaganun@3x.png */,
+				AC1C04000000000000000010 /* hawakkamay@2x.png */,
+				AC1C04000000000000000012 /* hawakkamay@3x.png */,
+				AC1C04000000000000000014 /* ikaw@2x.png */,
+				AC1C04000000000000000016 /* ikaw@3x.png */,
+				AC1C04000000000000000018 /* ikawlang@2x.png */,
+				AC1C0400000000000000001A /* ikawlang@3x.png */,
+				AC1C0400000000000000001C /* jeepney@2x.png */,
+				AC1C0400000000000000001E /* jeepney@3x.png */,
+				AC1C04000000000000000020 /* salamat@2x.png */,
+				AC1C04000000000000000022 /* salamat@3x.png */,
 				93A1B2C3D4E5F60700000002 /* WidgetBridgePlugin.swift */,
 				93A1B2C3D4E5F60700000004 /* LiveActivityPlugin.swift */,
 				93A1B2C3D4E5F60700000006 /* YengLiveActivityAttributes.swift */,
@@ -259,6 +310,22 @@
 			files = (
 				504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */,
 				50B271D11FEDC1A000F3C39B /* public in Resources */,
+				AC1C04000000000000000003 /* babala@2x.png in Resources */,
+				AC1C04000000000000000005 /* babala@3x.png in Resources */,
+				AC1C04000000000000000007 /* chinito@2x.png in Resources */,
+				AC1C04000000000000000009 /* chinito@3x.png in Resources */,
+				AC1C0400000000000000000B /* dinaganun@2x.png in Resources */,
+				AC1C0400000000000000000D /* dinaganun@3x.png in Resources */,
+				AC1C0400000000000000000F /* hawakkamay@2x.png in Resources */,
+				AC1C04000000000000000011 /* hawakkamay@3x.png in Resources */,
+				AC1C04000000000000000013 /* ikaw@2x.png in Resources */,
+				AC1C04000000000000000015 /* ikaw@3x.png in Resources */,
+				AC1C04000000000000000017 /* ikawlang@2x.png in Resources */,
+				AC1C04000000000000000019 /* ikawlang@3x.png in Resources */,
+				AC1C0400000000000000001B /* jeepney@2x.png in Resources */,
+				AC1C0400000000000000001D /* jeepney@3x.png in Resources */,
+				AC1C0400000000000000001F /* salamat@2x.png in Resources */,
+				AC1C04000000000000000021 /* salamat@3x.png in Resources */,
 				504EC30F1FED79650016851F /* Assets.xcassets in Resources */,
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
@@ -317,6 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				AC1C04000000000000000001 /* AppIconPlugin.swift in Sources */,
 				93A1B2C3D4E5F60700000001 /* WidgetBridgePlugin.swift in Sources */,
 				93A1B2C3D4E5F60700000003 /* LiveActivityPlugin.swift in Sources */,
 				93A1B2C3D4E5F60700000005 /* YengLiveActivityAttributes.swift in Sources */,

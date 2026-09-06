@@ -5,9 +5,96 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>Yeng</string>
+	<string>Yeng</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>babala</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>babala</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>chinito</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>chinito</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>dinaganun</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>dinaganun</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>hawakkamay</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>hawakkamay</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>ikaw</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>ikaw</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>ikawlang</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>ikawlang</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>jeepney</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>jeepney</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>salamat</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>salamat</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+		</dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<false/>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -18,9 +105,28 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.globalmedia.yeng</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>yengapp</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Use Face ID to unlock your Yeng Constantino fan account.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -43,30 +149,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<!-- The web layer is light-theme only by design, so the native shell
-	     must not follow system dark mode and invert around it. -->
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Use Face ID to unlock your Yeng Constantino fan account.</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
-	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
-	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.globalmedia.yeng</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>yengapp</string>
-			</array>
-		</dict>
-	</array>
 </dict>
 </plist>

@@ -21,3 +21,10 @@ scripts/promo/clips/
 
 # Handover material for the external design review (complete). Local only.
 design-refs/
+
+# Generated alternate app-icon masters (17MB). Reproducible at any time from
+# icons/icon-1024.png + the palettes in js/theme.js:
+#   python3 scripts/make-record-icons.py && node scripts/stage-alt-icons.js
+# The small @2x/@3x files those stage into ios/App/App/ ARE committed, because
+# the Xcode build needs them.
+icons/records/

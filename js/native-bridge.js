@@ -353,6 +353,42 @@
     return callWidgetBridge('clear', {});
   }
 
+  // ---- Home-screen app icon ----
+  // Bridges AppIconPlugin.swift, so the record a fan is wearing inside the app
+  // is the icon they see on the home screen. Same call path as the widget
+  // bridge: Capacitor.nativePromise, since @capacitor/core is never bundled
+  // in a plain-HTML Capacitor app. No-ops in the browser, where there is no
+  // home-screen icon to change.
+  function callAppIcon(method, options) {
+    if (!isNative || !global.Capacitor ||
+        typeof global.Capacitor.nativePromise !== 'function') {
+      return Promise.reject(new Error('not native'));
+    }
+    return global.Capacitor.nativePromise('AppIcon', method, options || {});
+  }
+
+  /** True only inside the app, on a device that allows alternate icons. */
+  function appIconSupported() {
+    return callAppIcon('isSupported', {})
+      .then(function (r) { return !!(r && r.supported); })
+      .catch(function () { return false; });
+  }
+
+  /**
+   * Wear `key` on the home screen. '' or 'scrapbook' restores the default
+   * artwork. Resolves false rather than throwing when it cannot be done, so
+   * a failed icon swap never blocks the theme change that triggered it.
+   *
+   * NOTE: iOS shows its own "You have changed the icon" alert on every real
+   * change and there is no supported way to suppress it — so only call this
+   * from a deliberate fan action, never on page load.
+   */
+  function setAppIcon(key) {
+    return callAppIcon('set', { name: String(key || '') })
+      .then(function (r) { return !!(r && r.changed); })
+      .catch(function () { return false; });
+  }
+
   // ---- Live Activities (Lock Screen + Dynamic Island, iOS 16.1+) ----
   // Bridges the web layer to LiveActivityPlugin.swift (App target), which drives
   // ActivityKit. Same call path as callWidgetBridge: the raw
@@ -446,6 +482,8 @@
     // Widget data sharing (App Group)
     syncWidgetData: syncWidgetData,
     clearWidgetData: clearWidgetData,
+    appIconSupported: appIconSupported,
+    setAppIcon: setAppIcon,
     // Live Activities (ActivityKit, iOS 16.1+)
     liveActivitySupported: liveActivitySupported,
     startConcertActivity: startConcertActivity,

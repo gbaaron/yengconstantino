@@ -3536,10 +3536,29 @@ a.qrow:hover { background: var(--paper-aged); }
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
     gap: clamp(0.8rem, 2vw, 1.3rem);
 }
-.rec-opt {
+.rec-opt { display: flex; flex-direction: column; gap: 0.3rem; }
+.rec-opt__pick {
     display: flex; flex-direction: column; gap: 0.3rem;
     background: none; border: 0; padding: 0; cursor: pointer;
-    text-align: left; color: inherit;
+    text-align: left; color: inherit; width: 100%;
+}
+/* The in-app skin is free; the home-screen icon is what a membership buys,
+   because the icon is the part other people see. A locked row still says
+   which tier opens it rather than hiding. */
+.rec-opt__icon {
+    display: block; margin-top: 0.1rem; cursor: pointer;
+    font-family: var(--font-body); font-size: 0.7rem;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--accent-ink, var(--yeng-red));
+    border: 1px solid var(--rule); border-radius: var(--radius-sm);
+    padding: 0.32rem 0.4rem; text-align: center;
+}
+.rec-opt__icon:hover { border-color: var(--rule-dark); }
+.rec-opt__icon.is-on {
+    background: var(--yeng-red); color: var(--on-accent, #fff); border-color: var(--yeng-red);
+}
+.rec-opt__icon.is-locked {
+    color: var(--ink-muted); cursor: default; border-style: dashed;
 }
 .rec-opt__frame {
     position: relative; display: block;
@@ -3549,7 +3568,7 @@ a.qrow:hover { background: var(--paper-aged); }
     transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
 }
 .rec-opt.is-on .rec-opt__frame { border-color: var(--yeng-red); box-shadow: 0 0 0 2px var(--yeng-red-soft); }
-@media (hover: hover) { .rec-opt:hover .rec-opt__frame { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(40,26,16,0.18); } }
+@media (hover: hover) { .rec-opt__pick:hover .rec-opt__frame { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(40,26,16,0.18); } }
 /* The artwork's own ratio — a square crop cuts the song title off. */
 .rec-opt__art { display: block; position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
 .rec-opt__art--mark {

@@ -35,41 +35,41 @@
            cover art comes from — so the picker never holds a hardcoded image
            URL and a re-uploaded video fixes itself.                        */
         LIST: [
-            { key: 'scrapbook', name: 'Yeng Nation', year: null, song: null, look: 'scrapbook',
+            { key: 'scrapbook', tier: 'Free', name: 'Yeng Nation', year: null, song: null, look: 'scrapbook',
               a: '#D62D2F', b: '#F4B31C', bg: '#F7EBD5',
               note: 'The fan-club look — warm paper, red ink, tape and doodles.' },
 
-            { key: 'hawakkamay', name: 'Hawak Kamay', year: 2006, song: 'Hawak Kamay', look: 'script',
+            { key: 'hawakkamay', tier: 'Free', name: 'Hawak Kamay', year: 2006, song: 'Hawak Kamay', look: 'script',
               /* Sampled at #C0555A; a shade deeper so white on the filled
                  button clears AA (4.48 -> 4.65). Still the card's own rose. */
               a: '#BC5358', b: '#E39FA8', bg: '#FCDEDD',
               note: 'Soft pink watercolour with her signature written across it.' },
 
-            { key: 'salamat', name: 'Salamat', year: 2007, song: 'Salamat', look: 'script',
+            { key: 'salamat', tier: 'Free', name: 'Salamat', year: 2007, song: 'Salamat', look: 'script',
               a: '#B8474C', b: '#EBB0A8', bg: '#FBE4E2',
               note: 'The same pink card as Hawak Kamay — both from the first records.' },
 
-            { key: 'chinito', name: 'Chinito', year: 2007, song: 'Chinito', look: 'clean',
+            { key: 'chinito', tier: 'Sariwang Simula', name: 'Chinito', year: 2007, song: 'Chinito', look: 'clean',
               a: '#E2643A', b: '#C9884F', bg: '#F6F1EC',
               note: 'Daylight and a white wall. The brightest thing she has.' },
 
-            { key: 'jeepney', name: 'Jeepney Love Story', year: 2012, song: 'Jeepney Love Story', look: 'neon',
+            { key: 'jeepney', tier: 'Laging Nandito', name: 'Jeepney Love Story', year: 2012, song: 'Jeepney Love Story', look: 'neon',
               a: '#9E86D6', b: '#D9A2C4', bg: '#16131F',
               note: 'Violet on near-black, the title lit like a sign.' },
 
-            { key: 'ikaw', name: 'Ikaw', year: 2014, song: 'Ikaw', look: 'garden',
+            { key: 'ikaw', tier: 'Sariwang Simula', name: 'Ikaw', year: 2014, song: 'Ikaw', look: 'garden',
               a: '#B8874F', b: '#8FA86A', bg: '#EFEFE3',
               note: 'A garden at a wedding. The softest frame in the catalogue.' },
 
-            { key: 'ikawlang', name: 'Ikaw Lang Talaga', year: 2015, song: 'Ikaw Lang Talaga', look: 'editorial',
+            { key: 'ikawlang', tier: 'Ikaw Lamang', name: 'Ikaw Lang Talaga', year: 2015, song: 'Ikaw Lang Talaga', look: 'editorial',
               a: '#CE8A78', b: '#C2666C', bg: '#2A1519',
               note: 'Oxblood and a portrait. Italic caps, nothing else on the frame.' },
 
-            { key: 'dinaganun', name: 'Di Na Ganun', year: 2016, song: 'Di Na Ganun', look: 'rock',
+            { key: 'dinaganun', tier: 'Ikaw Lamang', name: 'Di Na Ganun', year: 2016, song: 'Di Na Ganun', look: 'rock',
               a: '#C8434E', b: '#B8877A', bg: '#2C1519',
               note: 'Same oxblood, but she is holding a red guitar this time.' },
 
-            { key: 'babala', name: 'Babala', year: 2016, song: 'Babala', look: 'pop',
+            { key: 'babala', tier: 'Laging Nandito', name: 'Babala', year: 2016, song: 'Babala', look: 'pop',
               a: '#D98C1E', b: '#BE1420', bg: '#F7E5BC',
               note: 'A sari-sari store in full daylight. Yellow, and loud about it.' },
         ],
@@ -273,6 +273,56 @@
 
         init: function () { this.apply(this.current()); },
 
+        /* ── Who can wear what on the home screen ────────────────────
+           The in-app theme is free for everyone: it is a skin, and a fan on
+           the free tier seeing what Ikaw Lamang gets converts far better
+           than hiding it. What membership actually buys is the HOME SCREEN
+           — the icon is the part other people see. */
+        TIERS: ['Free', 'Sariwang Simula', 'Laging Nandito', 'Ikaw Lamang'],
+
+        tierRank: function (t) {
+            var i = this.TIERS.indexOf(t);
+            return i < 0 ? 0 : i;
+        },
+
+        /** Is this record's ICON available at the fan's tier? */
+        iconUnlocked: function (rec) {
+            if (!rec || !rec.tier || rec.tier === 'Free') return true;
+            var mine = (global.Auth && Auth.isLoggedIn()) ? Auth.getEffectiveTier() : 'Free';
+            return this.tierRank(mine) >= this.tierRank(rec.tier);
+        },
+
+        /* Only inside the app, and only on a device that allows it. Resolved
+           once and cached so the picker can render synchronously. */
+        _iconOK: null,
+        iconsAvailable: function () {
+            var self = this;
+            if (this._iconOK !== null) return Promise.resolve(this._iconOK);
+            if (!global.NativeBridge || !NativeBridge.appIconSupported) {
+                this._iconOK = false; return Promise.resolve(false);
+            }
+            return NativeBridge.appIconSupported().then(function (ok) {
+                self._iconOK = !!ok; return self._iconOK;
+            });
+        },
+
+        /** Put this record on the home screen. */
+        wearIcon: function (key) {
+            var rec = this.get(key);
+            if (!rec) return Promise.resolve(false);
+            if (!this.iconUnlocked(rec)) {
+                if (global.showToast) showToast(rec.tier + ' unlocks this icon', 'info');
+                return Promise.resolve(false);
+            }
+            if (!global.NativeBridge || !NativeBridge.setAppIcon) return Promise.resolve(false);
+            return NativeBridge.setAppIcon(rec.key).then(function (changed) {
+                if (changed) {
+                    try { localStorage.setItem('yc_record_icon', rec.key); } catch (e) {}
+                }
+                return changed;
+            });
+        },
+
         /* ── The picker ──────────────────────────────────────────────
            Covers, not swatches. Nobody picks Babala because a yellow
            rectangle appealed to them; they pick it because they can see the
@@ -292,12 +342,20 @@
                         '<span class="rec-modal__eyebrow">Isuot ang plaka</span>' +
                         '<h2 class="rec-modal__title">Wear a record</h2>' +
                         '<p class="rec-modal__sub">Pick the one you are feeling. The whole app takes its ' +
-                        'colours &mdash; and its type, corners and grain.</p>' +
+                        'colours &mdash; and its type, corners and grain.' +
+                        '<span class="rec-modal__hint" hidden> Your membership decides which ones you can ' +
+                        'also put on your home screen.</span></p>' +
                       '</div>' +
                       '<div class="rec-grid" id="rec-grid"></div>' +
                     '</div>';
                 document.body.appendChild(modal);
             }
+            var self2 = this;
+            this.iconsAvailable().then(function (ok) {
+                var hint = modal.querySelector('.rec-modal__hint');
+                if (hint) hint.hidden = !ok;
+                self2.renderGrid();
+            });
             this.renderGrid();
             modal.classList.add('is-open');
             document.body.style.overflow = 'hidden';
@@ -316,6 +374,8 @@
             var grid = document.getElementById('rec-grid');
             if (!grid) return;
             var self = this, cur = this.current();
+            var icon = 'scrapbook';
+            try { icon = localStorage.getItem('yc_record_icon') || 'scrapbook'; } catch (e) {}
 
             function esc(s) {
                 return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -331,16 +391,31 @@
                     ? '<span class="rec-opt__art yt-crop"><img src="' + esc(art) + '" alt="" loading="lazy"></span>'
                     : '<span class="rec-opt__art rec-opt__art--mark" style="background-color:' + rec.bg +
                       ';--m1:' + rec.a + ';--m2:' + rec.b + '"></span>';
-                return '<button class="rec-opt' + (rec.key === cur ? ' is-on' : '') + '" ' +
-                         'data-record-pick="' + rec.key + '" title="' + esc(rec.note || rec.name) + '">' +
-                    '<span class="rec-opt__frame">' + plate +
-                      '<span class="rec-opt__chips"><i style="background:' + rec.a + '"></i>' +
-                      '<i style="background:' + rec.b + '"></i></span>' +
-                      (rec.key === cur ? '<span class="rec-opt__on">Wearing</span>' : '') +
-                    '</span>' +
-                    '<span class="rec-opt__name">' + esc(rec.name) + '</span>' +
-                    '<span class="rec-opt__year">' + (rec.year || 'Fan club') + '</span>' +
-                '</button>';
+                var open = self.iconUnlocked(rec);
+                var onHome = icon === rec.key;
+                /* The icon row only exists inside the app — a browser has no
+                   home screen to put anything on. */
+                var iconRow = self._iconOK
+                    ? '<span class="rec-opt__icon' + (open ? '' : ' is-locked') + (onHome ? ' is-on' : '') + '" ' +
+                        'data-record-icon="' + rec.key + '" role="button" tabindex="0">' +
+                        (onHome ? 'On your home screen'
+                                : open ? 'Use as app icon'
+                                       : esc(rec.tier) + ' unlocks the icon') +
+                      '</span>'
+                    : '';
+
+                return '<div class="rec-opt' + (rec.key === cur ? ' is-on' : '') + '">' +
+                    '<button class="rec-opt__pick" data-record-pick="' + rec.key + '" ' +
+                         'title="' + esc(rec.note || rec.name) + '">' +
+                      '<span class="rec-opt__frame">' + plate +
+                        '<span class="rec-opt__chips"><i style="background:' + rec.a + '"></i>' +
+                        '<i style="background:' + rec.b + '"></i></span>' +
+                        (rec.key === cur ? '<span class="rec-opt__on">Wearing</span>' : '') +
+                      '</span>' +
+                      '<span class="rec-opt__name">' + esc(rec.name) + '</span>' +
+                      '<span class="rec-opt__year">' + (rec.year || 'Fan club') + '</span>' +
+                    '</button>' + iconRow +
+                '</div>';
             }).join('');
         },
 
@@ -350,6 +425,18 @@
                 if (!e.target.closest) return;
                 if (e.target.closest('[data-record-open]')) { e.preventDefault(); self.openPicker(); return; }
                 if (e.target.closest('[data-rec-close]')) { self.closePicker(); return; }
+                var ico = e.target.closest('[data-record-icon]');
+                if (ico) {
+                    e.preventDefault();
+                    var ikey = ico.getAttribute('data-record-icon');
+                    self.wearIcon(ikey).then(function (changed) {
+                        self.renderGrid();
+                        if (changed && global.showToast) {
+                            showToast((self.get(ikey) || {}).name + ' is on your home screen', 'success');
+                        }
+                    });
+                    return;
+                }
                 var pick = e.target.closest('[data-record-pick]');
                 if (pick) {
                     var rec = self.set(pick.getAttribute('data-record-pick'));
